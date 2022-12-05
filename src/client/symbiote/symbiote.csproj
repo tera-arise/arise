@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>Arise.Client.Symbiote</AssemblyName>
+        <RootNamespace>Arise.Client.Symbiote</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../../shared/core/core.csproj" />
+        <ProjectReference Include="../../shared/data/data.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.ClearScript.V8" />
+        <PackageReference Include="Microsoft.ClearScript.V8.Native.win-x64" />
+        <PackageReference Include="StreamJsonRpc" />
+        <PackageReference Include="Vezel.Ruptura.Memory" />
+    </ItemGroup>
+
+    <Target Name="_EmbedCertificates"
+            BeforeTargets="BeforeResGen">
+        <MSBuild Projects="../../shared/certificates/certificates.proj"
+                 Targets="GetCertificates"
+                 Properties="CertificateName=arise">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="EmbeddedResource" />
+        </MSBuild>
+    </Target>
+</Project>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport"
+              content="initial-scale=1, width=device-width" />
+
+        <link rel="manifest"
+              href="arise.webmanifest" />
+
+        <link rel="shortcut icon"
+              href="arise.ico" />
+        <link rel="apple-touch-icon"
+              href="arise.png" />
+
+        <partial name="_Styles" />
+
+        <title>@(ViewData["Title"] is string title ? $"{title} | " : string.Empty)TERA Arise</title>
+    </head>
+
+    <body class="container">
+        <partial name="_Header" />
+
+        @RenderBody()
+
+        <partial name="_Footer" />
+
+        <partial name="_Scripts" />
+    </body>
+</html>

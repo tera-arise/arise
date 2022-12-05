@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>Arise.Common</AssemblyName>
+        <RootNamespace>Arise</RootNamespace>
+    </PropertyGroup>
+</Project>

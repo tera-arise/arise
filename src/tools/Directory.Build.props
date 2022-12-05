@@ -1,0 +1,13 @@
+<Project>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('$(MSBuildThisFile)', '$(MSBuildThisFileDirectory)..'))" />
+
+    <PropertyGroup>
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+        <CopyDebugSymbolFilesFromPackages Condition="'$(DebugSymbols)' == 'true'">true</CopyDebugSymbolFilesFromPackages>
+        <!-- TODO: Remove this with the next Cathode release. -->
+        <EnablePreviewFeatures>true</EnablePreviewFeatures>
+        <OutputType>Exe</OutputType>
+        <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+        <TargetFramework>$(TargetFramework)-windows10.0.22621.0</TargetFramework>
+    </PropertyGroup>
+</Project>

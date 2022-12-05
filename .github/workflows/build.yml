@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Build
+on:
+    push:
+        branches-ignore:
+            - dependabot/**
+    pull_request:
+    workflow_dispatch:
+defaults:
+    run:
+        shell: bash
+env:
+    DOTNET_CLI_TELEMETRY_OPTOUT: true
+    DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+    DOTNET_NOLOGO: true
+jobs:
+    build:
+        strategy:
+            fail-fast: false
+            matrix:
+                os:
+                    - macos-12
+                    - ubuntu-22.04
+                    - windows-2022
+                cfg:
+                    - Debug
+                    - Release
+        runs-on: ${{ matrix.os }}
+        steps:
+            - name: Clone repository
+              uses: actions/checkout@v3.2.0
+              with:
+                  fetch-depth: 0
+                  submodules: recursive
+            - name: Set up .NET
+              uses: actions/setup-dotnet@v3.0.3
+            - name: Build project
+              run: |
+                  dotnet nuget --version # TODO: https://github.com/NuGet/Home/issues/12159
+                  dotnet tool restore
+                  dotnet publish -c ${{ matrix.cfg }}

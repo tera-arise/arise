@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/global.json",
+  "sdk": {
+    "version": "7.0.101",
+    "rollForward": "latestFeature",
+    "allowPrelease": false
+  },
+  "msbuild-sdks": {
+    "Microsoft.Build.NoTargets": "3.7.0",
+    "Microsoft.Build.Traversal": "3.2.0"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "Storage": {
+    "ConnectionString": "Host=storage.tera-arise.io; Username=arise; Password=arise; Database=production; Root Certificate=postgresql.pem; SSL Mode=VerifyCA"
+  },
+  "Kestrel": {
+    "Certificates": {
+      "Default": {
+        "Path": "cloudflare.pem",
+        "KeyPath": "cloudflare.key"
+      }
+    },
+    "Endpoints": {
+      "Web": {
+        "Url": "https://tera-arise.io:443"
+      }
+    }
+  },
+  "World": {
+    "Endpoints": [
+      "0.0.0.0:7801",
+      ":::7801"
+    ]
+  }
+}

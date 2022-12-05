@@ -1,0 +1,13 @@
+{
+    "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+    "lang": "en-US",
+    "dir": "ltr",
+    "name": "TERA Arise",
+    "description": "A game resurrection project for the final build of TERA EU.",
+    "background_color": "#1f1f1f",
+    "icons": [
+        {
+            "src": "arise.ico"
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>Arise.Server.Scripts</AssemblyName>
+        <RootNamespace>Arise.Server.Scripts</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../world/world.csproj" />
+    </ItemGroup>
+</Project>

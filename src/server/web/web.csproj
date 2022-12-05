@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+    <PropertyGroup>
+        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+        <AssemblyName>Arise.Server.Web</AssemblyName>
+        <RootNamespace>Arise.Server.Web</RootNamespace>
+        <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Arise.Server.Storage.Documents" />
+        <Using Include="Markdig" />
+        <Using Include="Marten" />
+        <Using Include="Microsoft.AspNetCore.Builder" />
+        <Using Include="Microsoft.AspNetCore.Diagnostics" />
+        <Using Include="Microsoft.AspNetCore.Hosting" />
+        <Using Include="Microsoft.AspNetCore.Http" />
+        <Using Include="Microsoft.AspNetCore.Mvc" />
+        <Using Include="Microsoft.AspNetCore.Mvc.ModelBinding.Metadata" />
+        <Using Include="Microsoft.AspNetCore.Mvc.RazorPages" />
+        <Using Include="Microsoft.AspNetCore.ResponseCompression" />
+        <Using Include="Microsoft.AspNetCore.Server.Kestrel.Core" />
+        <Using Include="Microsoft.AspNetCore.WebUtilities" />
+        <Using Include="Westwind.AspNetCore.Markdown" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="../../../arise.ico; ../../../arise.png"
+                 Link="wwwroot/%(Filename)%(Extension)" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../storage/storage.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Marten.AspNetCore" />
+        <PackageReference Include="Westwind.AspNetCore.Markdown" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <Target Name="_GetDataCenterAttributes"
+            BeforeTargets="GetAssemblyAttributes"
+            DependsOnTargets="GetDataCenterParameters">
+        <ItemGroup>
+            <AssemblyMetadata Include="DataCenterRevision"
+                              Value="$(DataCenterRevision)" />
+        </ItemGroup>
+    </Target>
+</Project>

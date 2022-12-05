@@ -1,0 +1,64 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>Arise.Data</AssemblyName>
+        <RootNamespace>Arise.Data</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <_DataSheetDirectory>../../../dat/</_DataSheetDirectory>
+        <_DataCenterCache>$(BaseIntermediateOutputPath)DataCenter.cache</_DataCenterCache>
+        <_DataCenterPath>$(BaseIntermediateOutputPath)DataCenter.dat</_DataCenterPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <_DataSheet Include="$(_DataSheetDirectory)**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../common/common.csproj" />
+    </ItemGroup>
+
+    <!-- TODO: XSLT support for stripping server-side data. -->
+
+    <Target Name="_WriteDataCenterCache"
+            DependsOnTargets="GetDataCenterParameters">
+        <Hash ItemsToHash="$(MSBuildAllProjects); @(_DataSheet); $(DataCenterKey); $(DataCenterIV)"
+              IgnoreCase="true">
+            <Output TaskParameter="HashResult"
+                    PropertyName="_DataCenterCacheHash" />
+        </Hash>
+
+        <WriteLinesToFile Lines="$(_DataCenterCacheHash)"
+                          File="$(_DataCenterCache)"
+                          Overwrite="true"
+                          WriteOnlyWhenDifferent="true" />
+
+        <ItemGroup>
+            <FileWrites Include="$(_DataCenterCache)" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="_PackDataCenter"
+            Inputs="@(_DataSheet); $(_DataCenterCache)"
+            Outputs="$(_DataCenterPath)"
+            DependsOnTargets="_WriteDataCenterCache"
+            BeforeTargets="BeforeResGen">
+        <PropertyGroup>
+            <_CompressionLevel>NoCompression</_CompressionLevel>
+            <_CompressionLevel Condition="'$(Configuration)' == 'Release'">SmallestSize</_CompressionLevel>
+        </PropertyGroup>
+
+        <Exec Command="dotnet novadrop-dc pack $(_DataSheetDirectory) $(_DataCenterPath) --revision $(DataCenterRevision) --compression $(_CompressionLevel) --encryption-key $(DataCenterKey) --encryption-iv $(DataCenterIV)"
+              StandardOutputImportance="low"
+              StandardErrorImportance="low"
+              CustomWarningRegularExpression="^  \[W\] \(\d+,\d+\): .*$"
+              CustomErrorRegularExpression="^  \[E\] \(\d+,\d+\): .*$" />
+
+        <ItemGroup>
+            <EmbeddedResource Include="$(_DataCenterPath)"
+                              LogicalName="DataCenter.dat"
+                              Type="Non-Resx"
+                              WithCulture="false" />
+        </ItemGroup>
+    </Target>
+</Project>

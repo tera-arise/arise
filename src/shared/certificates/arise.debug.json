@@ -1,0 +1,19 @@
+{
+  "hosts": [
+    "localhost"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "DK",
+      "ST": "Nordjylland",
+      "L": "Thisted",
+      "O": "TERA Arise",
+      "OU": "Client",
+      "E": "hi@tera-arise.io"
+    }
+  ]
+}

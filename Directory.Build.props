@@ -1,0 +1,29 @@
+<Project>
+    <PropertyGroup>
+        <Product>TERA Arise</Product>
+        <Description>TERA Arise is a game resurrection project for the final build of TERA EU.</Description>
+        <Authors>$(Product) Contributors</Authors>
+        <Copyright>Copyright © $(Authors)</Copyright>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <AnalysisLevel>latest-all</AnalysisLevel>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+        <DebugType>none</DebugType>
+        <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <ImplicitUsings>true</ImplicitUsings>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <IsPackable>false</IsPackable>
+        <IsPublishable>false</IsPublishable>
+        <LangVersion>latest</LangVersion>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+        <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+        <Nullable>enable</Nullable>
+        <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
+        <TargetFramework>net7.0</TargetFramework>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+</Project>

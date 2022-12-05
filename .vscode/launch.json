@@ -1,0 +1,74 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": ".NET: Launch Daemon (External)",
+      "presentation": {
+        "group": "arise"
+      },
+      "type": "coreclr",
+      "request": "launch",
+      "stopAtEntry": true,
+      "suppressJITOptimizations": true,
+      "justMyCode": false,
+      "symbolOptions": {
+        "searchMicrosoftSymbolServer": true,
+        "searchNuGetOrgSymbolServer": true
+      },
+      "console": "externalTerminal",
+      "cwd": "${workspaceFolder}/src/server/daemon",
+      "program": "${workspaceFolder}/src/server/daemon/bin/Debug/arised.dll"
+    },
+    {
+      "name": ".NET: Launch Daemon (Integrated)",
+      "presentation": {
+        "group": "arise"
+      },
+      "type": "coreclr",
+      "request": "launch",
+      "stopAtEntry": true,
+      "suppressJITOptimizations": true,
+      "justMyCode": false,
+      "symbolOptions": {
+        "searchMicrosoftSymbolServer": true,
+        "searchNuGetOrgSymbolServer": true
+      },
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/src/server/daemon",
+      "program": "${workspaceFolder}/src/server/daemon/bin/Debug/arised.dll"
+    },
+    {
+      "name": ".NET: Launch Switcher",
+      "presentation": {
+        "group": "arise"
+      },
+      "type": "coreclr",
+      "request": "launch",
+      "stopAtEntry": true,
+      "suppressJITOptimizations": true,
+      "justMyCode": false,
+      "symbolOptions": {
+        "searchMicrosoftSymbolServer": true,
+        "searchNuGetOrgSymbolServer": true
+      },
+      "console": "internalConsole",
+      "cwd": "${workspaceFolder}/src/client/switcher",
+      "program": "${workspaceFolder}/src/client/switcher/bin/Debug/arise.dll"
+    },
+    {
+      "name": ".NET: Attach",
+      "presentation": {
+        "group": "arise"
+      },
+      "type": "coreclr",
+      "request": "attach",
+      "suppressJITOptimizations": true,
+      "justMyCode": false,
+      "symbolOptions": {
+        "searchMicrosoftSymbolServer": true,
+        "searchNuGetOrgSymbolServer": true
+      },
+      "processId": "${command:pickProcess}"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>Arise.Server.World</AssemblyName>
+        <RootNamespace>Arise.Server.World</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Arise.Data" />
+        <Using Include="Vezel.Novadrop.Data" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../../shared/data/data.csproj" />
+        <ProjectReference Include="../../shared/module/module.csproj" />
+        <ProjectReference Include="../storage/storage.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="dnlib" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+        <PackageReference Include="Vezel.Novadrop.Formats" />
+    </ItemGroup>
+
+    <Target Name="_GetDataCenterAttributes"
+            BeforeTargets="GetAssemblyAttributes"
+            DependsOnTargets="GetDataCenterParameters">
+        <ItemGroup>
+            <AssemblyMetadata Include="DataCenterKey"
+                              Value="$(DataCenterKey)" />
+            <AssemblyMetadata Include="DataCenterIV"
+                              Value="$(DataCenterIV)" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="_EmbedCertificates"
+            BeforeTargets="BeforeResGen">
+        <MSBuild Projects="../../shared/certificates/certificates.proj"
+                 Targets="GetCertificates"
+                 Properties="CertificateName=arised">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="EmbeddedResource" />
+        </MSBuild>
+    </Target>
+</Project>

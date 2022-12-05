@@ -1,0 +1,13 @@
+<Project>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('$(MSBuildThisFile)', '$(MSBuildThisFileDirectory)..'))" />
+
+    <PropertyGroup>
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+        <!-- TODO: Remove this with the next Cathode release. -->
+        <EnablePreviewFeatures>true</EnablePreviewFeatures>
+        <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+        <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+        <!-- TODO: https://github.com/AvaloniaUI/Avalonia/issues/9549 -->
+        <TargetFramework>$(TargetFramework)-windows10.0.18362.0</TargetFramework>
+    </PropertyGroup>
+</Project>

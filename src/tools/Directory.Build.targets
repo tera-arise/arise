@@ -1,0 +1,16 @@
+<Project>
+    <ItemGroup>
+        <Using Include="CommandLine" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../../shared/common/common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommandLineParser" />
+        <PackageReference Include="Vezel.Cathode" />
+    </ItemGroup>
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('$(MSBuildThisFile)', '$(MSBuildThisFileDirectory)..'))" />
+</Project>

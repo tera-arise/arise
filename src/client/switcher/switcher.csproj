@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>arise</AssemblyName>
+        <EventSourceSupport>false</EventSourceSupport>
+        <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+        <IsPublishable>true</IsPublishable>
+        <NullabilityInfoContextSupport>false</NullabilityInfoContextSupport>
+        <OutputType>WinExe</OutputType>
+        <PublishTrimmed>true</PublishTrimmed>
+        <RootNamespace>Arise.Client.Switcher</RootNamespace>
+        <TrimmerRemoveSymbols Condition="'$(DebugSymbols)' != 'true'">true</TrimmerRemoveSymbols>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DebuggerSupport>false</DebuggerSupport>
+        <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+        <UseSystemResourceKeys>true</UseSystemResourceKeys>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Arise.Client.Launcher" />
+        <Using Include="Arise.Client.Symbiote" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- TODO: https://github.com/AvaloniaUI/Avalonia/issues/9539 -->
+        <ProjectReference Include="../launcher/launcher.csproj"
+                          ExcludeAssets="buildTransitive" />
+        <ProjectReference Include="../symbiote/symbiote.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Vezel.Ruptura.Hosting" />
+    </ItemGroup>
+</Project>

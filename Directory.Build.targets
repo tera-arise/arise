@@ -1,0 +1,81 @@
+<Project>
+    <PropertyGroup Condition="'$(DebugSymbols)' == 'true'">
+        <DebugType>embedded</DebugType>
+        <EmbedAllSources>true</EmbedAllSources>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(OutputType)' != 'Library'">
+        <ApplicationIcon>$(MSBuildThisFileDirectory)arise.ico</ApplicationIcon>
+        <TieredPGO>true</TieredPGO>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="System.ComponentModel" />
+        <Using Include="System.Diagnostics" />
+        <Using Include="System.Diagnostics.CodeAnalysis" />
+        <Using Include="System.Globalization" />
+        <Using Include="System.IO.Compression" />
+        <Using Include="System.Linq.Expressions" />
+        <Using Include="System.Net" />
+        <Using Include="System.Net.Mime" />
+        <Using Include="System.Net.Quic" />
+        <Using Include="System.Numerics" />
+        <Using Include="System.Reflection" />
+        <Using Include="System.Runtime.CompilerServices" />
+        <Using Include="System.Runtime.InteropServices" />
+        <Using Include="System.Security.Cryptography" />
+        <Using Include="System.Text.Json" />
+        <Using Include="System.Text.Json.Serialization" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="$(MSBuildThisFileDirectory).stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub"
+                          PrivateAssets="all" />
+        <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers"
+                          PrivateAssets="all" />
+        <PackageReference Include="Nerdbank.GitVersioning"
+                          PrivateAssets="all"
+                          Condition="'$(UsingMicrosoftNoTargetsSdk)' != 'true'" />
+        <PackageReference Include="StyleCop.Analyzers"
+                          PrivateAssets="all" />
+    </ItemGroup>
+
+    <!--
+    This is used to generate a fresh key and IV for the data center on every new
+    commit. It also derives the data center revision from the build version.
+    -->
+    <Target Name="GetDataCenterParameters"
+            DependsOnTargets="GetBuildVersion">
+        <PropertyGroup>
+            <DataCenterRevision>$(BuildVersion.Replace('.', ''))</DataCenterRevision>
+            <DataCenterKey>$(GitCommitId.Substring(0, 32))</DataCenterKey>
+            <DataCenterIV>$(GitCommitId.Substring(8, 32))</DataCenterIV>
+        </PropertyGroup>
+    </Target>
+
+    <!--
+    For production deployments, the data center revision is used as the official
+    release identifier visible to the launcher and users.
+    -->
+    <Target Name="WriteDeploymentManifest"
+            DependsOnTargets="GetDataCenterParameters">
+        <PropertyGroup>
+            <_ManifestJson>
+                <![CDATA[
+{
+  "version": "$(DataCenterRevision)"
+}
+                ]]>
+            </_ManifestJson>
+        </PropertyGroup>
+
+        <WriteLinesToFile File="manifest.json"
+                          Lines="$(_ManifestJson)"
+                          Overwrite="true"
+                          WriteOnlyWhenDifferent="true" />
+    </Target>
+</Project>

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>arise-distributor</AssemblyName>
+        <RootNamespace>Arise.Tools.Distributor</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Octokit" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Octokit" />
+    </ItemGroup>
+</Project>

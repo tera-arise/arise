@@ -1,0 +1,6 @@
+@model HomeErrorModel
+
+@if (Model.Code is int code && ReasonPhrases.GetReasonPhrase(code) is { Length: not 0 } desc)
+{
+    // TODO
+}

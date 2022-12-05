@@ -1,0 +1,18 @@
+{
+  "Storage": {
+    "ConnectionString": "Host=localhost; Username=arise; Password=arise; Include Error Detail=true"
+  },
+  "Kestrel": {
+    "Endpoints": {
+      "Web": {
+        "Url": "https://localhost:5000"
+      }
+    }
+  },
+  "World": {
+    "Endpoints": [
+      "127.0.0.1:7801",
+      "::1:7801"
+    ]
+  }
+}

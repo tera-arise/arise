@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <AssemblyName>arised</AssemblyName>
+        <CopyDebugSymbolFilesFromPackages Condition="'$(DebugSymbols)' == 'true'">true</CopyDebugSymbolFilesFromPackages>
+        <EnableDefaultContentItems>false</EnableDefaultContentItems>
+        <!-- TODO: Remove this with the next Cathode release. -->
+        <EnablePreviewFeatures>true</EnablePreviewFeatures>
+        <IsPublishable>true</IsPublishable>
+        <PublishIISAssets>false</PublishIISAssets>
+        <RetainVMGarbageCollection>true</RetainVMGarbageCollection>
+        <RootNamespace>Arise.Server.Daemon</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Arise.Server.Storage" />
+        <Using Include="Arise.Server.Web" />
+        <Using Include="Arise.Server.World" />
+        <Using Include="CommandLine" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="$(AssemblyName).development.json"
+                 CopyToOutputDirectory="PreserveNewest"
+                 Condition="'$(Configuration)' == 'Debug'" />
+        <Content Include="$(AssemblyName).production.json; $(AssemblyName).staging.json"
+                 CopyToOutputDirectory="PreserveNewest"
+                 Condition="'$(Configuration)' == 'Release'" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../scripts/scripts.csproj" />
+        <ProjectReference Include="../web/web.csproj" />
+        <ProjectReference Include="../world/world.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommandLineParser" />
+        <PackageReference Include="Vezel.Cathode.Extensions" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "dotnet-aspnet-codegenerator": {
+      "version": "7.0.0",
+      "commands": [
+        "dotnet-aspnet-codegenerator"
+      ]
+    },
+    "dotnet-counters": {
+      "version": "6.0.328102",
+      "commands": [
+        "dotnet-counters"
+      ]
+    },
+    "dotnet-dump": {
+      "version": "6.0.328102",
+      "commands": [
+        "dotnet-dump"
+      ]
+    },
+    "dotnet-gcdump": {
+      "version": "6.0.328102",
+      "commands": [
+        "dotnet-gcdump"
+      ]
+    },
+    "dotnet-sos": {
+      "version": "6.0.328102",
+      "commands": [
+        "dotnet-sos"
+      ]
+    },
+    "dotnet-stack": {
+      "version": "6.0.328102",
+      "commands": [
+        "dotnet-stack"
+      ]
+    },
+    "dotnet-symbol": {
+      "version": "1.0.335501",
+      "commands": [
+        "dotnet-symbol"
+      ]
+    },
+    "dotnet-trace": {
+      "version": "6.0.328102",
+      "commands": [
+        "dotnet-trace"
+      ]
+    },
+    "nbgv": {
+      "version": "3.5.119",
+      "commands": [
+        "nbgv"
+      ]
+    },
+    "novadrop-dc": {
+      "version": "1.0.16",
+      "commands": [
+        "novadrop-dc"
+      ]
+    },
+    "sourcelink": {
+      "version": "3.1.1",
+      "commands": [
+        "sourcelink"
+      ]
+    }
+  }
+}

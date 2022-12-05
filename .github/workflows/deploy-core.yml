@@ -1,0 +1,84 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Deploy Core
+on:
+    workflow_call:
+        inputs:
+            environment:
+                type: environment
+                required: true
+            role:
+                type: string
+                required: true
+            fingerprint:
+                type: string
+                required: true
+defaults:
+    run:
+        shell: bash
+jobs:
+    deploy:
+        runs-on: ubuntu-22.04
+        steps:
+            - name: Stop service
+              uses: appleboy/ssh-action@v0.1.6
+              with:
+                  host: ${{ inputs.environment }}.${{ inputs.role }}.tera-arise.io
+                  fingerprint: ${{ inputs.fingerprint }}
+                  username: root
+                  key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  script_stop: true
+                  script: |
+                      if systemctl list-unit-files arised-${{ inputs.role }}.service -a -l -t service < /dev/null; then
+                          systemctl stop arised-${{ inputs.role }}
+                          systemctl disable arised-${{ inputs.role }}
+                      fi
+            - name: Write storage certificate
+              env:
+                  STORAGE_ROOT_CERTIFICATE: ${{ secrets.STORAGE_ROOT_CERTIFICATE }}
+              run: |
+                  echo "$STORAGE_ROOT_CERTIFICATE" > postgresql.pem
+            - name: Write Cloudflare certificates
+              if: inputs.role == 'web'
+              env:
+                  CLOUDFLARE_ORIGIN_CERTIFICATE: ${{ secrets.CLOUDFLARE_ORIGIN_CERTIFICATE }}
+                  CLOUDFLARE_PRIVATE_KEY: ${{ secrets.CLOUDFLARE_PRIVATE_KEY }}
+              run: |
+                  echo "$CLOUDFLARE_ORIGIN_CERTIFICATE" > cloudflare.pem
+                  echo "$CLOUDFLARE_PRIVATE_KEY" > cloudflare.key
+              working-directory: src/server/daemon/bin/Release/win-x64/publish
+            - name: Generate unit file
+              run: |
+                  sed -e s/ENVIRONMENT/${{ inputs.environment }}/g -e s/ROLE/${{ inputs.role }}/g > arised-${{ inputs.role }}.service
+              working-directory: src/server/daemon
+            - name: Upload unit file
+              uses: appleboy/scp-action@v0.1.3
+              with:
+                  host: ${{ inputs.environment }}.${{ inputs.role }}.tera-arise.io
+                  fingerprint: ${{ inputs.fingerprint }}
+                  username: root
+                  key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  source: src/server/daemon/arised-${{ inputs.role }}.service
+                  strip_components: 3
+                  target: /etc/systemd/system
+            - name: Upload daemon build
+              uses: appleboy/scp-action@v0.1.3
+              with:
+                  host: ${{ inputs.environment }}.${{ inputs.role }}.tera-arise.io
+                  fingerprint: ${{ inputs.fingerprint }}
+                  username: root
+                  key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  source: src/server/daemon/bin/Release/win-x64/publish/*
+                  strip_components: 7
+                  target: /opt/arise
+                  rm: true
+            - name: Start service
+              uses: appleboy/ssh-action@v0.1.6
+              with:
+                  host: ${{ inputs.environment }}.${{ inputs.role }}.tera-arise.io
+                  fingerprint: ${{ inputs.fingerprint }}
+                  username: root
+                  key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  script_stop: true
+                  script: |
+                      systemctl enable arised-${{ inputs.role }}
+                      systemctl start arised-${{ inputs.role }}
