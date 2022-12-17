@@ -4,6 +4,11 @@
         <EventSourceSupport>false</EventSourceSupport>
         <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
         <IsPublishable>true</IsPublishable>
+        <!-- TODO: https://github.com/dotnet/runtime/issues/3828 -->
+        <NoWarn>
+            $(NoWarn);
+            NETSDK1074
+        </NoWarn>
         <NullabilityInfoContextSupport>false</NullabilityInfoContextSupport>
         <OutputType>WinExe</OutputType>
         <PublishTrimmed>true</PublishTrimmed>
