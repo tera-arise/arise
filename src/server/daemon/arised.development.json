@@ -1,6 +1,6 @@
 {
   "Storage": {
-    "ConnectionString": "Host=localhost; Username=arise; Password=arise; Include Error Detail=true"
+    "ConnectionString": "Host=localhost; Username=arise; Password=arise; Database=development; Include Error Detail=true"
   },
   "Kestrel": {
     "Endpoints": {
