@@ -32,6 +32,8 @@ internal static class ClientDistributor
         try
         {
             release = await releaseApi.Get(repository.Id, releaseName);
+
+            await Terminal.OutLineAsync($"Existing release found at: {release.HtmlUrl}");
         }
         catch (ApiException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
         {
@@ -48,7 +50,10 @@ internal static class ClientDistributor
                         ```
                         """,
                     TargetCommitish = "7c680c08e868e8365eb0b2eddf660155591f15f4",
+                    Draft = true,
                 });
+
+            await Terminal.OutLineAsync($"Draft release created at: {release.HtmlUrl}");
         }
 
         await Terminal.OutLineAsync($"Deleting {release.Assets.Count} old assets...");
