@@ -13,6 +13,7 @@
         <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
         <DebugType>none</DebugType>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <ImplicitUsings>true</ImplicitUsings>
         <InvariantGlobalization>true</InvariantGlobalization>
