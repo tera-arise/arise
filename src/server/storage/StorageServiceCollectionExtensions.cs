@@ -20,8 +20,8 @@ public static class StorageServiceCollectionExtensions
                 opts.AutoCreateSchemaObjects = AutoCreate.CreateOrUpdate;
 
                 opts.UseDefaultSerialization(
+                    enumStorage: EnumStorage.AsString,
                     casing: Casing.SnakeCase,
-                    collectionStorage: CollectionStorage.AsArray,
                     serializerType: SerializerType.SystemTextJson);
                 opts.UseNodaTime();
 
@@ -35,7 +35,7 @@ public static class StorageServiceCollectionExtensions
                     .ForAllDocuments(mapping =>
                     {
                         if (mapping.DocumentType.Assembly == typeof(ThisAssembly).Assembly)
-                            mapping.Alias = mapping.Alias[..^8];
+                            mapping.Alias = mapping.Alias[..^"Document".Length];
                     });
 
                 opts.Connection(options.ConnectionString);
