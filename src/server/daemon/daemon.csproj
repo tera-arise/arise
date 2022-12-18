@@ -3,8 +3,6 @@
         <AssemblyName>arised</AssemblyName>
         <CopyDebugSymbolFilesFromPackages Condition="'$(DebugSymbols)' == 'true'">true</CopyDebugSymbolFilesFromPackages>
         <EnableDefaultContentItems>false</EnableDefaultContentItems>
-        <!-- TODO: Remove this with the next Cathode release. -->
-        <EnablePreviewFeatures>true</EnablePreviewFeatures>
         <IsPublishable>true</IsPublishable>
         <PublishIISAssets>false</PublishIISAssets>
         <RetainVMGarbageCollection>true</RetainVMGarbageCollection>

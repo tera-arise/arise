@@ -3,8 +3,6 @@
 
     <PropertyGroup>
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-        <!-- TODO: Remove this with the next Cathode release. -->
-        <EnablePreviewFeatures>true</EnablePreviewFeatures>
         <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
         <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
         <!-- TODO: https://github.com/AvaloniaUI/Avalonia/issues/9549 -->
