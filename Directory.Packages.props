@@ -54,8 +54,6 @@
                         Version="4.0.3" />
         <PackageVersion Include="RadLine"
                         Version="0.6.0" />
-        <PackageVersion Include="srp"
-                        Version="1.0.7" />
         <PackageVersion Include="StreamJsonRpc"
                         Version="2.13.33" />
         <PackageVersion Include="StyleCop.Analyzers"

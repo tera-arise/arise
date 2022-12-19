@@ -10,6 +10,5 @@
 
     <ItemGroup>
         <PackageReference Include="DotNext.Metaprogramming" />
-        <PackageReference Include="srp" />
     </ItemGroup>
 </Project>
