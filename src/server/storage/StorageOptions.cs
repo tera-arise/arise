@@ -2,7 +2,7 @@ namespace Arise.Server.Storage;
 
 public sealed class StorageOptions : IOptions<StorageOptions>
 {
-    public string ConnectionString { get; set; } = "Host=127.0.0.1; Username=arise";
+    public string ConnectionString { get; set; } = "Host=localhost; Username=arise; Password=arise; Database=arise";
 
     public int MaxRetryCount { get; set; } = 5;
 

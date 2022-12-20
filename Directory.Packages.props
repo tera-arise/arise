@@ -54,6 +54,10 @@
                         Version="4.0.3" />
         <PackageVersion Include="RadLine"
                         Version="0.6.0" />
+        <PackageVersion Include="SendGrid"
+                        Version="9.28.1" />
+        <PackageVersion Include="SendGrid.Extensions.DependencyInjection"
+                        Version="1.0.1" />
         <PackageVersion Include="StreamJsonRpc"
                         Version="2.13.33" />
         <PackageVersion Include="StyleCop.Analyzers"

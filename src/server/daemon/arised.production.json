@@ -15,6 +15,9 @@
       }
     }
   },
+  "Mail": {
+    "SendGridKey": "SENDGRID_API_KEY"
+  },
   "World": {
     "Endpoints": [
       "0.0.0.0:7801",

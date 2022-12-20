@@ -45,10 +45,17 @@ jobs:
               run: |
                   echo "$CLOUDFLARE_ORIGIN_CERTIFICATE" > cloudflare.pem
                   echo "$CLOUDFLARE_PRIVATE_KEY" > cloudflare.key
-              working-directory: src/server/daemon/bin/Release/win-x64/publish
+              working-directory: src/server/daemon/bin/Release/linux-x64/publish
+            - name: Write SendGrid key
+              if: inputs.role == 'web'
+              env:
+                  SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+              run: |
+                  sed -e "s/SENDGRID_API_KEY/$SENDGRID_API_KEY/g" -i arised.${{ inputs.environment }}.json
+              working-directory: src/server/daemon/bin/Release/linux-x64/publish
             - name: Generate unit file
               run: |
-                  sed -e s/ENVIRONMENT/${{ inputs.environment }}/g -e s/ROLE/${{ inputs.role }}/g > arised-${{ inputs.role }}.service
+                  sed -e "s/ENVIRONMENT/${{ inputs.environment }}/g" -e "s/ROLE/${{ inputs.role }}/g" arised.service > arised-${{ inputs.role }}.service
               working-directory: src/server/daemon
             - name: Upload unit file
               uses: appleboy/scp-action@v0.1.3
@@ -67,7 +74,7 @@ jobs:
                   fingerprint: ${{ inputs.fingerprint }}
                   username: root
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
-                  source: src/server/daemon/bin/Release/win-x64/publish/*
+                  source: src/server/daemon/bin/Release/linux-x64/publish/*
                   strip_components: 7
                   target: /opt/arise
                   rm: true

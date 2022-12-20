@@ -4,8 +4,21 @@ namespace Arise.Server.Web;
 
 public static class WebServiceCollectionExtensions
 {
-    public static IServiceCollection AddWebServices(this IServiceCollection services)
+    public static IServiceCollection AddWebServices(this IServiceCollection services, HostBuilderContext context)
     {
+        var options = new MailOptions();
+
+        context.Configuration.GetSection("Mail").Bind(options);
+
+        if (options.SendGridKey is string key)
+            _ = services.AddSendGrid(opts =>
+            {
+                opts.ApiKey = key;
+                opts.HttpErrorAsException = true;
+            });
+
+        services.TryAddSingleton<ISendGridClient, DummySendGridClient>();
+
         return services
             .AddOptions<WebOptions>()
             .BindConfiguration("Web")

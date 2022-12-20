@@ -33,7 +33,7 @@ return await parser
                     _ = services.AddStorageServices(ctx);
 
                     if (flags.HasFlag(DaemonServices.Web))
-                        _ = services.AddWebServices();
+                        _ = services.AddWebServices(ctx);
 
                     if (flags.HasFlag(DaemonServices.World))
                         _ = services.AddWorldServices();
