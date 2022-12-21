@@ -3,7 +3,7 @@ namespace Arise.Server.Storage.Documents;
 public sealed class ArticleDocument : IDocument
 {
     [Identity]
-    public required string Slug { get; set; }
+    public required string Slug { get; init; }
 
     public required string Title { get; set; }
 
