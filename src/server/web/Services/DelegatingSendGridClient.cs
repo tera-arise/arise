@@ -1,9 +1,6 @@
-using System.Net.Http.Headers;
-using SendGrid.Helpers.Mail;
-
 namespace Arise.Server.Web.Services;
 
-public sealed class DummySendGridClient : ISendGridClient
+public sealed class DelegatingSendGridClient : ISendGridClient
 {
     public string UrlPath
     {
@@ -21,6 +18,21 @@ public sealed class DummySendGridClient : ISendGridClient
     {
         get => throw new NotSupportedException();
         set => throw new NotSupportedException();
+    }
+
+    private readonly SendGridClient? _client;
+
+    public DelegatingSendGridClient(HttpClient client, IOptions<WebOptions> options)
+    {
+        // If no API key is available, sending will just be a no-op.
+        if (options.Value.SendGridKey is string key)
+            _client = new(
+                client,
+                new()
+                {
+                    ApiKey = key,
+                    HttpErrorAsException = true,
+                });
     }
 
     public AuthenticationHeaderValue AddAuthorization(KeyValuePair<string, string> header)
@@ -47,10 +59,14 @@ public sealed class DummySendGridClient : ISendGridClient
     [SuppressMessage("", "CA2000")]
     public Task<Response> SendEmailAsync(SendGridMessage msg, CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(
-            new Response(
-                HttpStatusCode.OK,
-                new ReadOnlyMemoryContent(ReadOnlyMemory<byte>.Empty),
-                new HttpResponseMessage().Headers));
+        return _client != null
+            ? _client.SendEmailAsync(msg, cancellationToken)
+            : cancellationToken.IsCancellationRequested
+                ? Task.FromCanceled<Response>(cancellationToken)
+                : Task.FromResult(
+                    new Response(
+                        HttpStatusCode.OK,
+                        new ReadOnlyMemoryContent(ReadOnlyMemory<byte>.Empty),
+                        new HttpResponseMessage().Headers));
     }
 }

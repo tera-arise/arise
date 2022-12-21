@@ -15,7 +15,7 @@
       }
     }
   },
-  "Mail": {
+  "Web": {
     "SendGridKey": "SENDGRID_API_KEY"
   },
   "World": {

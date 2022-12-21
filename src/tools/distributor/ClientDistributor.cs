@@ -10,7 +10,8 @@ internal static class ClientDistributor
 
     public static async Task DistributeAsync(DistributorOptions options)
     {
-        var ghc = new GitHubClient(new ProductHeaderValue(ThisAssembly.AssemblyName, ThisAssembly.AssemblyVersion))
+        var ghc = new GitHubClient(
+            new Octokit.ProductHeaderValue(ThisAssembly.AssemblyName, ThisAssembly.AssemblyVersion))
         {
             Credentials = new Credentials(options.Token),
         };

@@ -4,42 +4,46 @@ namespace Arise.Server.Storage;
 
 public static class StorageServiceCollectionExtensions
 {
-    public static IServiceCollection AddStorageServices(this IServiceCollection services, HostBuilderContext context)
+    public static IServiceCollection AddStorageServices(this IServiceCollection services)
     {
-        var options = new StorageOptions();
-
-        context.Configuration.GetSection("Storage").Bind(options);
-
         return services
+            .AddOptions<StorageOptions>()
+            .BindConfiguration("Storage")
+            .Services
             .AddSingleton<IClock>(SystemClock.Instance)
             .AddSingleton(DateTimeZoneProviders.Tzdb)
-            .AddMarten(opts =>
+            .AddMarten(provider =>
             {
-                opts.SourceCodeWritingEnabled = false;
-                opts.DatabaseSchemaName = context.HostingEnvironment.EnvironmentName.ToLower();
-                opts.AutoCreateSchemaObjects = AutoCreate.CreateOrUpdate;
+                var store = new StoreOptions
+                {
+                    SourceCodeWritingEnabled = false,
+                    DatabaseSchemaName = provider.GetRequiredService<IHostEnvironment>().EnvironmentName.ToLower(),
+                    AutoCreateSchemaObjects = AutoCreate.CreateOrUpdate,
+                };
 
-                opts.UseDefaultSerialization(
+                store.UseDefaultSerialization(
                     enumStorage: EnumStorage.AsString,
                     casing: Casing.SnakeCase,
                     serializerType: SerializerType.SystemTextJson);
-                opts.UseNodaTime();
+                store.UseNodaTime();
 
-                opts.RegisterDocumentTypes(
+                store.RegisterDocumentTypes(
                     typeof(ThisAssembly)
                         .Assembly
                         .ExportedTypes
                         .Where(type => type.GetInterfaces().Contains(typeof(IDocument))));
-                _ = opts
-                    .Policies
-                    .ForAllDocuments(mapping =>
+                _ = store.Policies.ForAllDocuments(mapping =>
                     {
                         if (mapping.DocumentType.Assembly == typeof(ThisAssembly).Assembly)
                             mapping.Alias = mapping.Alias[..^"Document".Length];
                     });
 
-                opts.Connection(options.ConnectionString);
-                opts.RetryPolicy(DefaultRetryPolicy.Times(options.MaxRetryCount));
+                var options = provider.GetRequiredService<IOptions<StorageOptions>>().Value;
+
+                store.Connection(options.ConnectionString);
+                store.RetryPolicy(DefaultRetryPolicy.Times(options.MaxRetryCount));
+
+                return store;
             })
             .UseLightweightSessions()
             .ApplyAllDatabaseChangesOnStartup()

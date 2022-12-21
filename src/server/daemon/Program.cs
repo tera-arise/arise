@@ -30,10 +30,10 @@ return await parser
                         }))
                 .ConfigureServices((ctx, services) =>
                 {
-                    _ = services.AddStorageServices(ctx);
+                    _ = services.AddStorageServices();
 
                     if (flags.HasFlag(DaemonServices.Web))
-                        _ = services.AddWebServices(ctx);
+                        _ = services.AddWebServices();
 
                     if (flags.HasFlag(DaemonServices.World))
                         _ = services.AddWorldServices();

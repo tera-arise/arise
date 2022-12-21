@@ -21,7 +21,7 @@
         <Using Include="Microsoft.AspNetCore.Server.Kestrel.Core" />
         <Using Include="Microsoft.AspNetCore.WebUtilities" />
         <Using Include="SendGrid" />
-        <Using Include="SendGrid.Extensions.DependencyInjection" />
+        <Using Include="SendGrid.Helpers.Mail" />
         <Using Include="Westwind.AspNetCore.Markdown" />
     </ItemGroup>
 
@@ -37,7 +37,6 @@
     <ItemGroup>
         <PackageReference Include="Marten.AspNetCore" />
         <PackageReference Include="SendGrid" />
-        <PackageReference Include="SendGrid.Extensions.DependencyInjection" />
         <PackageReference Include="Westwind.AspNetCore.Markdown" />
     </ItemGroup>
 

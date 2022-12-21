@@ -18,6 +18,8 @@
         <Using Include="System.Linq.Expressions" />
         <Using Include="System.Net" />
         <Using Include="System.Net.Http" />
+        <Using Include="System.Net.Http.Headers" />
+        <Using Include="System.Net.Mail" />
         <Using Include="System.Net.Mime" />
         <Using Include="System.Net.Quic" />
         <Using Include="System.Numerics" />
