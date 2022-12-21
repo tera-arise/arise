@@ -4,7 +4,7 @@ on:
     workflow_call:
         inputs:
             environment:
-                type: environment
+                type: string
                 required: true
             role:
                 type: string
@@ -16,9 +16,22 @@ defaults:
     run:
         shell: bash
 jobs:
-    deploy:
+    deploy-server:
         runs-on: ubuntu-22.04
         steps:
+            - name: Clone repository
+              uses: actions/checkout@v3.2.0
+              with:
+                  ref: ${{ inputs.commit }}
+                  fetch-depth: 0
+                  submodules: recursive
+            - name: Set up .NET
+              uses: actions/setup-dotnet@v3.0.3
+            - name: Build project
+              run: |
+                  dotnet nuget --version # TODO: https://github.com/NuGet/Home/issues/12159
+                  dotnet tool restore
+                  dotnet publish src/server/daemon -c Release
             - name: Stop service
               uses: appleboy/ssh-action@v0.1.6
               with:
@@ -28,7 +41,7 @@ jobs:
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   script_stop: true
                   script: |
-                      if systemctl list-unit-files arised-${{ inputs.role }}.service -a -l -t service < /dev/null; then
+                      if systemctl list-unit-files arised-${{ inputs.role }}.service -a -l -t service > /dev/null; then
                           systemctl stop arised-${{ inputs.role }}
                           systemctl disable arised-${{ inputs.role }}
                       fi
@@ -51,7 +64,7 @@ jobs:
               env:
                   SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
               run: |
-                  sed -e "s/SENDGRID_API_KEY/$SENDGRID_API_KEY/g" -i arised.${{ inputs.environment }}.json
+                  sed -e "s/SENDGRID_API_KEY/$SENDGRID_API_KEY/g" -i arised.{production,staging}.json
               working-directory: src/server/daemon/bin/Release/linux-x64/publish
             - name: Generate unit file
               run: |

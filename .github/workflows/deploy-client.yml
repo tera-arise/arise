@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Deploy Client
+on:
+    workflow_call:
+        inputs:
+            environment:
+                type: string
+                required: true
+            commit:
+                type: string
+                required: true
+defaults:
+    run:
+        shell: bash
+jobs:
+    deploy-client:
+        if: inputs.environment == 'production'
+        runs-on: ubuntu-22.04
+        steps:
+            - name: Clone repository
+              uses: actions/checkout@v3.2.0
+              with:
+                  ref: ${{ inputs.commit }}
+                  fetch-depth: 0
+                  submodules: recursive
+            - name: Set up .NET
+              uses: actions/setup-dotnet@v3.0.3
+            - name: Build project
+              run: |
+                  dotnet nuget --version # TODO: https://github.com/NuGet/Home/issues/12159
+                  dotnet tool restore
+                  dotnet publish src/client/switcher -c Release
+            - name: Write deployment manifest
+              run: |
+                  dotnet build -t:WriteDeploymentManifest
+            - name: Extract build version
+              id: version
+              run: |
+                  echo version=`jq .version manifest.json -r` >> $GITHUB_OUTPUT
+            - name: Zip release
+              run: |
+                  zip ../../../../../../../TERA.Arise.${{ steps.version.outputs.version }}.zip . -r -9
+              working-directory: src/client/switcher/bin/Release/win10-x64/publish
+            - name: Upload release
+              env:
+                  GH_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
+              run: |
+                  gh release create v${{ steps.version.outputs.version }} manifest.json TERA.Arise.${{ steps.version.outputs.version }}.zip -R tera-arise/arise-release --target cec4115cc94729e4ec89d35efbed418eef207273 --latest

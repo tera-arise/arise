@@ -14,7 +14,6 @@ on:
                 required: true
 concurrency:
     group: ${{ inputs.environment }}
-    cancel-in-progress: true
 defaults:
     run:
         shell: bash
@@ -23,73 +22,41 @@ env:
     DOTNET_GENERATE_ASPNET_CERTIFICATE: false
     DOTNET_NOLOGO: true
 jobs:
-    build:
+    check-environment:
         environment:
             name: ${{ inputs.environment }}
             url: https://${{ (inputs.environment == 'staging' && 'staging.') || '' }}tera-arise.io
         runs-on: ubuntu-22.04
         steps:
-            - name: Clone repository
-              uses: actions/checkout@v3.2.0
-              with:
-                  ref: ${{ inputs.commit }}
-                  fetch-depth: 0
-                  submodules: recursive
-            - name: Set up .NET
-              uses: actions/setup-dotnet@v3.0.3
-            - name: Build project
-              run: |
-                  dotnet nuget --version # TODO: https://github.com/NuGet/Home/issues/12159
-                  dotnet tool restore
-                  dotnet publish -c Releas
-    write-manifest:
-        needs:
-            - build
-        runs-on: ubuntu-22.04
-        steps:
-            - name: Write deployment manifest
-              run: |
-                  dotnet build -t:WriteDeploymentManifest
-            - name: Extract build version
-              id: version
-              run: |
-                  echo version=`jq .version manifest.json -r` >> $GITHUB_OUTPUT
-        outputs:
-            version: ${{ steps.version.outputs.version }}
-    upload-release:
+            - run: ''
+    deploy-client:
         # For deployments to staging, it is expected that people build the
         # relevant commit locally in order to connect.
-        if: inputs.environment == 'production'
-        needs:
-            - write-manifest
-        runs-on: ubuntu-22.04
-        steps:
-            - name: Zip release
-              run: |
-                  zip ../../../../../../../TERA.Arise.${{ needs.write-manifest.outputs.version }}.zip . -r -9
-              working-directory: src/client/switcher/bin/Release/win10-x64/publish
-            - name: Upload release
-              env:
-                  GH_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
-              run: |
-                  gh release create v${{ needs.write-manifest.outputs.version }} manifest.json TERA.Arise.${{ needs.write-manifest.outputs.version }}.zip -R tera-arise/arise-release --latest --target cec4115cc94729e4ec89d35efbed418eef207273
+        uses: ./.github/workflows/deploy-client.yml
+        with:
+            commit: ${{ inputs.commit }}
+            environment: ${{ inputs.environment }}
+        secrets: inherit
     deploy-world:
         needs:
-            - build
-        uses: ./.github/workflows/deploy-core.yml
+            - deploy-client
+        uses: ./.github/workflows/deploy-server.yml
         with:
+            commit: ${{ inputs.commit }}
             environment: ${{ inputs.environment }}
             role: world
             fingerprint: ${{ secrets.SSH_WORLD_FINGERPRINT }}
         secrets: inherit
     deploy-web:
-        # The launcher queries the API to get the current release version that
-        # it needs to download, so deploy it last when everything else is done.
+        # The launcher queries the web API to get the current release version
+        # that it needs to download, so deploy the web server last when
+        # everything else is done.
         needs:
-            - upload-release
+            - deploy-client
             - deploy-world
-        uses: ./.github/workflows/deploy-core.yml
+        uses: ./.github/workflows/deploy-server.yml
         with:
+            commit: ${{ inputs.commit }}
             environment: ${{ inputs.environment }}
             role: web
             fingerprint: ${{ secrets.SSH_WEB_FINGERPRINT }}
