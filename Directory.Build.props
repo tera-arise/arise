@@ -18,7 +18,6 @@
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <ImplicitUsings>true</ImplicitUsings>
-        <InvariantGlobalization>true</InvariantGlobalization>
         <IsPackable>false</IsPackable>
         <IsPublishable>false</IsPublishable>
         <LangVersion>latest</LangVersion>

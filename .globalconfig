@@ -163,12 +163,11 @@ dotnet_diagnostic.CA1200.severity = error
 dotnet_diagnostic.CA1303.severity = none
 dotnet_diagnostic.CA1304.severity = none
 dotnet_diagnostic.CA1305.severity = none
-# TODO: https://github.com/dotnet/roslyn-analyzers/pull/4807
 dotnet_diagnostic.CA1307.severity = error
-dotnet_diagnostic.CA1308.severity = none
-dotnet_diagnostic.CA1309.severity = none
-dotnet_diagnostic.CA1310.severity = none
-dotnet_diagnostic.CA1311.severity = none
+dotnet_diagnostic.CA1308.severity = error
+dotnet_diagnostic.CA1309.severity = error
+dotnet_diagnostic.CA1310.severity = error
+dotnet_diagnostic.CA1311.severity = error
 dotnet_diagnostic.CA1401.severity = error
 dotnet_diagnostic.CA1416.severity = none
 dotnet_diagnostic.CA1417.severity = error

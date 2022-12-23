@@ -4,6 +4,7 @@ namespace Arise.Server.Storage;
 
 public static class StorageServiceCollectionExtensions
 {
+    [SuppressMessage("", "CA1308")]
     public static IServiceCollection AddStorageServices(this IServiceCollection services)
     {
         return services
@@ -17,7 +18,8 @@ public static class StorageServiceCollectionExtensions
                 var store = new StoreOptions
                 {
                     SourceCodeWritingEnabled = false,
-                    DatabaseSchemaName = provider.GetRequiredService<IHostEnvironment>().EnvironmentName.ToLower(),
+                    DatabaseSchemaName =
+                        provider.GetRequiredService<IHostEnvironment>().EnvironmentName.ToLowerInvariant(),
                     AutoCreateSchemaObjects = AutoCreate.CreateOrUpdate,
                 };
 
