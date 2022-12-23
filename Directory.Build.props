@@ -2,7 +2,7 @@
     <PropertyGroup>
         <Product>TERA Arise</Product>
         <Description>TERA Arise is a game resurrection project for the final build of TERA EU.</Description>
-        <Authors>$(Product) Contributors</Authors>
+        <Authors>$(Product) Team</Authors>
         <Copyright>Copyright © $(Authors)</Copyright>
     </PropertyGroup>
 

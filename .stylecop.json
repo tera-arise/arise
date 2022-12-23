@@ -39,7 +39,7 @@
       "newlineAtEndOfFile": "require"
     },
     "documentationRules": {
-      "companyName": "TERA Arise Contributors",
+      "companyName": "TERA Arise Team",
       "copyrightText": "Copyright © {companyName}. Licensed under the Zero-Clause BSD license.",
       "headerDecoration": "---------------------------------------------------------------------------",
       "xmlHeader": false,
