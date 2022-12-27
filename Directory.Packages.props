@@ -73,6 +73,6 @@
         <PackageVersion Include="Vezel.Ruptura.Memory"
                         Version="1.0.2" />
         <PackageVersion Include="Westwind.AspNetCore.Markdown"
-                        Version="3.9.2" />
+                        Version="3.10.0" />
     </ItemGroup>
 </Project>
