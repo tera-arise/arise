@@ -21,9 +21,9 @@
         <PackageVersion Include="Marten.NodaTime"
                         Version="6.0.0-alpha.4" />
         <PackageVersion Include="Microsoft.ClearScript.V8"
-                        Version="7.3.5" />
+                        Version="7.3.6" />
         <PackageVersion Include="Microsoft.ClearScript.V8.Native.win-x64"
-                        Version="7.3.5" />
+                        Version="7.3.6" />
         <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions"
                         Version="7.0.0" />
         <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions"
