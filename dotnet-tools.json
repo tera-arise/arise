@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "dotnet-aspnet-codegenerator": {
-      "version": "7.0.0",
+      "version": "7.0.1",
       "commands": [
         "dotnet-aspnet-codegenerator"
       ]
