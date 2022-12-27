@@ -6,10 +6,10 @@
 
     <ItemGroup>
         <Using Include="Marten" />
+        <Using Include="Marten.Metadata" />
         <Using Include="Marten.NodaTime" />
         <Using Include="Marten.Schema" />
         <Using Include="Marten.Services.Json" />
-        <Using Include="NodaTime" />
         <Using Include="Weasel.Core" />
         <Using Include="Weasel.Postgresql.Tables" />
     </ItemGroup>

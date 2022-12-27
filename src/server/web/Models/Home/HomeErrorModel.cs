@@ -1,3 +1,6 @@
 namespace Arise.Server.Web.Models.Home;
 
-public sealed record class HomeErrorModel(int? Code);
+public sealed class HomeErrorModel
+{
+    public required int? Code { get; init; }
+}

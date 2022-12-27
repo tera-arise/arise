@@ -2,7 +2,7 @@ namespace Arise.Server.Storage.Documents;
 
 public sealed class AccountBan
 {
-    public required Interval Interval { get; set; }
+    public required Interval Period { get; set; }
 
-    public string? Reason { get; set; }
+    public required string Reason { get; set; }
 }
