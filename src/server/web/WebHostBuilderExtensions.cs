@@ -32,6 +32,8 @@ public static class WebHostBuilderExtensions
                             .UseResponseCompression()
                             .UseStaticFiles()
                             .UseRouting()
+                            .UseAuthentication()
+                            .UseAuthorization()
                             .UseEndpoints(eps => eps.MapDefaultControllerRoute());
                     }));
     }

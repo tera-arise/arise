@@ -2,32 +2,40 @@ using Arise.Server.Web.Models.Articles;
 
 namespace Arise.Server.Web.Controllers;
 
-public sealed class ArticlesController : Controller
+public sealed class ArticlesController : WebController
 {
-    private readonly IQuerySession _session;
+    [BindProperty]
+    [FromServices]
+    public required IDocumentStore Store { get; init; }
 
-    public ArticlesController(IQuerySession session)
+    public async ValueTask<IActionResult> IndexAsync()
     {
-        _session = session;
+        await using var session = Store.QuerySession();
+
+        return View(new ArticlesIndexModel
+        {
+            Articles = await session
+                .Query<ArticleDocument>()
+                .OrderByDescending(article => article.Time)
+                .Take(10)
+                .ToListAsync(CancellationToken),
+        });
     }
 
-    public async Task<IActionResult> IndexAsync(CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> ViewAsync([FromRoute] string id)
     {
-        return View(
-            new ArticlesIndexModel(
-                await _session
-                    .Query<ArticleDocument>()
-                    .OrderByDescending(article => article.Time)
-                    .Take(10)
-                    .ToListAsync(cancellationToken)));
-    }
+        if (!ModelState.IsValid)
+            return NotFound();
 
-    public async Task<IActionResult> ViewAsync([FromRoute] string id, CancellationToken cancellationToken)
-    {
-        return await _session
+        await using var session = Store.QuerySession();
+
+        return await session
             .Query<ArticleDocument>()
-            .SingleOrDefaultAsync(article => article.Slug == id, cancellationToken) is ArticleDocument article
-                ? View(new ArticlesViewModel(article))
-                : NotFound();
+            .SingleOrDefaultAsync(article => article.Slug == id, CancellationToken) is ArticleDocument article
+            ? View(new ArticlesViewModel
+            {
+                Article = article,
+            })
+            : NotFound();
     }
 }

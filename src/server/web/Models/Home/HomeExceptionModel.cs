@@ -1,3 +1,6 @@
 namespace Arise.Server.Web.Models.Home;
 
-public sealed record class HomeExceptionModel(Exception? Exception);
+public sealed class HomeExceptionModel
+{
+    public required Exception? Exception { get; init; }
+}

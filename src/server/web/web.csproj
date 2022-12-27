@@ -8,19 +8,25 @@
 
     <ItemGroup>
         <Using Include="Arise.Server.Storage.Documents" />
+        <Using Include="EmailValidation" />
         <Using Include="Markdig" />
         <Using Include="Marten" />
+        <Using Include="Marten.Exceptions" />
+        <Using Include="Microsoft.AspNetCore.Authentication" />
+        <Using Include="Microsoft.AspNetCore.Authorization" />
         <Using Include="Microsoft.AspNetCore.Builder" />
         <Using Include="Microsoft.AspNetCore.Diagnostics" />
         <Using Include="Microsoft.AspNetCore.Hosting" />
         <Using Include="Microsoft.AspNetCore.Http" />
         <Using Include="Microsoft.AspNetCore.Mvc" />
+        <Using Include="Microsoft.AspNetCore.Mvc.ModelBinding" />
         <Using Include="Microsoft.AspNetCore.Mvc.ModelBinding.Metadata" />
         <Using Include="Microsoft.AspNetCore.Mvc.RazorPages" />
         <Using Include="Microsoft.AspNetCore.ResponseCompression" />
         <Using Include="Microsoft.AspNetCore.Server.Kestrel.Core" />
         <Using Include="Microsoft.AspNetCore.WebUtilities" />
         <Using Include="SendGrid" />
+        <Using Include="SendGrid.Helpers.Errors.Model" />
         <Using Include="SendGrid.Helpers.Mail" />
         <Using Include="Westwind.AspNetCore.Markdown" />
     </ItemGroup>
@@ -35,6 +41,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="EmailValidation" />
         <PackageReference Include="Marten.AspNetCore" />
         <PackageReference Include="SendGrid" />
         <PackageReference Include="Westwind.AspNetCore.Markdown" />

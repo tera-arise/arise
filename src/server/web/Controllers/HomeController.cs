@@ -3,30 +3,37 @@ using Arise.Server.Web.Services;
 
 namespace Arise.Server.Web.Controllers;
 
-public sealed class HomeController : Controller
+public sealed class HomeController : WebController
 {
     public IActionResult Index()
     {
         return View();
     }
 
-    public IActionResult Download([FromServices] GameDownloadProvider provider)
+    public IActionResult Download(GameDownloadProvider provider)
     {
-        return View(
-            new HomeDownloadModel(
-                provider.ClientManifestUri,
-                provider.ClientDownloadUri,
-                provider.AriseManifestUri,
-                provider.AriseDownloadUri));
+        return View(new HomeDownloadModel
+        {
+            ClientManifestUri = provider.ClientManifestUri,
+            ClientDownloadUri = provider.ClientDownloadUri,
+            AriseManifestUri = provider.AriseManifestUri,
+            AriseDownloadUri = provider.AriseDownloadUri,
+        });
     }
 
     public IActionResult Error([FromQuery] int? code)
     {
-        return View(new HomeErrorModel(code));
+        return View(new HomeErrorModel
+        {
+            Code = code,
+        });
     }
 
     public IActionResult Exception()
     {
-        return View(new HomeExceptionModel(HttpContext.Features.Get<IExceptionHandlerPathFeature>()?.Error));
+        return View(new HomeExceptionModel
+        {
+            Exception = HttpContext.Features.Get<IExceptionHandlerPathFeature>()?.Error,
+        });
     }
 }

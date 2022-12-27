@@ -1,3 +1,6 @@
 namespace Arise.Server.Web.Models.Articles;
 
-public sealed record class ArticlesIndexModel(IEnumerable<ArticleDocument> Articles);
+public sealed class ArticlesIndexModel
+{
+    public required IEnumerable<ArticleDocument> Articles { get; init; }
+}

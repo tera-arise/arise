@@ -1,3 +1,6 @@
 namespace Arise.Server.Web.Models.Articles;
 
-public sealed record class ArticlesViewModel(ArticleDocument Article);
+public sealed class ArticlesViewModel
+{
+    public required ArticleDocument Article { get; init; }
+}

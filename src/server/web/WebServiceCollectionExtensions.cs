@@ -1,3 +1,6 @@
+using Arise.Server.Web.Authentication;
+using Arise.Server.Web.Mail;
+using Arise.Server.Web.ModelBinding;
 using Arise.Server.Web.Services;
 
 namespace Arise.Server.Web;
@@ -13,9 +16,14 @@ public static class WebServiceCollectionExtensions
             .AddHttpClient<DelegatingSendGridClient>()
             .Services
             .AddTransient<ISendGridClient>(provider => provider.GetRequiredService<DelegatingSendGridClient>())
+            .AddTransient<MailSender>()
             .AddSingleton<GameDownloadProvider>()
-            .AddControllersWithViews(
-                opts => opts.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider()))
+            .AddControllersWithViews(opts =>
+            {
+                opts.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
+
+                AccountModelBinderProvider.Register(opts);
+            })
             .AddJsonOptions(opts =>
             {
                 var json = opts.JsonSerializerOptions;
@@ -36,6 +44,16 @@ public static class WebServiceCollectionExtensions
                     builder
                         .DisableHtml()
                         .UseBootstrap())
+            .AddAuthentication()
+            .AddScheme<ApiAuthenticationOptions, ApiAuthenticationHandler>(ApiAuthenticationHandler.Name, null)
+            .Services
+            .AddAuthorization(opts =>
+                opts.AddPolicy(
+                    "Api",
+                    opts =>
+                        opts
+                            .AddAuthenticationSchemes(ApiAuthenticationHandler.Name)
+                            .RequireAuthenticatedUser()))
             .AddProblemDetails()
             .AddResponseCompression(opts => opts.EnableForHttps = true)
             .Configure<BrotliCompressionProviderOptions>(opts => opts.Level = CompressionLevel.SmallestSize)
