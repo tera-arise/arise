@@ -29,10 +29,7 @@ public sealed class DataTree : IHostedService
                 .WithKey(GetByteArray("DataCenterKey"))
                 .WithIV(GetByteArray("DataCenterIV"))
                 .WithStrict(true)
-                .WithLoaderMode(
-                    _environment.IsDevelopment()
-                        ? DataCenterLoaderMode.Lazy
-                        : DataCenterLoaderMode.Eager)
+                .WithLoaderMode(_environment.IsDevelopment() ? DataCenterLoaderMode.Lazy : DataCenterLoaderMode.Eager)
                 .WithMutability(DataCenterMutability.Immutable),
             cancellationToken);
     }
