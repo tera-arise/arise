@@ -16,6 +16,8 @@
                         Version="4.8.1" />
         <PackageVersion Include="EmailValidation"
                         Version="1.0.8" />
+        <PackageVersion Include="Markdig"
+                        Version="0.30.4" />
         <PackageVersion Include="Marten.AspNetCore"
                         Version="6.0.0-alpha.4" />
         <PackageVersion Include="Marten.NodaTime"
@@ -72,7 +74,7 @@
                         Version="1.0.2" />
         <PackageVersion Include="Vezel.Ruptura.Memory"
                         Version="1.0.2" />
-        <PackageVersion Include="Westwind.AspNetCore.Markdown"
-                        Version="3.10.0" />
+        <PackageVersion Include="YamlDotNet"
+                        Version="12.3.1" />
     </ItemGroup>
 </Project>

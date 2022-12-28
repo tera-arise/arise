@@ -49,6 +49,7 @@ public static class StorageServiceCollectionExtensions
             })
             .UseLightweightSessions()
             .ApplyAllDatabaseChangesOnStartup()
-            .Services; // TODO: https://github.com/JasperFx/marten/issues/2414
+            .AssertDatabaseMatchesConfigurationOnStartup()
+            .Services;
     }
 }

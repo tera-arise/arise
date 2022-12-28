@@ -1,3 +1,5 @@
+@using Arise.Server.Web.Models.Home
+
 @model HomeErrorModel
 
 @if (Model.Code is int code && ReasonPhrases.GetReasonPhrase(code) is { Length: not 0 } desc)

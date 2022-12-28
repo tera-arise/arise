@@ -1,6 +1,7 @@
 using Arise.Server.Web.Authentication;
 using Arise.Server.Web.Mail;
 using Arise.Server.Web.ModelBinding;
+using Arise.Server.Web.News;
 using Arise.Server.Web.Services;
 
 namespace Arise.Server.Web;
@@ -18,6 +19,8 @@ public static class WebServiceCollectionExtensions
             .AddTransient<ISendGridClient>(provider => provider.GetRequiredService<DelegatingSendGridClient>())
             .AddTransient<MailSender>()
             .AddSingleton<GameDownloadProvider>()
+            .AddSingleton<NewsArticleProvider>()
+            .AddHostedService(provider => provider.GetRequiredService<NewsArticleProvider>())
             .AddControllersWithViews(opts =>
             {
                 opts.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
@@ -39,11 +42,6 @@ public static class WebServiceCollectionExtensions
             })
             .AddApplicationPart(typeof(ThisAssembly).Assembly)
             .Services
-            .AddMarkdown(cfg =>
-                cfg.ConfigureMarkdigPipeline = builder =>
-                    builder
-                        .DisableHtml()
-                        .UseBootstrap())
             .AddAuthentication()
             .AddScheme<ApiAuthenticationOptions, ApiAuthenticationHandler>(ApiAuthenticationHandler.Name, null)
             .Services
