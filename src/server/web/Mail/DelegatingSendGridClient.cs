@@ -20,6 +20,12 @@ public sealed class DelegatingSendGridClient : ISendGridClient
         set => throw new NotSupportedException();
     }
 
+    private static readonly Task<Response> _empty = Task.FromResult(
+        new Response(
+            HttpStatusCode.OK,
+            new ReadOnlyMemoryContent(ReadOnlyMemory<byte>.Empty),
+            new HttpResponseMessage().Headers));
+
     private readonly SendGridClient? _client;
 
     public DelegatingSendGridClient(HttpClient client, IOptions<WebOptions> options)
@@ -59,14 +65,6 @@ public sealed class DelegatingSendGridClient : ISendGridClient
     [SuppressMessage("", "CA2000")]
     public Task<Response> SendEmailAsync(SendGridMessage msg, CancellationToken cancellationToken = default)
     {
-        return _client != null
-            ? _client.SendEmailAsync(msg, cancellationToken)
-            : cancellationToken.IsCancellationRequested
-                ? Task.FromCanceled<Response>(cancellationToken)
-                : Task.FromResult(
-                    new Response(
-                        HttpStatusCode.OK,
-                        new ReadOnlyMemoryContent(ReadOnlyMemory<byte>.Empty),
-                        new HttpResponseMessage().Headers));
+        return _client != null ? _client.SendEmailAsync(msg, cancellationToken) : _empty;
     }
 }
