@@ -1,0 +1,30 @@
+{
+  "Serilog": {
+    "MinimumLevel": {
+      "Override": {
+        "Microsoft.AspNetCore": "Warning"
+      }
+    },
+    "Enrich": [
+      "FromLogContext"
+    ],
+    "WriteTo": {
+      "Async": {
+        "Name": "Async",
+        "Args": {
+          "configure": {
+            "Console": {
+              "Name": "Console",
+              "Args": {
+                "outputTemplate": "[{Timestamp:HH:mm:ss}][{Level:w3}][{SourceContext}] {Message:lj}{NewLine}{Exception}",
+                "formatProvider": "System.Globalization.CultureInfo::InvariantCulture",
+                "standardErrorFromLevel": "Warning",
+                "theme": "Serilog.Sinks.SystemConsole.Themes.ConsoleTheme::None, Serilog.Sinks.Console"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

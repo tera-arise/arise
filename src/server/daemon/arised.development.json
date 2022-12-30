@@ -1,4 +1,22 @@
 {
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Verbose"
+    },
+    "WriteTo": {
+      "Async": {
+        "Args": {
+          "configure": {
+            "Console": {
+              "Args": {
+                "theme": "Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme::Code, Serilog.Sinks.Console"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "Storage": {
     "ConnectionString": "Host=localhost; Username=arise; Password=arise; Database=arise; Include Error Detail=true"
   },

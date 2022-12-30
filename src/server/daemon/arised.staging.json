@@ -1,4 +1,24 @@
 {
+  "Serilog": {
+    "WriteTo": {
+      "Async": {
+        "Args": {
+          "configure": {
+            "File": {
+              "Name": "File",
+              "Args": {
+                "formatter": "Serilog.Formatting.Compact.CompactJsonFormatter, Serilog.Formatting.Compact",
+                "path": "logs/staging/arised.clef",
+                "fileSizeLimitBytes": null,
+                "flushToDiskInterval": "00:01:00",
+                "rollingInterval": "Day"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "Storage": {
     "ConnectionString": "Host=storage.tera-arise.io; Username=arise; Password=arise; Database=staging; Root Certificate=postgresql.pem; SSL Mode=VerifyCA"
   },

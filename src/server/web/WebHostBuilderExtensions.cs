@@ -2,7 +2,7 @@ namespace Arise.Server.Web;
 
 public static class WebHostBuilderExtensions
 {
-    public static IHostBuilder ConfigureWebServices(this IHostBuilder builder)
+    public static IHostBuilder ConfigureWebServices(this IHostBuilder builder, Action<IApplicationBuilder> configure)
     {
         return builder
             .ConfigureWebHost(builder =>
@@ -20,6 +20,8 @@ public static class WebHostBuilderExtensions
                         {
                             return context.Request.Path.StartsWithSegments("/Api", StringComparison.OrdinalIgnoreCase);
                         }
+
+                        configure(builder);
 
                         _ = builder
                             .UseWhen(static ctx => IsApi(ctx), app => app.UseExceptionHandler())

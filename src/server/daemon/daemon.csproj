@@ -14,9 +14,12 @@
         <Using Include="Arise.Server.Web" />
         <Using Include="Arise.Server.World" />
         <Using Include="CommandLine" />
+        <Using Include="Serilog" />
     </ItemGroup>
 
     <ItemGroup>
+        <Content Include="$(AssemblyName).json"
+                 CopyToOutputDirectory="PreserveNewest" />
         <Content Include="$(AssemblyName).development.json"
                  CopyToOutputDirectory="PreserveNewest"
                  Condition="'$(Configuration)' == 'Debug'" />
@@ -33,6 +36,8 @@
 
     <ItemGroup>
         <PackageReference Include="CommandLineParser" />
-        <PackageReference Include="Vezel.Cathode.Extensions" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" />
+        <PackageReference Include="Serilog.AspNetCore" />
+        <PackageReference Include="Serilog.Sinks.Async" />
     </ItemGroup>
 </Project>

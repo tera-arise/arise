@@ -1,57 +1,70 @@
 using Arise.Server.Daemon;
 
-using var parser = new Parser(settings =>
+internal static class Program
 {
-    settings.GetoptMode = true;
-    settings.PosixlyCorrect = true;
-    settings.CaseSensitive = false;
-    settings.CaseInsensitiveEnumValues = true;
-    settings.HelpWriter = Terminal.StandardError.TextWriter;
-});
+    [SuppressMessage("", "CA1308")]
+    private static Task<int> Main(string[] args)
+    {
+        Log.Logger = new LoggerConfiguration()
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .CreateBootstrapLogger();
 
-return await parser
-    .ParseArguments<DaemonOptions>(args)
-    .MapResult(
-        async options =>
+        using var parser = new Parser(settings =>
         {
-            var flags = options.Services;
-            var builder = new HostBuilder()
-                .UseEnvironment(options.Environment.ToString())
-                .ConfigureAppConfiguration((ctx, builder) =>
-                    builder.AddJsonFile(
-                        $"{ThisAssembly.AssemblyName}.{ctx.HostingEnvironment.EnvironmentName}.json", false, true))
-                .ConfigureLogging((ctx, builder) =>
-                    builder
-                        .AddConfiguration(ctx.Configuration.GetSection("Logging"))
-                        .AddTerminal(opts =>
-                        {
-                            opts.UseUtcTimestamp = true;
-                            opts.LogToStandardErrorThreshold = LogLevel.Warning;
-                        }))
-                .ConfigureServices((ctx, services) =>
+            settings.GetoptMode = true;
+            settings.PosixlyCorrect = true;
+            settings.CaseSensitive = false;
+            settings.CaseInsensitiveEnumValues = true;
+            settings.HelpWriter = Console.Error;
+        });
+
+        return parser
+            .ParseArguments<DaemonOptions>(args)
+            .MapResult(
+                async options =>
                 {
-                    _ = services.AddStorageServices();
+                    var flags = options.Services;
+                    var builder = new HostBuilder()
+                        .UseEnvironment(options.Environment.ToString())
+                        .ConfigureAppConfiguration((ctx, builder) =>
+                            builder
+                                .AddJsonFile($"{ThisAssembly.AssemblyName}.json", false, true)
+                                .AddJsonFile(
+                                    $"{ThisAssembly.AssemblyName}." +
+                                    $"{ctx.HostingEnvironment.EnvironmentName.ToLowerInvariant()}.json",
+                                    false,
+                                    true))
+                        .UseSerilog((ctx, services, cfg) =>
+                            cfg
+                                .ReadFrom.Configuration(ctx.Configuration)
+                                .ReadFrom.Services(services))
+                        .ConfigureServices((ctx, services) =>
+                        {
+                            _ = services.AddStorageServices();
+
+                            if (flags.HasFlag(DaemonServices.Web))
+                                _ = services.AddWebServices();
+
+                            if (flags.HasFlag(DaemonServices.World))
+                                _ = services.AddWorldServices();
+                        })
+                        .UseDefaultServiceProvider(opts =>
+                        {
+                            opts.ValidateOnBuild = true;
+                            opts.ValidateScopes = true;
+                        });
 
                     if (flags.HasFlag(DaemonServices.Web))
-                        _ = services.AddWebServices();
+                        _ = builder.ConfigureWebServices(builder => builder.UseSerilogRequestLogging());
 
-                    if (flags.HasFlag(DaemonServices.World))
-                        _ = services.AddWorldServices();
-                })
-                .UseDefaultServiceProvider(opts =>
-                {
-                    opts.ValidateOnBuild = true;
-                    opts.ValidateScopes = true;
-                });
+                    await builder
+                        .ConfigureHostOptions(opts => opts.ShutdownTimeout = TimeSpan.FromMinutes(1))
+                        .UseSystemd()
+                        .RunConsoleAsync();
 
-            if (flags.HasFlag(DaemonServices.Web))
-                _ = builder.ConfigureWebServices();
-
-            await builder
-                .ConfigureHostOptions(opts => opts.ShutdownTimeout = TimeSpan.FromMinutes(1))
-                .UseTerminalSystemd()
-                .RunConsoleAsync();
-
-            return 0;
-        },
-        _ => Task.FromResult(1));
+                    return 0;
+                },
+                _ => Task.FromResult(1));
+    }
+}
