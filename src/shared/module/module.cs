@@ -1,5 +1,2 @@
-[assembly: Debuggable(false, false)]
 [assembly: DisableRuntimeMarshalling]
-[assembly: ObfuscateAssembly(true)]
-[assembly: Obfuscation(ApplyToMembers = true)]
 [module: SkipLocalsInit]
