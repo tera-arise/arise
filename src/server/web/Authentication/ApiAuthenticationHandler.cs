@@ -6,7 +6,7 @@ public sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthenti
 {
     public const string Name = "Api";
 
-    private readonly IQuerySession _session;
+    private readonly IDocumentStore _store;
 
     private readonly IClock _clock;
 
@@ -15,11 +15,11 @@ public sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthenti
         ILoggerFactory logger,
         UrlEncoder encoder,
         ISystemClock systemClock,
-        IQuerySession session,
+        IDocumentStore store,
         IClock clock)
         : base(options, logger, encoder, systemClock)
     {
-        _session = session;
+        _store = store;
         _clock = clock;
     }
 
@@ -50,9 +50,12 @@ public sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthenti
             return Fail("Password format is invalid.");
 
         var normalizedAddress = providedAddress.Normalize().ToUpperInvariant();
-        var account = await _session
-            .Query<AccountDocument>()
-            .SingleOrDefaultAsync(account => account.Email.Address == normalizedAddress);
+        var account = default(AccountDocument);
+
+        await using (var session = _store.QuerySession())
+            account = await session
+                .Query<AccountDocument>()
+                .SingleOrDefaultAsync(account => account.Email.Address == normalizedAddress);
 
         // https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#login
         if (account == null)
