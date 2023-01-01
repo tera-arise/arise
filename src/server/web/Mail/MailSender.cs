@@ -1,22 +1,29 @@
 namespace Arise.Server.Web.Mail;
 
-public sealed class MailSender
+public sealed partial class MailSender
 {
-    private readonly ISendGridClient _client;
+    private static partial class Log
+    {
+        [LoggerMessage(0, LogLevel.Information, "Sent {Subject} to {Receiver} in {ElapsedMs:0.0000} ms")]
+        public static partial void SentMail(ILogger logger, string receiver, string subject, double elapsedMs);
+    }
 
     private readonly IOptionsMonitor<WebOptions> _options;
 
-    public MailSender(ISendGridClient client, IOptionsMonitor<WebOptions> options)
+    private readonly ILogger<MailSender> _logger;
+
+    private readonly ISendGridClient _client;
+
+    public MailSender(IOptionsMonitor<WebOptions> options, ILogger<MailSender> logger, ISendGridClient client)
     {
-        _client = client;
         _options = options;
+        _logger = logger;
+        _client = client;
     }
 
     public async ValueTask SendAsync(
         string receiver, string subject, string content, CancellationToken cancellationToken)
     {
-        // TODO: Add logging.
-
         var message = new SendGridMessage
         {
             From = new(_options.CurrentValue.MailAddress, "TERA Arise"),
@@ -32,6 +39,8 @@ public sealed class MailSender
         };
 
         message.AddTo(receiver);
+
+        var stamp = Stopwatch.GetTimestamp();
 
         try
         {
@@ -53,5 +62,7 @@ public sealed class MailSender
         {
             throw new MailException("An internal SendGrid error occurred.", e);
         }
+
+        Log.SentMail(_logger, receiver, subject, Stopwatch.GetElapsedTime(stamp).TotalMilliseconds);
     }
 }
