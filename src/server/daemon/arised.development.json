@@ -1,7 +1,8 @@
 {
   "Serilog": {
     "MinimumLevel": {
-      "Default": "Verbose"
+      "Default": "Verbose",
+      "Microsoft.Extensions.Http.DefaultHttpClientFactory": "Information"
     },
     "WriteTo": {
       "Async": {
