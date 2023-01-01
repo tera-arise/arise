@@ -375,7 +375,8 @@ public sealed class AccountsController : ApiController
     }
 
     [HttpPatch]
-    public async ValueTask<IActionResult> AuthenticateAsync(AccountClaimsPrincipal principal)
+    public async ValueTask<IActionResult> AuthenticateAsync(
+        AccountClaimsPrincipal principal, IHostEnvironment environment)
     {
         var account = principal.Document;
         var now = Clock.GetCurrentInstant();
@@ -421,7 +422,9 @@ public sealed class AccountsController : ApiController
         // Accounts that are banned or in the process of being deleted cannot access the world service. We also prevent
         // unverified accounts from accessing it since the user could have signed up with a wrong email address and
         // might otherwise not notice until they have made significant progress in the game.
-        var key = !(verifying || deleting) && reason == null ? TokenGenerator.GenerateToken() : null;
+        var key = (environment.IsDevelopment() || !verifying) && !deleting && reason == null
+            ? TokenGenerator.GenerateToken()
+            : null;
 
         // Save new key or clear the previous one (for ban or deletion).
         account.GameKey = key == null ? null : new()
