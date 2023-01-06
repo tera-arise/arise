@@ -24,7 +24,9 @@ public sealed class NewsController : WebController
 
         return View(new NewsIndexModel
         {
-            Articles = _provider.Articles.Skip(size * page).Take(size),
+            Articles = _provider.Articles
+                .Skip(size * page)
+                .Take(size),
         });
     }
 
