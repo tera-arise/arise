@@ -82,8 +82,7 @@ public sealed class NewsArticleProvider : IHostedService
         Articles = articles
             .OrderByDescending(article => article.Date)
             .ThenBy(article => article.Slug)
-            .ToArray()
-            .AsReadOnly();
+            .ToArray();
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
