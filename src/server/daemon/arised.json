@@ -2,7 +2,8 @@
   "Serilog": {
     "MinimumLevel": {
       "Override": {
-        "Microsoft.AspNetCore": "Warning"
+        "Microsoft.AspNetCore": "Warning",
+        "Arise.Server.Web.Authentication.ApiAuthenticationHandler": "Information"
       }
     },
     "Enrich": [
