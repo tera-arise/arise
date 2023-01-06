@@ -29,6 +29,7 @@
         <Using Include="Microsoft.AspNetCore.ResponseCompression" />
         <Using Include="Microsoft.AspNetCore.Server.Kestrel.Core" />
         <Using Include="Microsoft.AspNetCore.WebUtilities" />
+        <Using Include="NodaTime.Serialization.SystemTextJson" />
         <Using Include="SendGrid" />
         <Using Include="SendGrid.Helpers.Errors.Model" />
         <Using Include="SendGrid.Helpers.Mail" />

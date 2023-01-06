@@ -39,6 +39,8 @@ public static class WebServiceCollectionExtensions
                 json.WriteIndented = true;
 
                 json.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false));
+
+                _ = json.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
             })
             .AddApplicationPart(typeof(ThisAssembly).Assembly)
             .Services
