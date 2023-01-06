@@ -12,7 +12,6 @@ public static class StorageServiceCollectionExtensions
             .BindConfiguration("Storage")
             .Services
             .AddSingleton<IClock>(SystemClock.Instance)
-            .AddSingleton(DateTimeZoneProviders.Tzdb)
             .AddMarten(provider =>
             {
                 var store = new StoreOptions
