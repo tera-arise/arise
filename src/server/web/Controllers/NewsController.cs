@@ -5,20 +5,26 @@ namespace Arise.Server.Web.Controllers;
 
 public sealed class NewsController : WebController
 {
+    private readonly IOptionsSnapshot<WebOptions> _options;
+
     private readonly NewsArticleProvider _provider;
 
-    public NewsController(NewsArticleProvider provider)
+    public NewsController(IOptionsSnapshot<WebOptions> options, NewsArticleProvider provider)
     {
+        _options = options;
         _provider = provider;
     }
 
-    public IActionResult Index()
+    public IActionResult Index([FromQuery][Range(0, int.MaxValue)] int page)
     {
-        // TODO: Add configurable pagination.
+        if (!ModelState.IsValid)
+            return BadRequest();
+
+        var size = _options.Value.NewsPageSize;
 
         return View(new NewsIndexModel
         {
-            Articles = _provider.Articles.Take(10),
+            Articles = _provider.Articles.Skip(size * page).Take(size),
         });
     }
 

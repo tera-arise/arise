@@ -16,5 +16,7 @@ public sealed class WebOptions : IOptions<WebOptions>
 
     public Duration AccountKeyTime { get; set; } = Duration.FromHours(12);
 
+    public int NewsPageSize { get; set; } = 10;
+
     WebOptions IOptions<WebOptions>.Value => this;
 }
