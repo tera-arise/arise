@@ -33,7 +33,7 @@ jobs:
                   dotnet tool restore
                   dotnet publish src/server/daemon -c Release
             - name: Stop service
-              uses: appleboy/ssh-action@v0.1.6
+              uses: appleboy/ssh-action@v0.1.7
               with:
                   host: ${{ inputs.environment }}.${{ inputs.role }}.tera-arise.io
                   fingerprint: ${{ inputs.fingerprint }}
@@ -92,7 +92,7 @@ jobs:
                   target: /opt/arise
                   rm: true
             - name: Start service
-              uses: appleboy/ssh-action@v0.1.6
+              uses: appleboy/ssh-action@v0.1.7
               with:
                   host: ${{ inputs.environment }}.${{ inputs.role }}.tera-arise.io
                   fingerprint: ${{ inputs.fingerprint }}
