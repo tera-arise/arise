@@ -13,8 +13,6 @@
         <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
         <DebugType>none</DebugType>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
-        <!-- TODO: Remove this with the next Cathode release. -->
-        <EnablePreviewFeatures>true</EnablePreviewFeatures>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <ImplicitUsings>true</ImplicitUsings>
