@@ -8,14 +8,21 @@ public sealed partial class MailSender
         public static partial void SentMail(ILogger logger, string receiver, string subject, double elapsedMs);
     }
 
+    private readonly IHostEnvironment _environment;
+
     private readonly IOptionsMonitor<WebOptions> _options;
 
     private readonly ILogger<MailSender> _logger;
 
     private readonly ISendGridClient _client;
 
-    public MailSender(IOptionsMonitor<WebOptions> options, ILogger<MailSender> logger, ISendGridClient client)
+    public MailSender(
+        IHostEnvironment environment,
+        IOptionsMonitor<WebOptions> options,
+        ILogger<MailSender> logger,
+        ISendGridClient client)
     {
+        _environment = environment;
         _options = options;
         _logger = logger;
         _client = client;
@@ -24,10 +31,11 @@ public sealed partial class MailSender
     public async ValueTask SendAsync(
         string receiver, string subject, string content, CancellationToken cancellationToken)
     {
+        var suffix = _environment.IsStaging() ? " (Staging)" : string.Empty;
         var message = new SendGridMessage
         {
-            From = new(_options.CurrentValue.MailAddress, "TERA Arise"),
-            Subject = $"{subject} | TERA Arise",
+            From = new(_options.CurrentValue.MailAddress, $"TERA Arise{suffix}"),
+            Subject = $"{subject} | TERA Arise{suffix}",
             PlainTextContent = $"""
             Hi!
 
