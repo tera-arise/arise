@@ -16,7 +16,12 @@ internal static class ClientDistributor
             Credentials = new Credentials(options.Token),
         };
 
-        ghc.SetRequestTimeout(options.Timeout);
+        var timeout = options.Timeout;
+
+        if (timeout == TimeSpan.Zero)
+            timeout = TimeSpan.FromHours(1);
+
+        ghc.SetRequestTimeout(timeout);
 
         var repositoryApi = ghc.Repository;
         var releaseApi = repositoryApi.Release;
@@ -40,7 +45,7 @@ internal static class ClientDistributor
         {
             release = await releaseApi.Create(
                 repository.Id,
-                new NewRelease(releaseName)
+                new(releaseName)
                 {
                     Name = releaseName,
                     Body =
@@ -110,8 +115,7 @@ internal static class ClientDistributor
 
             await Terminal.OutLineAsync($"Uploading '{zipName}' ({stream.Length} bytes) to release {releaseName}...");
 
-            _ = await releaseApi.UploadAsset(
-                release, new ReleaseAssetUpload(zipName, MediaTypeNames.Application.Zip, stream, options.Timeout));
+            _ = await releaseApi.UploadAsset(release, new(zipName, MediaTypeNames.Application.Zip, stream, timeout));
         }
 
         {
@@ -133,8 +137,7 @@ internal static class ClientDistributor
                 $"Uploading '{ManifestName}' ({stream.Length} bytes) to release {releaseName}...");
 
             _ = await releaseApi.UploadAsset(
-                release,
-                new ReleaseAssetUpload(ManifestName, MediaTypeNames.Application.Json, stream, options.Timeout));
+                release, new(ManifestName, MediaTypeNames.Application.Json, stream, timeout));
         }
     }
 }

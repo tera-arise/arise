@@ -68,7 +68,7 @@ internal static unsafe class GameProtection
     private static bool DetectDebugger()
     {
         // TODO: Add more advanced checks. In particular, we should do a checksum of TERA's code segment after we apply
-        // our own modifications and disable Themida. We should also test for for common Win32 hooks used to defeat
+        // our own modifications and disable Themida. We should also test for common Win32 hooks used to defeat
         // anti-debugging techniques.
         //
         // https://github.com/LordNoteworthy/al-khaser

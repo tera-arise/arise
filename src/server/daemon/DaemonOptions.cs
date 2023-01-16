@@ -4,14 +4,8 @@ namespace Arise.Server.Daemon;
 internal sealed class DaemonOptions
 {
     [Option('e', "environment", HelpText = "Deployment environment. (Development, Staging, Production)")]
-    public DaemonEnvironment Environment { get; }
+    public required DaemonEnvironment Environment { get; init; }
 
     [Option('s', "services", Default = DaemonServices.All, HelpText = "Services to run. (Web, World)")]
-    public DaemonServices Services { get; }
-
-    public DaemonOptions(DaemonEnvironment environment, DaemonServices services)
-    {
-        Environment = environment;
-        Services = services;
-    }
+    public required DaemonServices Services { get; init; }
 }
