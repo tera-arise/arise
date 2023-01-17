@@ -29,7 +29,7 @@
         <PackageVersion Include="dnlib"
                         Version="3.6.0" />
         <PackageVersion Include="DotNext.Metaprogramming"
-                        Version="4.8.1" />
+                        Version="4.9.0" />
         <PackageVersion Include="EmailValidation"
                         Version="1.0.8" />
         <PackageVersion Include="Markdig"
