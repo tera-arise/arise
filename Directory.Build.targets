@@ -38,18 +38,6 @@
         <AdditionalFiles Include="$(MSBuildThisFileDirectory).stylecop.json" />
     </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub"
-                          PrivateAssets="all" />
-        <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers"
-                          PrivateAssets="all" />
-        <PackageReference Include="Nerdbank.GitVersioning"
-                          PrivateAssets="all"
-                          Condition="'$(UsingMicrosoftNoTargetsSdk)' != 'true'" />
-        <PackageReference Include="StyleCop.Analyzers"
-                          PrivateAssets="all" />
-    </ItemGroup>
-
     <!--
     This is used to generate a fresh key and IV for the data center on every new
     commit. It also derives the data center revision from the build version.

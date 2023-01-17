@@ -19,7 +19,6 @@
         <IsPackable>false</IsPackable>
         <IsPublishable>false</IsPublishable>
         <LangVersion>latest</LangVersion>
-        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
         <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
         <Nullable>enable</Nullable>
         <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
