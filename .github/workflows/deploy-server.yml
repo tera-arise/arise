@@ -71,7 +71,7 @@ jobs:
                   sed -e "s/ENVIRONMENT/${{ inputs.environment }}/g" -e "s/ROLE/${{ inputs.role }}/g" arised.service > arised-${{ inputs.role }}.service
               working-directory: src/server/daemon
             - name: Upload unit file
-              uses: appleboy/scp-action@v0.1.3
+              uses: appleboy/scp-action@v0.1.4
               with:
                   host: ${{ inputs.environment }}.${{ inputs.role }}.tera-arise.io
                   fingerprint: ${{ inputs.fingerprint }}
@@ -81,7 +81,7 @@ jobs:
                   strip_components: 3
                   target: /etc/systemd/system
             - name: Upload daemon build
-              uses: appleboy/scp-action@v0.1.3
+              uses: appleboy/scp-action@v0.1.4
               with:
                   host: ${{ inputs.environment }}.${{ inputs.role }}.tera-arise.io
                   fingerprint: ${{ inputs.fingerprint }}
