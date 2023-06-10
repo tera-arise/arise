@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/global.json",
   "sdk": {
-    "version": "7.0.102",
-    "rollForward": "latestFeature",
+    "version": "8.0.100-preview.4.23260.5",
+    "rollForward": "disable",
     "allowPrelease": false
   },
   "msbuild-sdks": {

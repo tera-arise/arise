@@ -16,7 +16,7 @@ clients. Broadly speaking, this includes most things in
 
 Building and running TERA Arise requires the following:
 
-* .NET SDK 7.0.2+
+* .NET SDK 8.0.0 Preview 4
 * GnuTLS 3.7.8+
 * PostgreSQL 14.6+
 
