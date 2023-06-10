@@ -18,7 +18,7 @@ Building and running TERA Arise requires the following:
 
 * .NET SDK 7.0.2+
 * GnuTLS 3.7.8+
-* PostgreSQL 14.4+
+* PostgreSQL 14.6+
 
 Some .NET global tools are used during the build process, so you will need to
 run `dotnet tool restore` before building. After that, simply run `dotnet build`
