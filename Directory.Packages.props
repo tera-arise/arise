@@ -81,7 +81,7 @@
         <PackageVersion Include="StreamJsonRpc"
                         Version="2.15.29" />
         <PackageVersion Include="Vezel.Cathode"
-                        Version="0.9.156" />
+                        Version="0.10.40" />
         <PackageVersion Include="Vezel.Novadrop.Formats"
                         Version="1.1.20" />
         <PackageVersion Include="Vezel.Ruptura.Hosting"
