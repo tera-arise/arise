@@ -2,7 +2,6 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('$(MSBuildThisFile)', '$(MSBuildThisFileDirectory)..'))" />
 
     <PropertyGroup>
-        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
         <CopyDebugSymbolFilesFromPackages Condition="'$(DebugSymbols)' == 'true'">true</CopyDebugSymbolFilesFromPackages>
         <OutputType>Exe</OutputType>
         <RuntimeIdentifier>win10-x64</RuntimeIdentifier>

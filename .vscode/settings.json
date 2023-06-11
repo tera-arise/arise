@@ -1,8 +1,6 @@
 {
   "files.exclude": {
-    "**/.vs": true,
-    "**/bin": true,
-    "**/obj": true,
-    "**/pkg": true
+    "out": true,
+    "**/.vs": true
   }
 }

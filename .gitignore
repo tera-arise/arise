@@ -1,5 +1,3 @@
-.vs
+/out
 *.user
-bin
-obj
-pkg
+.vs

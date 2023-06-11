@@ -9,7 +9,6 @@
     <PropertyGroup>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AnalysisLevel>latest-all</AnalysisLevel>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
@@ -19,8 +18,17 @@
         <LangVersion>latest</LangVersion>
         <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
         <Nullable>enable</Nullable>
+        <PackRelease>false</PackRelease>
+        <PublishRelease>false</PublishRelease>
         <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
         <TargetFramework>net7.0</TargetFramework>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <UseArtifactsOutput>true</UseArtifactsOutput>
+        <ArtifactsPath>$(MSBuildThisFileDirectory)out</ArtifactsPath>
+        <ArtifactsProjectName>$([MSBuild]::MakeRelative('$(MSBuildThisFileDirectory)', '$(MSBuildProjectDirectory)'))</ArtifactsProjectName>
+        <ArtifactsPublishOutputName>pub</ArtifactsPublishOutputName>
     </PropertyGroup>
 </Project>

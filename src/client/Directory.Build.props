@@ -2,7 +2,6 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('$(MSBuildThisFile)', '$(MSBuildThisFileDirectory)..'))" />
 
     <PropertyGroup>
-        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
         <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
         <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
         <!-- TODO: https://github.com/AvaloniaUI/Avalonia/issues/9549 -->
