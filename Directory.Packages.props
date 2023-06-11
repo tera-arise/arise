@@ -67,7 +67,7 @@
         <PackageVersion Include="NAudio.Wasapi"
                         Version="2.1.0" />
         <PackageVersion Include="Octokit"
-                        Version="4.0.4" />
+                        Version="6.0.0" />
         <PackageVersion Include="RadLine"
                         Version="0.6.0" />
         <PackageVersion Include="SendGrid"
