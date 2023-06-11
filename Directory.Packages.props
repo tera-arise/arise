@@ -57,7 +57,7 @@
         <PackageVersion Include="Microsoft.Windows.CsWin32"
                         Version="0.3.2-beta" />
         <PackageVersion Include="Microsoft.Windows.SDK.Win32Docs"
-                        Version="0.1.12-alpha" />
+                        Version="0.1.41-alpha" />
         <PackageVersion Include="Microsoft.Windows.SDK.Win32Metadata"
                         Version="52.0.65-preview" />
         <PackageVersion Include="NAudio.Extras"
