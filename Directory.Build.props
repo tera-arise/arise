@@ -1,7 +1,7 @@
 <Project>
     <PropertyGroup>
         <Product>TERA Arise</Product>
-        <Description>TERA Arise is a game resurrection project for the final build of TERA EU.</Description>
+        <Description>$(Product) is a game resurrection project for the final build of TERA EU.</Description>
         <Authors>$(Product) Team</Authors>
         <Copyright>Copyright © $(Authors)</Copyright>
     </PropertyGroup>
@@ -21,7 +21,7 @@
         <PackRelease>false</PackRelease>
         <PublishRelease>false</PublishRelease>
         <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
