@@ -28,14 +28,21 @@ jobs:
         runs-on: ${{ matrix.os }}
         steps:
             - name: Clone repository
-              uses: actions/checkout@v3.5.2
+              uses: actions/checkout@v3.5.3
               with:
                   fetch-depth: 0
                   submodules: recursive
             - name: Set up .NET
               uses: actions/setup-dotnet@v3.2.0
-            - name: Build project
+            - name: Run Cake
               run: |
-                  dotnet nuget --version # TODO: https://github.com/NuGet/Home/issues/12159
-                  dotnet tool restore
-                  dotnet publish -c ${{ matrix.cfg }}
+                  ./cake -c ${{ matrix.cfg }}
+            - name: Upload artifacts
+              if: always()
+              uses: actions/upload-artifact@v3.1.2
+              with:
+                  name: ${{ github.workflow }}-${{ github.run_number }}-${{ github.run_attempt }}-${{ matrix.os }}-${{ matrix.cfg }}
+                  path: |
+                      out/log
+                      out/pub
+                      out/trx

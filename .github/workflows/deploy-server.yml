@@ -3,18 +3,35 @@ name: Deploy Core
 on:
     workflow_call:
         inputs:
+            commit:
+                type: string
+                required: true
             environment:
                 type: string
                 required: true
             role:
                 type: string
                 required: true
-            fingerprint:
-                type: string
+        secrets:
+            SSH_PRIVATE_KEY:
+                required: true
+            SSH_FINGERPRINT:
+                required: true
+            STORAGE_ROOT_CERTIFICATE:
+                required: true
+            CLOUDFLARE_ORIGIN_CERTIFICATE:
+                required: true
+            CLOUDFLARE_PRIVATE_KEY:
+                required: true
+            SENDGRID_API_KEY:
                 required: true
 defaults:
     run:
         shell: bash
+env:
+    DOTNET_CLI_TELEMETRY_OPTOUT: true
+    DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+    DOTNET_NOLOGO: true
 jobs:
     deploy-server:
         runs-on: ubuntu-22.04
@@ -36,7 +53,7 @@ jobs:
               uses: appleboy/ssh-action@v0.1.10
               with:
                   host: ${{ inputs.environment }}.${{ inputs.role }}.tera-arise.io
-                  fingerprint: ${{ inputs.fingerprint }}
+                  fingerprint: ${{ secrets.SSH_FINGERPRINT }}
                   username: root
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   script_stop: true
@@ -74,7 +91,7 @@ jobs:
               uses: appleboy/scp-action@v0.1.4
               with:
                   host: ${{ inputs.environment }}.${{ inputs.role }}.tera-arise.io
-                  fingerprint: ${{ inputs.fingerprint }}
+                  fingerprint: ${{ secrets.SSH_FINGERPRINT }}
                   username: root
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   source: src/server/daemon/arised-${{ inputs.role }}.service
@@ -84,7 +101,7 @@ jobs:
               uses: appleboy/scp-action@v0.1.4
               with:
                   host: ${{ inputs.environment }}.${{ inputs.role }}.tera-arise.io
-                  fingerprint: ${{ inputs.fingerprint }}
+                  fingerprint: ${{ secrets.SSH_FINGERPRINT }}
                   username: root
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   source: src/server/daemon/bin/Release/linux-x64/publish/*
@@ -95,7 +112,7 @@ jobs:
               uses: appleboy/ssh-action@v0.1.10
               with:
                   host: ${{ inputs.environment }}.${{ inputs.role }}.tera-arise.io
-                  fingerprint: ${{ inputs.fingerprint }}
+                  fingerprint: ${{ secrets.SSH_FINGERPRINT }}
                   username: root
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   script_stop: true

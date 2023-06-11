@@ -3,15 +3,22 @@ name: Deploy Client
 on:
     workflow_call:
         inputs:
+            commit:
+                type: string
+                required: true
             environment:
                 type: string
                 required: true
-            commit:
-                type: string
+        secrets:
+            GH_RELEASE_TOKEN:
                 required: true
 defaults:
     run:
         shell: bash
+env:
+    DOTNET_CLI_TELEMETRY_OPTOUT: true
+    DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+    DOTNET_NOLOGO: true
 jobs:
     deploy-client:
         if: inputs.environment == 'production'

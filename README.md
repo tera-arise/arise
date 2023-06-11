@@ -43,13 +43,11 @@ Building and running TERA Arise requires the following:
 * GnuTLS 3.7.8+
 * PostgreSQL 14.6+
 
-Some .NET global tools are used during the build process, so you will need to
-run `dotnet tool restore` before building. After that, simply run `dotnet build`
-to build client and server artifacts.
+Simply run `./cake` to build client and server artifacts.
 
-By default, `dotnet build` will build in the `Debug` configuration, which is
-suitable for local development. The `Release` configuration (i.e.
-`dotnet build -c Release`) is used for staging and production deployments.
+By default, `./cake` will build in the `Debug` configuration which is suitable
+for local development. The `Release` configuration (i.e. `./cake -c Release`) is
+used for staging and production deployments.
 
 ## Database
 

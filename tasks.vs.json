@@ -6,10 +6,21 @@
       "contextType": "build",
       "appliesTo": "/",
       "type": "launch",
-      "command": "dotnet",
-      "args": [
-        "build",
-        "-clp:NoSummary"
+      "commands": [
+        {
+          "command": "dotnet",
+          "args": [
+            "tool",
+            "restore"
+          ]
+        },
+        {
+          "command": "dotnet",
+          "args": [
+            "cake",
+            "arise.cake"
+          ]
+        }
       ]
     },
     {
@@ -17,10 +28,23 @@
       "contextType": "clean",
       "appliesTo": "/",
       "type": "launch",
-      "command": "dotnet",
-      "args": [
-        "clean",
-        "-clp:NoSummary"
+      "commands": [
+        {
+          "command": "dotnet",
+          "args": [
+            "tool",
+            "restore"
+          ]
+        },
+        {
+          "command": "dotnet",
+          "args": [
+            "cake",
+            "arise.cake",
+            "-t",
+            "clean"
+          ]
+        }
       ]
     }
   ]
