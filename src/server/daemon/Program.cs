@@ -2,6 +2,7 @@ using Arise.Server.Daemon;
 
 internal static class Program
 {
+    [SuppressMessage("", "CA1305")]
     [SuppressMessage("", "CA1308")]
     private static Task<int> Main(string[] args)
     {
@@ -29,12 +30,12 @@ internal static class Program
                         .UseEnvironment(options.Environment.ToString())
                         .ConfigureAppConfiguration((ctx, builder) =>
                             builder
-                                .AddJsonFile($"{ThisAssembly.AssemblyName}.json", false, true)
+                                .AddJsonFile($"{ThisAssembly.AssemblyName}.json", optional: false, reloadOnChange: true)
                                 .AddJsonFile(
                                     $"{ThisAssembly.AssemblyName}." +
                                     $"{ctx.HostingEnvironment.EnvironmentName.ToLowerInvariant()}.json",
-                                    false,
-                                    true))
+                                    optional: false,
+                                    reloadOnChange: true))
                         .UseSerilog((ctx, services, cfg) =>
                             cfg
                                 .ReadFrom.Configuration(ctx.Configuration)

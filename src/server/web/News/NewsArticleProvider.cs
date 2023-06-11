@@ -21,6 +21,7 @@ public sealed class NewsArticleProvider : IHostedService
         }
 
         var articles = new List<NewsArticle>();
+        var culture = CultureInfo.InvariantCulture;
         var pipeline = new MarkdownPipelineBuilder()
             .UseYamlFrontMatter()
             .DisableHtml()
@@ -71,7 +72,7 @@ public sealed class NewsArticleProvider : IHostedService
 
             articles.Add(new()
             {
-                Date = new(int.Parse(year), int.Parse(month), int.Parse(day)),
+                Date = new(int.Parse(year, culture), int.Parse(month, culture), int.Parse(day, culture)),
                 Slug = Path.GetFileNameWithoutExtension(file.Name),
                 Title = (string)root["title"]!,
                 Summary = (string)root["summary"]!,

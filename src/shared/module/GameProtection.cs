@@ -9,7 +9,9 @@ internal static unsafe class GameProtection
     [SuppressMessage("", "CA2255")]
     public static void Initialize()
     {
-        if (DateTime.UtcNow - DateTime.Parse(GetIssueTime()) > TimeSpan.Parse(GetValidDuration()))
+        var culture = CultureInfo.InvariantCulture;
+
+        if (DateTime.UtcNow - DateTime.Parse(GetIssueTime(), culture) > TimeSpan.Parse(GetValidDuration(), culture))
             Terminate();
 
         StartThread(() =>

@@ -38,7 +38,8 @@ public static class WebServiceCollectionExtensions
                 json.ReadCommentHandling = JsonCommentHandling.Skip;
                 json.WriteIndented = true;
 
-                json.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false));
+                json.Converters.Add(
+                    new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false));
 
                 _ = json.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
             })

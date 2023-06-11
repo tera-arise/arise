@@ -41,7 +41,7 @@ public sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthenti
 
         var providedAddress = addressHeader[0]!;
 
-        if (!EmailValidator.Validate(providedAddress, true, true))
+        if (!EmailValidator.Validate(providedAddress, allowTopLevelDomains: true, allowInternational: true))
             return Fail("Email address format is invalid.");
 
         var providedPassword = passwordHeader[0]!;
@@ -71,11 +71,11 @@ public sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthenti
         var principal = default(AccountClaimsPrincipal);
 
         if (MatchPassword(account.Password))
-            principal = new(account, false);
+            principal = new(account, recovered: false);
         else if (account.Recovery is AccountRecovery recovery &&
             recovery.Period.Contains(_clock.GetCurrentInstant()) &&
             MatchPassword(recovery.Password))
-            principal = new(account, true);
+            principal = new(account, recovered: true);
 
         return principal != null
             ? AuthenticateResult.Success(new(principal, Name))

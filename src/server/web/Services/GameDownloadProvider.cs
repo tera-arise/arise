@@ -16,7 +16,8 @@ public sealed class GameDownloadProvider
                 .Assembly
                 .GetCustomAttributes<AssemblyMetadataAttribute>()
                 .Single(attr => attr.Key == "DataCenterRevision")
-                .Value!);
+                .Value!,
+            CultureInfo.InvariantCulture);
 
     public GameDownloadProvider(IOptions<WebOptions> options)
     {

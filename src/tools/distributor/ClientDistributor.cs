@@ -84,7 +84,7 @@ internal static class ClientDistributor
 
             await Terminal.OutLineAsync($"Packing '{zipName}' in memory...");
 
-            using (var zip = new ZipArchive(stream, ZipArchiveMode.Create, true))
+            using (var zip = new ZipArchive(stream, ZipArchiveMode.Create, leaveOpen: true))
             {
                 var size = 0;
 
