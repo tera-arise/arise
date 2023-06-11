@@ -40,7 +40,7 @@
     },
     "documentationRules": {
       "companyName": "TERA Arise Team",
-      "copyrightText": "Copyright © {companyName}. Licensed under the Zero-Clause BSD license.",
+      "copyrightText": "Copyright © {companyName}. Licensed under theGNU Affero General Public License 3.0.",
       "headerDecoration": "---------------------------------------------------------------------------",
       "xmlHeader": false,
       "fileNamingConvention": "metadata",
