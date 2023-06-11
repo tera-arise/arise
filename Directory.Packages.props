@@ -33,7 +33,7 @@
         <PackageVersion Include="DotNext.Metaprogramming"
                         Version="4.12.3" />
         <PackageVersion Include="EmailValidation"
-                        Version="1.0.8" />
+                        Version="1.0.9" />
         <PackageVersion Include="Markdig"
                         Version="0.30.4" />
         <PackageVersion Include="Marten.AspNetCore"
