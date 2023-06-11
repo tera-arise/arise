@@ -12,6 +12,29 @@ An obvious exception exists for binary artifacts that need to be distributed to
 clients. Broadly speaking, this includes most things in
 [`src/shared`](src/shared) and [`src/client`](src/client).
 
+## Authentication
+
+All contributors must use
+[SSH commit signing](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification#ssh-commit-signature-verification).
+
+To set up Git to verify signatures in Git history, add something like this to
+your `~/.gitconfig`:
+
+```gitconfig
+[includeif "gitdir/i:~/tera-arise/**"]
+    path = ~/tera-arise/.gitconfig
+```
+
+Then add this to `~/tera-arise/.gitconfig`:
+
+```gitconfig
+[gpg.ssh]
+    allowedSignersFile = ../arise/allowed_signers
+```
+
+(This setup assumes that you have the various TERA Arise repositories cloned in
+the `~/tera-arise` directory.)
+
 ## Building
 
 Building and running TERA Arise requires the following:
