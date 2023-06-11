@@ -28,9 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <!-- TODO: https://github.com/AvaloniaUI/Avalonia/issues/9539 -->
-        <ProjectReference Include="../launcher/launcher.csproj"
-                          ExcludeAssets="buildTransitive" />
+        <ProjectReference Include="../launcher/launcher.csproj" />
         <ProjectReference Include="../symbiote/symbiote.csproj" />
     </ItemGroup>
 

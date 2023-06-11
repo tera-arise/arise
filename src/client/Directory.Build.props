@@ -4,7 +4,6 @@
     <PropertyGroup>
         <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
         <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
-        <!-- TODO: https://github.com/AvaloniaUI/Avalonia/issues/9549 -->
-        <TargetFramework>$(TargetFramework)-windows10.0.18362.0</TargetFramework>
+        <TargetFramework>$(TargetFramework)-windows10.0.22621.0</TargetFramework>
     </PropertyGroup>
 </Project>
