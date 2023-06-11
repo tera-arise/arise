@@ -4,7 +4,7 @@ namespace Arise.Server.Web.Models.Api.Accounts;
 
 public sealed class AccountsUpdateRequest
 {
-    [DataAnnotations.Email]
+    [Email(allowTopLevelDomains: true, allowInternational: true)]
     public required string? Address { get; init; }
 
     [Password]
