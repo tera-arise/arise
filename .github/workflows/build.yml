@@ -37,12 +37,3 @@ jobs:
             - name: Run Cake
               run: |
                   ./cake -c ${{ matrix.cfg }}
-            - name: Upload artifacts
-              if: always()
-              uses: actions/upload-artifact@v3.1.2
-              with:
-                  name: ${{ github.workflow }}-${{ github.run_number }}-${{ github.run_attempt }}-${{ matrix.os }}-${{ matrix.cfg }}
-                  path: |
-                      out/log
-                      out/pub
-                      out/trx
