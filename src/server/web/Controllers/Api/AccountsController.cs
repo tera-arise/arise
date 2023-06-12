@@ -450,8 +450,7 @@ public sealed class AccountsController : ApiController
     {
         await using var session = Store.LightweightSession();
 
-        // TODO: https://github.com/JasperFx/marten/issues/2439
-        session.Store(account, account.Version);
+        session.UpdateExpectedVersion(account, account.Version);
 
         try
         {

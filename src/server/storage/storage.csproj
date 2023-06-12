@@ -7,7 +7,7 @@
     <ItemGroup>
         <Using Include="Marten" />
         <Using Include="Marten.Metadata" />
-        <Using Include="Marten.NodaTime" />
+        <Using Include="Marten.NodaTimePlugin" />
         <Using Include="Marten.Schema" />
         <Using Include="Marten.Services.Json" />
         <Using Include="Weasel.Core" />
