@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/global.json",
   "sdk": {
-    "version": "8.0.100-preview.4.23260.5",
+    "version": "8.0.100-preview.5.23303.2",
     "rollForward": "disable",
     "allowPrelease": false
   },
