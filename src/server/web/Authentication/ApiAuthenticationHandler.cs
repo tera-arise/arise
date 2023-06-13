@@ -14,10 +14,9 @@ public sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthenti
         IOptionsMonitor<ApiAuthenticationOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
-        ISystemClock systemClock,
         IDocumentStore store,
         IClock clock)
-        : base(options, logger, encoder, systemClock)
+        : base(options, logger, encoder)
     {
         _store = store;
         _clock = clock;
