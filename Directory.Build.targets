@@ -1,7 +1,6 @@
 <Project>
     <PropertyGroup Condition="'$(OutputType)' != 'Library'">
         <ApplicationIcon>$(MSBuildThisFileDirectory)arise.ico</ApplicationIcon>
-        <TieredPGO>true</TieredPGO>
     </PropertyGroup>
 
     <ItemGroup>
