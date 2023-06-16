@@ -1,34 +1,53 @@
 {
   "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json",
+  "default": true,
+  "MD001": true,
   "MD003": {
     "style": "atx"
   },
   "MD004": {
     "style": "asterisk"
   },
+  "MD005": true,
   "MD007": {
+    "start_indented": false,
+    "start_indent": 4,
     "indent": 4
   },
   "MD009": {
-    "br_spaces": 0
+    "br_spaces": 0,
+    "strict": true
   },
   "MD010": {
     "spaces_per_tab": 4
   },
+  "MD011": true,
+  "MD012": true,
   "MD013": {
     "code_blocks": false,
     "headings": false,
     "tables": false
   },
-  "MD024": {
-    "siblings_only": true
+  "MD014": true,
+  "MD018": true,
+  "MD019": true,
+  "MD020": true,
+  "MD021": true,
+  "MD022": true,
+  "MD023": true,
+  "MD024": true,
+  "MD025": true,
+  "MD026": {
+    "punctuation": "!,.:;?"
   },
-  "MD025": {
-    "front_matter_title": ""
-  },
+  "MD027": true,
+  "MD028": true,
   "MD029": {
     "style": "ordered"
   },
+  "MD030": true,
+  "MD031": true,
+  "MD032": true,
   "MD033": {
     "allowed_elements": [
       "div",
@@ -37,15 +56,28 @@
       "strong"
     ]
   },
+  "MD034": true,
   "MD035": {
-    "style": "---"
+    "style": "--------------------------------------------------------------------------------"
   },
-  "MD041": {
-    "front_matter_title": ""
+  "MD036": {
+    "punctuation": "!,.:;?"
   },
+  "MD037": true,
+  "MD038": true,
+  "MD039": true,
+  "MD040": {
+    "language_only": true
+  },
+  "MD041": true,
+  "MD042": true,
+  "MD043": false,
+  "MD044": true,
+  "MD045": true,
   "MD046": {
     "style": "fenced"
   },
+  "MD047": true,
   "MD048": {
     "style": "backtick"
   },
@@ -54,5 +86,10 @@
   },
   "MD050": {
     "style": "asterisk"
+  },
+  "MD051": true,
+  "MD052": true,
+  "MD053": {
+    "ignored_definitions": []
   }
 }
