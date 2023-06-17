@@ -6,6 +6,7 @@
     "ecmel.vscode-html-css",
     "editorconfig.editorconfig",
     "firefox-devtools.vscode-firefox-debug",
+    "github.vscode-github-actions",
     "github.vscode-pull-request-github",
     "hangxingliu.vscode-systemd-support",
     "ms-dotnettools.csharp",
