@@ -22,30 +22,6 @@
           ]
         }
       ]
-    },
-    {
-      "taskLabel": "Clean",
-      "contextType": "clean",
-      "appliesTo": "/",
-      "type": "launch",
-      "commands": [
-        {
-          "command": "dotnet",
-          "args": [
-            "tool",
-            "restore"
-          ]
-        },
-        {
-          "command": "dotnet",
-          "args": [
-            "cake",
-            "arise.cake",
-            "-t",
-            "clean"
-          ]
-        }
-      ]
     }
   ]
 }
