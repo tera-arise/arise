@@ -5,8 +5,7 @@
         <_CAKeyPath>ca.key</_CAKeyPath>
     </PropertyGroup>
 
-    <Target Name="_GenerateCertificates"
-            BeforeTargets="AfterBuild">
+    <Target Name="_GenerateCertificates">
         <PropertyGroup>
             <_CARequestPath>ca.json</_CARequestPath>
             <_CAResponsePath>$(BaseIntermediateOutputPath)ca.json</_CAResponsePath>
