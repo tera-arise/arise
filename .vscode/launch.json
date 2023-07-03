@@ -17,7 +17,7 @@
       },
       "console": "externalTerminal",
       "cwd": "${workspaceFolder}/src/server/daemon",
-      "program": "${workspaceFolder}/src/server/daemon/bin/Debug/arised.dll"
+      "program": "${workspaceFolder}/out/bin/src/server/daemon/debug/arised.dll"
     },
     {
       "name": ".NET: Launch Daemon (Integrated)",
@@ -35,7 +35,7 @@
       },
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/src/server/daemon",
-      "program": "${workspaceFolder}/src/server/daemon/bin/Debug/arised.dll"
+      "program": "${workspaceFolder}/out/bin/src/server/daemon/debug/arised.dll"
     },
     {
       "name": ".NET: Launch Switcher",
@@ -53,7 +53,7 @@
       },
       "console": "internalConsole",
       "cwd": "${workspaceFolder}/src/client/switcher",
-      "program": "${workspaceFolder}/src/client/switcher/bin/Debug/arise.dll"
+      "program": "${workspaceFolder}/out/bin/src/client/switcher/debug/arise.dll"
     },
     {
       "name": ".NET: Attach",
