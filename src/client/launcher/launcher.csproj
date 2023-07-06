@@ -1,11 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <AssemblyName>Arise.Client.Launcher</AssemblyName>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <RootNamespace>Arise.Client.Launcher</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <AvaloniaResource Include="resources/**" />
+        <AvaloniaResource Include="../../../arise.png"
+                          Link="arise.png" />
+        <AvaloniaResource Include="Assets/**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -14,9 +17,11 @@
 
     <ItemGroup>
         <PackageReference Include="Avalonia.Diagnostics" />
+        <PackageReference Include="Avalonia.Fonts.Inter" />
         <PackageReference Include="Avalonia.Skia" />
         <PackageReference Include="Avalonia.Themes.Fluent" />
         <PackageReference Include="Avalonia.Win32" />
+        <PackageReference Include="Material.Icons.Avalonia" />
         <PackageReference Include="Microsoft.Windows.CsWin32"
                           PrivateAssets="all" />
         <PackageReference Include="Microsoft.Windows.SDK.Win32Docs"

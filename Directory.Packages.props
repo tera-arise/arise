@@ -17,13 +17,15 @@
 
     <ItemGroup>
         <PackageVersion Include="Avalonia.Diagnostics"
-                        Version="11.0.0-rc1.1" />
+                        Version="11.0.0" />
+        <PackageVersion Include="Avalonia.Fonts.Inter"
+                        Version="11.0.0" />
         <PackageVersion Include="Avalonia.Skia"
-                        Version="11.0.0-rc1.1" />
+                        Version="11.0.0" />
         <PackageVersion Include="Avalonia.Themes.Fluent"
-                        Version="11.0.0-rc1.1" />
+                        Version="11.0.0" />
         <PackageVersion Include="Avalonia.Win32"
-                        Version="11.0.0-rc1.1" />
+                        Version="11.0.0" />
         <PackageVersion Include="CommandLineParser"
                         Version="2.9.1" />
         <PackageVersion Include="dnlib"
@@ -38,6 +40,8 @@
                         Version="6.0.1" />
         <PackageVersion Include="Marten.NodaTime"
                         Version="6.0.1" />
+        <PackageVersion Include="Material.Icons.Avalonia"
+                        Version="2.0.1" />
         <PackageVersion Include="Microsoft.ClearScript.V8"
                         Version="7.4.2" />
         <PackageVersion Include="Microsoft.ClearScript.V8.Native.win-x64"
