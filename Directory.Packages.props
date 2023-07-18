@@ -57,7 +57,7 @@
         <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions"
                         Version="8.0.0-preview.6.23329.7" />
         <PackageVersion Include="Microsoft.Windows.CsWin32"
-                        Version="0.3.18-beta" />
+                        Version="0.3.2-beta" />
         <PackageVersion Include="Microsoft.Windows.SDK.Win32Docs"
                         Version="0.1.41-alpha" />
         <PackageVersion Include="Microsoft.Windows.SDK.Win32Metadata"
