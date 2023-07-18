@@ -39,7 +39,7 @@ the `~/tera-arise` directory.)
 
 Building and running TERA Arise requires the following:
 
-* .NET SDK 8.0.0 Preview 4
+* .NET SDK 8.0.0 Preview 6
 * GnuTLS 3.7.8+
 * PostgreSQL 14.6+
 

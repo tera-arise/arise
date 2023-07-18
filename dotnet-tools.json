@@ -9,7 +9,7 @@
       ]
     },
     "dotnet-aspnet-codegenerator": {
-      "version": "8.0.0-preview.4.23261.6",
+      "version": "8.0.0-preview.6.23360.4",
       "commands": [
         "dotnet-aspnet-codegenerator"
       ]
