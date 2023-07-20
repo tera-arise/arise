@@ -34,20 +34,16 @@ jobs:
               uses: actions/setup-dotnet@v3.2.0
             - name: Build project
               run: |
-                  dotnet nuget --version # TODO: https://github.com/NuGet/Home/issues/12159
-                  dotnet tool restore
-                  dotnet publish src/client/switcher -c Release
-            - name: Write deployment manifest
-              run: |
-                  dotnet build -t:WriteDeploymentManifest
+                  ./cake -c Release
             - name: Extract build version
               id: version
               run: |
+                  dotnet build -t:WriteDeploymentManifest
                   echo version=`jq .version manifest.json -r` >> $GITHUB_OUTPUT
             - name: Zip release
               run: |
-                  zip ../../../../../../../TERA.Arise.${{ steps.version.outputs.version }}.zip . -r -9
-              working-directory: src/client/switcher/bin/Release/win10-x64/publish
+                  zip ../../../../../../TERA.Arise.${{ steps.version.outputs.version }}.zip . -r -9
+              working-directory: out/pub/src/client/switcher/release_win10-x64
             - name: Upload release
               env:
                   GH_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}

@@ -46,9 +46,7 @@ jobs:
               uses: actions/setup-dotnet@v3.2.0
             - name: Build project
               run: |
-                  dotnet nuget --version # TODO: https://github.com/NuGet/Home/issues/12159
-                  dotnet tool restore
-                  dotnet publish src/server/daemon -c Release
+                  ./cake -c Release
             - name: Stop service
               uses: appleboy/ssh-action@v0.1.10
               with:
@@ -75,14 +73,14 @@ jobs:
               run: |
                   echo "$CLOUDFLARE_ORIGIN_CERTIFICATE" > cloudflare.pem
                   echo "$CLOUDFLARE_PRIVATE_KEY" > cloudflare.key
-              working-directory: src/server/daemon/bin/Release/linux-x64/publish
+              working-directory: out/pub/src/server/daemon/release_linux-x64
             - name: Write SendGrid key
               if: inputs.role == 'web'
               env:
                   SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
               run: |
                   sed -e "s/SENDGRID_API_KEY/$SENDGRID_API_KEY/g" -i arised.{production,staging}.json
-              working-directory: src/server/daemon/bin/Release/linux-x64/publish
+              working-directory: out/pub/src/server/daemon/release_linux-x64
             - name: Generate unit file
               run: |
                   sed -e "s/ENVIRONMENT/${{ inputs.environment }}/g" -e "s/ROLE/${{ inputs.role }}/g" arised.service > arised-${{ inputs.role }}.service
@@ -104,8 +102,8 @@ jobs:
                   fingerprint: ${{ secrets.SSH_FINGERPRINT }}
                   username: root
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
-                  source: src/server/daemon/bin/Release/linux-x64/publish/*
-                  strip_components: 7
+                  source: out/pub/src/server/daemon/release_linux-x64/*
+                  strip_components: 6
                   target: /opt/arise
                   rm: true
             - name: Start service
