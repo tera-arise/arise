@@ -1,59 +1,56 @@
 # TERA Arise
 
-TERA Arise is a game resurrection project for the final build of TERA EU.
+<div align="center">
+    <img src="arise.png"
+         width="128" />
+</div>
 
-## Confidentiality
+<div align="center">
 
-This is currently a private project. Until that changes, under no circumstances
-should code, documentation, assets, etc be shared with anyone outside the
-development team.
+[![License](https://img.shields.io/github/license/tera-arise/arise?color=brown)](LICENSE-AGPL-3.0)
+[![Commits](https://img.shields.io/github/commit-activity/m/tera-arise/arise/master?label=commits&color=slateblue)](https://github.com/tera-arise/arise/commits/master)
+[![Build](https://img.shields.io/github/actions/workflow/status/tera-arise/arise/build.yml?branch=master)](https://github.com/tera-arise/arise/actions/workflows/build.yml)
+[![Discussions](https://img.shields.io/github/discussions/tera-arise/arise?color=teal)](https://github.com/tera-arise/arise/discussions)
+[![Discord](https://img.shields.io/discord/1049553965987143750?color=peru&label=discord)](https://discord.gg/BZnmVMGYa9)
 
-An obvious exception exists for binary artifacts that need to be distributed to
-clients. Broadly speaking, this includes most things in
-[`src/shared`](src/shared) and [`src/client`](src/client).
+</div>
 
-## Authentication
+--------------------------------------------------------------------------------
 
-All contributors must use
-[SSH commit signing](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification#ssh-commit-signature-verification).
+**TERA Arise** is a game resurrection project for the final build of
+[TERA](https://en.wikipedia.org/wiki/TERA_(video_game)) EU, 115.02 (r387486),
+which was released a couple of months prior to the game's official shutdown on
+June 30, 2022.
 
-To set up Git to verify signatures in Git history, add something like this to
-your `~/.gitconfig`:
+## Philosophy
 
-```gitconfig
-[includeif "gitdir/i:~/tera-arise/**"]
-    path = ~/tera-arise/.gitconfig
-```
+Unlike typical server emulation projects, TERA Arise is not trying to replicate
+the original game. Rather, we are using the game client and assets as a base to
+build upon, with the goal of eventually producing a better experience than the
+original game. We will essentially start from scratch, with an empty data center
+file, and work our way from there.
 
-Then add this to `~/tera-arise/.gitconfig`:
+Once the project progresses far enough, our goal is to run official TERA Arise
+servers at <https://tera-arise.io>. That said, anyone is welcome to run their
+own public servers, as long as the [licensing terms](#licensing) are observed.
 
-```gitconfig
-[gpg.ssh]
-    allowedSignersFile = ../arise/allowed_signers
-```
-
-(This setup assumes that you have the various TERA Arise repositories cloned in
-the `~/tera-arise` directory.)
-
-## Building
+## Usage
 
 Building and running TERA Arise requires the following:
 
 * .NET SDK 8.0.0 Preview 6
-* GnuTLS 3.7.8+
+* GnuTLS 3.8.0+
 * PostgreSQL 14.6+
 
 Simply run `./cake` to build client and server artifacts.
 
 By default, `./cake` will build in the `Debug` configuration which is suitable
 for local development. The `Release` configuration (i.e. `./cake -c Release`) is
-used for staging and production deployments.
+used for staging and production scenarios.
 
-## Database
-
-You will need to set up one or more databases to run TERA Arise. This section
-explains one possible way to do it which will match the expectations of the
-default configuration files.
+You will need to set up one or more databases to run the server daemon. Below is
+one possible way to do it which will match the expectations of the default
+configuration files.
 
 Create a user called `arise`:
 
@@ -84,6 +81,12 @@ now be able to successfully do `dotnet run --project src/server/daemon`.
 
 ## Licensing
 
-TERA Arise is currently distributed in binary form without a license. If we
-publish the project as open source in the future, we will be using the
-[GNU Affero General Public License 3.0](LICENSE-AGPL-3.0).
+Server emulation for online games has traditionally suffered from bad actors
+taking and modifying the open source code, running for-profit servers, and then
+contributing nothing back to the project. To combat this, TERA Arise is licensed
+under the [GNU Affero General Public License 3.0](LICENSE-AGPL-3.0). This means
+that anyone running TERA Arise *must* provide the full source code of the client
+and server components to users.
+
+To be clear, this license only applies to TERA Arise itself; the original TERA
+game client and its assets are not subject to it.

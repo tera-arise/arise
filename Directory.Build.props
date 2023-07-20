@@ -2,7 +2,7 @@
     <PropertyGroup>
         <Product>TERA Arise</Product>
         <Description>$(Product) is a game resurrection project for the final build of TERA EU.</Description>
-        <Authors>$(Product) Team</Authors>
+        <Authors>$(Product) Contributors</Authors>
         <Copyright>Copyright © $(Authors)</Copyright>
     </PropertyGroup>
 
