@@ -65,6 +65,7 @@ jobs:
                   STORAGE_ROOT_CERTIFICATE: ${{ secrets.STORAGE_ROOT_CERTIFICATE }}
               run: |
                   echo "$STORAGE_ROOT_CERTIFICATE" > postgresql.pem
+              working-directory: out/pub/src/server/daemon/release_linux-x64
             - name: Write Cloudflare certificates
               if: inputs.role == 'web'
               env:
