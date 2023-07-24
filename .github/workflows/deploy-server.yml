@@ -48,7 +48,7 @@ jobs:
               run: |
                   ./cake -c Release
             - name: Stop service
-              uses: appleboy/ssh-action@v0.1.10
+              uses: appleboy/ssh-action@v1.0.0
               with:
                   host: ${{ inputs.environment }}.${{ inputs.role }}.tera-arise.io
                   fingerprint: ${{ secrets.SSH_FINGERPRINT }}
@@ -108,7 +108,7 @@ jobs:
                   target: /opt/arise
                   rm: true
             - name: Start service
-              uses: appleboy/ssh-action@v0.1.10
+              uses: appleboy/ssh-action@v1.0.0
               with:
                   host: ${{ inputs.environment }}.${{ inputs.role }}.tera-arise.io
                   fingerprint: ${{ secrets.SSH_FINGERPRINT }}
