@@ -43,7 +43,6 @@
         <PackageReference Include="NAudio.Wasapi" />
         <PackageReference Include="RadLine" />
         <PackageReference Include="StreamJsonRpc" />
-        <PackageReference Include="Vezel.Cathode" />
         <PackageReference Include="Vezel.Ruptura.Injection" />
     </ItemGroup>
 
