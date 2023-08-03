@@ -5,6 +5,13 @@
         <RootNamespace>Arise.Client.Launcher</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <_ClientRevision>r387486</_ClientRevision>
+        <_ClientArchive>$(BaseIntermediateOutputPath)$(_ClientRevision).zip</_ClientArchive>
+        <_ClientDirectory>$(BaseIntermediateOutputPath)$(_ClientRevision)/</_ClientDirectory>
+        <_ClientStamp>$(BaseIntermediateOutputPath)$(_ClientRevision).stamp</_ClientStamp>
+    </PropertyGroup>
+
     <ItemGroup>
         <AvaloniaResource Include="../../../arise.png"
                           Link="arise.png" />
@@ -13,6 +20,9 @@
 
     <ItemGroup>
         <ProjectReference Include="../../shared/common/common.csproj" />
+        <ProjectReference Include="../../tools/patcher/patcher.csproj"
+                          Private="false"
+                          ReferenceOutputAssembly="false" />
     </ItemGroup>
 
     <ItemGroup>
@@ -36,4 +46,40 @@
         <PackageReference Include="Vezel.Cathode" />
         <PackageReference Include="Vezel.Ruptura.Injection" />
     </ItemGroup>
+
+    <Target Name="_RestoreExecutable"
+            AfterTargets="_GenerateRestoreProjectPathWalk">
+        <DownloadFile SourceUrl="https://github.com/alexrp/tera-re/releases/download/$(_ClientRevision)/$(_ClientRevision).zip"
+                      DestinationFolder="$(BaseIntermediateOutputPath)"
+                      Condition="!Exists('$(_ClientArchive)')" />
+
+        <Unzip SourceFiles="$(_ClientArchive)"
+               DestinationFolder="$(BaseIntermediateOutputPath)"
+               Condition="!Exists('$(_ClientStamp)')" />
+
+        <Touch Files="$(_ClientStamp)"
+               AlwaysCreate="true" />
+    </Target>
+
+    <!-- TODO: Specify inputs/outputs to make this target incremental. -->
+    <Target Name="_PackClientExecutable"
+            BeforeTargets="BeforeResGen">
+        <PropertyGroup>
+            <_ClientPatchedPath>$(_ClientDirectory)TERA.arise.exe</_ClientPatchedPath>
+        </PropertyGroup>
+
+        <Copy SourceFiles="$(_ClientDirectory)TERA.unpacked.exe"
+              DestinationFiles="$(_ClientPatchedPath)" />
+
+        <Exec Command="dotnet run $(_ClientPatchedPath) --no-build --project ../../tools/patcher"
+              StandardOutputImportance="low"
+              StandardErrorImportance="low" />
+
+        <ItemGroup>
+            <EmbeddedResource Include="$(_ClientPatchedPath)"
+                              LogicalName="TERA.arise.exe"
+                              Type="Non-Resx"
+                              WithCulture="false" />
+        </ItemGroup>
+    </Target>
 </Project>
