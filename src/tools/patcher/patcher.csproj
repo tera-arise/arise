@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>arise-patcher</AssemblyName>
+        <RootNamespace>Arise.Tools.Patcher</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Iced.Intel" />
+        <Using Include="PeNet" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Iced" />
+        <PackageReference Include="PeNet" />
+    </ItemGroup>
+</Project>

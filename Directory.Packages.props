@@ -34,6 +34,8 @@
                         Version="4.13.0" />
         <PackageVersion Include="EmailValidation"
                         Version="1.0.9" />
+        <PackageVersion Include="Iced"
+                        Version="1.20.0" />
         <PackageVersion Include="Markdig"
                         Version="0.31.0" />
         <PackageVersion Include="Marten.AspNetCore"
@@ -70,6 +72,8 @@
                         Version="2.1.0" />
         <PackageVersion Include="Octokit"
                         Version="7.0.1" />
+        <PackageVersion Include="PeNet"
+                        Version="3.0.0" />
         <PackageVersion Include="RadLine"
                         Version="0.6.0" />
         <PackageVersion Include="SendGrid"
