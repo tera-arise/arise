@@ -1,27 +1,21 @@
 namespace Arise.Module;
 
-internal sealed class GameProtocolComponent : ProtocolComponent
+public sealed class GameProtocolComponent : ProtocolComponent
 {
-    public override int OrderingSeed { get; }
-
-    public override IReadOnlyDictionary<Type, int> PacketCodes { get; }
+    public override IReadOnlyDictionary<Type, ushort> PacketCodes { get; }
 
     public GameProtocolComponent()
     {
-        OrderingSeed = GetOrderingSeed();
         PacketCodes = GetPacketCodes();
     }
 
     [Obfuscation]
-    private static int GetOrderingSeed()
+    private static IReadOnlyDictionary<Type, ushort> GetPacketCodes()
     {
-        return 42;
-    }
+        var codes = new Dictionary<Type, ushort>();
 
-    [Obfuscation]
-    private static IReadOnlyDictionary<Type, int> GetPacketCodes()
-    {
-        // TODO
-        return new Dictionary<Type, int>();
+        // TODO: Fill in packet codes.
+
+        return codes;
     }
 }

@@ -1,6 +1,6 @@
 namespace Arise.Module;
 
-internal sealed class GameDataComponent : DataComponent
+public sealed class GameDataComponent : DataComponent
 {
     public override ReadOnlyMemory<byte> Key { get; }
 
@@ -10,19 +10,19 @@ internal sealed class GameDataComponent : DataComponent
     {
         var key = new byte[16];
 
-        GetKey(key);
+        InitializeKey(key);
 
         Key = key;
 
         var iv = new byte[16];
 
-        GetIV(iv);
+        InitializeIV(iv);
 
         IV = iv;
     }
 
     [Obfuscation]
-    private static void GetKey(Span<byte> key)
+    private static void InitializeKey(Span<byte> key)
     {
         key[0] = 42;
         key[1] = 42;
@@ -43,7 +43,7 @@ internal sealed class GameDataComponent : DataComponent
     }
 
     [Obfuscation]
-    private static void GetIV(Span<byte> iv)
+    private static void InitializeIV(Span<byte> iv)
     {
         iv[0] = 42;
         iv[1] = 42;

@@ -1,7 +1,6 @@
 namespace Arise.Module;
 
-[SuppressMessage("", "CA1812")]
-internal sealed class GameBridgeModule : BridgeModule
+public sealed class GameBridgeModule : BridgeModule
 {
     public override GameDataComponent Data { get; } = new GameDataComponent();
 

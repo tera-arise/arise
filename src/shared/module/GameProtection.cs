@@ -5,7 +5,6 @@ namespace Arise.Module;
 internal static unsafe class GameProtection
 {
     [ModuleInitializer]
-    [Obfuscation]
     [SuppressMessage("", "CA2255")]
     public static void Initialize()
     {
@@ -21,31 +20,29 @@ internal static unsafe class GameProtection
                 if (DetectDebugger())
                     Terminate();
 
-                Thread.Sleep(GetInterval());
+                Thread.Sleep(GetCheckInterval());
             }
         });
     }
 
-    private static void StartThread(Action action)
+    private static void StartThread(ThreadStart body)
     {
-        new Thread(() => action())
+        new Thread(body)
         {
             IsBackground = true,
         }.Start();
     }
 
-    [Obfuscation]
     [SuppressMessage("", "CA5394")]
     private static void Terminate()
     {
-        var delay = Random.Shared.Next(42, 42);
-        var status = 42;
-
         StartThread(() =>
         {
-            Thread.Sleep(delay);
+            var (lower, upper) = GetExitDelayRange();
 
-            _ = NtTerminateProcess(NtCurrentProcess, status);
+            Thread.Sleep(Random.Shared.Next(lower, upper));
+
+            _ = NtTerminateProcess(NtCurrentProcess, GetExitStatus());
         });
     }
 
@@ -62,7 +59,19 @@ internal static unsafe class GameProtection
     }
 
     [Obfuscation]
-    private static int GetInterval()
+    private static int GetCheckInterval()
+    {
+        return 42;
+    }
+
+    [Obfuscation]
+    private static (int Lower, int Upper) GetExitDelayRange()
+    {
+        return (42, 42);
+    }
+
+    [Obfuscation]
+    private static int GetExitStatus()
     {
         return 42;
     }
@@ -92,13 +101,11 @@ internal static unsafe class GameProtection
             CheckM();
     }
 
-    [Obfuscation]
     private static bool CheckA()
     {
         return Debugger.IsAttached || Debugger.IsLogging();
     }
 
-    [Obfuscation]
     private static bool CheckB()
     {
         nint port;
@@ -107,7 +114,6 @@ internal static unsafe class GameProtection
             NtCurrentProcess, ProcessDebugPort, &port, (uint)sizeof(nint), out _), port) != (STATUS_SUCCESS, 0);
     }
 
-    [Obfuscation]
     private static bool CheckC()
     {
         nint handle;
@@ -117,7 +123,6 @@ internal static unsafe class GameProtection
             (STATUS_SUCCESS, not 0);
     }
 
-    [Obfuscation]
     private static bool CheckD()
     {
         uint inherit;
@@ -127,13 +132,11 @@ internal static unsafe class GameProtection
             (not STATUS_SUCCESS, 0);
     }
 
-    [Obfuscation]
     private static bool CheckE()
     {
         return RtlGetCurrentPeb()->BeingDebugged;
     }
 
-    [Obfuscation]
     private static bool CheckF()
     {
         const uint flags =
@@ -153,7 +156,6 @@ internal static unsafe class GameProtection
         return (RtlGetCurrentPeb()->NtGlobalFlag & flags) != 0;
     }
 
-    [Obfuscation]
     private static bool CheckG()
     {
         const uint flags = HeapTracingEnabled | CritSecTracingEnabled | LibLoaderTracingEnabled;
@@ -161,13 +163,11 @@ internal static unsafe class GameProtection
         return (RtlGetCurrentPeb()->TracingFlags & flags) != 0;
     }
 
-    [Obfuscation]
     private static bool CheckH()
     {
         return (UserSharedData->KdDebuggerEnabled & 0b10) != 0;
     }
 
-    [Obfuscation]
     private static bool CheckI()
     {
         SYSTEM_KERNEL_DEBUGGER_INFORMATION skdi;
@@ -181,7 +181,6 @@ internal static unsafe class GameProtection
             !skdi.DebuggerNotPresent;
     }
 
-    [Obfuscation]
     private static bool CheckJ()
     {
         OBJECT_ATTRIBUTES oa;
@@ -208,7 +207,6 @@ internal static unsafe class GameProtection
         }
     }
 
-    [Obfuscation]
     private static bool CheckK()
     {
         _ = RtlAdjustPrivilege(SE_DEBUG_PRIVILEGE, false, false, out var enabled);
@@ -216,13 +214,11 @@ internal static unsafe class GameProtection
         return enabled;
     }
 
-    [Obfuscation]
     private static bool CheckL()
     {
         return NtSystemDebugControl(SysDbgQuerySpecialCalls, null, 0, null, 0, out _) != STATUS_DEBUGGER_INACTIVE;
     }
 
-    [Obfuscation]
     private static bool CheckM()
     {
         bool hide;
