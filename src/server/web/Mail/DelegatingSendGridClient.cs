@@ -51,7 +51,6 @@ public sealed class DelegatingSendGridClient : ISendGridClient
         throw new NotSupportedException();
     }
 
-    [SuppressMessage("", "CA1054")] // TODO: https://github.com/dotnet/roslyn-analyzers/issues/6371
     public Task<Response> RequestAsync(
         BaseClient.Method method,
         string? requestBody = null,
@@ -62,7 +61,6 @@ public sealed class DelegatingSendGridClient : ISendGridClient
         throw new NotSupportedException();
     }
 
-    [SuppressMessage("", "CA2000")]
     public Task<Response> SendEmailAsync(SendGridMessage msg, CancellationToken cancellationToken = default)
     {
         return _client != null ? _client.SendEmailAsync(msg, cancellationToken) : _empty;
