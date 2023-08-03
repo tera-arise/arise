@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>arise-mapper</AssemblyName>
+        <RootNamespace>Arise.Tools.Mapper</RootNamespace>
+    </PropertyGroup>
+</Project>
