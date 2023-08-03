@@ -34,4 +34,27 @@
     <ItemGroup>
         <PackageReference Include="Vezel.Ruptura.Hosting" />
     </ItemGroup>
+
+    <!--
+    For production deployments, the data center revision is used as the official
+    release identifier visible to the launcher and users.
+    -->
+    <Target Name="_WriteDeploymentManifest"
+            DependsOnTargets="GetDataCenterParameters"
+            AfterTargets="Build">
+        <PropertyGroup>
+            <_ManifestJson>
+                <![CDATA[
+{
+  "version": "$(DataCenterRevision)"
+}
+                ]]>
+            </_ManifestJson>
+        </PropertyGroup>
+
+        <WriteLinesToFile File="$(BaseIntermediateOutputPath)manifest.json"
+                          Lines="$(_ManifestJson)"
+                          Overwrite="true"
+                          WriteOnlyWhenDifferent="true" />
+    </Target>
 </Project>

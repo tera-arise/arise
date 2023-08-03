@@ -38,8 +38,7 @@ jobs:
             - name: Extract build version
               id: version
               run: |
-                  dotnet build -t:WriteDeploymentManifest
-                  echo version=`jq .version manifest.json -r` >> $GITHUB_OUTPUT
+                  echo version=`jq .version out/obj/src/client/switcher/manifest.json -r` >> $GITHUB_OUTPUT
             - name: Zip release
               run: |
                   zip ../../../../../../TERA.Arise.${{ steps.version.outputs.version }}.zip . -r -9

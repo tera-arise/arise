@@ -44,26 +44,4 @@
             <DataCenterIV>$(GitCommitId.Substring(8, 32))</DataCenterIV>
         </PropertyGroup>
     </Target>
-
-    <!--
-    For production deployments, the data center revision is used as the official
-    release identifier visible to the launcher and users.
-    -->
-    <Target Name="WriteDeploymentManifest"
-            DependsOnTargets="GetDataCenterParameters">
-        <PropertyGroup>
-            <_ManifestJson>
-                <![CDATA[
-{
-  "version": "$(DataCenterRevision)"
-}
-                ]]>
-            </_ManifestJson>
-        </PropertyGroup>
-
-        <WriteLinesToFile File="manifest.json"
-                          Lines="$(_ManifestJson)"
-                          Overwrite="true"
-                          WriteOnlyWhenDifferent="true" />
-    </Target>
 </Project>
