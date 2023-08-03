@@ -12,9 +12,7 @@
         </NoWarn>
         <NullabilityInfoContextSupport>false</NullabilityInfoContextSupport>
         <OutputType>WinExe</OutputType>
-        <PublishTrimmed>true</PublishTrimmed>
         <RootNamespace>Arise.Client.Switcher</RootNamespace>
-        <TrimmerRemoveSymbols Condition="'$(DebugSymbols)' != 'true'">true</TrimmerRemoveSymbols>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">

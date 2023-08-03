@@ -2,7 +2,6 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('$(MSBuildThisFile)', '$(MSBuildThisFileDirectory)..'))" />
 
     <PropertyGroup>
-        <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
         <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
         <SelfContained>true</SelfContained>
         <TargetFramework>$(TargetFramework)-windows10.0.22621.0</TargetFramework>
