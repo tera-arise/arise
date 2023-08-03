@@ -70,7 +70,7 @@
         <Copy SourceFiles="$(_ClientDirectory)TERA.unpacked.exe"
               DestinationFiles="$(_ClientPatchedPath)" />
 
-        <Exec Command="dotnet run $(_ClientPatchedPath) --no-build --project ../../tools/patcher"
+        <Exec Command="dotnet run $(_ClientPatchedPath) --project ../../tools/patcher -c $(Configuration) --no-build"
               StandardOutputImportance="low"
               StandardErrorImportance="low" />
 
