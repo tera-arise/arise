@@ -6,192 +6,11 @@ internal static unsafe partial class WindowsPInvoke
 {
     // CsWin32 does not support ntdll.dll APIs...
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct PEB
+    [StructLayout(LayoutKind.Explicit)]
+    public struct KUSER_SHARED_DATA
     {
-        public bool InheritedAddressSpace;
-
-        public bool ReadImageFileExecOptions;
-
-        public bool BeingDebugged;
-
-        public byte BitField;
-
-        public nint Mutant;
-
-        public void* ImageBaseAddress;
-
-        public void* Ldr;
-
-        public void* ProcessParameters;
-
-        public void* SubSystemData;
-
-        public void* ProcessHeap;
-
-        public void* FastPebLock;
-
-        public void* IFEOKey;
-
-        public void* AtlThunkSListPtr;
-
-        public uint CrossProcessFlags;
-
-        public void* UserSharedInfoPtr;
-
-        public uint SystemReserved;
-
-        public uint AtlThunkSListPtr32;
-
-        public void* ApiSetMap;
-
-        public uint TlsExpansionCounter;
-
-        public void* TlsBitmap;
-
-        public fixed uint TlsBitmapBits[2];
-
-        public void* ReadOnlySharedMemoryBase;
-
-        public void* SharedData;
-
-        public void** ReadOnlyStaticServerData;
-
-        public void* AnsiCodePageData;
-
-        public void* OemCodePageData;
-
-        public void* UnicodeCaseTableData;
-
-        public uint NumberOfProcessors;
-
-        public uint NtGlobalFlag;
-
-        public ulong CriticalSectionTimeout;
-
-        public nuint HeapSegmentReserve;
-
-        public nuint HeapSegmentCommit;
-
-        public nuint HeapDeCommitTotalFreeThreshold;
-
-        public nuint HeapDeCommitFreeBlockThreshold;
-
-        public uint NumberOfHeaps;
-
-        public uint MaximumNumberOfHeaps;
-
-        public void** ProcessHeaps;
-
-        public void* GdiSharedHandleTable;
-
-        public void* ProcessStarterHelper;
-
-        public uint GdiDCAttributeList;
-
-        public void* LoaderLock;
-
-        public uint OSMajorVersion;
-
-        public uint OSMinorVersion;
-
-        public ushort OSBuildNumber;
-
-        public ushort OSCSDVersion;
-
-        public uint OSPlatformId;
-
-        public uint ImageSubsystem;
-
-        public uint ImageSubsystemMajorVersion;
-
-        public uint ImageSubsystemMinorVersion;
-
-        public nuint ImageProcessAffinityMask;
-
-        public fixed uint GdiHandleBuffer[60];
-
-        public void* PostProcessInitRoutine;
-
-        public void* TlsExpansionBitmap;
-
-        public fixed uint TlsExpansionBitmapBits[32];
-
-        public uint SessionId;
-
-        public ulong AppCompatFlags;
-
-        public ulong AppCompatFlagsUser;
-
-        public void* pShimData;
-
-        public void* AppCompatInfo;
-
-        public UNICODE_STRING CSDVersion;
-
-        public void* ActivationContextData;
-
-        public void* ProcessAssemblyStorageMap;
-
-        public void* SystemDefaultActivationContextData;
-
-        public void* SystemAssemblyStorageMap;
-
-        public nuint MinimumStackCommit;
-
-        public void* FlsCallback;
-
-        public LIST_ENTRY FlsListHead;
-
-        public void* FlsBitmap;
-
-        public fixed uint FlsBitmapBits[4];
-
-        public uint FlsHighIndex;
-
-        public void* WerRegistrationData;
-
-        public void* WerShipAssertPtr;
-
-        public void* pContextData;
-
-        public void* pImageHeaderHash;
-
-        public uint TracingFlags;
-
-        public ulong CsrServerReadOnlySharedMemoryBase;
-
-        public uint TppWorkerpListLock;
-
-        public LIST_ENTRY TppWorkerpList;
-
-        // TODO: Add more fields so we can access NtGlobalFlag2.
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct UNICODE_STRING
-    {
-        public ushort Length;
-
-        public ushort MaximumLength;
-
-        public char* Buffer;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct LIST_ENTRY
-    {
-        public LIST_ENTRY* Flink;
-
-        public LIST_ENTRY* Blink;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SYSTEM_KERNEL_DEBUGGER_INFORMATION
-    {
-        public bool DebuggerEnabled;
-
-        public bool DebuggerNotPresent;
+        [FieldOffset(0x2d4)]
+        public byte KdDebuggerEnabled;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -201,7 +20,7 @@ internal static unsafe partial class WindowsPInvoke
 
         public nint RootDirectory;
 
-        public UNICODE_STRING* ObjectName;
+        public void* ObjectName;
 
         public uint Attributes;
 
@@ -210,148 +29,34 @@ internal static unsafe partial class WindowsPInvoke
         public void* SecurityQualityOfService;
     }
 
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Explicit)]
     public struct OBJECT_TYPE_INFORMATION
     {
-        public UNICODE_STRING TypeName;
-
+        [FieldOffset(0x10)]
         public uint TotalNumberOfObjects;
-
-        public uint TotalNumberOfHandles;
-
-        public uint TotalPagedPoolUsage;
-
-        public uint TotalNonPagedPoolUsage;
-
-        public uint TotalNamePoolUsage;
-
-        public uint TotalHandleTableUsage;
-
-        public uint HighWaterNumberOfObjects;
-
-        public uint HighWaterNumberOfHandles;
-
-        public uint HighWaterPagedPoolUsage;
-
-        public uint HighWaterNonPagedPoolUsage;
-
-        public uint HighWaterNamePoolUsage;
-
-        public uint HighWaterHandleTableUsage;
-
-        public uint InvalidAttributes;
-
-        public GENERIC_MAPPING GenericMapping;
-
-        public uint ValidAccessMask;
-
-        public bool SecurityRequired;
-
-        public bool MaintainHandleCount;
-
-        public byte TypeIndex;
-
-        public sbyte Reserved;
-
-        public uint PoolType;
-
-        public uint DefaultPagedPoolCharge;
-
-        public uint DefaultNonPagedPoolCharge;
     }
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct GENERIC_MAPPING
+    [StructLayout(LayoutKind.Explicit)]
+    public struct PEB
     {
-        public uint GenericRead;
+        [FieldOffset(0x2)]
+        public bool BeingDebugged;
 
-        public uint GenericWrite;
+        [FieldOffset(0xbc)]
+        public uint NtGlobalFlag;
 
-        public uint GenericExecute;
-
-        public uint GenericAll;
+        [FieldOffset(0x378)]
+        public uint TracingFlags;
     }
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct KUSER_SHARED_DATA
+    [StructLayout(LayoutKind.Explicit)]
+    public struct SYSTEM_KERNEL_DEBUGGER_INFORMATION
     {
-        public uint TickCountLowDeprecated;
+        [FieldOffset(0x0)]
+        public bool DebuggerEnabled;
 
-        public uint TickCountMultiplier;
-
-        public KSYSTEM_TIME InterruptTime;
-
-        public KSYSTEM_TIME SystemTime;
-
-        public KSYSTEM_TIME TimeZoneBias;
-
-        public ushort ImageNumberLow;
-
-        public ushort ImageNumberHigh;
-
-        public fixed char NtSystemRoot[260];
-
-        public uint MaxStackTraceDepth;
-
-        public uint CryptoExponent;
-
-        public uint TimeZoneId;
-
-        public uint LargePageMinimum;
-
-        public uint AitSamplingValue;
-
-        public uint AppCompatFlag;
-
-        public ulong RNGSeedVersion;
-
-        public uint GlobalValidationRunlevel;
-
-        public int TimeZoneBiasStamp;
-
-        public uint NtBuildNumber;
-
-        public int NtProductType;
-
-        public bool ProductTypeIsValid;
-
-        public bool Reserved0;
-
-        public ushort NativeProcessorArchitecture;
-
-        public uint NtMajorVersion;
-
-        public uint NtMinorVersion;
-
-        public fixed bool ProcessorFeatures[64];
-
-        public uint Reserved1;
-
-        public uint Reserved3;
-
-        public uint TimeSlip;
-
-        public int AlternativeArchitecture;
-
-        public uint BootId;
-
-        public long SystemExpirationDate;
-
-        public ulong SuiteMask;
-
-        public byte KdDebuggerEnabled;
-
-        // TODO: Add more known fields beyond this point.
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct KSYSTEM_TIME
-    {
-        public uint LowPart;
-
-        public int High1Time;
-
-        public int High2Time;
+        [FieldOffset(0x1)]
+        public bool DebuggerNotPresent;
     }
 
     private const string NtDll = "ntdll.dll";
@@ -408,13 +113,13 @@ internal static unsafe partial class WindowsPInvoke
 
     public const uint SE_DEBUG_PRIVILEGE = 20;
 
-    public const int STATUS_SUCCESS = 0x00000000;
-
     public const int STATUS_DEBUGGER_INACTIVE = unchecked((int)0xc0000354);
+
+    public const int STATUS_SUCCESS = 0x00000000;
 
     public static readonly KUSER_SHARED_DATA* UserSharedData = (KUSER_SHARED_DATA*)0x7ffe0000;
 
-    public static void InitializeObjectAttributes(OBJECT_ATTRIBUTES* p, UNICODE_STRING* n, uint a, IntPtr r, void* s)
+    public static void InitializeObjectAttributes(OBJECT_ATTRIBUTES* p, void* n, uint a, IntPtr r, void* s)
     {
         p->Length = (uint)sizeof(OBJECT_ATTRIBUTES);
         p->RootDirectory = r;
@@ -475,13 +180,13 @@ internal static unsafe partial class WindowsPInvoke
     [LibraryImport(NtDll, EntryPoint = "NtTerminateProcess")]
     public static partial int NtTerminateProcess(nint processHandle, int exitStatus);
 
-    [LibraryImport(NtDll, EntryPoint = "RtlGetCurrentPeb")]
-    public static partial PEB* RtlGetCurrentPeb();
-
     [LibraryImport(NtDll, EntryPoint = "RtlAdjustPrivilege")]
     public static partial int RtlAdjustPrivilege(
         uint privilege,
         [MarshalAs(UnmanagedType.U1)] bool enable,
         [MarshalAs(UnmanagedType.U1)] bool currentThread,
         [MarshalAs(UnmanagedType.U1)] out bool enabled);
+
+    [LibraryImport(NtDll, EntryPoint = "RtlGetCurrentPeb")]
+    public static partial PEB* RtlGetCurrentPeb();
 }
