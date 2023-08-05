@@ -65,6 +65,7 @@
     <Target Name="_WriteSystemdUnitFileEnvironmentRole">
         <PropertyGroup>
             <_ServiceDirectory>$(BaseIntermediateOutputPath)systemd/$(ServiceEnvironment)/</_ServiceDirectory>
+            <_ArisedServicePath>$(_ServiceDirectory)arised-$(ServiceRole).service</_ArisedServicePath>
         </PropertyGroup>
 
         <PropertyGroup>
@@ -122,9 +123,13 @@ WantedBy = multi-user.target
 
         <MakeDir Directories="$(_ServiceDirectory)" />
 
-        <WriteLinesToFile File="$(_ServiceDirectory)arised-$(ServiceRole).service"
+        <WriteLinesToFile File="$(_ArisedServicePath)"
                           Lines="$(_ArisedService)"
                           Overwrite="true"
                           WriteOnlyWhenDifferent="true" />
+
+        <ItemGroup>
+            <FileWrites Include="$(_ArisedServicePath)" />
+        </ItemGroup>
     </Target>
 </Project>

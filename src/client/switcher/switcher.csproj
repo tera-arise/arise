@@ -43,6 +43,10 @@
             DependsOnTargets="GetDataCenterParameters"
             AfterTargets="Build">
         <PropertyGroup>
+            <_ManifestJsonPath>$(BaseIntermediateOutputPath)manifest.json</_ManifestJsonPath>
+        </PropertyGroup>
+
+        <PropertyGroup>
             <_ManifestJson>
                 <![CDATA[
 {
@@ -52,9 +56,13 @@
             </_ManifestJson>
         </PropertyGroup>
 
-        <WriteLinesToFile File="$(BaseIntermediateOutputPath)manifest.json"
+        <WriteLinesToFile File="$(_ManifestJsonPath)"
                           Lines="$(_ManifestJson)"
                           Overwrite="true"
                           WriteOnlyWhenDifferent="true" />
+
+        <ItemGroup>
+            <FileWrites Include="$(_ManifestJsonPath)" />
+        </ItemGroup>
     </Target>
 </Project>

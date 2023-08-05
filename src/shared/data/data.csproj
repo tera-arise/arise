@@ -55,6 +55,10 @@
               CustomErrorRegularExpression="^  \[E\] \(\d+,\d+\): .*$" />
 
         <ItemGroup>
+            <FileWrites Include="$(_DataCenterPath)" />
+        </ItemGroup>
+
+        <ItemGroup>
             <EmbeddedResource Include="$(_DataCenterPath)"
                               LogicalName="DataCenter.dat"
                               Type="Non-Resx"
