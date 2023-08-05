@@ -2,7 +2,7 @@
     <PropertyGroup>
         <AssemblyName>Arise.Client.Launcher</AssemblyName>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-        <RootNamespace>Arise.Client.Launcher</RootNamespace>
+        <RootNamespace>$(AssemblyName)</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -46,7 +46,7 @@
         <PackageReference Include="Vezel.Ruptura.Injection" />
     </ItemGroup>
 
-    <Target Name="_RestoreExecutable"
+    <Target Name="_RestoreClientExecutable"
             AfterTargets="_GenerateRestoreProjectPathWalk">
         <DownloadFile SourceUrl="https://github.com/alexrp/tera-re/releases/download/$(_ClientRevision)/$(_ClientRevision).zip"
                       DestinationFolder="$(BaseIntermediateOutputPath)"

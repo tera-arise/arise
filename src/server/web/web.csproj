@@ -2,7 +2,7 @@
     <PropertyGroup>
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
         <AssemblyName>Arise.Server.Web</AssemblyName>
-        <RootNamespace>Arise.Server.Web</RootNamespace>
+        <RootNamespace>$(AssemblyName)</RootNamespace>
         <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
     </PropertyGroup>
 
