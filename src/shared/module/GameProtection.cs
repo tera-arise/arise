@@ -4,10 +4,25 @@ namespace Arise.Module;
 
 internal static unsafe class GameProtection
 {
-    [ModuleInitializer]
-    [SuppressMessage("", "CA2255")]
-    public static void Initialize()
+    [SpecialName]
+    internal static void Initialize()
     {
+        // This method body is erased by the server's ModuleProvider for module instances that run on the server and for
+        // module instances running on the client in development scenarios.
+
+        [SuppressMessage("", "CA5394")]
+        static void Terminate()
+        {
+            StartThread(() =>
+            {
+                var (lower, upper) = GetExitDelayRange();
+
+                Thread.Sleep(Random.Shared.Next(lower, upper));
+
+                _ = NtTerminateProcess(NtCurrentProcess, GetExitStatus());
+            });
+        }
+
         var culture = CultureInfo.InvariantCulture;
 
         if (DateTime.UtcNow - DateTime.Parse(GetIssueTime(), culture) > TimeSpan.Parse(GetValidDuration(), culture))
@@ -33,58 +48,43 @@ internal static unsafe class GameProtection
         }.Start();
     }
 
-    [SuppressMessage("", "CA5394")]
-    private static void Terminate()
-    {
-        StartThread(() =>
-        {
-            var (lower, upper) = GetExitDelayRange();
-
-            Thread.Sleep(Random.Shared.Next(lower, upper));
-
-            _ = NtTerminateProcess(NtCurrentProcess, GetExitStatus());
-        });
-    }
-
-    [Obfuscation]
+    [SpecialName]
     private static string GetIssueTime()
     {
+        // Filled in by the server's ModuleProvider.
         return "xyz";
     }
 
-    [Obfuscation]
+    [SpecialName]
     private static string GetValidDuration()
     {
+        // Filled in by the server's ModuleProvider.
         return "xyz";
     }
 
-    [Obfuscation]
+    [SpecialName]
     private static int GetCheckInterval()
     {
+        // Filled in by the server's ModuleProvider.
         return 42;
     }
 
-    [Obfuscation]
+    [SpecialName]
     private static (int Lower, int Upper) GetExitDelayRange()
     {
+        // Filled in by the server's ModuleProvider.
         return (42, 42);
     }
 
-    [Obfuscation]
+    [SpecialName]
     private static int GetExitStatus()
     {
+        // Filled in by the server's ModuleProvider.
         return 42;
     }
 
     private static bool DetectDebugger()
     {
-        // TODO: Add more advanced checks. In particular, we should do a checksum of TERA's code segment after we apply
-        // our own modifications and disable Themida. We should also test for common Win32 hooks used to defeat
-        // anti-debugging techniques.
-        //
-        // https://github.com/LordNoteworthy/al-khaser
-        // https://anti-debug.checkpoint.com
-
         return
             CheckA() ||
             CheckB() ||

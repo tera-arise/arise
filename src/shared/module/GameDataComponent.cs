@@ -21,9 +21,11 @@ public sealed class GameDataComponent : DataComponent
         IV = iv;
     }
 
-    [Obfuscation]
+    [SpecialName]
     private static void InitializeKey(Span<byte> key)
     {
+        // Filled in by the server's ModuleProvider.
+
         key[0] = 42;
         key[1] = 42;
         key[2] = 42;
@@ -42,9 +44,11 @@ public sealed class GameDataComponent : DataComponent
         key[15] = 42;
     }
 
-    [Obfuscation]
+    [SpecialName]
     private static void InitializeIV(Span<byte> iv)
     {
+        // Filled in by the server's ModuleProvider.
+
         iv[0] = 42;
         iv[1] = 42;
         iv[2] = 42;

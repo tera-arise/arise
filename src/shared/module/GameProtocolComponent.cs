@@ -2,20 +2,22 @@ namespace Arise.Module;
 
 public sealed class GameProtocolComponent : ProtocolComponent
 {
-    public override IReadOnlyDictionary<Type, ushort> PacketCodes { get; }
+    public override ImmutableDictionary<ushort, ushort> Codes { get; }
 
     public GameProtocolComponent()
     {
-        PacketCodes = GetPacketCodes();
+        var codes = new Dictionary<ushort, ushort>();
+
+        InitializeCodes(codes);
+
+        Codes = codes.ToImmutableDictionary();
     }
 
-    [Obfuscation]
-    private static IReadOnlyDictionary<Type, ushort> GetPacketCodes()
+    [SpecialName]
+    private static void InitializeCodes(Dictionary<ushort, ushort> codes)
     {
-        var codes = new Dictionary<Type, ushort>();
+        // Filled in by the server's ModuleProvider.
 
-        // TODO: Fill in packet codes.
-
-        return codes;
+        codes.Add(42, 42);
     }
 }

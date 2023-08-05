@@ -4,7 +4,7 @@ public static class BridgeModuleActivator
 {
     public static BridgeModule Create(Assembly assembly)
     {
-        return (BridgeModule)Activator.CreateInstance(
-            assembly.DefinedTypes.Single(t => t.ImplementedInterfaces.Contains(typeof(BridgeModule))))!;
+        return Unsafe.As<BridgeModule>(
+            Activator.CreateInstance(assembly.DefinedTypes.Single(t => t.BaseType == typeof(BridgeModule)))!);
     }
 }

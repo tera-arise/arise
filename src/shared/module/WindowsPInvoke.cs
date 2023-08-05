@@ -1,10 +1,10 @@
 namespace Arise.Module;
 
-[SuppressMessage("", "SA1307")]
 [SuppressMessage("", "SA1310")]
 internal static unsafe partial class WindowsPInvoke
 {
-    // CsWin32 does not support ntdll.dll APIs...
+    // CsWin32 does not support ntdll.dll APIs so we bind them manually. Note that these APIs will only be used in the
+    // module instances running on the client, so the environment will always be win10-x64.
 
     [StructLayout(LayoutKind.Explicit)]
     public struct KUSER_SHARED_DATA
