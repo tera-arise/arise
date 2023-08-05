@@ -1,10 +1,50 @@
 namespace Arise.Module;
 
+[SuppressMessage("", "SA1307")]
 [SuppressMessage("", "SA1310")]
 internal static unsafe partial class WindowsPInvoke
 {
     // CsWin32 does not support ntdll.dll APIs so we bind them manually. Note that these APIs will only be used in the
     // module instances running on the client, so the environment will always be win10-x64.
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct IMAGE_DOS_HEADER
+    {
+        [FieldOffset(0x3c)]
+        public int e_lfanew;
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct IMAGE_FILE_HEADER
+    {
+        [FieldOffset(0x10)]
+        public uint SizeOfOptionalHeader;
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct IMAGE_NT_HEADERS
+    {
+        [FieldOffset(0x4)]
+        public IMAGE_FILE_HEADER FileHeader;
+
+        [FieldOffset(0x18)]
+        public IMAGE_OPTIONAL_HEADER OptionalHeader;
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct IMAGE_OPTIONAL_HEADER
+    {
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct IMAGE_SECTION_HEADER
+    {
+        public fixed byte Name[8];
+
+        public uint VirtualSize;
+
+        public uint VirtualAddress;
+    }
 
     [StructLayout(LayoutKind.Explicit)]
     public struct KUSER_SHARED_DATA
@@ -41,6 +81,9 @@ internal static unsafe partial class WindowsPInvoke
     {
         [FieldOffset(0x2)]
         public bool BeingDebugged;
+
+        [FieldOffset(0x10)]
+        public void* ImageBaseAddress;
 
         [FieldOffset(0xbc)]
         public uint NtGlobalFlag;
@@ -111,8 +154,6 @@ internal static unsafe partial class WindowsPInvoke
 
     public const uint FLG_ENABLE_HANDLE_EXCEPTIONS = 0b1000000000000000000000000000000;
 
-    public const uint SE_DEBUG_PRIVILEGE = 20;
-
     public const int STATUS_DEBUGGER_INACTIVE = unchecked((int)0xc0000354);
 
     public const int STATUS_SUCCESS = 0x00000000;
@@ -179,13 +220,6 @@ internal static unsafe partial class WindowsPInvoke
 
     [LibraryImport(NtDll, EntryPoint = "NtTerminateProcess")]
     public static partial int NtTerminateProcess(nint processHandle, int exitStatus);
-
-    [LibraryImport(NtDll, EntryPoint = "RtlAdjustPrivilege")]
-    public static partial int RtlAdjustPrivilege(
-        uint privilege,
-        [MarshalAs(UnmanagedType.U1)] bool enable,
-        [MarshalAs(UnmanagedType.U1)] bool currentThread,
-        [MarshalAs(UnmanagedType.U1)] out bool enabled);
 
     [LibraryImport(NtDll, EntryPoint = "RtlGetCurrentPeb")]
     public static partial PEB* RtlGetCurrentPeb();

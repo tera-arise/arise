@@ -1,112 +1,33 @@
 using static Arise.Module.WindowsPInvoke;
 
-namespace Arise.Module;
+namespace Arise.Module.Protection;
 
-internal static unsafe class GameProtection
+internal sealed unsafe class DebuggerDetectionTask : GameProtectionTask
 {
-    [SpecialName]
-    internal static void Initialize()
+    protected override bool Check()
     {
-        // This method body is erased by the server's ModuleProvider for module instances that run on the server and for
-        // module instances running on the client in development scenarios.
-
-        [SuppressMessage("", "CA5394")]
-        static void Terminate()
-        {
-            StartThread(() =>
-            {
-                var (lower, upper) = GetExitDelayRange();
-
-                Thread.Sleep(Random.Shared.Next(lower, upper));
-
-                _ = NtTerminateProcess(NtCurrentProcess, GetExitStatus());
-            });
-        }
-
-        var culture = CultureInfo.InvariantCulture;
-
-        if (DateTime.UtcNow - DateTime.Parse(GetIssueTime(), culture) > TimeSpan.Parse(GetValidDuration(), culture))
-            Terminate();
-
-        StartThread(() =>
-        {
-            while (!Environment.HasShutdownStarted)
-            {
-                if (DetectDebugger())
-                    Terminate();
-
-                Thread.Sleep(GetCheckInterval());
-            }
-        });
-    }
-
-    private static void StartThread(ThreadStart body)
-    {
-        new Thread(body)
-        {
-            IsBackground = true,
-        }.Start();
-    }
-
-    [SpecialName]
-    private static string GetIssueTime()
-    {
-        // Filled in by the server's ModuleProvider.
-        return "xyz";
-    }
-
-    [SpecialName]
-    private static string GetValidDuration()
-    {
-        // Filled in by the server's ModuleProvider.
-        return "xyz";
-    }
-
-    [SpecialName]
-    private static int GetCheckInterval()
-    {
-        // Filled in by the server's ModuleProvider.
-        return 42;
-    }
-
-    [SpecialName]
-    private static (int Lower, int Upper) GetExitDelayRange()
-    {
-        // Filled in by the server's ModuleProvider.
-        return (42, 42);
-    }
-
-    [SpecialName]
-    private static int GetExitStatus()
-    {
-        // Filled in by the server's ModuleProvider.
-        return 42;
-    }
-
-    private static bool DetectDebugger()
-    {
+        // TODO: There are other checks we can do that might be partially redundant with these.
         return
-            CheckA() ||
-            CheckB() ||
-            CheckC() ||
-            CheckD() ||
-            CheckE() ||
-            CheckF() ||
-            CheckG() ||
-            CheckH() ||
-            CheckI() ||
-            CheckJ() ||
-            CheckK() ||
-            CheckL() ||
-            CheckM();
+            CheckManagedDebugger() ||
+            CheckProcessDebugPort() ||
+            CheckProcessDebugObjectHandle() ||
+            CheckProcessDebugFlags() ||
+            CheckPebBeingDebugged() ||
+            CheckPebNtGlobalFlag() ||
+            CheckPebTracingFlags() ||
+            CheckUserSharedDataKdDebuggerEnabled() ||
+            CheckSystemKernelDebuggerInfo() ||
+            CheckNtCreateAndQueryDebugObject() ||
+            CheckNtSystemDebugControl() ||
+            CheckThreadHideFromDebugger();
     }
 
-    private static bool CheckA()
+    private static bool CheckManagedDebugger()
     {
         return Debugger.IsAttached || Debugger.IsLogging();
     }
 
-    private static bool CheckB()
+    private static bool CheckProcessDebugPort()
     {
         nint port;
 
@@ -114,7 +35,7 @@ internal static unsafe class GameProtection
             NtCurrentProcess, ProcessDebugPort, &port, (uint)sizeof(nint), out _), port) != (STATUS_SUCCESS, 0);
     }
 
-    private static bool CheckC()
+    private static bool CheckProcessDebugObjectHandle()
     {
         nint handle;
 
@@ -123,7 +44,7 @@ internal static unsafe class GameProtection
             (STATUS_SUCCESS, not 0);
     }
 
-    private static bool CheckD()
+    private static bool CheckProcessDebugFlags()
     {
         uint inherit;
 
@@ -132,12 +53,12 @@ internal static unsafe class GameProtection
             (not STATUS_SUCCESS, 0);
     }
 
-    private static bool CheckE()
+    private static bool CheckPebBeingDebugged()
     {
         return RtlGetCurrentPeb()->BeingDebugged;
     }
 
-    private static bool CheckF()
+    private static bool CheckPebNtGlobalFlag()
     {
         const uint flags =
             FLG_HEAP_ENABLE_TAIL_CHECK |
@@ -156,19 +77,19 @@ internal static unsafe class GameProtection
         return (RtlGetCurrentPeb()->NtGlobalFlag & flags) != 0;
     }
 
-    private static bool CheckG()
+    private static bool CheckPebTracingFlags()
     {
         const uint flags = HeapTracingEnabled | CritSecTracingEnabled | LibLoaderTracingEnabled;
 
         return (RtlGetCurrentPeb()->TracingFlags & flags) != 0;
     }
 
-    private static bool CheckH()
+    private static bool CheckUserSharedDataKdDebuggerEnabled()
     {
         return (UserSharedData->KdDebuggerEnabled & 0b10) != 0;
     }
 
-    private static bool CheckI()
+    private static bool CheckSystemKernelDebuggerInfo()
     {
         SYSTEM_KERNEL_DEBUGGER_INFORMATION skdi;
 
@@ -181,7 +102,7 @@ internal static unsafe class GameProtection
             !skdi.DebuggerNotPresent;
     }
 
-    private static bool CheckJ()
+    private static bool CheckNtCreateAndQueryDebugObject()
     {
         OBJECT_ATTRIBUTES oa;
 
@@ -207,19 +128,12 @@ internal static unsafe class GameProtection
         }
     }
 
-    private static bool CheckK()
-    {
-        _ = RtlAdjustPrivilege(SE_DEBUG_PRIVILEGE, false, false, out var enabled);
-
-        return enabled;
-    }
-
-    private static bool CheckL()
+    private static bool CheckNtSystemDebugControl()
     {
         return NtSystemDebugControl(SysDbgQuerySpecialCalls, null, 0, null, 0, out _) != STATUS_DEBUGGER_INACTIVE;
     }
 
-    private static bool CheckM()
+    private static bool CheckThreadHideFromDebugger()
     {
         bool hide;
 

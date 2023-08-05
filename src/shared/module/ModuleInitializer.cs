@@ -1,3 +1,5 @@
+using Arise.Module.Protection;
+
 namespace Arise.Module;
 
 internal static unsafe class ModuleInitializer

@@ -22,6 +22,7 @@
         <Using Include="System.Reflection" />
         <Using Include="System.Runtime.CompilerServices" />
         <Using Include="System.Runtime.InteropServices" />
+        <Using Include="System.Runtime.Intrinsics.X86" />
         <Using Include="System.Security.Claims" />
         <Using Include="System.Security.Cryptography" />
         <Using Include="System.Text.Encodings.Web" />
