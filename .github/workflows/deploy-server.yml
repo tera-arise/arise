@@ -44,7 +44,7 @@ jobs:
                   submodules: recursive
             - name: Set up .NET
               uses: actions/setup-dotnet@v3.2.0
-            - name: Build project
+            - name: Run Cake
               run: |
                   ./cake -c Release
             - name: Stop service
@@ -82,10 +82,6 @@ jobs:
               run: |
                   sed -e "s/SENDGRID_API_KEY/$SENDGRID_API_KEY/g" -i arised.{production,staging}.json
               working-directory: out/pub/src/server/daemon/release_linux-x64
-            - name: Generate unit file
-              run: |
-                  sed -e "s/ENVIRONMENT/${{ inputs.environment }}/g" -e "s/ROLE/${{ inputs.role }}/g" arised.service > arised-${{ inputs.role }}.service
-              working-directory: src/server/daemon
             - name: Upload unit file
               uses: appleboy/scp-action@v0.1.4
               with:
@@ -93,8 +89,8 @@ jobs:
                   fingerprint: ${{ secrets.SSH_FINGERPRINT }}
                   username: root
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
-                  source: src/server/daemon/arised-${{ inputs.role }}.service
-                  strip_components: 3
+                  source: out/obj/src/server/daemon/systemd/${{ inputs.environment }}/arised-${{ inputs.role }}.service
+                  strip_components: 7
                   target: /etc/systemd/system
             - name: Upload daemon build
               uses: appleboy/scp-action@v0.1.4
