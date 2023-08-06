@@ -33,6 +33,18 @@ internal static class ClientPatcher
             _ = asm.Assemble(writer, address);
         }
 
+        // These functions are used to guard various functionality intended for developers based on the domain name of
+        // the computer running the game. Ensure that they always return false regardless of network configuration.
+        foreach (var (name, addr) in new[] { ("isCompanyDomain", 0x7ff69a944290u), ("isDevDomain", 0x7ff69a9444e0u) })
+            await PatchAsync(
+                name,
+                addr,
+                asm =>
+                {
+                    asm.xor(eax, eax);
+                    asm.ret();
+                });
+
         // This just appears to be a fairly standard routine that performs a memory dump and sends a crash report. It
         // does not seem to actually be used in retail builds of TERA, but patch it just in case.
         await PatchAsync(
@@ -44,26 +56,43 @@ internal static class ClientPatcher
                 asm.ret();
             });
 
-        // Unsure if this one is for diagnostic or cheat detection purposes. Either way, it sends a bunch of system
-        // details without user consent, so patch it.
+        // Packet checksums were added to the game as a security measure. However, the algorithm is public knowledge by
+        // now and so offers no meaningful security. Patch out the wasteful computation and just return the seed.
         await PatchAsync(
-            "S1LagLogDataSendingThread::SendReport",
-            0x7ff69b78e860,
+            "S1ConnectionManager::ComputeChecksum",
+            0x7ff69b472da0,
             asm =>
             {
+                asm.mov(eax, r8d);
                 asm.ret();
+            });
+
+        // Unsure if this one is for diagnostic or cheat detection purposes. Either way, it sends a bunch of system
+        // details without user consent, so patch it.
+        await PatchAsync("S1LagLogDataSendingThread::SendReport", 0x7ff69b78e860, asm => asm.ret());
+
+        // These are all hooked by the symbiote to integrate the QUIC-based network protocol. Make sure that the
+        // unhooked versions of the functions just cause a crash.
+        await PatchAsync("S1Connection::Connect", 0x7ff69baa9fc0, asm => asm.ud2());
+        await PatchAsync("S1Connection::Disconnect", 0x7ff69baaa530, asm => asm.ud2());
+        await PatchAsync("S1CommandQueue::RunCommands", 0x7ff69baaa560, asm => asm.ud2());
+        await PatchAsync("S1ConnectionManager::SendPacket", 0x7ff69babe7b0, asm => asm.ud2());
+
+        // The symbiote will hook this function and provide a memory-backed FArchive. Make sure that the unhooked
+        // version of the function just causes a crash.
+        await PatchAsync(
+            "S1DataDB::Initialize",
+            0x7ff69bb19f69,
+            asm =>
+            {
+                asm.ud2();
+                asm.nop(22);
             });
 
         // This one is presumably used to detect private servers. It's a bit sneaky; the server details are
         // (sometimes, randomly) sent in the query string of an otherwise empty HTTP request to a static IP address,
         // tipping the developers off. Definitely get rid of this one.
-        await PatchAsync(
-            "S1LobbySceneServer::SnoopLoginArbiter",
-            0x7ff69bd409c0,
-            asm =>
-            {
-                asm.ret();
-            });
+        await PatchAsync("S1LobbySceneServer::SnoopLoginArbiter", 0x7ff69bd409c0, asm => asm.ret());
 
         await Terminal.OutLineAsync($"Saving PE '{options.Executable}'...");
     }
