@@ -15,7 +15,7 @@
         <ImplicitUsings>true</ImplicitUsings>
         <IsPackable>false</IsPackable>
         <IsPublishable>false</IsPublishable>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>preview</LangVersion>
         <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
         <Nullable>enable</Nullable>
         <PackRelease>false</PackRelease>
