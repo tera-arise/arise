@@ -27,7 +27,7 @@ public abstract class PasswordStrategy
     public static bool IsPasswordValid(string password)
     {
         // https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#implement-proper-password-strength-controls
-        return password.Length is >= 8 and <= 128 && password.All(ch => char.IsAscii(ch) && !char.IsControl(ch));
+        return password.Length is >= 8 and <= 128 && password.All(static ch => char.IsAscii(ch) && !char.IsControl(ch));
     }
 
     public abstract byte[] GenerateSalt();

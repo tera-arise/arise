@@ -19,7 +19,7 @@ public sealed class NewsController : ApiController
             Articles = provider.Articles
                 .Skip(size * page)
                 .Take(size)
-                .Select(article => new NewsListResponse.NewsListResponseArticle
+                .Select(static article => new NewsListResponse.NewsListResponseArticle
                 {
                     Date = article.Date,
                     Slug = article.Slug,

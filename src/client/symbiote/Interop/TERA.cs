@@ -6,7 +6,7 @@ public static unsafe class TERA
 
     private static readonly object _lock = new();
 
-    private static Resolver _resolver = addr => (void*)addr;
+    private static Resolver _resolver = static addr => (void*)addr;
 
     public static void SetResolver(Resolver resolver)
     {

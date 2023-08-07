@@ -11,6 +11,6 @@ public static class WorldServiceCollectionExtensions
             .BindConfiguration("World")
             .Services
             .AddSingleton<DataTree>()
-            .AddHostedService(provider => provider.GetRequiredService<DataTree>());
+            .AddHostedService(static provider => provider.GetRequiredService<DataTree>());
     }
 }

@@ -36,7 +36,7 @@ internal static class GameProtection
     [SuppressMessage("", "CA5394")]
     public static void Terminate()
     {
-        _ = Task.Run(async () =>
+        _ = Task.Run(static async () =>
         {
             var (lower, upper) = GetExitDelayRange();
 

@@ -81,8 +81,8 @@ public sealed class NewsArticleProvider : IHostedService
         }
 
         Articles = articles
-            .OrderByDescending(article => article.Date)
-            .ThenBy(article => article.Slug)
+            .OrderByDescending(static article => article.Date)
+            .ThenBy(static article => article.Slug)
             .ToArray();
     }
 

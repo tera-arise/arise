@@ -7,7 +7,7 @@ internal static class Program
     {
         try
         {
-            using var parser = new Parser(settings =>
+            using var parser = new Parser(static settings =>
             {
                 settings.GetoptMode = true;
                 settings.PosixlyCorrect = true;
@@ -19,13 +19,13 @@ internal static class Program
             return await parser
                 .ParseArguments<MapperOptions>(args)
                 .MapResult(
-                    options =>
+                    static options =>
                     {
                         // TODO: Implement map/geometry extraction.
 
                         return Task.FromResult(0);
                     },
-                    _ => Task.FromResult(1));
+                    static _ => Task.FromResult(1));
         }
         catch (Exception ex)
         {

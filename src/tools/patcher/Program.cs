@@ -7,7 +7,7 @@ internal static class Program
     {
         try
         {
-            using var parser = new Parser(settings =>
+            using var parser = new Parser(static settings =>
             {
                 settings.GetoptMode = true;
                 settings.PosixlyCorrect = true;
@@ -19,13 +19,13 @@ internal static class Program
             return await parser
                 .ParseArguments<PatcherOptions>(args)
                 .MapResult(
-                    async options =>
+                    static async options =>
                     {
                         await ClientPatcher.PatchAsync(options);
 
                         return 0;
                     },
-                    _ => Task.FromResult(1));
+                    static _ => Task.FromResult(1));
         }
         catch (Exception ex)
         {

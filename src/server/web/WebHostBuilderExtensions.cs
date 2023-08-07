@@ -7,9 +7,10 @@ public static class WebHostBuilderExtensions
         return builder
             .ConfigureWebHost(builder =>
                 builder
-                    .UseKestrel((ctx, opts) =>
+                    .UseKestrel(static (ctx, opts) =>
                     {
-                        opts.ConfigureEndpointDefaults(opts => opts.Protocols = HttpProtocols.Http1AndHttp2AndHttp3);
+                        opts.ConfigureEndpointDefaults(
+                            static opts => opts.Protocols = HttpProtocols.Http1AndHttp2AndHttp3);
 
                         _ = opts.Configure(ctx.Configuration.GetSection("Kestrel"), reloadOnChange: true);
                     })
@@ -27,7 +28,7 @@ public static class WebHostBuilderExtensions
                             .UseWhen(static ctx => IsApi(ctx), app => app.UseExceptionHandler())
                             .UseWhen(
                                 static ctx => !IsApi(ctx),
-                                app =>
+                                static app =>
                                     app
                                         .UseExceptionHandler("/Home/Exception")
                                         .UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}"))
@@ -36,7 +37,7 @@ public static class WebHostBuilderExtensions
                             .UseRouting()
                             .UseAuthentication()
                             .UseAuthorization()
-                            .UseEndpoints(eps => eps.MapDefaultControllerRoute());
+                            .UseEndpoints(static eps => eps.MapDefaultControllerRoute());
                     }));
     }
 }

@@ -72,7 +72,7 @@ internal static class ClientDistributor
         var files = new SortedDictionary<string, FileInfo>(
             root
                 .EnumerateFiles("*", SearchOption.AllDirectories)
-                .ToDictionary(file => Path.GetRelativePath(root.FullName, file.FullName), file => file),
+                .ToDictionary(file => Path.GetRelativePath(root.FullName, file.FullName), static file => file),
             StringComparer.Ordinal);
         var entries = new SortedDictionary<string, ManifestEntry>(StringComparer.Ordinal);
 

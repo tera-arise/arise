@@ -11,7 +11,7 @@ internal static class Program
             .WriteTo.Console()
             .CreateBootstrapLogger();
 
-        using var parser = new Parser(settings =>
+        using var parser = new Parser(static settings =>
         {
             settings.GetoptMode = true;
             settings.PosixlyCorrect = true;
@@ -23,12 +23,12 @@ internal static class Program
         return parser
             .ParseArguments<DaemonOptions>(args)
             .MapResult(
-                async options =>
+                static async options =>
                 {
                     var flags = options.Services;
                     var builder = new HostBuilder()
                         .UseEnvironment(options.Environment.ToString())
-                        .ConfigureAppConfiguration((ctx, builder) =>
+                        .ConfigureAppConfiguration(static (ctx, builder) =>
                             builder
                                 .AddJsonFile($"{ThisAssembly.AssemblyName}.json", optional: false, reloadOnChange: true)
                                 .AddJsonFile(
@@ -36,7 +36,7 @@ internal static class Program
                                     $"{ctx.HostingEnvironment.EnvironmentName.ToLowerInvariant()}.json",
                                     optional: false,
                                     reloadOnChange: true))
-                        .UseSerilog((ctx, services, cfg) =>
+                        .UseSerilog(static (ctx, services, cfg) =>
                             cfg
                                 .ReadFrom.Configuration(ctx.Configuration)
                                 .ReadFrom.Services(services))
@@ -50,22 +50,22 @@ internal static class Program
                             if (flags.HasFlag(DaemonServices.World))
                                 _ = services.AddWorldServices();
                         })
-                        .UseDefaultServiceProvider(opts =>
+                        .UseDefaultServiceProvider(static opts =>
                         {
                             opts.ValidateOnBuild = true;
                             opts.ValidateScopes = true;
                         });
 
                     if (flags.HasFlag(DaemonServices.Web))
-                        _ = builder.ConfigureWebServices(builder => builder.UseSerilogRequestLogging());
+                        _ = builder.ConfigureWebServices(static builder => builder.UseSerilogRequestLogging());
 
                     await builder
-                        .ConfigureHostOptions(opts => opts.ShutdownTimeout = TimeSpan.FromMinutes(1))
+                        .ConfigureHostOptions(static opts => opts.ShutdownTimeout = TimeSpan.FromMinutes(1))
                         .UseSystemd()
                         .RunConsoleAsync();
 
                     return 0;
                 },
-                _ => Task.FromResult(1));
+                static _ => Task.FromResult(1));
     }
 }

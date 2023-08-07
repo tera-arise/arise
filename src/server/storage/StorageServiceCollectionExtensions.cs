@@ -12,7 +12,7 @@ public static class StorageServiceCollectionExtensions
             .BindConfiguration("Storage")
             .Services
             .AddSingleton<IClock>(SystemClock.Instance)
-            .AddMarten(provider =>
+            .AddMarten(static provider =>
             {
                 var store = new StoreOptions
                 {
@@ -32,8 +32,8 @@ public static class StorageServiceCollectionExtensions
                     typeof(ThisAssembly)
                         .Assembly
                         .ExportedTypes
-                        .Where(type => type.GetInterfaces().Contains(typeof(IDocument))));
-                _ = store.Policies.ForAllDocuments(mapping =>
+                        .Where(static type => type.GetInterfaces().Contains(typeof(IDocument))));
+                _ = store.Policies.ForAllDocuments(static mapping =>
                     {
                         if (mapping.DocumentType.Assembly == typeof(ThisAssembly).Assembly)
                             mapping.Alias = mapping.Alias[..^"Document".Length];

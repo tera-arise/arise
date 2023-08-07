@@ -16,18 +16,18 @@ public static class WebServiceCollectionExtensions
             .Services
             .AddHttpClient<DelegatingSendGridClient>()
             .Services
-            .AddTransient<ISendGridClient>(provider => provider.GetRequiredService<DelegatingSendGridClient>())
+            .AddTransient<ISendGridClient>(static provider => provider.GetRequiredService<DelegatingSendGridClient>())
             .AddTransient<MailSender>()
             .AddSingleton<GameDownloadProvider>()
             .AddSingleton<NewsArticleProvider>()
-            .AddHostedService(provider => provider.GetRequiredService<NewsArticleProvider>())
-            .AddControllersWithViews(opts =>
+            .AddHostedService(static provider => provider.GetRequiredService<NewsArticleProvider>())
+            .AddControllersWithViews(static opts =>
             {
                 opts.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
 
                 AccountModelBinderProvider.Register(opts);
             })
-            .AddJsonOptions(opts =>
+            .AddJsonOptions(static opts =>
             {
                 var json = opts.JsonSerializerOptions;
 
@@ -48,18 +48,18 @@ public static class WebServiceCollectionExtensions
             .AddAuthentication()
             .AddScheme<ApiAuthenticationOptions, ApiAuthenticationHandler>(ApiAuthenticationHandler.Name, null)
             .Services
-            .AddAuthorization(opts =>
+            .AddAuthorization(static opts =>
                 opts.AddPolicy(
                     "Api",
-                    opts =>
+                    static opts =>
                         opts
                             .AddAuthenticationSchemes(ApiAuthenticationHandler.Name)
                             .RequireAuthenticatedUser()))
             .AddProblemDetails()
-            .AddResponseCompression(opts => opts.EnableForHttps = true)
-            .Configure<BrotliCompressionProviderOptions>(opts => opts.Level = CompressionLevel.SmallestSize)
-            .Configure<GzipCompressionProviderOptions>(opts => opts.Level = CompressionLevel.SmallestSize)
-            .AddRouting(opts =>
+            .AddResponseCompression(static opts => opts.EnableForHttps = true)
+            .Configure<BrotliCompressionProviderOptions>(static opts => opts.Level = CompressionLevel.SmallestSize)
+            .Configure<GzipCompressionProviderOptions>(static opts => opts.Level = CompressionLevel.SmallestSize)
+            .AddRouting(static opts =>
             {
                 opts.LowercaseUrls = true;
                 opts.LowercaseQueryStrings = true;
