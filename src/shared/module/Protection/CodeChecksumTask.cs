@@ -38,7 +38,7 @@ internal sealed unsafe class CodeChecksumTask : GameProtectionTask
         //
         // TODO: Process in 64-bit chunks and partially unroll for better performance.
         for (var i = 0; i < _textLength; i++)
-            checksum = Sse42.Crc32(checksum, _text[i]);
+            checksum = BitOperations.Crc32C(checksum, _text[i]);
 
         return checksum;
     }
