@@ -4,6 +4,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Using Include="System.Collections.Frozen" />
         <Using Include="System.Collections.Immutable" />
         <Using Include="System.ComponentModel" />
         <Using Include="System.ComponentModel.DataAnnotations" />

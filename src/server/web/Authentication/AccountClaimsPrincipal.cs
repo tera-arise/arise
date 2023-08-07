@@ -6,7 +6,12 @@ public sealed class AccountClaimsPrincipal : ClaimsPrincipal
 
     public bool IsRecovered { get; }
 
-    private static readonly ReadOnlyMemory<AccountAccess> _levels = Enum.GetValues<AccountAccess>().Order().ToArray();
+    private static readonly ReadOnlyMemory<(AccountAccess, Claim)> _claims =
+        Enum
+            .GetValues<AccountAccess>()
+            .Order()
+            .Select(static access => (access, new Claim(ClaimTypes.Role, access.ToString())))
+            .ToArray();
 
     public AccountClaimsPrincipal(AccountDocument account, bool recovered)
     {
@@ -17,9 +22,9 @@ public sealed class AccountClaimsPrincipal : ClaimsPrincipal
 
         id.AddClaim(new(ClaimTypes.Email, account.Email.Address));
 
-        foreach (var access in _levels.Span)
+        foreach (var (access, claim) in _claims.Span)
             if (account.Access >= access)
-                id.AddClaim(new(ClaimTypes.Role, access.ToString()));
+                id.AddClaim(claim);
 
         AddIdentity(id);
     }

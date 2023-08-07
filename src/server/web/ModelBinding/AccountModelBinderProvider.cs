@@ -6,11 +6,11 @@ public sealed class AccountModelBinderProvider : IModelBinderProvider
 {
     public static AccountModelBinderProvider Instance { get; } = new();
 
-    private static readonly IReadOnlySet<Type> _types = new[]
+    private static readonly FrozenSet<Type> _types = new[]
     {
         typeof(AccountDocument),
         typeof(AccountClaimsPrincipal),
-    }.ToHashSet();
+    }.ToFrozenSet();
 
     public static void Register(MvcOptions options)
     {
