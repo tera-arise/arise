@@ -71,6 +71,10 @@ internal static class ClientPatcher
         // details without user consent, so patch it.
         await PatchAsync("S1LagLogDataSendingThread::SendReport", 0x7ff69b78e860, static asm => asm.ret());
 
+        // Disable launching the damage meter application and serving messages from the named pipe.
+        await PatchAsync("S1TeraAddOnPipeBase::Connect", 0x7ff69b9444e0, static asm => asm.ret());
+        await PatchAsync("S1TeraAddOnManager::Initialize", 0x7ff69b9459e0, static asm => asm.ret());
+
         // These are all hooked by the symbiote to integrate the QUIC-based network protocol. Make sure that the
         // unhooked versions of the functions just cause a crash.
         await PatchAsync("S1Connection::Connect", 0x7ff69baa9fc0, static asm => asm.ud2());
