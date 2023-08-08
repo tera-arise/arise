@@ -71,7 +71,7 @@
         <PackageVersion Include="NAudio.Wasapi"
                         Version="2.1.0" />
         <PackageVersion Include="Octokit"
-                        Version="7.0.1" />
+                        Version="7.1.0" />
         <PackageVersion Include="PeNet"
                         Version="3.0.0" />
         <PackageVersion Include="RadLine"
