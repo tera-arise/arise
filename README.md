@@ -38,11 +38,13 @@ own public servers, as long as the [licensing terms](#licensing) are observed.
 
 Building and running TERA Arise requires the following:
 
+* Windows 10+ or Ubuntu 23.04+
 * .NET SDK 8.0.0 Preview 6
 * GnuTLS 3.8.0+
 * PostgreSQL 14.6+
 
-Simply run `./cake` to build client and server artifacts.
+Simply run `./cake` to build client artifacts for Windows (x64) and server
+artifacts for the current platform (Windows or Linux, x64 or Arm64).
 
 By default, `./cake` will build in the `Debug` configuration which is suitable
 for local development. The `Release` configuration (i.e. `./cake -c Release`) is

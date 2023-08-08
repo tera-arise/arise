@@ -13,6 +13,7 @@
         <NullabilityInfoContextSupport>false</NullabilityInfoContextSupport>
         <OutputType>WinExe</OutputType>
         <RootNamespace>Arise.Client.Switcher</RootNamespace>
+        <SelfContained>true</SelfContained>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">

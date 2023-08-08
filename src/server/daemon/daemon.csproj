@@ -7,6 +7,7 @@
         <PublishIISAssets>false</PublishIISAssets>
         <RetainVMGarbageCollection>true</RetainVMGarbageCollection>
         <RootNamespace>Arise.Server.Daemon</RootNamespace>
+        <SelfContained>true</SelfContained>
     </PropertyGroup>
 
     <ItemGroup>

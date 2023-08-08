@@ -20,6 +20,12 @@
         <Nullable>enable</Nullable>
         <PackRelease>false</PackRelease>
         <PublishRelease>false</PublishRelease>
+        <RuntimeIdentifiers>
+            linux-arm64;
+            linux-x64;
+            win-arm64;
+            win-x64
+        </RuntimeIdentifiers>
         <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
         <TargetFramework>net8.0</TargetFramework>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

@@ -2,8 +2,8 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('$(MSBuildThisFile)', '$(MSBuildThisFileDirectory)..'))" />
 
     <PropertyGroup>
-        <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
-        <SelfContained>true</SelfContained>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <RuntimeIdentifiers />
         <TargetFramework>$(TargetFramework)-windows10.0.22621.0</TargetFramework>
     </PropertyGroup>
 </Project>
