@@ -17,15 +17,15 @@
 
     <ItemGroup>
         <PackageVersion Include="Avalonia.Diagnostics"
-                        Version="11.0.0" />
+                        Version="11.0.2" />
         <PackageVersion Include="Avalonia.Fonts.Inter"
-                        Version="11.0.0" />
+                        Version="11.0.2" />
         <PackageVersion Include="Avalonia.Skia"
-                        Version="11.0.0" />
+                        Version="11.0.2" />
         <PackageVersion Include="Avalonia.Themes.Fluent"
-                        Version="11.0.0" />
+                        Version="11.0.2" />
         <PackageVersion Include="Avalonia.Win32"
-                        Version="11.0.0" />
+                        Version="11.0.2" />
         <PackageVersion Include="CommandLineParser"
                         Version="2.9.1" />
         <PackageVersion Include="dnlib"
