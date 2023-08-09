@@ -46,7 +46,9 @@ DotNetMSBuildSettings ConfigureMSBuild(string target)
     };
 
     if (!string.IsNullOrWhiteSpace(vendor))
-        settings.Properties.Add("AriseVendorProjectPath", new[] { new FilePath(vendor).FullPath });
+        settings.Properties.Add(
+            "AriseVendorProjectPath",
+            new[] { new FilePath(vendor).MakeAbsolute(Context.Environment).FullPath });
 
     return settings;
 }
