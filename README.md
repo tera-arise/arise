@@ -47,7 +47,8 @@ artifacts for the current platform (Windows or Linux, x64 or Arm64).
 
 By default, `./cake` will build in the `Debug` configuration which is suitable
 for local development. The `Release` configuration (i.e. `./cake -c Release`) is
-used for staging and production scenarios.
+intended for staging and production deployments, but see the
+[vendoring instructions](#vendoring).
 
 You will need to set up one or more databases to run the server daemon. Below is
 one possible way to do it which will match the expectations of the default
@@ -68,8 +69,8 @@ CREATE DATABASE arise OWNER 'arise' TEMPLATE 'template0' ENCODING 'utf8' LOCALE 
 CREATE DATABASE arise OWNER 'arise' TEMPLATE 'template0' ENCODING 'utf8' LOCALE 'und-x-icu' ICU_LOCALE 'und' LOCALE_PROVIDER 'icu';
 ```
 
-Finally, while connected to the `arise` database, create schemas for each
-deployment environment:
+Finally, while connected to the `arise` database, create schemas for each kind
+of environment:
 
 ```sql
 CREATE SCHEMA development AUTHORIZATION arise;
@@ -77,8 +78,58 @@ CREATE SCHEMA production AUTHORIZATION arise;
 CREATE SCHEMA staging AUTHORIZATION arise;
 ```
 
+(The latter two are only required for release deployments.)
+
 With this setup, and assuming you have PostgreSQL listening locally, you should
 now be able to successfully do `dotnet run --project src/server/daemon`.
+
+## Vendoring
+
+In order to deploy TERA Arise in non-development scenarios, it is necessary to
+set up a so-called vendor project. This project provides network certificates,
+data center parameters, and more. A default vendor project intended for
+development purposes is included in the [`vnd`](vnd) directory and serves as a
+base for customization.
+
+The vendor project path can be overridden by passing `--vendor <path>` to
+`./cake`. The recommended setup is to have a repository with the TERA Arise
+repository as a submodule, alongside a custom vendor project. A small build
+script can then invoke `arise/cake -c Release --vendor vendor/vendor.proj`.
+
+Additionally, for the server daemon, an extra configuration file is required,
+named either `arised.staging.json` or `arised.production.json` depending on
+environment. The following is an example of a bare-bones production
+configuration:
+
+```json
+{
+  "Storage": {
+    "ConnectionString": "Host=storage.my-tera.com; Username=arise; Password=arise; Database=production; Root Certificate=postgresql.pem; SSL Mode=VerifyCA"
+  },
+  "Kestrel": {
+    "Certificates": {
+      "Default": {
+        "Path": "web.pem",
+        "KeyPath": "web.key"
+      }
+    },
+    "Endpoints": {
+      "Web": {
+        "Url": "https://my-tera.com:443"
+      }
+    }
+  },
+  "Web": {
+    "SendGridKey": "<SendGrid API key>"
+  },
+  "World": {
+    "Endpoints": [
+      "0.0.0.0:7801",
+      ":::7801"
+    ]
+  }
+}
+```
 
 ## Licensing
 
