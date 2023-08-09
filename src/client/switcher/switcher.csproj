@@ -40,7 +40,7 @@
             DependsOnTargets="GetGameRevision"
             AfterTargets="Build">
         <PropertyGroup>
-            <_ManifestJsonPath>$(BaseIntermediateOutputPath)manifest.json</_ManifestJsonPath>
+            <_ManifestJsonPath>$(OutputPath)manifest.json</_ManifestJsonPath>
         </PropertyGroup>
 
         <PropertyGroup>
