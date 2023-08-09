@@ -40,7 +40,6 @@ Building and running TERA Arise requires the following:
 
 * Windows 10+ or Ubuntu 23.04+
 * .NET SDK 8.0.0 Preview 6
-* GnuTLS 3.8.0+
 * PostgreSQL 14.6+
 
 Simply run `./cake` to build client artifacts for Windows (x64) and server
