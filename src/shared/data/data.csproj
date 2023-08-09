@@ -21,8 +21,8 @@
     <!-- TODO: XSLT support for stripping server-side data. -->
 
     <Target Name="_WriteDataCenterCache"
-            DependsOnTargets="GetDataCenterParameters">
-        <Hash ItemsToHash="$(MSBuildAllProjects); @(_DataSheet); $(DataCenterKey); $(DataCenterIV)"
+            DependsOnTargets="GetGameRevision; GetDataCenterParameters">
+        <Hash ItemsToHash="$(MSBuildAllProjects); @(_DataSheet); $(AriseGameRevision); $(AriseDataCenterKey); $(AriseDataCenterIV)"
               IgnoreCase="true">
             <Output TaskParameter="HashResult"
                     PropertyName="_DataCenterCacheHash" />
@@ -48,7 +48,7 @@
             <_CompressionLevel Condition="'$(Configuration)' == 'Release'">SmallestSize</_CompressionLevel>
         </PropertyGroup>
 
-        <Exec Command="dotnet novadrop-dc pack $(_DataSheetDirectory) $(_DataCenterPath) --revision $(DataCenterRevision) --compression $(_CompressionLevel) --encryption-key $(DataCenterKey) --encryption-iv $(DataCenterIV)"
+        <Exec Command="dotnet novadrop-dc pack $(_DataSheetDirectory) $(_DataCenterPath) --revision $(AriseGameRevision) --compression $(_CompressionLevel) --encryption-key $(AriseDataCenterKey) --encryption-iv $(AriseDataCenterIV)"
               StandardOutputImportance="low"
               StandardErrorImportance="low"
               CustomWarningRegularExpression="^  \[W\] \(\d+,\d+\): .*$"

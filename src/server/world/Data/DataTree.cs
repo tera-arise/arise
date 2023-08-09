@@ -27,7 +27,7 @@ public sealed partial class DataTree : IHostedService
 
         byte[] GetByteArray(string key)
         {
-            return Convert.FromHexString(attrs.Single(attr => attr.Key == key).Value!);
+            return Convert.FromHexString(attrs.Single(attr => attr.Key == $"Arise.DataCenter{key}").Value!);
         }
 
         var mode = _environment.IsDevelopment() ? DataCenterLoaderMode.Lazy : DataCenterLoaderMode.Eager;
@@ -36,8 +36,8 @@ public sealed partial class DataTree : IHostedService
         Root = await DataCenter.LoadAsync(
             stream,
             new DataCenterLoadOptions()
-                .WithKey(GetByteArray("DataCenterKey"))
-                .WithIV(GetByteArray("DataCenterIV"))
+                .WithKey(GetByteArray("Key"))
+                .WithIV(GetByteArray("IV"))
                 .WithStrict(true)
                 .WithLoaderMode(mode)
                 .WithMutability(DataCenterMutability.Immutable),

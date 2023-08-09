@@ -1,5 +1,5 @@
 {
-  "CN": "tera-arise.io",
+  "CN": "localhost",
   "ca": {
     "expiry": "876000h",
     "pathlen": 0,
@@ -11,12 +11,8 @@
   },
   "names": [
     {
-      "C": "DK",
-      "ST": "Nordjylland",
-      "L": "Thisted",
       "O": "TERA Arise",
-      "OU": "Engineering",
-      "E": "hi@tera-arise.io"
+      "OU": "Development"
     }
   ]
 }

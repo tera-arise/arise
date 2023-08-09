@@ -1,0 +1,77 @@
+<Project Sdk="Microsoft.Build.NoTargets">
+    <PropertyGroup>
+        <_CAPemPath>ca.pem</_CAPemPath>
+        <_CAKeyPath>ca.key</_CAKeyPath>
+    </PropertyGroup>
+
+    <!--
+    This target can be invoked from the command line to refresh the certificate
+    authority and the client/server certificates.
+    -->
+    <Target Name="RefreshNetworkCertificates">
+        <PropertyGroup>
+            <_CAResponsePath>$(BaseIntermediateOutputPath)ca.json</_CAResponsePath>
+        </PropertyGroup>
+
+        <Exec Command="cfssl gencert -initca ca.json > $(_CAResponsePath)" />
+        <Exec Command="jq .cert $(_CAResponsePath) -j > $(_CAPemPath)" />
+        <Exec Command="jq .key $(_CAResponsePath) -j > $(_CAKeyPath)" />
+
+        <ItemGroup>
+            <_CertificateRequest Include="arise"
+                                 Profile="client" />
+            <_CertificateRequest Include="arised"
+                                 Profile="server" />
+        </ItemGroup>
+
+        <MSBuild Projects="$(MSBuildProjectFullPath)"
+                 Targets="_RefreshNetworkCertificate"
+                 Properties="_CertificateName=%(_CertificateRequest.Identity); _CertificateProfile=%(Profile)" />
+    </Target>
+
+    <Target Name="_RefreshNetworkCertificate">
+        <PropertyGroup>
+            <_CertificateResponsePath>$(BaseIntermediateOutputPath)$(_CertificateName).json</_CertificateResponsePath>
+        </PropertyGroup>
+
+        <Exec Command="cfssl gencert -config cfssl.json -profile $(_CertificateProfile) -ca $(_CAPemPath) -ca-key $(_CAKeyPath) $(_CertificateName).json > $(_CertificateResponsePath)" />
+        <Exec Command="jq .cert $(_CertificateResponsePath) -j > $(_CertificateName).pem" />
+        <Exec Command="jq .key $(_CertificateResponsePath) -j > $(_CertificateName).key" />
+    </Target>
+
+    <Target Name="GetGameRevision"
+            DependsOnTargets="GetBuildVersion"
+            Returns="@(AriseGameRevision)">
+        <ItemGroup>
+            <AriseGameRevision Include="$(BuildVersion.Replace('.', ''))" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="GetDataCenterKey"
+            DependsOnTargets="GetBuildVersion"
+            Returns="@(AriseDataCenterKey)">
+        <ItemGroup>
+            <AriseDataCenterKey Include="$(GitCommitId.Substring(0, 32))" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="GetDataCenterIV"
+            DependsOnTargets="GetBuildVersion"
+            Returns="@(AriseDataCenterIV)">
+        <ItemGroup>
+            <AriseDataCenterIV Include="$(GitCommitId.Substring(8, 32))" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="GetNetworkCertificates"
+            Returns="@(AriseNetworkCertificate)">
+        <ItemGroup>
+            <AriseNetworkCertificate Include="$(MSBuildThisFileDirectory)ca.pem" />
+            <AriseNetworkCertificate Include="$(MSBuildThisFileDirectory)$(CertificateName).pem" />
+            <AriseNetworkCertificate Include="$(MSBuildThisFileDirectory)$(CertificateName).key" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="GetNewsArticlesPath"
+            Returns="@(AriseNewsArticlesPath)" />
+</Project>

@@ -4,6 +4,10 @@
         <RootNamespace>$(AssemblyName)</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <AriseEmbedNetworkCertificate>arise</AriseEmbedNetworkCertificate>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="../../shared/core/core.csproj" />
         <ProjectReference Include="../../shared/data/data.csproj" />
@@ -15,14 +19,4 @@
         <PackageReference Include="StreamJsonRpc" />
         <PackageReference Include="Vezel.Ruptura.Memory" />
     </ItemGroup>
-
-    <Target Name="_EmbedCertificates"
-            BeforeTargets="BeforeResGen">
-        <MSBuild Projects="../../shared/certificates/certificates.proj"
-                 Targets="GetCertificates"
-                 Properties="CertificateName=arise">
-            <Output TaskParameter="TargetOutputs"
-                    ItemName="EmbeddedResource" />
-        </MSBuild>
-    </Target>
 </Project>

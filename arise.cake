@@ -4,6 +4,7 @@
 
 var target = Argument("t", "default");
 var configuration = Argument("c", "Debug");
+var vendor = Argument("vendor", string.Empty);
 
 // Paths
 
@@ -27,7 +28,7 @@ DotNetMSBuildSettings ConfigureMSBuild(string target)
     }
     while (System.IO.File.Exists(name));
 
-    return new()
+    var settings = new DotNetMSBuildSettings
     {
         // TODO: https://github.com/dotnet/msbuild/issues/6756
         NoLogo = true,
@@ -43,6 +44,11 @@ DotNetMSBuildSettings ConfigureMSBuild(string target)
         // TODO: https://github.com/cake-build/cake/issues/4144
         ArgumentCustomization = args => args.Append("-ds:false"),
     };
+
+    if (!string.IsNullOrWhiteSpace(vendor))
+        settings.Properties.Add("AriseVendorProjectPath", new[] { new FilePath(vendor).FullPath });
+
+    return settings;
 }
 
 // Tasks

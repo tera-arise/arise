@@ -1,0 +1,76 @@
+<Project>
+    <ItemGroup>
+        <ProjectReference Include="$(AriseVendorProjectPath)" />
+    </ItemGroup>
+
+    <Target Name="GetGameRevision">
+        <MSBuild Projects="$(AriseVendorProjectPath)"
+                 Targets="GetGameRevision">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="AriseGameRevision" />
+        </MSBuild>
+
+        <PropertyGroup>
+            <AriseGameRevision>@(AriseGameRevision)</AriseGameRevision>
+        </PropertyGroup>
+    </Target>
+
+    <Target Name="_ApplyGameRevisionAttribute"
+            DependsOnTargets="GetGameRevision"
+            BeforeTargets="GetAssemblyAttributes">
+        <ItemGroup>
+            <AssemblyMetadata Include="Arise.GameRevision"
+                              Value="$(AriseGameRevision)" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="GetDataCenterParameters">
+        <MSBuild Projects="$(AriseVendorProjectPath)"
+                 Targets="GetDataCenterKey">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="AriseDataCenterKey" />
+        </MSBuild>
+        <MSBuild Projects="$(AriseVendorProjectPath)"
+                 Targets="GetDataCenterIV">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="AriseDataCenterIV" />
+        </MSBuild>
+
+        <PropertyGroup>
+            <AriseDataCenterKey>@(AriseDataCenterKey)</AriseDataCenterKey>
+            <AriseDataCenterIV>@(AriseDataCenterIV)</AriseDataCenterIV>
+        </PropertyGroup>
+    </Target>
+
+    <Target Name="_ApplyDataCenterAttributes"
+            DependsOnTargets="GetDataCenterParameters"
+            BeforeTargets="GetAssemblyAttributes"
+            Condition="'$(AriseApplyDataCenterAttributes)' == 'true'">
+        <ItemGroup>
+            <AssemblyMetadata Include="Arise.DataCenterKey"
+                              Value="$(AriseDataCenterKey)" />
+            <AssemblyMetadata Include="Arise.DataCenterIV"
+                              Value="$(AriseDataCenterIV)" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="_EmbedNetworkCertificates"
+            BeforeTargets="BeforeResGen"
+            Condition="'$(AriseEmbedNetworkCertificate)' != ''">
+        <MSBuild Projects="$(AriseVendorProjectPath)"
+                 Targets="GetNetworkCertificates"
+                 Properties="CertificateName=$(AriseEmbedNetworkCertificate)">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="AriseNetworkCertificate" />
+        </MSBuild>
+
+        <ItemGroup>
+            <EmbeddedResource Include="@(AriseNetworkCertificate)"
+                              LogicalName="%(Filename)%(Extension)"
+                              Type="Non-Resx"
+                              WithCulture="false" />
+        </ItemGroup>
+    </Target>
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('$(MSBuildThisFile)', '$(MSBuildThisFileDirectory)..'))" />
+</Project>

@@ -1,0 +1,12 @@
+<Project>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('$(MSBuildThisFile)', '$(MSBuildThisFileDirectory)..'))" />
+
+    <PropertyGroup>
+        <!--
+        This is meant to be overridden when producing a vendored (i.e.
+        deployable) build of TERA Arise. The default vendor project is only
+        suitable for development.
+        -->
+        <AriseVendorProjectPath>$(MSBuildThisFileDirectory)../vnd/vnd.proj</AriseVendorProjectPath>
+    </PropertyGroup>
+</Project>

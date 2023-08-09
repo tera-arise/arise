@@ -34,17 +34,4 @@
     <ItemGroup>
         <AdditionalFiles Include="$(MSBuildThisFileDirectory).stylecop.json" />
     </ItemGroup>
-
-    <!--
-    This is used to generate a fresh key and IV for the data center on every new
-    commit. It also derives the data center revision from the build version.
-    -->
-    <Target Name="GetDataCenterParameters"
-            DependsOnTargets="GetBuildVersion">
-        <PropertyGroup>
-            <DataCenterRevision>$(BuildVersion.Replace('.', ''))</DataCenterRevision>
-            <DataCenterKey>$(GitCommitId.Substring(0, 32))</DataCenterKey>
-            <DataCenterIV>$(GitCommitId.Substring(8, 32))</DataCenterIV>
-        </PropertyGroup>
-    </Target>
 </Project>

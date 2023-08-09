@@ -4,6 +4,11 @@
         <RootNamespace>$(AssemblyName)</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <AriseApplyDataCenterAttributes>true</AriseApplyDataCenterAttributes>
+        <AriseEmbedNetworkCertificate>arised</AriseEmbedNetworkCertificate>
+    </PropertyGroup>
+
     <ItemGroup>
         <Using Include="Arise.Data" />
         <Using Include="Vezel.Novadrop.Data" />
@@ -22,25 +27,4 @@
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
         <PackageReference Include="Vezel.Novadrop.Formats" />
     </ItemGroup>
-
-    <Target Name="_GetDataCenterAttributes"
-            BeforeTargets="GetAssemblyAttributes"
-            DependsOnTargets="GetDataCenterParameters">
-        <ItemGroup>
-            <AssemblyMetadata Include="DataCenterKey"
-                              Value="$(DataCenterKey)" />
-            <AssemblyMetadata Include="DataCenterIV"
-                              Value="$(DataCenterIV)" />
-        </ItemGroup>
-    </Target>
-
-    <Target Name="_EmbedCertificates"
-            BeforeTargets="BeforeResGen">
-        <MSBuild Projects="../../shared/certificates/certificates.proj"
-                 Targets="GetCertificates"
-                 Properties="CertificateName=arised">
-            <Output TaskParameter="TargetOutputs"
-                    ItemName="EmbeddedResource" />
-        </MSBuild>
-    </Target>
 </Project>

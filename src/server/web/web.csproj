@@ -39,8 +39,6 @@
     <ItemGroup>
         <Content Include="../../../arise.ico; ../../../arise.png"
                  Link="wwwroot/%(Filename)%(Extension)" />
-        <Content Include="articles/**"
-                 CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
     <ItemGroup>
@@ -59,12 +57,23 @@
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
 
-    <Target Name="_GetDataCenterAttributes"
-            BeforeTargets="GetAssemblyAttributes"
-            DependsOnTargets="GetDataCenterParameters">
-        <ItemGroup>
-            <AssemblyMetadata Include="DataCenterRevision"
-                              Value="$(DataCenterRevision)" />
+    <Target Name="_AddNewsArticles"
+            BeforeTargets="AssignTargetPaths">
+        <MSBuild Projects="$(AriseVendorProjectPath)"
+                 Targets="GetNewsArticlesPath">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="AriseNewsArticlesPath" />
+        </MSBuild>
+
+        <PropertyGroup>
+            <_NewsArticlesPath>@(AriseNewsArticlesPath)</_NewsArticlesPath>
+        </PropertyGroup>
+
+        <ItemGroup Condition="'$(_NewsArticlesPath)' != ''">
+            <_NewsArticle Include="$(_NewsArticlesPath)/**" />
+            <Content Include="@(_NewsArticle)"
+                     Link="articles/%(RecursiveDir)%(Filename)%(Extension)"
+                     CopyToOutputDirectory="PreserveNewest" />
         </ItemGroup>
     </Target>
 </Project>

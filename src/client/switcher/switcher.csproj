@@ -36,12 +36,8 @@
         <PackageReference Include="Vezel.Ruptura.Hosting" />
     </ItemGroup>
 
-    <!--
-    For production deployments, the data center revision is used as the official
-    release identifier visible to the launcher and users.
-    -->
     <Target Name="_WriteDeploymentManifest"
-            DependsOnTargets="GetDataCenterParameters"
+            DependsOnTargets="GetGameRevision"
             AfterTargets="Build">
         <PropertyGroup>
             <_ManifestJsonPath>$(BaseIntermediateOutputPath)manifest.json</_ManifestJsonPath>
@@ -51,7 +47,7 @@
             <_ManifestJson>
                 <![CDATA[
 {
-  "version": "$(DataCenterRevision)"
+  "version": "$(AriseGameRevision)"
 }
                 ]]>
             </_ManifestJson>

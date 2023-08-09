@@ -22,11 +22,7 @@
         <Content Include="$(AssemblyName).json"
                  CopyToOutputDirectory="PreserveNewest" />
         <Content Include="$(AssemblyName).development.json"
-                 CopyToOutputDirectory="PreserveNewest"
-                 Condition="'$(Configuration)' == 'Debug'" />
-        <Content Include="$(AssemblyName).production.json; $(AssemblyName).staging.json"
-                 CopyToOutputDirectory="PreserveNewest"
-                 Condition="'$(Configuration)' == 'Release'" />
+                 CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
     <ItemGroup>
@@ -41,96 +37,4 @@
         <PackageReference Include="Serilog.AspNetCore" />
         <PackageReference Include="Serilog.Sinks.Async" />
     </ItemGroup>
-
-    <Target Name="_WriteSystemdUnitFiles"
-            AfterTargets="Build">
-        <ItemGroup>
-            <_ServiceEnvironment Include="production; staging" />
-        </ItemGroup>
-
-        <MSBuild Projects="$(MSBuildProjectFullPath)"
-                 Targets="_WriteSystemdUnitFileEnvironment"
-                 Properties="ServiceEnvironment=%(_ServiceEnvironment.Identity)" />
-    </Target>
-
-    <Target Name="_WriteSystemdUnitFileEnvironment">
-        <ItemGroup>
-            <_ServiceRole Include="web; world" />
-        </ItemGroup>
-
-        <MSBuild Projects="$(MSBuildProjectFullPath)"
-                 Targets="_WriteSystemdUnitFileEnvironmentRole"
-                 Properties="ServiceRole=%(_ServiceRole.Identity)" />
-    </Target>
-
-    <Target Name="_WriteSystemdUnitFileEnvironmentRole">
-        <PropertyGroup>
-            <_ServiceDirectory>$(BaseIntermediateOutputPath)systemd/$(ServiceEnvironment)/</_ServiceDirectory>
-            <_ArisedServicePath>$(_ServiceDirectory)arised-$(ServiceRole).service</_ArisedServicePath>
-        </PropertyGroup>
-
-        <PropertyGroup>
-            <_ArisedService>
-                <![CDATA[
-[Unit]
-Description = Arise Daemon ($(ServiceRole))
-
-AssertArchitecture = x86-64
-AssertFileIsExecutable = /opt/arise/arised
-
-After = network-online.target
-
-[Service]
-Type = notify
-SyslogIdentifier = arised-$(ServiceRole)
-
-ExecStart = /opt/arise/arised -e $(ServiceEnvironment) -m $(ServiceRole)
-WorkingDirectory = /opt/arise
-
-Nice = -20
-IOSchedulingPriority = 0
-
-TimeoutStartSec = 10min
-TimeoutStopSec = 5min
-Restart = on-failure
-RestartSec = 1min
-
-DynamicUser = true
-LockPersonality = true
-MemoryDenyWriteExecute = true
-PrivateDevices = true
-PrivateIPC = true
-PrivateMounts = true
-PrivateUsers = true
-ProtectClock = true
-ProtectControlGroups = true
-ProtectHostname = true
-ProtectKernelLogs = true
-ProtectKernelModules = true
-ProtectKernelTunables = true
-ProtectProc = noaccess
-RestrictAddressFamilies = AF_UNIX AF_INET AF_INET6
-RestrictFileSystems = ext4 tmpfs
-RestrictNamespaces = true
-RestrictRealtime = true
-SecureBits = no-setuid-fixup-locked noroot-locked
-SystemCallArchitectures = native
-
-[Install]
-WantedBy = multi-user.target
-                ]]>
-            </_ArisedService>
-        </PropertyGroup>
-
-        <MakeDir Directories="$(_ServiceDirectory)" />
-
-        <WriteLinesToFile File="$(_ArisedServicePath)"
-                          Lines="$(_ArisedService)"
-                          Overwrite="true"
-                          WriteOnlyWhenDifferent="true" />
-
-        <ItemGroup>
-            <FileWrites Include="$(_ArisedServicePath)" />
-        </ItemGroup>
-    </Target>
 </Project>
