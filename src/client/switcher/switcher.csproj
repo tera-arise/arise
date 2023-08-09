@@ -38,7 +38,7 @@
 
     <Target Name="_WriteDeploymentManifest"
             DependsOnTargets="GetGameRevision"
-            AfterTargets="Build">
+            AfterTargets="AfterBuild">
         <PropertyGroup>
             <_ManifestJsonPath>$(OutputPath)manifest.json</_ManifestJsonPath>
         </PropertyGroup>
