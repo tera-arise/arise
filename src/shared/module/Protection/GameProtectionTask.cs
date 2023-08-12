@@ -2,13 +2,21 @@ namespace Arise.Module.Protection;
 
 internal abstract class GameProtectionTask
 {
+    private static volatile bool _unloading;
+
+    static GameProtectionTask()
+    {
+        // Exit when GameConnectionModule tries to unload us.
+        AssemblyLoadContext.GetLoadContext(typeof(ThisAssembly).Assembly)!.Unloading += static _ => _unloading = true;
+    }
+
     public void Start()
     {
         _ = Task.Run(async () =>
         {
             Initialize();
 
-            while (!Environment.HasShutdownStarted)
+            while (!_unloading)
             {
                 if (!Check())
                     GameProtection.Terminate();
