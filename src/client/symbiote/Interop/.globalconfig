@@ -1,4 +1,4 @@
-global_level = 3
+global_level = 4
 
 dotnet_diagnostic.CA1707.severity = none
 dotnet_diagnostic.CA1711.severity = none
