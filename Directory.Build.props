@@ -10,6 +10,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AnalysisLevel>latest-all</AnalysisLevel>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+        <EnablePreviewFeatures>true</EnablePreviewFeatures>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <ImplicitUsings>true</ImplicitUsings>
