@@ -1,7 +1,7 @@
 namespace Arise.Threading;
 
 [SuppressMessage("", "CA1815")]
-public readonly struct DispatcherEnterAwaitable
+public readonly struct DispatcherTryEnterAwaitable
 {
     public readonly struct DispatcherEnterAwaiter : ICriticalNotifyCompletion
     {
@@ -52,7 +52,7 @@ public readonly struct DispatcherEnterAwaitable
 
     private readonly Dispatcher _dispatcher;
 
-    internal DispatcherEnterAwaitable(Dispatcher dispatcher)
+    internal DispatcherTryEnterAwaitable(Dispatcher dispatcher)
     {
         _dispatcher = dispatcher;
     }

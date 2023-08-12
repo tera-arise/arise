@@ -65,7 +65,7 @@ public sealed class Dispatcher
         return _work.Writer.TryWrite((callback, state));
     }
 
-    public DispatcherEnterAwaitable Enter()
+    public DispatcherTryEnterAwaitable TryEnter()
     {
         // Like ValueTask, this should be immediately awaited exactly once.
         return new(this);
