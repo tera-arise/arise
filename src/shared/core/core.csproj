@@ -5,10 +5,18 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Using Include="Arise.IO" />
+        <Using Include="Arise.Threading" />
+        <Using Include="DotNext.Linq.Expressions" />
+        <Using Include="Microsoft.Extensions.ObjectPool" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="../common/common.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="DotNext.Metaprogramming" />
+        <PackageReference Include="Microsoft.Extensions.ObjectPool" />
     </ItemGroup>
 </Project>

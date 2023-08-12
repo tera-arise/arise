@@ -4,6 +4,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Using Include="System.Buffers" />
+        <Using Include="System.Buffers.Binary" />
         <Using Include="System.Collections.Frozen" />
         <Using Include="System.Collections.Immutable" />
         <Using Include="System.ComponentModel" />
@@ -19,12 +21,18 @@
         <Using Include="System.Net.Mail" />
         <Using Include="System.Net.Mime" />
         <Using Include="System.Net.Quic" />
+        <Using Include="System.Net.Security" />
+        <Using Include="System.Net.Sockets" />
         <Using Include="System.Numerics" />
         <Using Include="System.Reflection" />
         <Using Include="System.Runtime.CompilerServices" />
+        <Using Include="System.Runtime.ExceptionServices" />
         <Using Include="System.Runtime.InteropServices" />
+        <Using Include="System.Runtime.Loader" />
+        <Using Include="System.Security.Authentication" />
         <Using Include="System.Security.Claims" />
         <Using Include="System.Security.Cryptography" />
+        <Using Include="System.Security.Cryptography.X509Certificates" />
         <Using Include="System.Text.Encodings.Web" />
         <Using Include="System.Text.Json" />
         <Using Include="System.Text.Json.Serialization" />

@@ -55,6 +55,8 @@
                         Version="8.0.0-preview.7.23375.6" />
         <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions"
                         Version="8.0.0-preview.7.23375.6" />
+        <PackageVersion Include="Microsoft.Extensions.ObjectPool"
+                        Version="8.0.0-preview.7.23375.9" />
         <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions"
                         Version="8.0.0-preview.7.23375.6" />
         <PackageVersion Include="Microsoft.Windows.CsWin32"

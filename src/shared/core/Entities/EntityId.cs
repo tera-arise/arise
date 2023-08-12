@@ -35,7 +35,8 @@ public readonly struct EntityId :
 
     internal long ToRaw()
     {
-        return Bits.Join([(Id, 0, 32), ((int)Type, 32, 32)]);
+        // TODO: Use collection expression.
+        return Bits.Join<long>(stackalloc (long, int, int)[] { (Id, 0, 32), ((int)Type, 32, 32) });
     }
 
     public bool Equals(EntityId other)

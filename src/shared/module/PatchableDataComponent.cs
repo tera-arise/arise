@@ -1,28 +1,9 @@
 namespace Arise.Module;
 
-public sealed class GameDataComponent : DataComponent
+public sealed class PatchableDataComponent : DataComponent
 {
-    public override ReadOnlyMemory<byte> Key { get; }
-
-    public override ReadOnlyMemory<byte> IV { get; }
-
-    public GameDataComponent()
-    {
-        var key = new byte[16];
-
-        InitializeKey(key);
-
-        Key = key;
-
-        var iv = new byte[16];
-
-        InitializeIV(iv);
-
-        IV = iv;
-    }
-
     [SpecialName]
-    private static void InitializeKey(Span<byte> key)
+    protected override void InitializeKey(Span<byte> key)
     {
         // Filled in by the server's ModuleProvider.
 
@@ -45,7 +26,7 @@ public sealed class GameDataComponent : DataComponent
     }
 
     [SpecialName]
-    private static void InitializeIV(Span<byte> iv)
+    protected override void InitializeIV(Span<byte> iv)
     {
         // Filled in by the server's ModuleProvider.
 
