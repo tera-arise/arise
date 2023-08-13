@@ -11,7 +11,6 @@
         <Using Include="Marten.Schema" />
         <Using Include="Marten.Services.Json" />
         <Using Include="Weasel.Core" />
-        <Using Include="Weasel.Postgresql.Tables" />
     </ItemGroup>
 
     <ItemGroup>
