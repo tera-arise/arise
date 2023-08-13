@@ -1,14 +1,14 @@
-namespace Arise.Client.Symbiote.Interop;
+namespace Vezel.Novadrop.Interop;
 
 [StructLayout(LayoutKind.Explicit, Size = 0x64)]
 public unsafe struct S1CommandQueue
 {
     public static delegate* unmanaged<S1CommandQueue*, byte*, void> EnqueuePacket { get; } =
-        (delegate* unmanaged<S1CommandQueue*, byte*, void>)TERA.Resolve(0x7ff69baac250);
+        (delegate* unmanaged<S1CommandQueue*, byte*, void>)Tera.Resolve(0x7ff69baac250);
 
     public static delegate* unmanaged<S1CommandQueue*, void> RunCommands { get; } =
-        (delegate* unmanaged<S1CommandQueue*, void>)TERA.Resolve(0x7ff69baaa560);
+        (delegate* unmanaged<S1CommandQueue*, void>)Tera.Resolve(0x7ff69baaa560);
 
     public static delegate* unmanaged<S1CommandQueue*, byte*, BOOL> RunPacketHandler { get; } =
-        (delegate* unmanaged<S1CommandQueue*, byte*, BOOL>)TERA.Resolve(0x7ff69baad410);
+        (delegate* unmanaged<S1CommandQueue*, byte*, BOOL>)Tera.Resolve(0x7ff69baad410);
 }

@@ -1,4 +1,4 @@
-namespace Arise.Client.Symbiote.Interop;
+namespace Vezel.Novadrop.Interop;
 
 [StructLayout(LayoutKind.Explicit, Size = 0x8)]
 public unsafe struct IS1ConnectionEventHandler
@@ -16,7 +16,7 @@ public unsafe struct IS1ConnectionEventHandler
     }
 
     public static delegate* unmanaged<IS1ConnectionEventHandler*, byte*, int, void> OnReceive { get; } =
-        (delegate* unmanaged<IS1ConnectionEventHandler*, byte*, int, void>)TERA.Resolve(0x7ff69b9c1ce0);
+        (delegate* unmanaged<IS1ConnectionEventHandler*, byte*, int, void>)Tera.Resolve(0x7ff69b9c1ce0);
 
     [FieldOffset(0x0)]
     public IS1MemoryObject IS1MemoryObject;

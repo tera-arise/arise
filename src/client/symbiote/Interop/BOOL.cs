@@ -1,4 +1,4 @@
-namespace Arise.Client.Symbiote.Interop;
+namespace Vezel.Novadrop.Interop;
 
 [StructLayout(LayoutKind.Sequential)]
 public readonly unsafe struct BOOL :
