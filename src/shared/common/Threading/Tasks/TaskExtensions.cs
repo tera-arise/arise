@@ -1,4 +1,4 @@
-namespace Arise.Threading;
+namespace Arise.Threading.Tasks;
 
 public static class TaskExtensions
 {

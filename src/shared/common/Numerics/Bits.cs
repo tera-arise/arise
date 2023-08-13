@@ -1,4 +1,4 @@
-namespace Arise;
+namespace Arise.Numerics;
 
 public static class Bits
 {
