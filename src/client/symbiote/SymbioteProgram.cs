@@ -1,6 +1,6 @@
-namespace Arise.Client.Symbiote;
+namespace Arise.Client;
 
-public static class GameProgram
+public static class SymbioteProgram
 {
     public static Task<int> RunAsync(ReadOnlyMemory<string> args, int ppid, Action waker)
     {

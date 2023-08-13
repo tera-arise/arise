@@ -6,7 +6,7 @@ internal sealed class InjectedProgram : IInjectedProgram
     public static Task<int> RunAsync(InjectedProgramContext context, ReadOnlyMemory<string> args)
     {
         return context.InjectorProcessId is int ppid
-            ? GameProgram.RunAsync(args, ppid, context.WakeUp)
+            ? SymbioteProgram.RunAsync(args, ppid, context.WakeUp)
             : LauncherProgram.RunAsync(args);
     }
 }

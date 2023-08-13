@@ -24,7 +24,6 @@
 
     <ItemGroup>
         <Using Include="Arise.Client.Launcher" />
-        <Using Include="Arise.Client.Symbiote" />
     </ItemGroup>
 
     <ItemGroup>
