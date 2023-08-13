@@ -1,4 +1,4 @@
-using Arise.Modules;
+using Arise.Bridge;
 
 namespace Arise.Net;
 

@@ -1,4 +1,4 @@
-namespace Arise.Module.Protection;
+namespace Arise.Bridge.Protection;
 
 internal abstract class GameProtectionTask
 {

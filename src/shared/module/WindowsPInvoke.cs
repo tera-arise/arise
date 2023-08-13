@@ -1,4 +1,4 @@
-namespace Arise.Module;
+namespace Arise.Bridge;
 
 [SuppressMessage("", "SA1307")]
 [SuppressMessage("", "SA1310")]

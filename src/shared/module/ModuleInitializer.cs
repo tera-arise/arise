@@ -1,6 +1,6 @@
-using Arise.Module.Protection;
+using Arise.Bridge.Protection;
 
-namespace Arise.Module;
+namespace Arise.Bridge;
 
 internal static unsafe class ModuleInitializer
 {

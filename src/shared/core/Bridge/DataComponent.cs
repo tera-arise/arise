@@ -1,4 +1,4 @@
-namespace Arise.Modules;
+namespace Arise.Bridge;
 
 public abstract class DataComponent
 {

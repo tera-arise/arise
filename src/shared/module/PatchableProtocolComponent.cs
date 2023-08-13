@@ -1,4 +1,4 @@
-namespace Arise.Module;
+namespace Arise.Bridge;
 
 public sealed class PatchableProtocolComponent : ProtocolComponent
 {

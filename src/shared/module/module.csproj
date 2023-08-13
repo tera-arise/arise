@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <AssemblyName>Arise.Module</AssemblyName>
-        <RootNamespace>$(AssemblyName)</RootNamespace>
+        <RootNamespace>Arise.Bridge</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
         <Using Include="Arise.IO" />
-        <Using Include="Arise.Modules" />
         <Using Include="Arise.Net.Packets" />
     </ItemGroup>
 

@@ -1,6 +1,6 @@
-using static Arise.Module.WindowsPInvoke;
+using static Arise.Bridge.WindowsPInvoke;
 
-namespace Arise.Module.Protection;
+namespace Arise.Bridge.Protection;
 
 internal static class GameProtection
 {

@@ -1,6 +1,6 @@
 using Arise.Net.Packets;
 
-namespace Arise.Modules;
+namespace Arise.Bridge;
 
 public abstract class ProtocolComponent
 {
