@@ -32,9 +32,12 @@ internal sealed unsafe class CodeChecksumTask : GameProtectionTask
     private uint CalculateChecksum()
     {
         var checksum = 0u;
+        var i = 0;
 
-        // TODO: Process in 64-bit chunks and partially unroll for better performance.
-        for (var i = 0; i < _textLength; i++)
+        for (; i < _textLength - _textLength % sizeof(ulong); i += sizeof(ulong))
+            checksum = BitOperations.Crc32C(checksum, Unsafe.ReadUnaligned<ulong>(_text + i));
+
+        for (; i < _textLength; i++)
             checksum = BitOperations.Crc32C(checksum, _text[i]);
 
         return checksum;
