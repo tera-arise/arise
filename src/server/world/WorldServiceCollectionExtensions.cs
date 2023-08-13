@@ -10,7 +10,7 @@ public static class WorldServiceCollectionExtensions
             .AddOptions<WorldOptions>()
             .BindConfiguration("World")
             .Services
-            .AddSingleton<DataTree>()
-            .AddHostedService(static provider => provider.GetRequiredService<DataTree>());
+            .AddSingleton<DataGraph>()
+            .AddHostedService(static provider => provider.GetRequiredService<DataGraph>());
     }
 }

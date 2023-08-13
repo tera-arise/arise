@@ -1,6 +1,6 @@
 namespace Arise.Server.World.Data;
 
-public sealed partial class DataTree : IHostedService
+public sealed partial class DataGraph : IHostedService
 {
     private static partial class Log
     {
@@ -12,9 +12,9 @@ public sealed partial class DataTree : IHostedService
 
     private readonly IHostEnvironment _environment;
 
-    private readonly ILogger<DataTree> _logger;
+    private readonly ILogger<DataGraph> _logger;
 
-    public DataTree(IHostEnvironment environment, ILogger<DataTree> logger)
+    public DataGraph(IHostEnvironment environment, ILogger<DataGraph> logger)
     {
         _environment = environment;
         _logger = logger;
