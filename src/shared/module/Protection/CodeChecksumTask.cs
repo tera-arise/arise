@@ -33,9 +33,6 @@ internal sealed unsafe class CodeChecksumTask : GameProtectionTask
     {
         var checksum = 0u;
 
-        // We use the SSE 4.2 intrinsic instead of System.IO.Hashing.Crc32 because the latter would require pulling in a
-        // package reference, and the bridge module must not have dependencies except for in-box BCL assemblies.
-        //
         // TODO: Process in 64-bit chunks and partially unroll for better performance.
         for (var i = 0; i < _textLength; i++)
             checksum = BitOperations.Crc32C(checksum, _text[i]);
