@@ -29,6 +29,12 @@
         <Using Include="Microsoft.AspNetCore.ResponseCompression" />
         <Using Include="Microsoft.AspNetCore.Server.Kestrel.Core" />
         <Using Include="Microsoft.AspNetCore.WebUtilities" />
+        <Using Include="Microsoft.Extensions.DependencyInjection" />
+        <Using Include="Microsoft.Extensions.FileProviders" />
+        <Using Include="Microsoft.Extensions.Hosting" />
+        <Using Include="Microsoft.Extensions.Logging" />
+        <Using Include="Microsoft.Extensions.Options" />
+        <Using Include="NodaTime" />
         <Using Include="NodaTime.Serialization.SystemTextJson" />
         <Using Include="SendGrid" />
         <Using Include="SendGrid.Helpers.Errors.Model" />

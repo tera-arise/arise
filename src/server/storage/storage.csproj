@@ -10,6 +10,10 @@
         <Using Include="Marten.NodaTimePlugin" />
         <Using Include="Marten.Schema" />
         <Using Include="Marten.Services.Json" />
+        <Using Include="Microsoft.Extensions.DependencyInjection" />
+        <Using Include="Microsoft.Extensions.Hosting" />
+        <Using Include="Microsoft.Extensions.Options" />
+        <Using Include="NodaTime" />
         <Using Include="Weasel.Core" />
     </ItemGroup>
 
