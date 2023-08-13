@@ -11,9 +11,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Using Include="Arise.Server" />
         <Using Include="Arise.Server.Storage" />
         <Using Include="Arise.Server.Web" />
-        <Using Include="Arise.Server.World" />
         <Using Include="CommandLine" />
         <Using Include="Serilog" />
     </ItemGroup>

@@ -1,4 +1,4 @@
-namespace Arise.Server.World.Data;
+namespace Arise.Server.Data;
 
 public sealed partial class DataGraph : IHostedService
 {

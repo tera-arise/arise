@@ -1,6 +1,6 @@
-using Arise.Server.World.Data;
+using Arise.Server.Data;
 
-namespace Arise.Server.World;
+namespace Arise.Server;
 
 public static class WorldServiceCollectionExtensions
 {

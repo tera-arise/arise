@@ -1,4 +1,4 @@
-namespace Arise.Server.World;
+namespace Arise.Server;
 
 public sealed class WorldOptions : IOptions<WorldOptions>
 {

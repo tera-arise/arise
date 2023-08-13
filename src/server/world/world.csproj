@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <AssemblyName>Arise.Server.World</AssemblyName>
-        <RootNamespace>$(AssemblyName)</RootNamespace>
+        <RootNamespace>Arise.Server</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup>
