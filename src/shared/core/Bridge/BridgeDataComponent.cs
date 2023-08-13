@@ -1,13 +1,13 @@
 namespace Arise.Bridge;
 
-public abstract class DataComponent
+public abstract class BridgeDataComponent
 {
     public ReadOnlyMemory<byte> Key { get; }
 
     public ReadOnlyMemory<byte> IV { get; }
 
     [SuppressMessage("", "CA2214")]
-    protected DataComponent()
+    protected BridgeDataComponent()
     {
         var key = new byte[16];
         var iv = new byte[16];

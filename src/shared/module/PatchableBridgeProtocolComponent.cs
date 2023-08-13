@@ -1,6 +1,6 @@
 namespace Arise.Bridge;
 
-public sealed class PatchableProtocolComponent : ProtocolComponent
+public sealed class PatchableBridgeProtocolComponent : BridgeProtocolComponent
 {
     [SpecialName]
     protected override void InitializeTeraCodes(Dictionary<TeraGamePacketCode, ushort> codes)

@@ -64,7 +64,7 @@ internal sealed class GameConnectionBuffer
         PayloadStream.Buffer = _data.AsMemory(AriseHeaderSize, length ?? MaxPayloadSize);
     }
 
-    public void ConvertToSession(ProtocolComponent protocol)
+    public void ConvertToSession(BridgeProtocolComponent protocol)
     {
         Code = Channel switch
         {
@@ -74,7 +74,7 @@ internal sealed class GameConnectionBuffer
         };
     }
 
-    public bool TryConvertToReal(ProtocolComponent protocol)
+    public bool TryConvertToReal(BridgeProtocolComponent protocol)
     {
         var (exists, code) = Channel switch
         {

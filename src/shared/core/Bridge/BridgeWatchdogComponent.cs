@@ -1,6 +1,6 @@
 namespace Arise.Bridge;
 
-public abstract class WatchdogComponent
+public abstract class BridgeWatchdogComponent
 {
     public abstract void WriteReport(GameStreamAccessor accessor);
 }

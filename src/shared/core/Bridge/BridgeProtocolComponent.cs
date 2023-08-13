@@ -2,7 +2,7 @@ using Arise.Net.Packets;
 
 namespace Arise.Bridge;
 
-public abstract class ProtocolComponent
+public abstract class BridgeProtocolComponent
 {
     public FrozenDictionary<TeraGamePacketCode, ushort> TeraRealToSession { get; }
 
@@ -13,7 +13,7 @@ public abstract class ProtocolComponent
     public FrozenDictionary<ushort, AriseGamePacketCode> AriseSessionToReal { get; }
 
     [SuppressMessage("", "CA2214")]
-    protected ProtocolComponent()
+    protected BridgeProtocolComponent()
     {
         var teraCodes = new Dictionary<TeraGamePacketCode, ushort>();
         var ariseCodes = new Dictionary<AriseGamePacketCode, ushort>();

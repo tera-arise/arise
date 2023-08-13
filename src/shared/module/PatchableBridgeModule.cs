@@ -2,9 +2,9 @@ namespace Arise.Bridge;
 
 public sealed class PatchableBridgeModule : BridgeModule
 {
-    public override PatchableDataComponent Data { get; } = new PatchableDataComponent();
+    public override PatchableBridgeDataComponent Data { get; } = new PatchableBridgeDataComponent();
 
-    public override PatchableProtocolComponent Protocol { get; } = new PatchableProtocolComponent();
+    public override PatchableBridgeProtocolComponent Protocol { get; } = new PatchableBridgeProtocolComponent();
 
-    public override PatchableWatchdogComponent Watchdog { get; } = new PatchableWatchdogComponent();
+    public override PatchableBridgeWatchdogComponent Watchdog { get; } = new PatchableBridgeWatchdogComponent();
 }

@@ -2,9 +2,9 @@ namespace Arise.Bridge;
 
 public abstract class BridgeModule
 {
-    public abstract DataComponent Data { get; }
+    public abstract BridgeDataComponent Data { get; }
 
-    public abstract ProtocolComponent Protocol { get; }
+    public abstract BridgeProtocolComponent Protocol { get; }
 
-    public abstract WatchdogComponent Watchdog { get; }
+    public abstract BridgeWatchdogComponent Watchdog { get; }
 }

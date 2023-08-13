@@ -1,6 +1,6 @@
 namespace Arise.Bridge;
 
-public sealed class PatchableDataComponent : DataComponent
+public sealed class PatchableBridgeDataComponent : BridgeDataComponent
 {
     [SpecialName]
     protected override void InitializeKey(Span<byte> key)
