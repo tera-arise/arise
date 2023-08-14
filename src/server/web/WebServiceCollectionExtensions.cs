@@ -33,13 +33,11 @@ public static class WebServiceCollectionExtensions
 
                 json.AllowTrailingCommas = true;
                 json.NumberHandling |=
-                    JsonNumberHandling.WriteAsString |
-                    JsonNumberHandling.AllowNamedFloatingPointLiterals;
+                    JsonNumberHandling.WriteAsString | JsonNumberHandling.AllowNamedFloatingPointLiterals;
                 json.ReadCommentHandling = JsonCommentHandling.Skip;
                 json.WriteIndented = true;
 
-                json.Converters.Add(
-                    new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false));
+                json.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false));
 
                 _ = json.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
             })

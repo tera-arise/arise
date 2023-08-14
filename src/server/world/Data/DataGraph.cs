@@ -22,7 +22,6 @@ public sealed partial class DataGraph : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        await using var stream = EmbeddedDataCenter.OpenStream();
         var attrs = typeof(ThisAssembly).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>();
 
         byte[] GetByteArray(string key)
@@ -32,6 +31,8 @@ public sealed partial class DataGraph : IHostedService
 
         var mode = _environment.IsDevelopment() ? DataCenterLoaderMode.Lazy : DataCenterLoaderMode.Eager;
         var stamp = Stopwatch.GetTimestamp();
+
+        await using var stream = EmbeddedDataCenter.OpenStream();
 
         Root = await DataCenter.LoadAsync(
             stream,

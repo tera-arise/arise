@@ -11,9 +11,12 @@
 
     <ItemGroup>
         <Using Include="Arise.Data" />
+        <Using Include="Arise.Net" />
+        <Using Include="Arise.Net.Packets" />
         <Using Include="Microsoft.Extensions.DependencyInjection" />
         <Using Include="Microsoft.Extensions.Hosting" />
         <Using Include="Microsoft.Extensions.Logging" />
+        <Using Include="Microsoft.Extensions.ObjectPool" />
         <Using Include="Microsoft.Extensions.Options" />
         <Using Include="Vezel.Novadrop.Data" />
     </ItemGroup>

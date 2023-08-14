@@ -33,6 +33,7 @@
         <Using Include="System.Security.Claims" />
         <Using Include="System.Security.Cryptography" />
         <Using Include="System.Security.Cryptography.X509Certificates" />
+        <Using Include="System.Text" />
         <Using Include="System.Text.Encodings.Web" />
         <Using Include="System.Text.Json" />
         <Using Include="System.Text.Json.Serialization" />
