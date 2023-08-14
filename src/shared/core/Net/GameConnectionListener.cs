@@ -2,7 +2,11 @@ namespace Arise.Net;
 
 public sealed class GameConnectionListener : GameConnectionManager
 {
-    public event Action<GameConnectionListener, IPEndPoint?, GameConnectionException?>? ClientDropped;
+    public event Action<GameConnectionListener, IPEndPoint?, GameConnectionException>? ConnectionDropped;
+
+    public IPEndPoint EndPoint => _listener.LocalEndPoint;
+
+    private readonly TaskCompletionSource _ready = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
     private readonly CancellationTokenSource _cts = new();
 
@@ -29,6 +33,9 @@ public sealed class GameConnectionListener : GameConnectionManager
         // Signal the accept task to shut down.
         await _cts.CancelAsync().ConfigureAwait(false);
 
+        // Make sure the accept task has actually started so that it can be stopped.
+        Start();
+
         // Note that the accept task is not expected to encounter any exceptions.
         await _acceptDone.Task.ConfigureAwait(false);
 
@@ -36,6 +43,11 @@ public sealed class GameConnectionListener : GameConnectionManager
         _cts.Dispose();
 
         await _listener.DisposeAsync().ConfigureAwait(false);
+    }
+
+    public void Start()
+    {
+        _ = _ready.TrySetResult();
     }
 
     public static async ValueTask<GameConnectionListener> CreateAsync(
@@ -78,6 +90,8 @@ public sealed class GameConnectionListener : GameConnectionManager
 
     private async Task AcceptClientsAsync(CancellationToken cancellationToken)
     {
+        await _ready.Task.ConfigureAwait(false);
+
         try
         {
             while (!cancellationToken.IsCancellationRequested)
@@ -95,7 +109,7 @@ public sealed class GameConnectionListener : GameConnectionManager
 
                     _ = ExceptionDispatchInfo.SetCurrentStackTrace(exception);
 
-                    ClientDropped?.Invoke(this, null, exception);
+                    ConnectionDropped?.Invoke(this, null, exception);
 
                     continue;
                 }
@@ -159,7 +173,7 @@ public sealed class GameConnectionListener : GameConnectionManager
 
             _ = ExceptionDispatchInfo.SetCurrentStackTrace(exception);
 
-            ClientDropped?.Invoke(this, quicConnection.RemoteEndPoint, exception);
+            ConnectionDropped?.Invoke(this, quicConnection.RemoteEndPoint, exception);
 
             return;
         }

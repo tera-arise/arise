@@ -1,20 +1,9 @@
 using Arise.Bridge;
-using Arise.Net.Packets;
 
 namespace Arise.Net;
 
 public sealed class GameConnection : IAsyncDisposable
 {
-    public event Action<GameConnection, GameConnectionException?>? Disconnected;
-
-    public event Action<GameConnectionConduit, TeraGamePacketCode, ReadOnlyMemory<byte>>? RawTeraPacketReceived;
-
-    public event Action<GameConnectionConduit, AriseGamePacketCode, ReadOnlyMemory<byte>>? RawArisePacketReceived;
-
-    public event Action<GameConnectionConduit, TeraGamePacket>? TeraPacketReceived;
-
-    public event Action<GameConnectionConduit, AriseGamePacket>? ArisePacketReceived;
-
     public GameConnectionManager Manager { get; }
 
     public IPEndPoint EndPoint => _connection.RemoteEndPoint;
@@ -70,19 +59,19 @@ public sealed class GameConnection : IAsyncDisposable
         }
         catch (AggregateException ex)
         {
-            var flattened = ex.Flatten();
+            var fex = ex.Flatten();
 
-            // Can only be genuine network errors (IsNetworkException and not connection/stream abort).
+            // Can only be genuine network errors (IsNetworkException and not IsInnocuousError).
             exception = new(
                 "A game connection was disconnected due to an error.",
-                flattened.InnerExceptions.Count == 1 ? flattened.InnerException! : flattened);
+                fex.InnerExceptions.Count == 1 ? fex.InnerException! : fex);
         }
 
         _module.Dispose();
 
         await _connection.DisposeAsync().ConfigureAwait(false);
 
-        Disconnected?.Invoke(this, exception);
+        Manager.HandleDisconnect(this, exception);
     }
 
     internal void InternalDispose()
@@ -96,44 +85,9 @@ public sealed class GameConnection : IAsyncDisposable
             _ = Task.Run(async () => await DisposeAsync().ConfigureAwait(false));
     }
 
-    public void Start()
+    internal void Start()
     {
         _ready.SetResult();
-    }
-
-    internal void HandlePacket(GameConnectionConduit conduit, GameConnectionBuffer buffer)
-    {
-        var channel = buffer.Channel;
-        var code = buffer.Code;
-
-        GamePacket DeserializePacket()
-        {
-            var packet = GamePacketSerializer.CreatePacket(channel, code);
-
-            buffer.ResetStream(length: buffer.Length);
-
-            GamePacketSerializer.DeserializePacket(packet, buffer.PayloadAccessor);
-
-            return packet;
-        }
-
-        switch (channel)
-        {
-            case GameConnectionChannel.Tera:
-                RawTeraPacketReceived?.Invoke(conduit, (TeraGamePacketCode)code, buffer.Payload);
-
-                if (TeraPacketReceived is { } teraReceived)
-                    teraReceived(conduit, Unsafe.As<TeraGamePacket>(DeserializePacket()));
-
-                break;
-            case GameConnectionChannel.Arise:
-                RawArisePacketReceived?.Invoke(conduit, (AriseGamePacketCode)code, buffer.Payload);
-
-                if (ArisePacketReceived is { } ariseReceived)
-                    ariseReceived(conduit, Unsafe.As<AriseGamePacket>(DeserializePacket()));
-
-                break;
-        }
     }
 
     internal static bool IsNetworkException(Exception exception)

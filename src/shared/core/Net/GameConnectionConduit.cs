@@ -174,7 +174,8 @@ public sealed class GameConnectionConduit
     {
         await ready.ConfigureAwait(false);
 
-        var buffers = Connection.Manager.Buffers;
+        var manager = Connection.Manager;
+        var buffers = manager.Buffers;
 
         // We can use a single buffer for receiving packets for the lifetime of the connection. This works out because
         // the raw packet events on GameConnection are not expected to keep the payload buffer around after they return,
@@ -192,7 +193,7 @@ public sealed class GameConnectionConduit
 
                 await _stream.ReadExactlyAsync(buffer.Payload, cancellationToken).ConfigureAwait(false);
 
-                Connection.HandlePacket(this, buffer);
+                manager.HandlePacket(this, buffer);
             }
         }
         catch (Exception ex)
