@@ -2,10 +2,10 @@ namespace Arise.Bridge;
 
 public sealed class PatchableBridgeDataComponent : BridgeDataComponent
 {
-    [SpecialName]
+    [Obfuscation]
     protected override void InitializeKey(Span<byte> key)
     {
-        // Filled in by the server's ModuleProvider.
+        // Filled in by the server's BridgeModuleProvider.
 
         key[0] = 42;
         key[1] = 42;
@@ -25,10 +25,10 @@ public sealed class PatchableBridgeDataComponent : BridgeDataComponent
         key[15] = 42;
     }
 
-    [SpecialName]
+    [Obfuscation]
     protected override void InitializeIV(Span<byte> iv)
     {
-        // Filled in by the server's ModuleProvider.
+        // Filled in by the server's BridgeModuleProvider.
 
         iv[0] = 42;
         iv[1] = 42;

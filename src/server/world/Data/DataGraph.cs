@@ -22,23 +22,16 @@ public sealed partial class DataGraph : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        var attrs = typeof(ThisAssembly).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>();
-
-        byte[] GetByteArray(string key)
-        {
-            return Convert.FromHexString(attrs.Single(attr => attr.Key == $"Arise.DataCenter{key}").Value!);
-        }
+        await using var stream = EmbeddedDataCenter.OpenStream();
 
         var mode = _environment.IsDevelopment() ? DataCenterLoaderMode.Lazy : DataCenterLoaderMode.Eager;
         var stamp = Stopwatch.GetTimestamp();
 
-        await using var stream = EmbeddedDataCenter.OpenStream();
-
         Root = await DataCenter.LoadAsync(
             stream,
             new DataCenterLoadOptions()
-                .WithKey(GetByteArray("Key"))
-                .WithIV(GetByteArray("IV"))
+                .WithKey(DataCenterParameters.Key.Span)
+                .WithIV(DataCenterParameters.IV.Span)
                 .WithStrict(true)
                 .WithLoaderMode(mode)
                 .WithMutability(DataCenterMutability.Immutable),

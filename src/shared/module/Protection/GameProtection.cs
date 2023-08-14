@@ -4,11 +4,16 @@ namespace Arise.Bridge.Protection;
 
 internal static class GameProtection
 {
-    [SpecialName]
+    private static int _initialized;
+
+    [Obfuscation]
     public static void Initialize()
     {
         // This method body is erased by the server's BridgeModuleProvider for module instances that run on the server
         // and for module instances running on the client in development scenarios.
+
+        if (Interlocked.Exchange(ref _initialized, 1) == 1)
+            return;
 
         var culture = CultureInfo.InvariantCulture;
 
@@ -19,41 +24,38 @@ internal static class GameProtection
         new DebuggerDetectionTask().Start();
     }
 
-    [SpecialName]
+    [Obfuscation]
     private static string GetIssueTime()
     {
-        // Filled in by the server's ModuleProvider.
+        // Filled in by the server's BridgeModuleProvider.
         return "xyz";
     }
 
-    [SpecialName]
+    [Obfuscation]
     private static string GetValidDuration()
     {
-        // Filled in by the server's ModuleProvider.
+        // Filled in by the server's BridgeModuleProvider.
         return "xyz";
     }
 
-    [SuppressMessage("", "CA5394")]
     public static void Terminate()
     {
         _ = Task.Run(static async () =>
         {
-            var (lower, upper) = GetExitDelayRange();
-
-            await Task.Delay(Random.Shared.Next(lower, upper)).ConfigureAwait(false);
+            await Task.Delay(GetExitDelay()).ConfigureAwait(false);
 
             _ = NtTerminateProcess(NtCurrentProcess, GetExitStatus());
         });
     }
 
-    [SpecialName]
-    private static (int Lower, int Upper) GetExitDelayRange()
+    [Obfuscation]
+    private static int GetExitDelay()
     {
         // Filled in by the server's BridgeModuleProvider.
-        return (42, 42);
+        return 42;
     }
 
-    [SpecialName]
+    [Obfuscation]
     private static int GetExitStatus()
     {
         // Filled in by the server's BridgeModuleProvider.

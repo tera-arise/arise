@@ -1,3 +1,4 @@
+using Arise.Server.Bridge;
 using Arise.Server.Data;
 using Arise.Server.Net;
 
@@ -13,9 +14,11 @@ public static class WorldServiceCollectionExtensions
             .Services
             .AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>()
             .AddSingleton<DataGraph>()
+            .AddSingleton<BridgeModuleProvider>()
             .AddSingleton<GameSessionManager>()
             .AddSingleton<GameServer>()
             .AddHostedService(static provider => provider.GetRequiredService<DataGraph>())
+            .AddHostedService(static provider => provider.GetRequiredService<BridgeModuleProvider>())
             .AddHostedService(static provider => provider.GetRequiredService<GameServer>());
     }
 }

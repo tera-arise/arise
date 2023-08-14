@@ -8,7 +8,7 @@ public sealed class GameConnection : IAsyncDisposable
 
     public IPEndPoint EndPoint => _connection.RemoteEndPoint;
 
-    public BridgeModule Module => _module.Instance;
+    public BridgeModule Module { get; }
 
     public GameConnectionConduit LowPriority { get; }
 
@@ -18,22 +18,20 @@ public sealed class GameConnection : IAsyncDisposable
 
     private readonly TaskCompletionSource _ready = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
-    private readonly GameConnectionModule _module;
-
     private readonly QuicConnection _connection;
 
     private int _disposed;
 
     internal GameConnection(
         GameConnectionManager manager,
-        ReadOnlyMemory<byte> module,
+        BridgeModule module,
         QuicConnection connection,
         QuicStream lowPriority,
         QuicStream normalPriority,
         QuicStream highPriority)
     {
         Manager = manager;
-        _module = new(module);
+        Module = module;
         _connection = connection;
         LowPriority = new(this, lowPriority, _ready.Task);
         NormalPriority = new(this, normalPriority, _ready.Task);
@@ -66,8 +64,6 @@ public sealed class GameConnection : IAsyncDisposable
                 "A game connection was disconnected due to an error.",
                 fex.InnerExceptions.Count == 1 ? fex.InnerException! : fex);
         }
-
-        _module.Dispose();
 
         await _connection.DisposeAsync().ConfigureAwait(false);
 

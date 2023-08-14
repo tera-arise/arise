@@ -1,3 +1,5 @@
+using Arise.Bridge;
+
 namespace Arise.Net;
 
 public sealed class GameConnectionClient : GameConnectionManager
@@ -88,6 +90,7 @@ public sealed class GameConnectionClient : GameConnectionManager
         }
 
         return await CreateConnectionAsync(
-            quicConnection, lowPriority, normalPriority, highPriority, module).ConfigureAwait(false);
+            quicConnection, lowPriority, normalPriority, highPriority, BridgeModuleActivator.Activate(module))
+            .ConfigureAwait(false);
     }
 }

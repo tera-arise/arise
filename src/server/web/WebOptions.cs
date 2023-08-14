@@ -14,7 +14,7 @@ public sealed class WebOptions : IOptions<WebOptions>
 
     public Duration AccountDeletionTime { get; set; } = Duration.FromDays(31);
 
-    public Duration AccountKeyTime { get; set; } = Duration.FromHours(12);
+    public Duration AccountGameKeyTime { get; set; } = Duration.FromHours(12);
 
     public int NewsPageSize { get; set; } = 10;
 

@@ -1,3 +1,4 @@
+using Arise.Bridge;
 using Arise.Net.Packets;
 
 namespace Arise.Net;
@@ -120,7 +121,7 @@ public abstract class GameConnectionManager : IAsyncDisposable
         QuicStream lowPriority,
         QuicStream normalPriority,
         QuicStream highPriority,
-        ReadOnlyMemory<byte> module)
+        BridgeModule module)
     {
         var connection = new GameConnection(this, module, quicConnection, lowPriority, normalPriority, highPriority);
 

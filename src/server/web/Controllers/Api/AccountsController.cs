@@ -65,7 +65,7 @@ public sealed class AccountsController : ApiController
             GameKey = new()
             {
                 Value = key,
-                Period = new(now, now + options.AccountKeyTime),
+                Period = new(now, now + options.AccountGameKeyTime),
             },
         };
 
@@ -430,7 +430,7 @@ public sealed class AccountsController : ApiController
         account.GameKey = key == null ? null : new()
         {
             Value = key,
-            Period = new(now, now + Options.Value.AccountKeyTime),
+            Period = new(now, now + Options.Value.AccountGameKeyTime),
         };
 
         return await UpdateAccountAsync(account)

@@ -32,7 +32,7 @@ internal abstract class GameProtectionTask
 
     protected abstract bool Check();
 
-    [SpecialName]
+    [Obfuscation]
     private static int GetCheckInterval()
     {
         // Filled in by the server's BridgeModuleProvider.

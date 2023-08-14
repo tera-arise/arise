@@ -1,3 +1,5 @@
+using Arise.Bridge;
+
 namespace Arise.Net;
 
 public sealed class GameConnectionListener : GameConnectionManager
@@ -14,10 +16,12 @@ public sealed class GameConnectionListener : GameConnectionManager
 
     private readonly QuicListener _listener;
 
-    private readonly Func<ReadOnlyMemory<byte>> _moduleProvider;
+    private readonly Func<(BridgeModule Server, ReadOnlyMemory<byte> Client)> _moduleProvider;
 
     private GameConnectionListener(
-        ObjectPool<GameConnectionBuffer> buffers, QuicListener listener, Func<ReadOnlyMemory<byte>> moduleProvider)
+        ObjectPool<GameConnectionBuffer> buffers,
+        QuicListener listener,
+        Func<(BridgeModule Server, ReadOnlyMemory<byte> Client)> moduleProvider)
         : base(buffers)
     {
         _listener = listener;
@@ -54,7 +58,7 @@ public sealed class GameConnectionListener : GameConnectionManager
         IPEndPoint endPoint,
         X509Certificate2 authorityCertificate,
         X509Certificate2 serverCertificate,
-        Func<ReadOnlyMemory<byte>> moduleProvider,
+        Func<(BridgeModule Server, ReadOnlyMemory<byte> Client)> moduleProvider,
         ObjectPoolProvider objectPoolProvider,
         CancellationToken cancellationToken = default)
     {
@@ -131,7 +135,7 @@ public sealed class GameConnectionListener : GameConnectionManager
 
     private async Task PerformAcceptHandshakeAsync(QuicConnection quicConnection, CancellationToken cancellationToken)
     {
-        var module = _moduleProvider();
+        var (serverModule, clientModule) = _moduleProvider();
 
         QuicStream lowPriority;
         QuicStream normalPriority;
@@ -147,8 +151,8 @@ public sealed class GameConnectionListener : GameConnectionManager
             {
                 var accessor = new StreamAccessor(quicStream);
 
-                await accessor.WriteInt32Async(module.Length, cancellationToken).ConfigureAwait(false);
-                await accessor.WriteAsync(module, cancellationToken).ConfigureAwait(false);
+                await accessor.WriteInt32Async(clientModule.Length, cancellationToken).ConfigureAwait(false);
+                await accessor.WriteAsync(clientModule, cancellationToken).ConfigureAwait(false);
             }
 
             lowPriority = await quicConnection
@@ -183,6 +187,6 @@ public sealed class GameConnectionListener : GameConnectionManager
             lowPriority,
             normalPriority,
             highPriority,
-            module).ConfigureAwait(false);
+            serverModule).ConfigureAwait(false);
     }
 }

@@ -1,3 +1,5 @@
+using Arise.Server.Bridge;
+
 namespace Arise.Server.Net;
 
 [SuppressMessage("", "CA1812")]
@@ -25,6 +27,8 @@ internal sealed partial class GameServer : BackgroundService
 
     private readonly ILogger<GameServer> _logger;
 
+    private readonly BridgeModuleProvider _moduleProvider;
+
     private readonly ObjectPoolProvider _objectPoolProvider;
 
     private readonly GameSessionManager _sessionManager;
@@ -32,11 +36,13 @@ internal sealed partial class GameServer : BackgroundService
     public GameServer(
         IOptions<WorldOptions> options,
         ILogger<GameServer> logger,
+        BridgeModuleProvider moduleProvider,
         ObjectPoolProvider objectPoolProvider,
         GameSessionManager sessionManager)
     {
         _options = options;
         _logger = logger;
+        _moduleProvider = moduleProvider;
         _objectPoolProvider = objectPoolProvider;
         _sessionManager = sessionManager;
     }
@@ -67,7 +73,7 @@ internal sealed partial class GameServer : BackgroundService
                 IPEndPoint.Parse(ep),
                 caCert,
                 serverCert,
-                static () => ReadOnlyMemory<byte>.Empty, // TODO: Module provisioning.
+                _moduleProvider.GetRandomModulePair,
                 _objectPoolProvider,
                 stoppingToken);
 
