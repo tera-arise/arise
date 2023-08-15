@@ -80,7 +80,7 @@ internal sealed class GameConnectionBuffer
         {
             GameConnectionChannel.Tera => (protocol.TeraSessionToReal.TryGetValue(Code, out var real), (ushort)real),
             GameConnectionChannel.Arise => (protocol.AriseSessionToReal.TryGetValue(Code, out var real), (ushort)real),
-            _ => throw new UnreachableException(),
+            _ => (false, default),
         };
 
         if (!exists || Length >= MaxPayloadSize)
