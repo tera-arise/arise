@@ -72,6 +72,13 @@
         </ItemGroup>
     </Target>
 
+    <Target Name="GetMultimediaAssetsPath"
+            Returns="@(AriseMultimediaAssetsPath)">
+        <ItemGroup>
+            <AriseMultimediaAssetsPath Include="$(MSBuildThisFileDirectory)assets" />
+        </ItemGroup>
+    </Target>
+
     <Target Name="GetNewsArticlesPath"
             Returns="@(AriseNewsArticlesPath)" />
 </Project>

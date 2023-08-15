@@ -63,6 +63,25 @@
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
 
+    <Target Name="_AddMultimediaAssets"
+            BeforeTargets="AssignTargetPaths">
+        <MSBuild Projects="$(AriseVendorProjectPath)"
+                 Targets="GetMultimediaAssetsPath">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="AriseMultimediaAssetsPath" />
+        </MSBuild>
+
+        <PropertyGroup>
+            <_MultimediaAssetsPath>@(AriseMultimediaAssetsPath)</_MultimediaAssetsPath>
+        </PropertyGroup>
+
+        <ItemGroup>
+            <_MultimediaAsset Include="$(_MultimediaAssetsPath)/**" />
+            <Content Include="@(_MultimediaAsset)"
+                     Link="wwwroot/assets/%(RecursiveDir)%(Filename)%(Extension)" />
+        </ItemGroup>
+    </Target>
+
     <Target Name="_AddNewsArticles"
             BeforeTargets="AssignTargetPaths">
         <MSBuild Projects="$(AriseVendorProjectPath)"
