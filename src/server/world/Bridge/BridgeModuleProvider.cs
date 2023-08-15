@@ -61,7 +61,7 @@ internal sealed partial class BridgeModuleProvider : BackgroundService
                     var seed = Environment.TickCount;
 
                     _modules.Add(
-                        (BridgeModuleActivator.Activate(CreateModule(BridgeModuleKind.Server, seed)),
+                        (BridgeModuleActivator.Create(CreateModule(BridgeModuleKind.Server, seed)),
                          CreateModule(BridgeModuleKind.Client, seed)));
                 }
             }

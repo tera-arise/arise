@@ -90,7 +90,7 @@ public sealed class GameConnectionClient : GameConnectionManager
         }
 
         return await CreateConnectionAsync(
-            quicConnection, lowPriority, normalPriority, highPriority, BridgeModuleActivator.Activate(module))
+            quicConnection, lowPriority, normalPriority, highPriority, BridgeModuleActivator.Create(module))
             .ConfigureAwait(false);
     }
 }
