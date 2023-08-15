@@ -16,6 +16,8 @@ public sealed class GameConnection : IAsyncDisposable
 
     public GameConnectionConduit HighPriority { get; }
 
+    public object? UserState { get; set; }
+
     private readonly TaskCompletionSource _ready = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
     private readonly QuicConnection _connection;

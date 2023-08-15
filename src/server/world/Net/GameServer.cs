@@ -1,4 +1,5 @@
 using Arise.Server.Bridge;
+using Arise.Server.Net.Handlers;
 
 namespace Arise.Server.Net;
 
@@ -31,20 +32,20 @@ internal sealed partial class GameServer : BackgroundService
 
     private readonly ObjectPoolProvider _objectPoolProvider;
 
-    private readonly GameSessionManager _sessionManager;
+    private readonly GamePacketHandler _packetHandler;
 
     public GameServer(
         IOptions<WorldOptions> options,
         ILogger<GameServer> logger,
         BridgeModuleProvider moduleProvider,
         ObjectPoolProvider objectPoolProvider,
-        GameSessionManager sessionManager)
+        GamePacketHandler packetHandler)
     {
         _options = options;
         _logger = logger;
         _moduleProvider = moduleProvider;
         _objectPoolProvider = objectPoolProvider;
-        _sessionManager = sessionManager;
+        _packetHandler = packetHandler;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -79,7 +80,7 @@ internal sealed partial class GameServer : BackgroundService
 
             listener.ConnectionEstablished += conn =>
             {
-                _sessionManager.AddSession(conn);
+                conn.UserState = new GameSession(conn);
 
                 Log.ClientConnected(_logger, conn.EndPoint);
             };
@@ -92,14 +93,17 @@ internal sealed partial class GameServer : BackgroundService
                     Log.ClientDropped(_logger, ex);
             };
 
-            listener.ConnectionClosed += (conn, ex) =>
+            listener.ConnectionClosed += (conn, ex) => Log.ClientDisconnected(_logger, ex, conn.EndPoint);
+
+            void HandlePacket(GameConnectionConduit conduit, GamePacket packet)
             {
-                _sessionManager.RemoveSession(conn);
+                _packetHandler.Dispatch(Unsafe.As<GameSession>(conduit.Connection.UserState!), packet);
+            }
 
-                Log.ClientDisconnected(_logger, ex, conn.EndPoint);
-            };
+            listener.TeraPacketReceived += HandlePacket;
+            listener.ArisePacketReceived += HandlePacket;
 
-            // TODO: Handle packets.
+            // TODO: Log received/sent packets.
 
             listeners.Add(listener);
         }

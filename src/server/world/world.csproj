@@ -14,7 +14,10 @@
         <Using Include="Arise.Data" />
         <Using Include="Arise.Net" />
         <Using Include="Arise.Net.Packets" />
+        <Using Include="Arise.Net.Packets.Client" />
+        <Using Include="Arise.Net.Packets.Server" />
         <Using Include="dnlib.DotNet.Emit" />
+        <Using Include="DotNext.Linq.Expressions" />
         <Using Include="Microsoft.Extensions.DependencyInjection" />
         <Using Include="Microsoft.Extensions.Hosting" />
         <Using Include="Microsoft.Extensions.Logging" />

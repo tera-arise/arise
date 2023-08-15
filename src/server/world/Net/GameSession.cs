@@ -4,6 +4,8 @@ internal sealed class GameSession
 {
     // TODO: Add important state (AccountDocument, Player, etc).
 
+    public IPEndPoint EndPoint => _connection.EndPoint;
+
     public GameSessionPort LowPriority { get; }
 
     public GameSessionPort NormalPriority { get; }
