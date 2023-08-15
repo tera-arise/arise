@@ -193,7 +193,7 @@ public sealed class GameConnectionConduit
 
                 await _stream.ReadExactlyAsync(buffer.Payload, cancellationToken).ConfigureAwait(false);
 
-                manager.HandlePacket(this, buffer);
+                manager.HandleReceivedPacket(this, buffer);
             }
         }
         catch (Exception ex)
@@ -218,6 +218,8 @@ public sealed class GameConnectionConduit
 
     private async Task SendPacketsAsync(Task ready, CancellationToken cancellationToken)
     {
+        var manager = Connection.Manager;
+
         await ready.ConfigureAwait(false);
 
         try
@@ -227,6 +229,8 @@ public sealed class GameConnectionConduit
                 try
                 {
                     await _stream.WriteAsync(buffer.Packet, cancellationToken).ConfigureAwait(false);
+
+                    manager.HandleSentPacket(this, buffer);
                 }
                 catch
                 {
@@ -236,7 +240,7 @@ public sealed class GameConnectionConduit
                 }
                 finally
                 {
-                    Connection.Manager.Buffers.Return(buffer);
+                    manager.Buffers.Return(buffer);
                 }
 
                 tcs?.SetResult(true);
@@ -246,7 +250,7 @@ public sealed class GameConnectionConduit
         {
             Connection.InternalDispose();
 
-            if (GameConnection.IsNetworkException(ex))
+            if (GameConnection.IsNetworkException(ex) || ex is InvalidDataException)
             {
                 if (ex is not QuicException qex || !GameConnection.IsInnocuousError(qex.QuicError))
                     _sendDone.SetException(ex);

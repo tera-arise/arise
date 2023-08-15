@@ -15,7 +15,7 @@ public abstract class GameConnectionManager : IAsyncDisposable
 
     public event Action<GameConnection, GameConnectionException?>? ConnectionClosed;
 
-    // Packet receipt events may only throw InvalidDataException.
+    // Packet notification events may only throw InvalidDataException.
 
     public event Action<GameConnectionConduit, TeraGamePacketCode, ReadOnlyMemory<byte>>? RawTeraPacketReceived;
 
@@ -24,6 +24,14 @@ public abstract class GameConnectionManager : IAsyncDisposable
     public event Action<GameConnectionConduit, TeraGamePacket>? TeraPacketReceived;
 
     public event Action<GameConnectionConduit, AriseGamePacket>? ArisePacketReceived;
+
+    public event Action<GameConnectionConduit, TeraGamePacketCode, ReadOnlyMemory<byte>>? RawTeraPacketSent;
+
+    public event Action<GameConnectionConduit, AriseGamePacketCode, ReadOnlyMemory<byte>>? RawArisePacketSent;
+
+    public event Action<GameConnectionConduit, TeraGamePacket>? TeraPacketSent;
+
+    public event Action<GameConnectionConduit, AriseGamePacket>? ArisePacketSent;
 
     internal ObjectPool<GameConnectionBuffer> Buffers { get; }
 
@@ -81,7 +89,24 @@ public abstract class GameConnectionManager : IAsyncDisposable
         ConnectionClosed?.Invoke(connection, exception);
     }
 
-    internal void HandlePacket(GameConnectionConduit conduit, GameConnectionBuffer buffer)
+    internal void HandleReceivedPacket(GameConnectionConduit conduit, GameConnectionBuffer buffer)
+    {
+        HandlePacket(
+            conduit, buffer, RawTeraPacketReceived, RawArisePacketReceived, TeraPacketReceived, ArisePacketReceived);
+    }
+
+    internal void HandleSentPacket(GameConnectionConduit conduit, GameConnectionBuffer buffer)
+    {
+        HandlePacket(conduit, buffer, RawTeraPacketSent, RawArisePacketSent, TeraPacketSent, ArisePacketSent);
+    }
+
+    private static void HandlePacket(
+        GameConnectionConduit conduit,
+        GameConnectionBuffer buffer,
+        Action<GameConnectionConduit, TeraGamePacketCode, ReadOnlyMemory<byte>>? rawTeraEvent,
+        Action<GameConnectionConduit, AriseGamePacketCode, ReadOnlyMemory<byte>>? rawAriseEvent,
+        Action<GameConnectionConduit, TeraGamePacket>? teraEvent,
+        Action<GameConnectionConduit, AriseGamePacket>? ariseEvent)
     {
         var channel = buffer.Channel;
         var code = buffer.Code;
@@ -100,16 +125,16 @@ public abstract class GameConnectionManager : IAsyncDisposable
         switch (channel)
         {
             case GameConnectionChannel.Tera:
-                RawTeraPacketReceived?.Invoke(conduit, (TeraGamePacketCode)code, buffer.Payload);
+                rawTeraEvent?.Invoke(conduit, (TeraGamePacketCode)code, buffer.Payload);
 
-                if (TeraPacketReceived is { } teraReceived)
+                if (teraEvent is { } teraReceived)
                     teraReceived(conduit, Unsafe.As<TeraGamePacket>(DeserializePacket()));
 
                 break;
             case GameConnectionChannel.Arise:
-                RawArisePacketReceived?.Invoke(conduit, (AriseGamePacketCode)code, buffer.Payload);
+                rawAriseEvent?.Invoke(conduit, (AriseGamePacketCode)code, buffer.Payload);
 
-                if (ArisePacketReceived is { } ariseReceived)
+                if (ariseEvent is { } ariseReceived)
                     ariseReceived(conduit, Unsafe.As<AriseGamePacket>(DeserializePacket()));
 
                 break;

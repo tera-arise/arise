@@ -31,7 +31,7 @@ internal sealed class BridgeModulePatchingPass : BridgeModulePass
             }
 
             void PatchPacketCodeSequences<T>()
-                where T : struct, Enum
+                where T : unmanaged, Enum
             {
                 var template = insns
                     .Where(static insn => insn.OpCode.Code != Code.Ret)

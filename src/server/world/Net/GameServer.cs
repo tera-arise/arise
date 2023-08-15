@@ -22,6 +22,24 @@ internal sealed partial class GameServer : BackgroundService
 
         [LoggerMessage(4, LogLevel.Information, "Game client from {endPoint} disconnected")]
         public static partial void ClientDisconnected(ILogger logger, Exception? exception, IPEndPoint endPoint);
+
+        // TODO: https://github.com/dotnet/runtime/issues/90589
+
+        [LoggerMessage(5, LogLevel.Trace, "C -> S {EndPoint}: Tera:{Code} ({Length} bytes)")]
+        public static partial void TeraPacketReceived(
+            ILogger logger, IPEndPoint endPoint, TeraGamePacketCode code, int length);
+
+        [LoggerMessage(6, LogLevel.Trace, "C -> S {EndPoint}: Arise:{Code} ({Length} bytes)")]
+        public static partial void ArisePacketReceived(
+            ILogger logger, IPEndPoint endPoint, AriseGamePacketCode code, int length);
+
+        [LoggerMessage(7, LogLevel.Trace, "S -> C {EndPoint}: Tera:{Code} ({Length} bytes)")]
+        public static partial void TeraPacketSent(
+            ILogger logger, IPEndPoint endPoint, TeraGamePacketCode code, int length);
+
+        [LoggerMessage(8, LogLevel.Trace, "S -> C {EndPoint}: Arise:{Code} ({Length} bytes)")]
+        public static partial void ArisePacketSent(
+            ILogger logger, IPEndPoint endPoint, AriseGamePacketCode code, int length);
     }
 
     private readonly IOptions<WorldOptions> _options;
@@ -95,15 +113,35 @@ internal sealed partial class GameServer : BackgroundService
 
             listener.ConnectionClosed += (conn, ex) => Log.ClientDisconnected(_logger, ex, conn.EndPoint);
 
-            void HandlePacket(GameConnectionConduit conduit, GamePacket packet)
+            void LogPacket<T>(
+                GameConnectionConduit conduit,
+                T code,
+                ReadOnlyMemory<byte> payload,
+                Action<ILogger, IPEndPoint, T, int> logger)
+                where T : unmanaged, Enum
+            {
+                logger(_logger, conduit.Connection.EndPoint, code, payload.Length);
+            }
+
+            listener.RawTeraPacketReceived += (conduit, code, payload) =>
+                LogPacket(conduit, code, payload, Log.TeraPacketReceived);
+
+            listener.RawArisePacketReceived += (conduit, code, payload) =>
+                LogPacket(conduit, code, payload, Log.ArisePacketReceived);
+
+            listener.RawTeraPacketSent += (conduit, code, payload) =>
+                LogPacket(conduit, code, payload, Log.TeraPacketSent);
+
+            listener.RawArisePacketSent += (conduit, code, payload) =>
+                LogPacket(conduit, code, payload, Log.ArisePacketSent);
+
+            void HandleTypedPacket(GameConnectionConduit conduit, GamePacket packet)
             {
                 _packetHandler.Dispatch(Unsafe.As<GameSession>(conduit.Connection.UserState!), packet);
             }
 
-            listener.TeraPacketReceived += HandlePacket;
-            listener.ArisePacketReceived += HandlePacket;
-
-            // TODO: Log received/sent packets.
+            listener.TeraPacketReceived += HandleTypedPacket;
+            listener.ArisePacketReceived += HandleTypedPacket;
 
             listeners.Add(listener);
         }
