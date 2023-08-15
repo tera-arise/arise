@@ -1,5 +1,6 @@
 using Arise.Bridge;
 using Arise.Net.Packets;
+using Arise.Net.Serialization;
 
 namespace Arise.Net;
 
@@ -108,35 +109,34 @@ public abstract class GameConnectionManager : IAsyncDisposable
         Action<GameConnectionConduit, TeraGamePacket>? teraEvent,
         Action<GameConnectionConduit, AriseGamePacket>? ariseEvent)
     {
-        var channel = buffer.Channel;
-        var code = buffer.Code;
-
-        GamePacket DeserializePacket()
+        void RaisePacketEvents<TCode, TPacket>(
+            GamePacketSerializer<TCode, TPacket> serializer,
+            Action<GameConnectionConduit, TCode, ReadOnlyMemory<byte>>? rawEvent,
+            Action<GameConnectionConduit, TPacket>? @event)
+            where TCode : unmanaged, Enum
+            where TPacket : GamePacket<TCode>
         {
-            var packet = GamePacketSerializer.CreatePacket(channel, code);
+            var code = Unsafe.BitCast<ushort, TCode>(buffer.Code);
+
+            rawEvent?.Invoke(conduit, code, buffer.Payload);
+
+            if (@event == null || serializer.CreatePacket(code) is not { } packet)
+                return;
 
             buffer.ResetStream(length: buffer.Length);
 
-            GamePacketSerializer.DeserializePacket(packet, buffer.PayloadAccessor);
+            serializer.DeserializePacket(packet, buffer.PayloadAccessor);
 
-            return packet;
+            @event.Invoke(conduit, packet);
         }
 
-        switch (channel)
+        switch (buffer.Channel)
         {
             case GameConnectionChannel.Tera:
-                rawTeraEvent?.Invoke(conduit, (TeraGamePacketCode)code, buffer.Payload);
-
-                if (teraEvent is { } teraReceived)
-                    teraReceived(conduit, Unsafe.As<TeraGamePacket>(DeserializePacket()));
-
+                RaisePacketEvents(TeraGamePacketSerializer.Instance, rawTeraEvent, teraEvent);
                 break;
             case GameConnectionChannel.Arise:
-                rawAriseEvent?.Invoke(conduit, (AriseGamePacketCode)code, buffer.Payload);
-
-                if (ariseEvent is { } ariseReceived)
-                    ariseReceived(conduit, Unsafe.As<AriseGamePacket>(DeserializePacket()));
-
+                RaisePacketEvents(AriseGamePacketSerializer.Instance, rawAriseEvent, ariseEvent);
                 break;
         }
     }

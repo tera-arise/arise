@@ -159,7 +159,7 @@ public sealed class GameConnectionConduit
 
         var accessor = buffer.PayloadAccessor;
 
-        GamePacketSerializer.SerializePacket(packet, accessor);
+        packet.Serialize(accessor);
 
         buffer.Channel = packet.Channel;
         buffer.Length = (ushort)accessor.Stream.Position;
