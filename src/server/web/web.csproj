@@ -94,11 +94,10 @@
             <_NewsArticlesPath>@(AriseNewsArticlesPath)</_NewsArticlesPath>
         </PropertyGroup>
 
-        <ItemGroup Condition="'$(_NewsArticlesPath)' != ''">
+        <ItemGroup>
             <_NewsArticle Include="$(_NewsArticlesPath)/**" />
             <Content Include="@(_NewsArticle)"
-                     Link="articles/%(RecursiveDir)%(Filename)%(Extension)"
-                     CopyToOutputDirectory="PreserveNewest" />
+                     Link="articles/%(RecursiveDir)%(Filename)%(Extension)" />
         </ItemGroup>
     </Target>
 </Project>

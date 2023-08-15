@@ -80,5 +80,9 @@
     </Target>
 
     <Target Name="GetNewsArticlesPath"
-            Returns="@(AriseNewsArticlesPath)" />
+            Returns="@(AriseNewsArticlesPath)">
+        <ItemGroup>
+            <AriseNewsArticlesPath Include="$(MSBuildThisFileDirectory)articles" />
+        </ItemGroup>
+    </Target>
 </Project>
