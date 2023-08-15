@@ -8,7 +8,7 @@ internal static class ClientDistributor
 
     private const string ManifestName = "manifest.json";
 
-    public static async Task DistributeAsync(DistributorOptions options)
+    public static async ValueTask DistributeAsync(DistributorOptions options)
     {
         var ghc = new GitHubClient(
             new Octokit.ProductHeaderValue(ThisAssembly.AssemblyName, ThisAssembly.AssemblyVersion))

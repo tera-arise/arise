@@ -2,13 +2,19 @@ using Arise.Server.Daemon;
 
 internal static class Program
 {
-    [SuppressMessage("", "CA1305")]
     [SuppressMessage("", "CA1308")]
     private static Task<int> Main(string[] args)
     {
+        TaskScheduler.UnobservedTaskException += static (_, e) =>
+        {
+            // TODO: https://github.com/dotnet/runtime/issues/80111
+            if (!e.Exception.InnerExceptions.Any(static ex => ex is QuicException))
+                ExceptionDispatchInfo.Throw(e.Exception);
+        };
+
         Log.Logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
-            .WriteTo.Console()
+            .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
             .CreateBootstrapLogger();
 
         using var parser = new Parser(static settings =>
@@ -26,6 +32,7 @@ internal static class Program
                 static async options =>
                 {
                     var flags = options.Services;
+
                     var builder = new HostBuilder()
                         .UseEnvironment(options.Environment.ToString())
                         .ConfigureAppConfiguration(static (ctx, builder) =>

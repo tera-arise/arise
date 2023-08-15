@@ -4,7 +4,7 @@ namespace Arise.Tools.Patcher;
 
 internal static class ClientPatcher
 {
-    public static async Task PatchAsync(PatcherOptions options)
+    public static async ValueTask PatchAsync(PatcherOptions options)
     {
         await Terminal.OutLineAsync($"Loading PE '{options.Executable}'...");
 

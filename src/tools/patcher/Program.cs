@@ -7,6 +7,8 @@ internal static class Program
     {
         try
         {
+            TaskScheduler.UnobservedTaskException += static (_, e) => throw e.Exception;
+
             using var parser = new Parser(static settings =>
             {
                 settings.GetoptMode = true;
