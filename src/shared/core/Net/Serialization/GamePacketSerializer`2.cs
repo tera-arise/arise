@@ -59,7 +59,14 @@ internal abstract class GamePacketSerializer<TCode, TPacket>
 
     public void DeserializePacket(TPacket packet, GameStreamAccessor accessor)
     {
-        _deserializers[packet.Code](packet, accessor);
+        try
+        {
+            _deserializers[packet.Code](packet, accessor);
+        }
+        catch (EndOfStreamException)
+        {
+            throw ExceptionDispatchInfo.SetCurrentStackTrace(new InvalidDataException());
+        }
     }
 
     public void SerializePacket(TPacket packet, GameStreamAccessor accessor)
