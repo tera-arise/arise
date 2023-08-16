@@ -69,7 +69,7 @@ public sealed class GameConnectionClient : GameConnectionManager
                 if (size is < 0 or > 1024 * 1024)
                     throw new InvalidDataException($"Module size {size} is too large.");
 
-                module = new byte[size];
+                module = GC.AllocateUninitializedArray<byte>(size);
 
                 await accessor.ReadAsync(module, cancellationToken).ConfigureAwait(false);
             }

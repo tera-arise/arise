@@ -9,8 +9,8 @@ public abstract class BridgeDataComponent
     [SuppressMessage("", "CA2214")]
     protected BridgeDataComponent()
     {
-        var key = new byte[16];
-        var iv = new byte[16];
+        var key = GC.AllocateUninitializedArray<byte>(16);
+        var iv = GC.AllocateUninitializedArray<byte>(16);
 
         InitializeKey(key);
         InitializeIV(iv);

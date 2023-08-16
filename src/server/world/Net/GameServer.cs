@@ -72,7 +72,7 @@ internal sealed partial class GameServer : BackgroundService
         {
             using var stream = typeof(ThisAssembly).Assembly.GetManifestResourceStream(name)!;
 
-            var buffer = new byte[stream.Length];
+            var buffer = GC.AllocateUninitializedArray<byte>((int)stream.Length);
 
             // Manifest resources come from memory; async/await would be pointless here.
             stream.ReadExactly(buffer);

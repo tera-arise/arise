@@ -51,7 +51,7 @@ internal sealed class GameConnectionBuffer
         _ => false,
     };
 
-    private readonly byte[] _data = new byte[AriseHeaderSize + MaxPayloadSize];
+    private readonly byte[] _data = GC.AllocateUninitializedArray<byte>(AriseHeaderSize + MaxPayloadSize);
 
     public GameConnectionBuffer()
     {
