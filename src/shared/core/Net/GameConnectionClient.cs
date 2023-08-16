@@ -60,18 +60,23 @@ public sealed class GameConnectionClient : GameConnectionManager
 
             await using (quicStream.ConfigureAwait(false))
             {
-                var accessor = new StreamAccessor(quicStream);
-
-                var size = await accessor.ReadInt32Async(cancellationToken).ConfigureAwait(false);
-
                 // Put an upper limit on the module size to help detect a malformed handshake. It is unlikely that we
-                // will ever exceed this, but if we do, just increase the limit.
+                // will ever exceed this, but if we do, just increase the limit accordingly.
+                const int MaxModuleSize = 1024 * 1024;
+
+                var handshake = GC.AllocateUninitializedArray<byte>(sizeof(int) + MaxModuleSize);
+
+                await quicStream.ReadExactlyAsync(handshake.AsMemory(0, sizeof(int)), cancellationToken)
+                    .ConfigureAwait(false);
+
+                var size = BinaryPrimitives.ReadInt32LittleEndian(handshake);
+
                 if (size is < 0 or > 1024 * 1024)
                     throw new InvalidDataException($"Module size {size} is too large.");
 
-                module = GC.AllocateUninitializedArray<byte>(size);
+                module = handshake.AsMemory(sizeof(int));
 
-                await accessor.ReadAsync(module, cancellationToken).ConfigureAwait(false);
+                await quicStream.ReadExactlyAsync(module, cancellationToken).ConfigureAwait(false);
             }
 
             lowPriority = await quicConnection.AcceptInboundStreamAsync(cancellationToken).ConfigureAwait(false);

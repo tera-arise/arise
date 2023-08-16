@@ -149,10 +149,12 @@ public sealed class GameConnectionListener : GameConnectionManager
 
             await using (quicStream.ConfigureAwait(false))
             {
-                var accessor = new StreamAccessor(quicStream);
+                var handshake = GC.AllocateUninitializedArray<byte>(sizeof(int) + clientModule.Length);
 
-                await accessor.WriteInt32Async(clientModule.Length, cancellationToken).ConfigureAwait(false);
-                await accessor.WriteAsync(clientModule, cancellationToken).ConfigureAwait(false);
+                BinaryPrimitives.WriteInt32LittleEndian(handshake, clientModule.Length);
+                clientModule.Span.CopyTo(handshake.AsSpan(0, sizeof(int)));
+
+                await quicStream.WriteAsync(handshake, cancellationToken).ConfigureAwait(false);
             }
 
             lowPriority = await quicConnection
