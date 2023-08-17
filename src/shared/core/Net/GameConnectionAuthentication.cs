@@ -34,10 +34,7 @@ internal static class GameConnectionAuthentication
             TargetHost = hostName,
             ApplicationProtocols = Protocols,
             CertificateChainPolicy = ConfigureChainPolicy(authorityCertificate, _serverAuth),
-            ClientCertificates = new() // TODO: Use collection expression.
-            {
-                clientCertificate,
-            },
+            ClientCertificates = [clientCertificate],
             RemoteCertificateValidationCallback =
                 static (_, cert, _, errs) => ValidateCertificate(cert, errs, "OU=Server, O=TERA Arise"),
         };

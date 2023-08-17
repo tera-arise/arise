@@ -114,8 +114,7 @@ public sealed class SlimMemoryStream : Stream
 
     public override void WriteByte(byte value)
     {
-        // TODO: Use collection expression.
-        Write(stackalloc[] { value });
+        Write([value]);
     }
 
     public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)

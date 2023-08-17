@@ -6,7 +6,6 @@
 
     <ItemGroup>
         <Using Include="Arise.IO" />
-        <Using Include="Arise.Numerics" />
         <Using Include="Arise.Reflection" />
         <Using Include="Arise.Threading" />
         <Using Include="Arise.Threading.Tasks" />

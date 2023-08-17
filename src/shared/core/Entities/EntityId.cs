@@ -28,17 +28,6 @@ public readonly struct EntityId :
 
     public static bool operator >=(EntityId left, EntityId right) => left.CompareTo(right) >= 0;
 
-    internal static EntityId FromRaw(long value)
-    {
-        return new((int)Bits.Extract(value, 0, 32), (EntityType)Bits.Extract(value, 32, 32));
-    }
-
-    internal long ToRaw()
-    {
-        // TODO: Use collection expression.
-        return Bits.Join<long>(stackalloc (long, int, int)[] { (Id, 0, 32), ((int)Type, 32, 32) });
-    }
-
     public bool Equals(EntityId other)
     {
         return (Type, Id) == (other.Type, other.Id);

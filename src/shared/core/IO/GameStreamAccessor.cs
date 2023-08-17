@@ -423,15 +423,26 @@ public class GameStreamAccessor : StreamAccessor
         WriteSingle(value.Z);
     }
 
-    // TODO: Compact encoding for EntityId when EntityType is fully understood.
-
     public EntityId ReadEntityId()
     {
-        return EntityId.FromRaw(ReadInt64());
+        return new(ReadInt32(), ReadEnum<EntityType>());
     }
 
     public void WriteEntityId(EntityId value)
     {
-        WriteInt64(value.ToRaw());
+        WriteInt32(value.Id);
+        WriteEnum(value.Type);
+    }
+
+    public EntityId ReadCompactEntityId()
+    {
+        // TODO: Consider compact encoding for the type once EntityType is fully understood.
+        return new(ReadCompactInt32(), ReadEnum<EntityType>());
+    }
+
+    public void WriteCompactEntityId(EntityId value)
+    {
+        WriteCompactInt32(value.Id);
+        WriteEnum(value.Type);
     }
 }
