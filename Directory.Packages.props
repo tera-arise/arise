@@ -30,7 +30,7 @@
         <PackageVersion Include="dnlib"
                         Version="3.6.0" />
         <PackageVersion Include="DotNext.Metaprogramming"
-                        Version="4.13.1" />
+                        Version="4.14.0" />
         <PackageVersion Include="EmailValidation"
                         Version="1.0.9" />
         <PackageVersion Include="Iced"
