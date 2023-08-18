@@ -1,4 +1,5 @@
 using Arise.Net.Packets;
+using static System.Linq.Expressions.Expression;
 using static DotNext.Metaprogramming.CodeGenerator;
 
 namespace Arise.Net.Serialization;
@@ -7,6 +8,9 @@ internal abstract class GamePacketSerializer<TCode, TPacket>
     where TCode : unmanaged, Enum
     where TPacket : GamePacket<TCode>
 {
+    private static readonly MethodInfo _unsafeAs =
+        typeof(Unsafe).GetMethod("As", 1, new[] { Type.MakeGenericMethodParameter(0) })!;
+
     private readonly FrozenDictionary<TCode, Func<TPacket>> _creators;
 
     private readonly FrozenDictionary<TCode, Action<object, GameStreamAccessor>> _deserializers;
@@ -18,6 +22,20 @@ internal abstract class GamePacketSerializer<TCode, TPacket>
         var creators = new Dictionary<TCode, Func<TPacket>>();
         var deserializers = new Dictionary<TCode, Action<object, GameStreamAccessor>>();
         var serializers = new Dictionary<TCode, Action<object, GameStreamAccessor>>();
+
+        static Action<object, GameStreamAccessor> CompileFunction(Type type, Action<Expression, Expression> generator)
+        {
+            return Lambda<Action<object, GameStreamAccessor>>(ctx =>
+            {
+                var (packet, accessor) = ctx;
+
+                var typedPacket = DeclareVariable(type, "typedPacket");
+
+                Assign(typedPacket, Call(_unsafeAs.MakeGenericMethod([type]), packet));
+
+                generator(typedPacket, accessor);
+            }).Compile();
+        }
 
         foreach (var type in typeof(ThisAssembly)
             .Assembly
@@ -36,21 +54,9 @@ internal abstract class GamePacketSerializer<TCode, TPacket>
         _serializers = serializers.ToFrozenDictionary();
     }
 
-    protected static Action<object, GameStreamAccessor> CompileFunction(
-        Type type,
-        Action<Type, ParameterExpression, ParameterExpression> generator)
-    {
-        return Lambda<Action<object, GameStreamAccessor>>(ctx =>
-        {
-            var (packet, accessor) = ctx;
+    protected abstract void GenerateDeserializer(Expression packet, Expression accessor);
 
-            generator(type, packet, accessor);
-        }).Compile();
-    }
-
-    protected abstract void GenerateDeserializer(Type type, ParameterExpression packet, ParameterExpression accessor);
-
-    protected abstract void GenerateSerializer(Type type, ParameterExpression packet, ParameterExpression accessor);
+    protected abstract void GenerateSerializer(Expression packet, Expression accessor);
 
     public TPacket? CreatePacket(TCode code)
     {

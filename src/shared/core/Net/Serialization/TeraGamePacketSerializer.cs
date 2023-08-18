@@ -10,13 +10,13 @@ internal sealed class TeraGamePacketSerializer : GamePacketSerializer<TeraGamePa
     {
     }
 
-    protected override void GenerateDeserializer(Type type, ParameterExpression packet, ParameterExpression accessor)
+    protected override void GenerateDeserializer(Expression packet, Expression accessor)
     {
         // TODO
         throw new NotImplementedException();
     }
 
-    protected override void GenerateSerializer(Type type, ParameterExpression packet, ParameterExpression accessor)
+    protected override void GenerateSerializer(Expression packet, Expression accessor)
     {
         // TODO
         throw new NotImplementedException();
