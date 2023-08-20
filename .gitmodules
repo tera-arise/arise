@@ -1,0 +1,4 @@
+[submodule "geo"]
+    path = geo
+    url = https://github.com/tera-arise/arise-geometry.git
+    shallow = true
