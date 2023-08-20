@@ -2,3 +2,7 @@
     path = geo
     url = https://github.com/tera-arise/arise-geometry.git
     shallow = true
+[submodule "dat"]
+    path = dat
+    url = https://github.com/tera-arise/arise-data.git
+    shallow = true

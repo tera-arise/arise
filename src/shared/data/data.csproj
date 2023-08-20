@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <_DataSheetDirectory>../../../dat/</_DataSheetDirectory>
+        <_DataSheetDirectory>../../../dat/sheets/</_DataSheetDirectory>
         <_DataCenterCache>$(BaseIntermediateOutputPath)DataCenter.cache</_DataCenterCache>
         <_DataCenterPath>$(BaseIntermediateOutputPath)DataCenter.dat</_DataCenterPath>
     </PropertyGroup>
