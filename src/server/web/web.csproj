@@ -3,7 +3,7 @@
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
         <AssemblyName>Arise.Server.Web</AssemblyName>
         <RootNamespace>$(AssemblyName)</RootNamespace>
-        <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+        <StaticWebAssetsEnabled>false</StaticWebAssetsEnabled>
     </PropertyGroup>
 
     <ItemGroup>
@@ -44,7 +44,10 @@
 
     <ItemGroup>
         <Content Include="../../../arise.ico; ../../../arise.png"
-                 Link="wwwroot/%(Filename)%(Extension)" />
+                 Link="wwwroot/%(Filename)%(Extension)"
+                 CopyToOutputDirectory="PreserveNewest" />
+        <Content Update="wwwroot/**"
+                 CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
     <ItemGroup>
@@ -78,7 +81,8 @@
         <ItemGroup>
             <_MultimediaAsset Include="$(_MultimediaAssetsPath)/**" />
             <Content Include="@(_MultimediaAsset)"
-                     Link="wwwroot/assets/%(RecursiveDir)%(Filename)%(Extension)" />
+                     Link="wwwroot/assets/%(RecursiveDir)%(Filename)%(Extension)"
+                     CopyToOutputDirectory="PreserveNewest" />
         </ItemGroup>
     </Target>
 
@@ -97,7 +101,8 @@
         <ItemGroup>
             <_NewsArticle Include="$(_NewsArticlesPath)/**" />
             <Content Include="@(_NewsArticle)"
-                     Link="articles/%(RecursiveDir)%(Filename)%(Extension)" />
+                     Link="articles/%(RecursiveDir)%(Filename)%(Extension)"
+                     CopyToOutputDirectory="PreserveNewest" />
         </ItemGroup>
     </Target>
 </Project>

@@ -12,7 +12,7 @@ internal sealed class InjectedProgram : IInjectedProgram
                 ExceptionDispatchInfo.Throw(e.Exception);
         };
 
-        return context.InjectorProcessId is int ppid
+        return context.InjectorProcessId is { } ppid
             ? SymbioteProgram.RunAsync(args, ppid, context.WakeUp)
             : LauncherProgram.RunAsync(args);
     }

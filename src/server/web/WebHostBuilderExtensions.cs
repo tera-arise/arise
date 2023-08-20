@@ -14,7 +14,6 @@ public static class WebHostBuilderExtensions
 
                         _ = opts.Configure(ctx.Configuration.GetSection("Kestrel"), reloadOnChange: true);
                     })
-                    .UseStaticWebAssets()
                     .Configure((ctx, builder) =>
                     {
                         static bool IsApi(HttpContext context)
