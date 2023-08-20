@@ -42,7 +42,8 @@
             Inputs="@(_DataSheet); $(_DataCenterCache)"
             Outputs="$(_DataCenterPath)"
             DependsOnTargets="_WriteDataCenterCache"
-            BeforeTargets="BeforeResGen">
+            BeforeTargets="BeforeResGen"
+            Condition="'$(ARISE_LIGHTWEIGHT_BUILD)' != 'true'">
         <PropertyGroup>
             <_ExtraArgs Condition="'$(Configuration)' == 'Release'">--compression SmallestSize</_ExtraArgs>
         </PropertyGroup>
