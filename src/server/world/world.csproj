@@ -28,6 +28,12 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Include="../../../geo/zones/x*y*.zone"
+                 Link="geometry/%(Filename)%(Extension)"
+                 CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="../../shared/data/data.csproj" />
         <ProjectReference Include="../../shared/module/module.csproj" />
         <ProjectReference Include="../storage/storage.csproj" />
