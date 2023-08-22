@@ -23,8 +23,6 @@ internal sealed class AriseGamePacketSerializer : GamePacketSerializer<AriseGame
         typeof(int),
         typeof(ulong),
         typeof(long),
-        typeof(UInt128),
-        typeof(Int128),
         typeof(char),
         typeof(string),
         typeof(EntityId),
