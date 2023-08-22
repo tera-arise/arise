@@ -1,5 +1,6 @@
 namespace Arise.Server.Net.Handlers;
 
+[RegisterSingleton]
 [SuppressMessage("", "CA1812")]
 internal sealed partial class GamePacketHandler
 {

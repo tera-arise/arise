@@ -31,6 +31,12 @@ internal sealed partial class BridgeModuleProvider : BackgroundService
         _logger = logger;
     }
 
+    [RegisterServices]
+    internal static void Register(IServiceCollection services)
+    {
+        services.AddHostedSingleton<BridgeModuleProvider>();
+    }
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         ReadOnlyMemory<byte> CreateModule(BridgeModuleKind kind, int seed)

@@ -1,5 +1,6 @@
 namespace Arise.Server.Web.Services;
 
+[RegisterSingleton]
 public sealed class GameDownloadProvider
 {
     public Uri ClientManifestUri { get; }

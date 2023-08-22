@@ -11,6 +11,12 @@ public sealed class NewsArticleProvider : IHostedService
         _environment = environment;
     }
 
+    [RegisterServices]
+    internal static void Register(IServiceCollection services)
+    {
+        services.AddHostedSingleton<NewsArticleProvider>();
+    }
+
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         var provider = _environment.ContentRootFileProvider;

@@ -19,6 +19,7 @@
         <Using Include="Arise.Net.Packets.Server" />
         <Using Include="dnlib.DotNet.Emit" />
         <Using Include="DotNext.Linq.Expressions" />
+        <Using Include="Injectio.Attributes" />
         <Using Include="Microsoft.Extensions.DependencyInjection" />
         <Using Include="Microsoft.Extensions.Hosting" />
         <Using Include="Microsoft.Extensions.Logging" />
@@ -43,6 +44,7 @@
 
     <ItemGroup>
         <PackageReference Include="dnlib" />
+        <PackageReference Include="Injectio" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />

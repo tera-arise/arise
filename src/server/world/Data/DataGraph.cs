@@ -21,6 +21,12 @@ internal sealed partial class DataGraph : IHostedService
         _logger = logger;
     }
 
+    [RegisterServices]
+    internal static void Register(IServiceCollection services)
+    {
+        services.AddHostedSingleton<DataGraph>();
+    }
+
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await using var stream = EmbeddedDataCenter.OpenStream();

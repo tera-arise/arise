@@ -1,13 +1,19 @@
 using Arise.Server.Web.Authentication;
 using Arise.Server.Web.Mail;
 using Arise.Server.Web.ModelBinding;
-using Arise.Server.Web.News;
-using Arise.Server.Web.Services;
 
 namespace Arise.Server.Web;
 
 public static class WebServiceCollectionExtensions
 {
+    internal static void AddHostedSingleton<T>(this IServiceCollection services)
+        where T : class, IHostedService
+    {
+        _ = services
+            .AddSingleton<T>()
+            .AddHostedService(static provider => provider.GetRequiredService<T>());
+    }
+
     public static IServiceCollection AddWebServices(this IServiceCollection services)
     {
         return services
@@ -16,11 +22,6 @@ public static class WebServiceCollectionExtensions
             .Services
             .AddHttpClient<DelegatingSendGridClient>()
             .Services
-            .AddTransient<ISendGridClient>(static provider => provider.GetRequiredService<DelegatingSendGridClient>())
-            .AddTransient<MailSender>()
-            .AddSingleton<GameDownloadProvider>()
-            .AddSingleton<NewsArticleProvider>()
-            .AddHostedService(static provider => provider.GetRequiredService<NewsArticleProvider>())
             .AddControllersWithViews(static opts =>
             {
                 opts.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
@@ -61,6 +62,7 @@ public static class WebServiceCollectionExtensions
             {
                 opts.LowercaseUrls = true;
                 opts.LowercaseQueryStrings = true;
-            });
+            })
+            .AddAriseServerWeb();
     }
 }

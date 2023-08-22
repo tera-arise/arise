@@ -1,5 +1,6 @@
 namespace Arise.Server.Web.Mail;
 
+[RegisterTransient]
 public sealed partial class MailSender
 {
     private static partial class Log

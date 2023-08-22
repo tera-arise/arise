@@ -66,6 +66,12 @@ internal sealed partial class GameServer : BackgroundService
         _packetHandler = packetHandler;
     }
 
+    [RegisterServices]
+    internal static void Register(IServiceCollection services)
+    {
+        services.AddHostedSingleton<GameServer>();
+    }
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         static string GetManifestResource(string name)

@@ -35,6 +35,8 @@
                         Version="1.0.9" />
         <PackageVersion Include="Iced"
                         Version="1.20.0" />
+        <PackageVersion Include="Injectio"
+                        Version="2.6.2" />
         <PackageVersion Include="Markdig"
                         Version="0.32.0" />
         <PackageVersion Include="Marten.AspNetCore"

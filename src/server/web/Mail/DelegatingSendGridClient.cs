@@ -41,6 +41,13 @@ public sealed class DelegatingSendGridClient : ISendGridClient
                 });
     }
 
+    [RegisterServices]
+    internal static void Register(IServiceCollection services)
+    {
+        _ = services.AddTransient<ISendGridClient>(
+            static provider => provider.GetRequiredService<DelegatingSendGridClient>());
+    }
+
     public AuthenticationHeaderValue AddAuthorization(KeyValuePair<string, string> header)
     {
         throw new NotSupportedException();
