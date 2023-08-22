@@ -258,8 +258,6 @@ public class GameStreamAccessor : StreamAccessor
         }
     }
 
-    // TODO: int128
-
     public T ReadCompactEnum<T>()
         where T : unmanaged, Enum
     {

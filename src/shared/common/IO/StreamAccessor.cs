@@ -137,26 +137,6 @@ public class StreamAccessor
         Write(value);
     }
 
-    public UInt128 ReadUInt128()
-    {
-        return Read<UInt128>();
-    }
-
-    public void WriteUInt128(UInt128 value)
-    {
-        Write(value);
-    }
-
-    public Int128 ReadInt128()
-    {
-        return Read<Int128>();
-    }
-
-    public void WriteInt128(Int128 value)
-    {
-        Write(value);
-    }
-
     public T ReadEnum<T>()
         where T : unmanaged, Enum
     {
@@ -165,16 +145,6 @@ public class StreamAccessor
 
     public void WriteEnum<T>(T value)
         where T : unmanaged, Enum
-    {
-        Write(value);
-    }
-
-    public Half ReadHalf()
-    {
-        return Read<Half>();
-    }
-
-    public void WriteHalf(Half value)
     {
         Write(value);
     }

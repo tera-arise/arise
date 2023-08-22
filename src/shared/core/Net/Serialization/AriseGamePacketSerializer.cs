@@ -10,9 +10,6 @@ internal sealed class AriseGamePacketSerializer : GamePacketSerializer<AriseGame
 
     private static readonly FrozenSet<Type> _extraSimpleTypes = new[]
     {
-        typeof(UInt128),
-        typeof(Int128),
-        typeof(Half),
         typeof(string),
         typeof(Vector3),
         typeof(EntityId),
