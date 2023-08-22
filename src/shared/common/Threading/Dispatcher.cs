@@ -1,5 +1,3 @@
-using Arise.Diagnostics;
-
 namespace Arise.Threading;
 
 public sealed class Dispatcher
@@ -48,13 +46,9 @@ public sealed class Dispatcher
         });
     }
 
-    public static async ValueTask ExitAsync()
+    public async ValueTask ExitAsync()
     {
-        var current = _current;
-
-        Assert.Debug(current != null);
-
-        current._work.Writer.Complete();
+        _work.Writer.Complete();
 
         // Ensure that the dispatcher immediately exits when the caller awaits the returned ValueTask.
         await Task.Yield();
