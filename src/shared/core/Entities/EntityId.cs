@@ -6,14 +6,14 @@ public readonly struct EntityId :
     IComparable<EntityId>,
     IComparisonOperators<EntityId, EntityId, bool>
 {
-    public int Id { get; }
-
     public EntityType Type { get; }
 
-    internal EntityId(int id, EntityType type)
+    public int Id { get; }
+
+    public EntityId(EntityType type, int id)
     {
-        Id = id;
         Type = type;
+        Id = id;
     }
 
     public static bool operator ==(EntityId left, EntityId right) => left.Equals(right);

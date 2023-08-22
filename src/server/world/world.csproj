@@ -12,6 +12,7 @@
     <ItemGroup>
         <Using Include="Arise.Bridge" />
         <Using Include="Arise.Data" />
+        <Using Include="Arise.Entities" />
         <Using Include="Arise.Net" />
         <Using Include="Arise.Net.Packets" />
         <Using Include="Arise.Net.Packets.Client" />

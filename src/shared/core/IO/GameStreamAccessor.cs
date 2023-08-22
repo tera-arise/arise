@@ -425,7 +425,10 @@ public class GameStreamAccessor : StreamAccessor
 
     public EntityId ReadEntityId()
     {
-        return new(ReadInt32(), ReadEnum<EntityType>());
+        var id = ReadInt32();
+        var type = ReadEnum<EntityType>();
+
+        return new(type, id);
     }
 
     public void WriteEntityId(EntityId value)
@@ -436,13 +439,15 @@ public class GameStreamAccessor : StreamAccessor
 
     public EntityId ReadCompactEntityId()
     {
-        // TODO: Consider compact encoding for the type once EntityType is fully understood.
-        return new(ReadCompactInt32(), ReadEnum<EntityType>());
+        var id = ReadCompactInt32();
+        var type = ReadCompactEnum<EntityType>();
+
+        return new(type, id);
     }
 
     public void WriteCompactEntityId(EntityId value)
     {
         WriteCompactInt32(value.Id);
-        WriteEnum(value.Type);
+        WriteCompactEnum(value.Type);
     }
 }
