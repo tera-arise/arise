@@ -32,7 +32,7 @@
         <Content Include="../../../geo/zones/x*y*.zone"
                  Link="geometry/%(Filename)%(Extension)"
                  CopyToOutputDirectory="PreserveNewest"
-                 Condition="'$(ARISE_LIGHTWEIGHT_BUILD)' != 'true'" />
+                 Condition="'$(ArisePartialBuild)' != 'true'" />
     </ItemGroup>
 
     <ItemGroup>

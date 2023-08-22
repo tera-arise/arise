@@ -43,7 +43,7 @@
             Outputs="$(_DataCenterPath)"
             DependsOnTargets="_WriteDataCenterCache"
             BeforeTargets="BeforeResGen"
-            Condition="'$(ARISE_LIGHTWEIGHT_BUILD)' != 'true'">
+            Condition="'$(ArisePartialBuild)' != 'true'">
         <PropertyGroup>
             <_ExtraArgs Condition="'$(Configuration)' == 'Release'">--compression SmallestSize</_ExtraArgs>
         </PropertyGroup>

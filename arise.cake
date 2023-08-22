@@ -4,6 +4,7 @@
 
 var target = Argument("t", "default");
 var configuration = Argument("c", "Debug");
+var partial = Argument("partial", false);
 var vendor = Argument("vendor", string.Empty);
 
 // Paths
@@ -44,6 +45,9 @@ DotNetMSBuildSettings ConfigureMSBuild(string target)
         // TODO: https://github.com/cake-build/cake/issues/4144
         ArgumentCustomization = args => args.Append("-ds:false"),
     };
+
+    if (partial)
+        settings.Properties.Add("ArisePartialBuild", new[] { "true" });
 
     if (!string.IsNullOrWhiteSpace(vendor))
         settings.Properties.Add(

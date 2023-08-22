@@ -13,7 +13,6 @@ env:
     DOTNET_CLI_TELEMETRY_OPTOUT: true
     DOTNET_GENERATE_ASPNET_CERTIFICATE: false
     DOTNET_NOLOGO: true
-    ARISE_LIGHTWEIGHT_BUILD: true
 jobs:
     build:
         strategy:
@@ -36,7 +35,7 @@ jobs:
               uses: actions/setup-dotnet@v3.2.0
             - name: Run Cake
               run: |
-                  ./cake -c ${{ matrix.cfg }}
+                  ./cake -c ${{ matrix.cfg }} --partial true
             - name: Upload artifacts
               if: always()
               uses: actions/upload-artifact@v3.1.2
