@@ -59,7 +59,7 @@ internal sealed class AriseGamePacketSerializer : GamePacketSerializer<AriseGame
 
     private static bool IsSimpleType(Type type)
     {
-        return type!.IsPrimitive || _extraSimpleTypes!.Contains(type);
+        return (type.IsPrimitive && type != typeof(nuint) && type != typeof(nint)) || _extraSimpleTypes.Contains(type);
     }
 
     private static bool IsListType(Type type)
