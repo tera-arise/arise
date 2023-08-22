@@ -29,10 +29,11 @@ internal sealed partial class DataGraph : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+        var stamp = Stopwatch.GetTimestamp();
+
         await using var stream = EmbeddedDataCenter.OpenStream();
 
         var mode = _environment.IsDevelopment() ? DataCenterLoaderMode.Lazy : DataCenterLoaderMode.Eager;
-        var stamp = Stopwatch.GetTimestamp();
 
         Root = await DataCenter.LoadAsync(
             stream,

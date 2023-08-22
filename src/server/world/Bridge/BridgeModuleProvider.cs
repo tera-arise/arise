@@ -8,7 +8,7 @@ internal sealed partial class BridgeModuleProvider : BackgroundService
     private static partial class Log
     {
         [LoggerMessage(0, LogLevel.Information, "Generated {Count} bridge modules in {ElapsedMs:0.0000} ms")]
-        public static partial void GeneratedModules(
+        public static partial void GeneratedBridgeModules(
             Microsoft.Extensions.Logging.ILogger logger, int count, double elapsedMs);
     }
 
@@ -72,7 +72,7 @@ internal sealed partial class BridgeModuleProvider : BackgroundService
                 }
             }
 
-            Log.GeneratedModules(
+            Log.GeneratedBridgeModules(
                 _logger, _options.Value.ConcurrentModules, Stopwatch.GetElapsedTime(stamp).TotalMilliseconds);
 
             await Task.Delay(_options.Value.ModuleRotationTime.ToTimeSpan(), stoppingToken);

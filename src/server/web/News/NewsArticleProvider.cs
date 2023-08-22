@@ -1,14 +1,23 @@
 namespace Arise.Server.Web.News;
 
-public sealed class NewsArticleProvider : IHostedService
+public sealed partial class NewsArticleProvider : IHostedService
 {
+    private static partial class Log
+    {
+        [LoggerMessage(0, LogLevel.Information, "Loaded {Count} news articles in {ElapsedMs:0.0000} ms")]
+        public static partial void LoadedNewsArticles(ILogger logger, int count, double elapsedMs);
+    }
+
     public IEnumerable<NewsArticle> Articles { get; private set; } = null!;
 
     private readonly IHostEnvironment _environment;
 
-    public NewsArticleProvider(IHostEnvironment environment)
+    private readonly ILogger<NewsArticleProvider> _logger;
+
+    public NewsArticleProvider(IHostEnvironment environment, ILogger<NewsArticleProvider> logger)
     {
         _environment = environment;
+        _logger = logger;
     }
 
     [RegisterServices]
@@ -19,6 +28,8 @@ public sealed class NewsArticleProvider : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+        var stamp = Stopwatch.GetTimestamp();
+
         var provider = _environment.ContentRootFileProvider;
 
         IEnumerable<IFileInfo> GetContents(params string[] names)
@@ -90,6 +101,8 @@ public sealed class NewsArticleProvider : IHostedService
             .OrderByDescending(static article => article.Date)
             .ThenBy(static article => article.Slug)
             .ToArray();
+
+        Log.LoadedNewsArticles(_logger, articles.Count, Stopwatch.GetElapsedTime(stamp).TotalMilliseconds);
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
