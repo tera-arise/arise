@@ -2,7 +2,7 @@ namespace Arise.Net.Packets.Client;
 
 public sealed class C_CHECK_VERSION : TeraGamePacket
 {
-    public sealed class VersionInfo
+    public readonly struct VersionInfo
     {
         public enum VersionKind
         {
