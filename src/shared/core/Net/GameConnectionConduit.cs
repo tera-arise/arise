@@ -162,7 +162,7 @@ public sealed class GameConnectionConduit
         packet.Serialize(accessor);
 
         buffer.Channel = packet.Channel;
-        buffer.Length = (ushort)accessor.Stream.Position;
+        buffer.Length = (ushort)accessor.Position;
         buffer.Code = packet.RawCode;
 
         buffer.ConvertToSession(Connection.Module.Protocol);

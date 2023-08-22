@@ -4,6 +4,18 @@ public class StreamAccessor
 {
     public Stream Stream { get; }
 
+    public long Length
+    {
+        get => Stream.Length;
+        set => Stream.SetLength(value);
+    }
+
+    public long Position
+    {
+        get => Stream.Position;
+        set => Stream.Position = value;
+    }
+
     public StreamAccessor(Stream stream)
     {
         Stream = stream;
