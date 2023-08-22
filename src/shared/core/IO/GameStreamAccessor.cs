@@ -16,7 +16,7 @@ public class GameStreamAccessor : StreamAccessor
 
     public ushort ReadCompactUInt16()
     {
-        return ReadUInt8() switch
+        return ReadByte() switch
         {
             0xff => ReadUInt16(),
             var value => value,
@@ -28,10 +28,10 @@ public class GameStreamAccessor : StreamAccessor
         switch (value)
         {
             case < 0xff:
-                WriteUInt8((byte)value);
+                WriteByte((byte)value);
                 break;
             default:
-                WriteUInt8(0xff);
+                WriteByte(0xff);
                 WriteUInt16(value);
                 break;
         }
@@ -39,7 +39,7 @@ public class GameStreamAccessor : StreamAccessor
 
     public short ReadCompactInt16()
     {
-        return ReadInt8() switch
+        return ReadSByte() switch
         {
             0x7f => ReadInt16(),
             var value => value,
@@ -51,10 +51,10 @@ public class GameStreamAccessor : StreamAccessor
         switch (value)
         {
             case >= -0x80 and < 0x7f:
-                WriteInt8((sbyte)value);
+                WriteSByte((sbyte)value);
                 break;
             default:
-                WriteInt8(0x7f);
+                WriteSByte(0x7f);
                 WriteInt16(value);
                 break;
         }
@@ -62,10 +62,10 @@ public class GameStreamAccessor : StreamAccessor
 
     public uint ReadCompactUInt32()
     {
-        return ReadUInt8() switch
+        return ReadByte() switch
         {
             0xfd => ReadUInt16(),
-            0xfe => (uint)(ReadUInt16() | ReadUInt8() << 16),
+            0xfe => (uint)(ReadUInt16() | ReadByte() << 16),
             0xff => ReadUInt32(),
             var value => value,
         };
@@ -76,19 +76,19 @@ public class GameStreamAccessor : StreamAccessor
         switch (value)
         {
             case < 0xfd:
-                WriteUInt8((byte)value);
+                WriteByte((byte)value);
                 break;
             case <= 0xffff:
-                WriteUInt8(0xfd);
+                WriteByte(0xfd);
                 WriteUInt16((ushort)value);
                 break;
             case <= 0xffffff:
-                WriteUInt8(0xfe);
+                WriteByte(0xfe);
                 WriteUInt16((ushort)value);
-                WriteUInt8((byte)(value >> 16));
+                WriteByte((byte)(value >> 16));
                 break;
             default:
-                WriteUInt8(0xff);
+                WriteByte(0xff);
                 WriteUInt32(value);
                 break;
         }
@@ -96,12 +96,12 @@ public class GameStreamAccessor : StreamAccessor
 
     public int ReadCompactInt32()
     {
-        return ReadInt8() switch
+        return ReadSByte() switch
         {
             0x7b => ~ReadUInt16(),
             0x7c => ReadUInt16(),
-            0x7d => ~(ReadUInt16() | ReadUInt8() << 16),
-            0x7e => ReadUInt16() | ReadUInt8() << 16,
+            0x7d => ~(ReadUInt16() | ReadByte() << 16),
+            0x7e => ReadUInt16() | ReadByte() << 16,
             0x7f => ReadInt32(),
             var value => value,
         };
@@ -115,19 +115,19 @@ public class GameStreamAccessor : StreamAccessor
         switch (value)
         {
             case >= -0x80 and < 0x7b:
-                WriteInt8((sbyte)value);
+                WriteSByte((sbyte)value);
                 break;
             case >= -0x10000 and <= 0xffff:
-                WriteInt8((sbyte)(sign ? 0x7b : 0x7c));
+                WriteSByte((sbyte)(sign ? 0x7b : 0x7c));
                 WriteUInt16((ushort)(sign ? compl : value));
                 break;
             case >= -0x1000000 and <= 0xffffff:
-                WriteInt8((sbyte)(sign ? 0x7d : 0x7e));
+                WriteSByte((sbyte)(sign ? 0x7d : 0x7e));
                 WriteUInt16((ushort)(sign ? compl : value));
-                WriteUInt8((byte)((sign ? compl : value) >>> 16));
+                WriteByte((byte)((sign ? compl : value) >>> 16));
                 break;
             default:
-                WriteInt8(0x7f);
+                WriteSByte(0x7f);
                 WriteInt32(value);
                 break;
         }
@@ -135,14 +135,14 @@ public class GameStreamAccessor : StreamAccessor
 
     public ulong ReadCompactUInt64()
     {
-        return ReadUInt8() switch
+        return ReadByte() switch
         {
             0xf9 => ReadUInt16(),
-            0xfa => (uint)(ReadUInt16() | ReadUInt8() << 16),
+            0xfa => (uint)(ReadUInt16() | ReadByte() << 16),
             0xfb => ReadUInt32(),
-            0xfc => ReadUInt32() | (ulong)ReadUInt8() << 32,
+            0xfc => ReadUInt32() | (ulong)ReadByte() << 32,
             0xfd => ReadUInt32() | (ulong)ReadUInt16() << 32,
-            0xfe => ReadUInt32() | (ulong)ReadUInt16() << 32 | (ulong)ReadUInt8() << 48,
+            0xfe => ReadUInt32() | (ulong)ReadUInt16() << 32 | (ulong)ReadByte() << 48,
             0xff => ReadUInt64(),
             var value => value,
         };
@@ -153,39 +153,39 @@ public class GameStreamAccessor : StreamAccessor
         switch (value)
         {
             case < 0xf9:
-                WriteUInt8((byte)value);
+                WriteByte((byte)value);
                 break;
             case <= 0xffff:
-                WriteUInt8(0xf9);
+                WriteByte(0xf9);
                 WriteUInt16((ushort)value);
                 break;
             case <= 0xffffff:
-                WriteUInt8(0xfa);
+                WriteByte(0xfa);
                 WriteUInt16((ushort)value);
-                WriteUInt8((byte)(value >> 16));
+                WriteByte((byte)(value >> 16));
                 break;
             case <= 0xffffffff:
-                WriteUInt8(0xfb);
+                WriteByte(0xfb);
                 WriteUInt32((uint)value);
                 break;
             case <= 0xffffffffff:
-                WriteUInt8(0xfc);
+                WriteByte(0xfc);
                 WriteUInt32((uint)value);
-                WriteUInt8((byte)(value >> 32));
+                WriteByte((byte)(value >> 32));
                 break;
             case <= 0xffffffffffff:
-                WriteUInt8(0xfd);
+                WriteByte(0xfd);
                 WriteUInt32((uint)value);
                 WriteUInt16((ushort)(value >> 32));
                 break;
             case <= 0xffffffffffffff:
-                WriteUInt8(0xfe);
+                WriteByte(0xfe);
                 WriteUInt32((uint)value);
                 WriteUInt16((ushort)(value >> 32));
-                WriteUInt8((byte)(value >> 48));
+                WriteByte((byte)(value >> 48));
                 break;
             default:
-                WriteUInt8(0xff);
+                WriteByte(0xff);
                 WriteUInt64(value);
                 break;
         }
@@ -193,20 +193,20 @@ public class GameStreamAccessor : StreamAccessor
 
     public long ReadCompactInt64()
     {
-        return ReadInt8() switch
+        return ReadSByte() switch
         {
             0x73 => ~ReadUInt16(),
             0x74 => ReadUInt16(),
-            0x75 => ~(ReadUInt16() | ReadUInt8() << 16),
-            0x76 => ReadUInt16() | ReadUInt8() << 16,
+            0x75 => ~(ReadUInt16() | ReadByte() << 16),
+            0x76 => ReadUInt16() | ReadByte() << 16,
             0x77 => ~ReadUInt32(),
             0x78 => ReadUInt32(),
-            0x79 => ~(ReadUInt32() | (long)ReadUInt8() << 32),
-            0x7a => ReadUInt32() | (long)ReadUInt8() << 32,
+            0x79 => ~(ReadUInt32() | (long)ReadByte() << 32),
+            0x7a => ReadUInt32() | (long)ReadByte() << 32,
             0x7b => ~(ReadUInt32() | (long)ReadUInt16() << 32),
             0x7c => ReadUInt32() | (long)ReadUInt16() << 32,
-            0x7d => ~(ReadUInt32() | (long)ReadUInt16() << 32 | (long)ReadUInt8() << 48),
-            0x7e => ReadUInt32() | (long)ReadUInt16() << 32 | (long)ReadUInt8() << 48,
+            0x7d => ~(ReadUInt32() | (long)ReadUInt16() << 32 | (long)ReadByte() << 48),
+            0x7e => ReadUInt32() | (long)ReadUInt16() << 32 | (long)ReadByte() << 48,
             0x7f => ReadInt64(),
             var value => value,
         };
@@ -220,39 +220,39 @@ public class GameStreamAccessor : StreamAccessor
         switch (value)
         {
             case >= -0x80 and < 0x73:
-                WriteInt8((sbyte)value);
+                WriteSByte((sbyte)value);
                 break;
             case >= -0x10000 and <= 0xffff:
-                WriteInt8((sbyte)(sign ? 0x73 : 0x74));
+                WriteSByte((sbyte)(sign ? 0x73 : 0x74));
                 WriteUInt16((ushort)(sign ? compl : value));
                 break;
             case >= -0x1000000 and <= 0xffffff:
-                WriteInt8((sbyte)(sign ? 0x75 : 0x76));
+                WriteSByte((sbyte)(sign ? 0x75 : 0x76));
                 WriteUInt16((ushort)(sign ? compl : value));
-                WriteUInt8((byte)((sign ? compl : value) >> 16));
+                WriteByte((byte)((sign ? compl : value) >> 16));
                 break;
             case >= -0x100000000 and <= 0xffffffff:
-                WriteInt8((sbyte)(sign ? 0x77 : 0x78));
+                WriteSByte((sbyte)(sign ? 0x77 : 0x78));
                 WriteUInt32((uint)(sign ? compl : value));
                 break;
             case >= -0x10000000000 and <= 0xffffffff:
-                WriteInt8((sbyte)(sign ? 0x79 : 0x7a));
+                WriteSByte((sbyte)(sign ? 0x79 : 0x7a));
                 WriteUInt32((uint)(sign ? compl : value));
-                WriteUInt8((byte)((sign ? compl : value) >>> 32));
+                WriteByte((byte)((sign ? compl : value) >>> 32));
                 break;
             case >= -0x1000000000000 and <= 0xffffffffffff:
-                WriteInt8((sbyte)(sign ? 0x7b : 0x7c));
+                WriteSByte((sbyte)(sign ? 0x7b : 0x7c));
                 WriteUInt32((uint)(sign ? compl : value));
                 WriteUInt16((ushort)((sign ? compl : value) >>> 32));
                 break;
             case >= -0x100000000000000 and <= 0xffffffffffffff:
-                WriteInt8((sbyte)(sign ? 0x7d : 0x7e));
+                WriteSByte((sbyte)(sign ? 0x7d : 0x7e));
                 WriteUInt32((uint)(sign ? compl : value));
                 WriteUInt16((ushort)((sign ? compl : value) >>> 32));
-                WriteUInt8((byte)((sign ? compl : value) >> 48));
+                WriteByte((byte)((sign ? compl : value) >> 48));
                 break;
             default:
-                WriteInt8(0x7f);
+                WriteSByte(0x7f);
                 WriteInt64(value);
                 break;
         }

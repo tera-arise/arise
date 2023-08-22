@@ -45,22 +45,22 @@ public class StreamAccessor
         Write(span);
     }
 
-    public byte ReadUInt8()
+    public byte ReadByte()
     {
         return Read<byte>();
     }
 
-    public void WriteUInt8(byte value)
+    public void WriteByte(byte value)
     {
         Write(value);
     }
 
-    public sbyte ReadInt8()
+    public sbyte ReadSByte()
     {
         return Read<sbyte>();
     }
 
-    public void WriteInt8(sbyte value)
+    public void WriteSByte(sbyte value)
     {
         Write(value);
     }
@@ -190,7 +190,7 @@ public class StreamAccessor
     public bool ReadBoolean()
     {
         // https://github.com/dotnet/roslyn/blob/main/docs/compilers/Boolean%20Representation.md
-        return ReadUInt8() != 0;
+        return ReadByte() != 0;
     }
 
     public void WriteBoolean(bool value)
