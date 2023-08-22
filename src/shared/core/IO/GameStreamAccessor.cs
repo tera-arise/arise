@@ -302,6 +302,16 @@ public class GameStreamAccessor : StreamAccessor
         throw new UnreachableException();
     }
 
+    public char ReadCompactChar()
+    {
+        return (char)ReadCompactUInt16();
+    }
+
+    public void WriteCompactChar(char value)
+    {
+        WriteCompactUInt16(value);
+    }
+
     public string ReadString()
     {
         var length = 0;
@@ -314,7 +324,7 @@ public class GameStreamAccessor : StreamAccessor
             char ch;
 
             // This loop is kind of terrible, but there is not much we can do about it.
-            while ((ch = (char)ReadUInt16()) != char.MinValue)
+            while ((ch = ReadChar()) != char.MinValue)
             {
                 if (length > buffer.Length)
                 {
@@ -364,7 +374,7 @@ public class GameStreamAccessor : StreamAccessor
             }
         }
 
-        WriteUInt16(char.MinValue);
+        WriteChar(char.MinValue);
     }
 
     public string ReadCompactString()
