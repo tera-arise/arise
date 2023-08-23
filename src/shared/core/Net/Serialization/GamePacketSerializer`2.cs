@@ -1,3 +1,4 @@
+using Arise.Entities;
 using Arise.Net.Packets;
 using static System.Linq.Expressions.Expression;
 using static DotNext.Metaprogramming.CodeGenerator;
@@ -8,14 +9,21 @@ internal abstract class GamePacketSerializer<TCode, TPacket>
     where TCode : unmanaged, Enum
     where TPacket : GamePacket<TCode>
 {
-    private static readonly MethodInfo _unsafeAs =
-        typeof(Unsafe).GetMethod("As", 1, new[] { Type.MakeGenericMethodParameter(0) })!;
+    private static readonly FrozenSet<Type> _extraSimpleTypes = new[]
+    {
+        typeof(Vector3),
+        typeof(EntityId),
+    }.ToFrozenSet();
+
+    private static readonly MethodInfo _as = typeof(Unsafe).GetMethod("As", 1, [Type.MakeGenericMethodParameter(0)])!;
 
     private readonly FrozenDictionary<TCode, Func<TPacket>> _creators;
 
     private readonly FrozenDictionary<TCode, Action<object, GameStreamAccessor>> _deserializers;
 
     private readonly FrozenDictionary<TCode, Action<object, GameStreamAccessor>> _serializers;
+
+    private int _variableCounter;
 
     private protected GamePacketSerializer()
     {
@@ -31,12 +39,13 @@ internal abstract class GamePacketSerializer<TCode, TPacket>
 
                 var typedPacket = DeclareVariable(type, "typedPacket");
 
-                Assign(typedPacket, Call(_unsafeAs.MakeGenericMethod([type]), packet));
+                Assign(typedPacket, Call(_as.MakeGenericMethod(type), packet));
 
                 generator(typedPacket, accessor);
             }).Compile();
         }
 
+        // TODO: This probably needs to be parallelized as we add more packet definitions.
         foreach (var type in typeof(ThisAssembly)
             .Assembly
             .DefinedTypes
@@ -52,6 +61,31 @@ internal abstract class GamePacketSerializer<TCode, TPacket>
         _creators = creators.ToFrozenDictionary();
         _deserializers = deserializers.ToFrozenDictionary();
         _serializers = serializers.ToFrozenDictionary();
+    }
+
+    protected static IEnumerable<PropertyInfo> EnumerateProperties(Type type)
+    {
+        var isPacket = type.IsSubclassOf(typeof(GamePacket));
+
+        return type
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+            .Where(prop => !isPacket || prop.Name != "Code")
+            .OrderBy(static prop => prop.MetadataToken);
+    }
+
+    protected static bool IsSimpleType(Type type)
+    {
+        return (type.IsPrimitive && type != typeof(nuint) && type != typeof(nint)) || _extraSimpleTypes.Contains(type);
+    }
+
+    protected static bool IsArrayType(Type type)
+    {
+        return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(ImmutableArray<>);
+    }
+
+    protected ParameterExpression Variable(Type type, string name)
+    {
+        return DeclareVariable(type, name + _variableCounter++);
     }
 
     protected abstract void GenerateDeserializer(Expression packet, Expression accessor);

@@ -8,13 +8,6 @@ internal sealed class AriseGamePacketSerializer : GamePacketSerializer<AriseGame
 {
     public static AriseGamePacketSerializer Instance { get; }
 
-    private static readonly FrozenSet<Type> _extraSimpleTypes = new[]
-    {
-        typeof(string),
-        typeof(Vector3),
-        typeof(EntityId),
-    }.ToFrozenSet();
-
     private static readonly FrozenSet<Type> _compactTypes = new[]
     {
         typeof(ushort),
@@ -28,16 +21,18 @@ internal sealed class AriseGamePacketSerializer : GamePacketSerializer<AriseGame
         typeof(EntityId),
     }.ToFrozenSet();
 
-    private static readonly MethodInfo _readEnum =
-        typeof(GameStreamAccessor).GetMethod("ReadCompactEnum", 1, Type.EmptyTypes)!;
+    private static readonly MethodInfo _readCompactEnum =
+        typeof(GameStreamAccessor).GetMethod("ReadCompactEnum", 1, [])!;
 
-    private static readonly MethodInfo _writeEnum =
-        typeof(GameStreamAccessor).GetMethod("WriteCompactEnum", 1, new[] { Type.MakeGenericMethodParameter(0) })!;
+    private static readonly MethodInfo _writeCompactEnum =
+        typeof(GameStreamAccessor).GetMethod("WriteCompactEnum", 1, [Type.MakeGenericMethodParameter(0)])!;
 
-    private int _variableCounter;
+    private static readonly MethodInfo _createBuilder =
+        typeof(ImmutableArray).GetMethod("CreateBuilder", 1, [typeof(int)])!;
 
     static AriseGamePacketSerializer()
     {
+        // Must be done here rather than at the declaration to resolve initialization ordering issues.
         Instance = new();
     }
 
@@ -45,116 +40,115 @@ internal sealed class AriseGamePacketSerializer : GamePacketSerializer<AriseGame
     {
     }
 
-    private static IEnumerable<PropertyInfo> EnumerateProperties(Type type)
-    {
-        var isPacket = type.IsSubclassOf(typeof(GamePacket));
-
-        return type
-            .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
-            .Where(prop => !isPacket || prop.Name != "Code")
-            .OrderBy(static prop => prop.MetadataToken);
-    }
-
-    private static bool IsSimpleType(Type type)
-    {
-        return (type.IsPrimitive && type != typeof(nuint) && type != typeof(nint)) || _extraSimpleTypes.Contains(type);
-    }
-
-    private static bool IsListType(Type type)
-    {
-        return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(List<>);
-    }
-
-    private string GenerateName(string name)
-    {
-        return name + _variableCounter++;
-    }
-
     protected override void GenerateDeserializer(Expression packet, Expression accessor)
     {
-        void GenerateFor(Type type, Action<Expression> assign)
+        void GenerateForObject(Expression @object)
         {
-            if (IsSimpleType(type))
-                assign(accessor.Call((_compactTypes.Contains(type) ? "ReadCompact" : "Read") + type.Name));
-            else if (type.IsEnum)
-                assign(accessor.Call(_readEnum.MakeGenericMethod(type)));
-            else if (type == typeof(byte[]))
+            void GenerateForValue(Type type, Action<Expression> handler)
             {
-                var array = DeclareVariable<byte[]>(GenerateName("array"));
+                Expression result;
 
-                Assign(array, type.New(accessor.Call("ReadCompactUInt16").Convert<int>()));
-                Call(accessor, "Read", array.Convert(typeof(Span<byte>)));
+                if (IsSimpleType(type) || type == typeof(string))
+                    result = accessor.Call((_compactTypes.Contains(type) ? "ReadCompact" : "Read") + type.Name);
+                else if (type.IsEnum)
+                    result = accessor.Call(_readCompactEnum.MakeGenericMethod(type));
+                else if (type == typeof(ReadOnlyMemory<byte>))
+                {
+                    var memory = Variable(type, "memory");
+                    var count = Variable(typeof(ushort), "count");
 
-                assign(array);
+                    Assign(count, accessor.Call("ReadCompactUInt16"));
+                    If(count.NotEqual(((ushort)0).Const()))
+                        .Then((Action)(() =>
+                        {
+                            var array = Variable(typeof(byte[]), "array");
+
+                            Assign(array, typeof(byte[]).New(count.Convert<int>()));
+                            Call(accessor, "Read", array.Convert(typeof(Span<byte>)));
+                            Assign(memory, array.Convert<ReadOnlyMemory<byte>>());
+                        }))
+                        .Else((Action)(() => Assign(memory, ReadOnlyMemory<byte>.Empty.Const())))
+                        .End();
+
+                    result = memory;
+                }
+                else if (IsArrayType(type))
+                {
+                    var elemType = type.GetGenericArguments()[0];
+
+                    var array = Variable(type, "array");
+                    var builder = Variable(typeof(ImmutableArray<>.Builder).MakeGenericType(elemType), "builder");
+                    var i = Variable(typeof(int), "i");
+
+                    Assign(
+                        builder,
+                        Expression.Call(
+                            _createBuilder.MakeGenericMethod(elemType),
+                            accessor.Call("ReadCompactUInt16").Convert<int>()));
+                    For(
+                        i.Assign(0.Const()),
+                        i => i.LessThan(builder.Property("Capacity")),
+                        static i => PreIncrementAssign(i),
+                        i => GenerateForValue(elemType, value => builder.Call("Add", value)));
+                    Assign(array, builder.Call("MoveToImmutable"));
+
+                    result = array;
+                }
+                else if (type.IsValueType)
+                {
+                    var obj = Variable(type, "obj");
+
+                    Assign(obj, type.New());
+
+                    GenerateForObject(obj);
+
+                    result = obj;
+                }
+                else
+                    throw new UnreachableException();
+
+                handler(result);
             }
-            else if (IsListType(type))
-            {
-                var elemType = type.GetGenericArguments()[0];
 
-                var list = DeclareVariable(type, GenerateName("list"));
-                var i = DeclareVariable<int>(GenerateName("i"));
-
-                Assign(list, type.New(accessor.Call("ReadCompactUInt16").Convert<int>()));
-                For(
-                    i.Assign(0.Const()),
-                    i => i.LessThan(list.Property("Capacity")),
-                    static i => PostIncrementAssign(i),
-                    i =>
-                    {
-                        var item = DeclareVariable(elemType, GenerateName("item"));
-
-                        GenerateFor(elemType, value => Assign(list.Property("Item", i), value));
-                    });
-
-                assign(list);
-            }
-            else if (type.IsValueType)
-            {
-                var obj = DeclareVariable(type, GenerateName("obj"));
-
-                foreach (var objProp in EnumerateProperties(type))
-                    GenerateFor(objProp.PropertyType, value => Assign(obj.Property(objProp), value));
-
-                assign(obj);
-            }
-            else
-                throw new UnreachableException();
+            foreach (var prop in EnumerateProperties(@object.Type))
+                GenerateForValue(prop.PropertyType, value => Assign(@object.Property(prop), value));
         }
 
-        foreach (var prop in EnumerateProperties(packet.Type))
-            GenerateFor(prop.PropertyType, value => Assign(packet.Property(prop), value));
+        GenerateForObject(packet);
     }
 
     protected override void GenerateSerializer(Expression packet, Expression accessor)
     {
-        void GenerateFor(Expression value)
+        void GenerateForObject(Expression @object)
         {
-            var type = value.Type;
+            void GenerateForValue(Expression value)
+            {
+                var type = value.Type;
 
-            if (IsSimpleType(type))
-                Call(accessor, (_compactTypes.Contains(type) ? "WriteCompact" : "Write") + type.Name, value);
-            else if (type.IsEnum)
-                Call(accessor, _writeEnum.MakeGenericMethod(type), value);
-            else if (type == typeof(byte[]))
-            {
-                Call(accessor, "WriteCompactUInt16", value.ArrayLength().Convert<ushort>());
-                Call(accessor, "Write", value.Convert(typeof(ReadOnlySpan<byte>)));
+                if (IsSimpleType(type) || type == typeof(string))
+                    Call(accessor, (_compactTypes.Contains(type) ? "WriteCompact" : "Write") + type.Name, value);
+                else if (type.IsEnum)
+                    Call(accessor, _writeCompactEnum.MakeGenericMethod(type), value);
+                else if (type == typeof(ReadOnlyMemory<byte>))
+                {
+                    Call(accessor, "WriteCompactUInt16", value.Property("Length").Convert<ushort>());
+                    Call(accessor, "Write", value.Property("Span"));
+                }
+                else if (IsArrayType(type))
+                {
+                    Call(accessor, "WriteCompactUInt16", value.Property("Length").Convert<ushort>());
+                    ForEach(value, elem => GenerateForValue(elem));
+                }
+                else if (type.IsValueType)
+                    GenerateForObject(value);
+                else
+                    throw new UnreachableException();
             }
-            else if (IsListType(type))
-            {
-                Call(accessor, "WriteCompactUInt16", value.Property("Count").Convert<ushort>());
-                ForEach(value, elem => GenerateFor(elem));
-            }
-            else if (type.IsValueType)
-            {
-                foreach (var objProp in EnumerateProperties(type))
-                    GenerateFor(value.Property(objProp));
-            }
-            else
-                throw new UnreachableException();
+
+            foreach (var prop in EnumerateProperties(@object.Type))
+                GenerateForValue(@object.Property(prop));
         }
 
-        foreach (var prop in EnumerateProperties(packet.Type))
-            GenerateFor(packet.Property(prop));
+        GenerateForObject(packet);
     }
 }

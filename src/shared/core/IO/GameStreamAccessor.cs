@@ -1,4 +1,5 @@
 using Arise.Entities;
+using Arise.Net;
 
 namespace Arise.IO;
 
@@ -457,5 +458,15 @@ public class GameStreamAccessor : StreamAccessor
     {
         WriteCompactInt32(value.Id);
         WriteCompactEnum(value.Type);
+    }
+
+    internal ushort ReadPacketOffset()
+    {
+        return (ushort)(ReadUInt16() - GameConnectionBuffer.TeraHeaderSize);
+    }
+
+    internal void WritePacketOffset(ushort value)
+    {
+        WriteUInt16((ushort)(value + GameConnectionBuffer.TeraHeaderSize));
     }
 }

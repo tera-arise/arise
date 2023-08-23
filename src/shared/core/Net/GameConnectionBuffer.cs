@@ -8,7 +8,8 @@ internal sealed class GameConnectionBuffer
     // The packet format is designed to ensure that we can simply slice off the channel and be left with a packet that
     // is fully compatible with the original client. This makes it easier for the symbiote to integrate the protocol.
 
-    private const int TeraHeaderSize = sizeof(ushort) * 2;
+    // Needed in GameStreamAccessor for ReadOffset/WriteOffset.
+    internal const int TeraHeaderSize = sizeof(ushort) * 2;
 
     private const int AriseHeaderSize = sizeof(ushort) + TeraHeaderSize;
 
