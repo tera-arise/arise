@@ -10,6 +10,6 @@ public sealed class TokenAttribute : ValidationAttribute
         return value == null || TokenGenerator.IsTokenValid((string)value)
             ? ValidationResult.Success
             : new ValidationResult(
-                "Token format is invalid.", validationContext?.MemberName is string name ? new[] { name } : null);
+                "Token format is invalid.", validationContext?.MemberName is string name ? [name] : null);
     }
 }

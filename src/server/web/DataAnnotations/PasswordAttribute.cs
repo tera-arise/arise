@@ -10,6 +10,6 @@ public sealed class PasswordAttribute : ValidationAttribute
         return value == null || PasswordStrategy.IsPasswordValid((string)value)
             ? ValidationResult.Success
             : new ValidationResult(
-                "Password format is invalid.", validationContext?.MemberName is string name ? new[] { name } : null);
+                "Password format is invalid.", validationContext?.MemberName is string name ? [name] : null);
     }
 }
