@@ -19,29 +19,29 @@ internal abstract class GamePacketSerializer<TCode, TPacket>
 
     private readonly FrozenDictionary<TCode, Func<TPacket>> _creators;
 
-    private readonly FrozenDictionary<TCode, Action<object, GameStreamAccessor>> _deserializers;
+    private readonly FrozenDictionary<TCode, Action<TPacket, GameStreamAccessor>> _deserializers;
 
-    private readonly FrozenDictionary<TCode, Action<object, GameStreamAccessor>> _serializers;
+    private readonly FrozenDictionary<TCode, Action<TPacket, GameStreamAccessor>> _serializers;
 
     private int _variableCounter;
 
     private protected GamePacketSerializer()
     {
         var creators = new Dictionary<TCode, Func<TPacket>>();
-        var deserializers = new Dictionary<TCode, Action<object, GameStreamAccessor>>();
-        var serializers = new Dictionary<TCode, Action<object, GameStreamAccessor>>();
+        var deserializers = new Dictionary<TCode, Action<TPacket, GameStreamAccessor>>();
+        var serializers = new Dictionary<TCode, Action<TPacket, GameStreamAccessor>>();
 
-        static Action<object, GameStreamAccessor> CompileFunction(Type type, Action<Expression, Expression> generator)
+        Action<TPacket, GameStreamAccessor> CompileFunction(Type type, Action<Expression, Expression> generator)
         {
-            return Lambda<Action<object, GameStreamAccessor>>(ctx =>
+            return Lambda<Action<TPacket, GameStreamAccessor>>(ctx =>
             {
                 var (packet, accessor) = ctx;
 
-                var typedPacket = DeclareVariable(type, "typedPacket");
+                var packet2 = Variable(type, "packet");
 
-                Assign(typedPacket, Call(_as.MakeGenericMethod(type), packet));
+                Assign(packet2, Call(_as.MakeGenericMethod(type), packet));
 
-                generator(typedPacket, accessor);
+                generator(packet2, accessor);
             }).Compile();
         }
 
