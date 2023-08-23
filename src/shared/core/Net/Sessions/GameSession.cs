@@ -1,9 +1,7 @@
-namespace Arise.Server.Net;
+namespace Arise.Net.Sessions;
 
-internal sealed class GameSession
+public abstract class GameSession
 {
-    // TODO: Add important state (AccountDocument, Player, etc).
-
     public IPEndPoint EndPoint => _connection.EndPoint;
 
     public GameSessionPort LowPriority { get; }
@@ -14,7 +12,7 @@ internal sealed class GameSession
 
     private readonly GameConnection _connection;
 
-    public GameSession(GameConnection connection)
+    protected GameSession(GameConnection connection)
     {
         _connection = connection;
         LowPriority = new(connection.LowPriority);

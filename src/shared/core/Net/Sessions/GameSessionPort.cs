@@ -1,10 +1,12 @@
-namespace Arise.Server.Net;
+using Arise.Net.Packets;
 
-internal readonly struct GameSessionPort
+namespace Arise.Net.Sessions;
+
+public readonly struct GameSessionPort
 {
     private readonly GameConnectionConduit _conduit;
 
-    public GameSessionPort(GameConnectionConduit conduit)
+    internal GameSessionPort(GameConnectionConduit conduit)
     {
         _conduit = conduit;
     }

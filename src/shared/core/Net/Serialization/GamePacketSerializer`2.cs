@@ -1,6 +1,5 @@
 using Arise.Entities;
 using Arise.Net.Packets;
-using static System.Linq.Expressions.Expression;
 using static DotNext.Metaprogramming.CodeGenerator;
 
 namespace Arise.Net.Serialization;
@@ -39,7 +38,7 @@ internal abstract class GamePacketSerializer<TCode, TPacket>
 
                 var packet2 = Variable(type, "packet");
 
-                Assign(packet2, Call(_as.MakeGenericMethod(type), packet));
+                Assign(packet2, Expression.Call(_as.MakeGenericMethod(type), packet));
 
                 generator(packet2, accessor);
             }).Compile();

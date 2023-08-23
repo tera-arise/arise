@@ -1,5 +1,5 @@
 using Arise.Server.Bridge;
-using Arise.Server.Net.Handlers;
+using Arise.Server.Net.Sessions;
 
 namespace Arise.Server.Net;
 
@@ -50,20 +50,20 @@ internal sealed partial class GameServer : BackgroundService
 
     private readonly ObjectPoolProvider _objectPoolProvider;
 
-    private readonly GamePacketHandler _packetHandler;
+    private readonly GameServerSessionDispatcher _dispatcher;
 
     public GameServer(
         IOptions<WorldOptions> options,
         ILogger<GameServer> logger,
         BridgeModuleProvider moduleProvider,
         ObjectPoolProvider objectPoolProvider,
-        GamePacketHandler packetHandler)
+        GameServerSessionDispatcher dispatcher)
     {
         _options = options;
         _logger = logger;
         _moduleProvider = moduleProvider;
         _objectPoolProvider = objectPoolProvider;
-        _packetHandler = packetHandler;
+        _dispatcher = dispatcher;
     }
 
     [RegisterServices]
@@ -104,7 +104,7 @@ internal sealed partial class GameServer : BackgroundService
 
             listener.ConnectionEstablished += conn =>
             {
-                conn.UserState = new GameSession(conn);
+                conn.UserState = new GameServerSession(conn);
 
                 Log.ClientConnected(_logger, conn.EndPoint);
             };
@@ -143,7 +143,7 @@ internal sealed partial class GameServer : BackgroundService
 
             void HandleTypedPacket(GameConnectionConduit conduit, GamePacket packet)
             {
-                _packetHandler.Dispatch(Unsafe.As<GameSession>(conduit.Connection.UserState!), packet);
+                _dispatcher.Dispatch(Unsafe.As<GameServerSession>(conduit.Connection.UserState!), packet);
             }
 
             listener.TeraPacketReceived += HandleTypedPacket;

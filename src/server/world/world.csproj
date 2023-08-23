@@ -17,6 +17,7 @@
         <Using Include="Arise.Net.Packets" />
         <Using Include="Arise.Net.Packets.Client" />
         <Using Include="Arise.Net.Packets.Server" />
+        <Using Include="Arise.Net.Sessions" />
         <Using Include="dnlib.DotNet.Emit" />
         <Using Include="DotNext.Linq.Expressions" />
         <Using Include="Injectio.Attributes" />
