@@ -5,7 +5,7 @@ public sealed class PatchableBridgeDataComponent : BridgeDataComponent
     [Obfuscation]
     protected override void InitializeKey(Span<byte> key)
     {
-        // Filled in by the server's BridgeModuleProvider.
+        // Filled in by the server's BridgeModuleGenerator.
 
         key[0] = 42;
         key[1] = 42;
@@ -28,7 +28,7 @@ public sealed class PatchableBridgeDataComponent : BridgeDataComponent
     [Obfuscation]
     protected override void InitializeIV(Span<byte> iv)
     {
-        // Filled in by the server's BridgeModuleProvider.
+        // Filled in by the server's BridgeModuleGenerator.
 
         iv[0] = 42;
         iv[1] = 42;

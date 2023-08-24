@@ -3,7 +3,7 @@ using dnlib.DotNet;
 namespace Arise.Server.Bridge;
 
 [SuppressMessage("", "CA1812")]
-internal sealed partial class BridgeModuleProvider : BackgroundService
+internal sealed partial class BridgeModuleGenerator : BackgroundService
 {
     private static partial class Log
     {
@@ -21,11 +21,11 @@ internal sealed partial class BridgeModuleProvider : BackgroundService
 
     private readonly IOptions<WorldOptions> _options;
 
-    private readonly ILogger<BridgeModuleProvider> _logger;
+    private readonly ILogger<BridgeModuleGenerator> _logger;
 
     private readonly List<(BridgeModule Server, ReadOnlyMemory<byte> Client)> _modules = new();
 
-    public BridgeModuleProvider(IOptions<WorldOptions> options, ILogger<BridgeModuleProvider> logger)
+    public BridgeModuleGenerator(IOptions<WorldOptions> options, ILogger<BridgeModuleGenerator> logger)
     {
         _options = options;
         _logger = logger;
@@ -34,7 +34,7 @@ internal sealed partial class BridgeModuleProvider : BackgroundService
     [RegisterServices]
     internal static void Register(IServiceCollection services)
     {
-        services.AddHostedSingleton<BridgeModuleProvider>();
+        services.AddHostedSingleton<BridgeModuleGenerator>();
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

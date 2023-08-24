@@ -9,7 +9,7 @@ internal static class GameProtection
     [Obfuscation]
     public static void Initialize()
     {
-        // This method body is erased by the server's BridgeModuleProvider for module instances that run on the server
+        // This method body is erased by the server's BridgeModuleGenerator for module instances that run on the server
         // and for module instances running on the client in development scenarios.
 
         if (Interlocked.Exchange(ref _initialized, 1) == 1)
@@ -27,14 +27,14 @@ internal static class GameProtection
     [Obfuscation]
     private static string GetIssueTime()
     {
-        // Filled in by the server's BridgeModuleProvider.
+        // Filled in by the server's BridgeModuleGenerator.
         return "xyz";
     }
 
     [Obfuscation]
     private static string GetValidDuration()
     {
-        // Filled in by the server's BridgeModuleProvider.
+        // Filled in by the server's BridgeModuleGenerator.
         return "xyz";
     }
 
@@ -51,14 +51,14 @@ internal static class GameProtection
     [Obfuscation]
     private static int GetExitDelay()
     {
-        // Filled in by the server's BridgeModuleProvider.
+        // Filled in by the server's BridgeModuleGenerator.
         return 42;
     }
 
     [Obfuscation]
     private static int GetExitStatus()
     {
-        // Filled in by the server's BridgeModuleProvider.
+        // Filled in by the server's BridgeModuleGenerator.
         return 42;
     }
 }

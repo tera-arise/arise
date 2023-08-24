@@ -6,7 +6,7 @@ internal abstract class GameProtectionTask
 
     static GameProtectionTask()
     {
-        // Exit when GameConnectionModule tries to unload us.
+        // Make sure we exit when the client/server drops all references to us.
         AssemblyLoadContext.GetLoadContext(typeof(ThisAssembly).Assembly)!.Unloading += static _ => _unloading = true;
     }
 
@@ -35,7 +35,7 @@ internal abstract class GameProtectionTask
     [Obfuscation]
     private static int GetCheckInterval()
     {
-        // Filled in by the server's BridgeModuleProvider.
+        // Filled in by the server's BridgeModuleGenerator.
         return 42;
     }
 }

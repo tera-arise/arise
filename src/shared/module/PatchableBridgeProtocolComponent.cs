@@ -5,7 +5,7 @@ public sealed class PatchableBridgeProtocolComponent : BridgeProtocolComponent
     [Obfuscation]
     protected override void InitializeTeraCodes(Dictionary<TeraGamePacketCode, ushort> codes)
     {
-        // Filled in by the server's BridgeModuleProvider.
+        // Filled in by the server's BridgeModuleGenerator.
 
         codes.Add(default, 42);
     }
@@ -13,7 +13,7 @@ public sealed class PatchableBridgeProtocolComponent : BridgeProtocolComponent
     [Obfuscation]
     protected override void InitializeAriseCodes(Dictionary<AriseGamePacketCode, ushort> codes)
     {
-        // Filled in by the server's BridgeModuleProvider.
+        // Filled in by the server's BridgeModuleGenerator.
 
         codes.Add(default, 42);
     }

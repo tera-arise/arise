@@ -46,24 +46,24 @@ internal sealed partial class GameServer : BackgroundService
 
     private readonly ILogger<GameServer> _logger;
 
-    private readonly BridgeModuleProvider _moduleProvider;
+    private readonly BridgeModuleGenerator _moduleGenerator;
 
     private readonly ObjectPoolProvider _objectPoolProvider;
 
-    private readonly GameServerSessionDispatcher _dispatcher;
+    private readonly GameServerSessionDispatcher _sessionDispatcher;
 
     public GameServer(
         IOptions<WorldOptions> options,
         ILogger<GameServer> logger,
-        BridgeModuleProvider moduleProvider,
+        BridgeModuleGenerator moduleGenerator,
         ObjectPoolProvider objectPoolProvider,
-        GameServerSessionDispatcher dispatcher)
+        GameServerSessionDispatcher sessionDispatcher)
     {
         _options = options;
         _logger = logger;
-        _moduleProvider = moduleProvider;
+        _moduleGenerator = moduleGenerator;
         _objectPoolProvider = objectPoolProvider;
-        _dispatcher = dispatcher;
+        _sessionDispatcher = sessionDispatcher;
     }
 
     [RegisterServices]
@@ -99,7 +99,7 @@ internal sealed partial class GameServer : BackgroundService
                 IPEndPoint.Parse(ep),
                 caCert,
                 serverCert,
-                _moduleProvider.GetRandomModulePair,
+                _moduleGenerator.GetRandomModulePair,
                 _objectPoolProvider,
                 stoppingToken);
 
@@ -144,7 +144,7 @@ internal sealed partial class GameServer : BackgroundService
 
             void HandleTypedPacket(GameConnectionConduit conduit, GamePacket packet)
             {
-                _dispatcher.Dispatch(Unsafe.As<GameServerSession>(conduit.Connection.UserState!), packet);
+                _sessionDispatcher.Dispatch(Unsafe.As<GameServerSession>(conduit.Connection.UserState!), packet);
             }
 
             listener.TeraPacketReceived += HandleTypedPacket;
