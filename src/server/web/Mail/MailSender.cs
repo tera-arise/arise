@@ -5,7 +5,7 @@ public sealed partial class MailSender
 {
     private static partial class Log
     {
-        [LoggerMessage(0, LogLevel.Information, "Sent {Subject} to {Receiver} in {ElapsedMs:0.0000} ms")]
+        [LoggerMessage(0, LogLevel.Information, "Sent email {Subject} to {Receiver} in {ElapsedMs:0.0000} ms")]
         public static partial void SentMail(ILogger logger, string receiver, string subject, double elapsedMs);
     }
 
@@ -32,6 +32,8 @@ public sealed partial class MailSender
     public async ValueTask SendAsync(
         string receiver, string subject, string content, CancellationToken cancellationToken)
     {
+        var stopwatch = SlimStopwatch.Create();
+
         var suffix = _environment.IsStaging() ? " (Staging)" : string.Empty;
         var message = new SendGridMessage
         {
@@ -48,8 +50,6 @@ public sealed partial class MailSender
         };
 
         message.AddTo(receiver);
-
-        var stamp = Stopwatch.GetTimestamp();
 
         try
         {
@@ -72,6 +72,6 @@ public sealed partial class MailSender
             throw new MailException("An internal SendGrid error occurred.", e);
         }
 
-        Log.SentMail(_logger, receiver, subject, Stopwatch.GetElapsedTime(stamp).TotalMilliseconds);
+        Log.SentMail(_logger, receiver, subject, stopwatch.Elapsed.TotalMilliseconds);
     }
 }

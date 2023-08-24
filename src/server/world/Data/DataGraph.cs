@@ -1,3 +1,5 @@
+using Arise.Diagnostics;
+
 namespace Arise.Server.Data;
 
 [SuppressMessage("", "CA1812")]
@@ -29,7 +31,7 @@ internal sealed partial class DataGraph : IHostedService
 
     async Task IHostedService.StartAsync(CancellationToken cancellationToken)
     {
-        var stamp = Stopwatch.GetTimestamp();
+        var stopwatch = SlimStopwatch.Create();
 
         await using var stream = EmbeddedDataCenter.OpenStream();
 
@@ -45,7 +47,7 @@ internal sealed partial class DataGraph : IHostedService
                 .WithMutability(DataCenterMutability.Immutable),
             cancellationToken);
 
-        Log.LoadedDataCenter(_logger, mode, Stopwatch.GetElapsedTime(stamp).TotalMilliseconds);
+        Log.LoadedDataCenter(_logger, mode, stopwatch.Elapsed.TotalMilliseconds);
     }
 
     Task IHostedService.StopAsync(CancellationToken cancellationToken)

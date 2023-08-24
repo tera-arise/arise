@@ -28,7 +28,7 @@ public sealed partial class NewsArticleProvider : IHostedService
 
     async Task IHostedService.StartAsync(CancellationToken cancellationToken)
     {
-        var stamp = Stopwatch.GetTimestamp();
+        var stopwatch = SlimStopwatch.Create();
 
         var provider = _environment.ContentRootFileProvider;
 
@@ -102,7 +102,7 @@ public sealed partial class NewsArticleProvider : IHostedService
             .ThenBy(static article => article.Slug)
             .ToArray();
 
-        Log.LoadedNewsArticles(_logger, articles.Count, Stopwatch.GetElapsedTime(stamp).TotalMilliseconds);
+        Log.LoadedNewsArticles(_logger, articles.Count, stopwatch.Elapsed.TotalMilliseconds);
     }
 
     Task IHostedService.StopAsync(CancellationToken cancellationToken)

@@ -56,7 +56,7 @@ internal sealed partial class BridgeModuleGenerator : BackgroundService
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            var stamp = Stopwatch.GetTimestamp();
+            var stopwatch = SlimStopwatch.Create();
 
             lock (_modules)
             {
@@ -73,7 +73,7 @@ internal sealed partial class BridgeModuleGenerator : BackgroundService
             }
 
             Log.GeneratedBridgeModules(
-                _logger, _options.Value.ConcurrentModules, Stopwatch.GetElapsedTime(stamp).TotalMilliseconds);
+                _logger, _options.Value.ConcurrentModules, stopwatch.Elapsed.TotalMilliseconds);
 
             // Note that running this method synchronously until this await ensures that we have a collection of valid
             // modules before the host is allowed to finish the startup sequence.
