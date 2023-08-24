@@ -1,5 +1,6 @@
 namespace Arise.Server.Data;
 
+[RegisterSingleton]
 [SuppressMessage("", "CA1812")]
 internal sealed partial class DataGraph : IHostedService
 {
@@ -19,12 +20,6 @@ internal sealed partial class DataGraph : IHostedService
     {
         _environment = environment;
         _logger = logger;
-    }
-
-    [RegisterServices]
-    internal static void Register(IServiceCollection services)
-    {
-        services.AddHostedSingleton<DataGraph>();
     }
 
     async Task IHostedService.StartAsync(CancellationToken cancellationToken)

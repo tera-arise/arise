@@ -3,6 +3,7 @@ using Arise.Server.Net.Sessions;
 
 namespace Arise.Server.Net;
 
+[RegisterSingleton]
 [SuppressMessage("", "CA1812")]
 internal sealed partial class GameServer : BackgroundService
 {
@@ -64,12 +65,6 @@ internal sealed partial class GameServer : BackgroundService
         _moduleGenerator = moduleGenerator;
         _objectPoolProvider = objectPoolProvider;
         _sessionDispatcher = sessionDispatcher;
-    }
-
-    [RegisterServices]
-    internal static void Register(IServiceCollection services)
-    {
-        services.AddHostedSingleton<GameServer>();
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

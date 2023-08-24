@@ -1,5 +1,6 @@
 namespace Arise.Server.Web.News;
 
+[RegisterSingleton]
 internal sealed partial class NewsArticleProvider : IHostedService
 {
     private static partial class Log
@@ -18,12 +19,6 @@ internal sealed partial class NewsArticleProvider : IHostedService
     {
         _environment = environment;
         _logger = logger;
-    }
-
-    [RegisterServices]
-    internal static void Register(IServiceCollection services)
-    {
-        services.AddHostedSingleton<NewsArticleProvider>();
     }
 
     async Task IHostedService.StartAsync(CancellationToken cancellationToken)

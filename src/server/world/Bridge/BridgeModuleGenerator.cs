@@ -2,6 +2,7 @@ using dnlib.DotNet;
 
 namespace Arise.Server.Bridge;
 
+[RegisterSingleton]
 [SuppressMessage("", "CA1001")]
 [SuppressMessage("", "CA1812")]
 internal sealed partial class BridgeModuleGenerator : IHostedService
@@ -34,12 +35,6 @@ internal sealed partial class BridgeModuleGenerator : IHostedService
     {
         _options = options;
         _logger = logger;
-    }
-
-    [RegisterServices]
-    internal static void Register(IServiceCollection services)
-    {
-        services.AddHostedSingleton<BridgeModuleGenerator>();
     }
 
     Task IHostedService.StartAsync(CancellationToken cancellationToken)
