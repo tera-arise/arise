@@ -16,7 +16,7 @@ public sealed class GameDownloadProvider
             typeof(ThisAssembly)
                 .Assembly
                 .GetCustomAttributes<AssemblyMetadataAttribute>()
-                .Single(static attr => attr.Key == "DataCenterRevision")
+                .Single(static attr => attr.Key == "Arise.GameRevision")
                 .Value!,
             CultureInfo.InvariantCulture);
 
