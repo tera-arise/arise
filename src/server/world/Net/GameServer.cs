@@ -148,6 +148,10 @@ internal sealed partial class GameServer : BackgroundService
             listeners.Add(listener);
         }
 
+        // Loading the data center and zone geometry can allocate a lot of temporary memory, so force an aggressive
+        // cleanup before allowing clients to connect.
+        GC.Collect(GC.MaxGeneration, GCCollectionMode.Aggressive);
+
         foreach (var listener in listeners)
         {
             listener.Start();
