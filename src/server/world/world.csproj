@@ -14,6 +14,7 @@
         <Using Include="Arise.Data" />
         <Using Include="Arise.Diagnostics" />
         <Using Include="Arise.Entities" />
+        <Using Include="Arise.IO" />
         <Using Include="Arise.Net" />
         <Using Include="Arise.Net.Packets" />
         <Using Include="Arise.Net.Packets.Client" />
