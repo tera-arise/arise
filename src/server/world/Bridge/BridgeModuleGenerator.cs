@@ -2,8 +2,9 @@ using dnlib.DotNet;
 
 namespace Arise.Server.Bridge;
 
+[SuppressMessage("", "CA1001")]
 [SuppressMessage("", "CA1812")]
-internal sealed partial class BridgeModuleGenerator : BackgroundService
+internal sealed partial class BridgeModuleGenerator : IHostedService
 {
     private static partial class Log
     {
@@ -19,11 +20,15 @@ internal sealed partial class BridgeModuleGenerator : BackgroundService
         new BridgeModuleObfuscationPass(),
     };
 
+    private readonly CancellationTokenSource _cts = new();
+
+    private readonly TaskCompletionSource _generateDone = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+    private readonly List<(BridgeModule Server, ReadOnlyMemory<byte> Client)> _modules = new();
+
     private readonly IOptions<WorldOptions> _options;
 
     private readonly ILogger<BridgeModuleGenerator> _logger;
-
-    private readonly List<(BridgeModule Server, ReadOnlyMemory<byte> Client)> _modules = new();
 
     public BridgeModuleGenerator(IOptions<WorldOptions> options, ILogger<BridgeModuleGenerator> logger)
     {
@@ -37,7 +42,28 @@ internal sealed partial class BridgeModuleGenerator : BackgroundService
         services.AddHostedSingleton<BridgeModuleGenerator>();
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    Task IHostedService.StartAsync(CancellationToken cancellationToken)
+    {
+        var ct = _cts.Token;
+
+        _ = Task.Run(() => GenerateModulesAsync(ct), ct);
+
+        return Task.CompletedTask;
+    }
+
+    async Task IHostedService.StopAsync(CancellationToken cancellationToken)
+    {
+        // Signal the generator task to shut down.
+        await _cts.CancelAsync();
+
+        // Note that the generator task is not expected to encounter any exceptions.
+        await _generateDone.Task;
+
+        // The task is done; safe to dispose this now.
+        _cts.Dispose();
+    }
+
+    private async Task GenerateModulesAsync(CancellationToken cancellationToken)
     {
         ReadOnlyMemory<byte> CreateModule(BridgeModuleKind kind, int seed)
         {
@@ -54,30 +80,41 @@ internal sealed partial class BridgeModuleGenerator : BackgroundService
             return stream.ToArray();
         }
 
-        while (!stoppingToken.IsCancellationRequested)
+        try
         {
-            var stopwatch = SlimStopwatch.Create();
-
-            lock (_modules)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                _modules.Clear();
+                var stopwatch = SlimStopwatch.Create();
 
-                for (var i = 0; i < _options.Value.ConcurrentModules; i++)
+                lock (_modules)
                 {
-                    var seed = Environment.TickCount;
+                    _modules.Clear();
 
-                    _modules.Add(
-                        (BridgeModuleActivator.Create(CreateModule(BridgeModuleKind.Server, seed)),
-                         CreateModule(BridgeModuleKind.Client, seed)));
+                    for (var i = 0; i < _options.Value.ConcurrentModules; i++)
+                    {
+                        var seed = Environment.TickCount;
+
+                        _modules.Add(
+                            (BridgeModuleActivator.Create(CreateModule(BridgeModuleKind.Server, seed)),
+                            CreateModule(BridgeModuleKind.Client, seed)));
+                    }
                 }
+
+                Log.GeneratedBridgeModules(
+                    _logger, _options.Value.ConcurrentModules, stopwatch.Elapsed.TotalMilliseconds);
+
+                // Note that running this method synchronously until this await ensures that we have a collection of valid
+                // modules before the host is allowed to finish the startup sequence.
+                await Task.Delay(_options.Value.ModuleRotationTime.ToTimeSpan(), cancellationToken);
             }
-
-            Log.GeneratedBridgeModules(
-                _logger, _options.Value.ConcurrentModules, stopwatch.Elapsed.TotalMilliseconds);
-
-            // Note that running this method synchronously until this await ensures that we have a collection of valid
-            // modules before the host is allowed to finish the startup sequence.
-            await Task.Delay(_options.Value.ModuleRotationTime.ToTimeSpan(), stoppingToken);
+        }
+        catch (OperationCanceledException)
+        {
+            // StopAsync was called.
+        }
+        finally
+        {
+            _generateDone.SetResult();
         }
     }
 

@@ -1,5 +1,3 @@
-using Arise.Diagnostics;
-
 namespace Arise.Server.Data;
 
 [SuppressMessage("", "CA1812")]
