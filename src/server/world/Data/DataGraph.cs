@@ -27,7 +27,7 @@ internal sealed partial class DataGraph : IHostedService
         services.AddHostedSingleton<DataGraph>();
     }
 
-    public async Task StartAsync(CancellationToken cancellationToken)
+    async Task IHostedService.StartAsync(CancellationToken cancellationToken)
     {
         var stamp = Stopwatch.GetTimestamp();
 
@@ -48,7 +48,7 @@ internal sealed partial class DataGraph : IHostedService
         Log.LoadedDataCenter(_logger, mode, Stopwatch.GetElapsedTime(stamp).TotalMilliseconds);
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+    Task IHostedService.StopAsync(CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
     }

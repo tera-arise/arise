@@ -75,6 +75,8 @@ internal sealed partial class BridgeModuleProvider : BackgroundService
             Log.GeneratedBridgeModules(
                 _logger, _options.Value.ConcurrentModules, Stopwatch.GetElapsedTime(stamp).TotalMilliseconds);
 
+            // Note that running this method synchronously until this await ensures that we have a collection of valid
+            // modules before the host is allowed to finish the startup sequence.
             await Task.Delay(_options.Value.ModuleRotationTime.ToTimeSpan(), stoppingToken);
         }
     }

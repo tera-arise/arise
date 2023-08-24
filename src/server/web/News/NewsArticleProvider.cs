@@ -26,7 +26,7 @@ public sealed partial class NewsArticleProvider : IHostedService
         services.AddHostedSingleton<NewsArticleProvider>();
     }
 
-    public async Task StartAsync(CancellationToken cancellationToken)
+    async Task IHostedService.StartAsync(CancellationToken cancellationToken)
     {
         var stamp = Stopwatch.GetTimestamp();
 
@@ -105,7 +105,7 @@ public sealed partial class NewsArticleProvider : IHostedService
         Log.LoadedNewsArticles(_logger, articles.Count, Stopwatch.GetElapsedTime(stamp).TotalMilliseconds);
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+    Task IHostedService.StopAsync(CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
     }

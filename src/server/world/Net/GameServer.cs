@@ -74,21 +74,22 @@ internal sealed partial class GameServer : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        static string GetManifestResource(string name)
+        async ValueTask<string> GetManifestResourceAsync(string name)
         {
-            using var stream = typeof(ThisAssembly).Assembly.GetManifestResourceStream(name)!;
+            await using var stream = typeof(ThisAssembly).Assembly.GetManifestResourceStream(name)!;
 
             var buffer = GC.AllocateUninitializedArray<byte>((int)stream.Length);
 
-            // Manifest resources come from memory; async/await would be pointless here.
-            stream.ReadExactly(buffer);
+            await stream.ReadExactlyAsync(buffer, stoppingToken);
 
             return Encoding.UTF8.GetString(buffer);
         }
 
-        using var caCert = X509Certificate2.CreateFromPem(GetManifestResource("ca.pem"));
-        using var serverCert = X509Certificate2.CreateFromPem(
-            GetManifestResource("arised.pem"), GetManifestResource("arised.key"));
+        var serverPem = await GetManifestResourceAsync("arised.pem");
+        var serverKey = await GetManifestResourceAsync("arised.key");
+
+        using var caCert = X509Certificate2.CreateFromPem(await GetManifestResourceAsync("ca.pem"));
+        using var serverCert = X509Certificate2.CreateFromPem(serverPem, serverKey);
 
         var listeners = new List<GameConnectionListener>();
 
