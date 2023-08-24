@@ -1,5 +1,5 @@
 using Arise.Server.Web.Models.Home;
-using Arise.Server.Web.Services;
+using Arise.Server.Web.Net;
 
 namespace Arise.Server.Web.Controllers;
 
@@ -10,12 +10,12 @@ internal sealed class HomeController : WebController
         return View();
     }
 
-    public IActionResult Download(GameDownloadProvider provider)
+    public IActionResult Download(GameDownloadLinks provider)
     {
         return View(new HomeDownloadModel
         {
-            ClientManifestUri = provider.ClientManifestUri,
-            ClientDownloadUri = provider.ClientDownloadUri,
+            ClientManifestUri = provider.TeraManifestUri,
+            ClientDownloadUri = provider.TeraDownloadUri,
             AriseManifestUri = provider.AriseManifestUri,
             AriseDownloadUri = provider.AriseDownloadUri,
         });
