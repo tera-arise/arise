@@ -1,26 +1,26 @@
-namespace Arise.Server.Web.Mail;
+namespace Arise.Server.Web.Email;
 
 [RegisterTransient]
-public sealed partial class MailSender
+public sealed partial class EmailSender
 {
     private static partial class Log
     {
         [LoggerMessage(0, LogLevel.Information, "Sent email {Subject} to {Receiver} in {ElapsedMs:0.0000} ms")]
-        public static partial void SentMail(ILogger logger, string receiver, string subject, double elapsedMs);
+        public static partial void SentEmail(ILogger logger, string receiver, string subject, double elapsedMs);
     }
 
     private readonly IHostEnvironment _environment;
 
     private readonly IOptionsMonitor<WebOptions> _options;
 
-    private readonly ILogger<MailSender> _logger;
+    private readonly ILogger<EmailSender> _logger;
 
     private readonly ISendGridClient _client;
 
-    public MailSender(
+    public EmailSender(
         IHostEnvironment environment,
         IOptionsMonitor<WebOptions> options,
-        ILogger<MailSender> logger,
+        ILogger<EmailSender> logger,
         ISendGridClient client)
     {
         _environment = environment;
@@ -37,7 +37,7 @@ public sealed partial class MailSender
         var suffix = _environment.IsStaging() ? " (Staging)" : string.Empty;
         var message = new SendGridMessage
         {
-            From = new(_options.CurrentValue.MailAddress, $"TERA Arise{suffix}"),
+            From = new(_options.CurrentValue.EmailAddress, $"TERA Arise{suffix}"),
             Subject = $"{subject} | TERA Arise{suffix}",
             PlainTextContent = $"""
             Hi!
@@ -57,21 +57,21 @@ public sealed partial class MailSender
         }
         catch (HttpRequestException e)
         {
-            throw new MailException("A low-level connection error occurred.", e);
+            throw new EmailException("A low-level connection error occurred.", e);
         }
         catch (TaskCanceledException e)
         {
-            throw new MailException("A connection timeout occurred.", e);
+            throw new EmailException("A connection timeout occurred.", e);
         }
         catch (RequestErrorException e)
         {
-            throw new MailException("A SendGrid request error occurred.", e);
+            throw new EmailException("A SendGrid request error occurred.", e);
         }
         catch (SendGridInternalException e)
         {
-            throw new MailException("An internal SendGrid error occurred.", e);
+            throw new EmailException("An internal SendGrid error occurred.", e);
         }
 
-        Log.SentMail(_logger, receiver, subject, stopwatch.Elapsed.TotalMilliseconds);
+        Log.SentEmail(_logger, receiver, subject, stopwatch.Elapsed.TotalMilliseconds);
     }
 }

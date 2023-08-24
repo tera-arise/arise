@@ -1,5 +1,5 @@
 using Arise.Server.Web.Authentication;
-using Arise.Server.Web.Mail;
+using Arise.Server.Web.Email;
 using Arise.Server.Web.ModelBinding;
 
 namespace Arise.Server.Web;

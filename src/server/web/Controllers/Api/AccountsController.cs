@@ -1,6 +1,6 @@
 using Arise.Server.Web.Authentication;
 using Arise.Server.Web.Cryptography;
-using Arise.Server.Web.Mail;
+using Arise.Server.Web.Email;
 using Arise.Server.Web.Models.Api.Accounts;
 
 namespace Arise.Server.Web.Controllers.Api;
@@ -19,7 +19,7 @@ public sealed class AccountsController : ApiController
 
     [BindProperty]
     [FromServices]
-    public required MailSender Sender { get; init; }
+    public required EmailSender Sender { get; init; }
 
     [BindProperty]
     [FromServices]

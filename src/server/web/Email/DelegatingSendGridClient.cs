@@ -1,4 +1,4 @@
-namespace Arise.Server.Web.Mail;
+namespace Arise.Server.Web.Email;
 
 public sealed class DelegatingSendGridClient : ISendGridClient
 {

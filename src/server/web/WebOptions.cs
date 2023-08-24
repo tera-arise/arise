@@ -6,7 +6,7 @@ public sealed class WebOptions : IOptions<WebOptions>
 
     public string? SendGridKey { get; set; }
 
-    public string MailAddress { get; set; } = "arise@localhost";
+    public string EmailAddress { get; set; } = "arise@localhost";
 
     public Duration AccountVerificationTime { get; set; } = Duration.FromDays(7);
 
