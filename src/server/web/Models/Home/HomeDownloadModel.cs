@@ -1,6 +1,6 @@
 namespace Arise.Server.Web.Models.Home;
 
-public sealed class HomeDownloadModel
+internal sealed class HomeDownloadModel
 {
     public required Uri ClientManifestUri { get; init; }
 

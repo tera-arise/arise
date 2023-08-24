@@ -1,6 +1,6 @@
 namespace Arise.Server.Web.News;
 
-public sealed partial class NewsArticleProvider : IHostedService
+internal sealed partial class NewsArticleProvider : IHostedService
 {
     private static partial class Log
     {

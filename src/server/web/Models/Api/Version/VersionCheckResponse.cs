@@ -1,6 +1,6 @@
 namespace Arise.Server.Web.Models.Api.Version;
 
-public sealed class VersionCheckResponse
+internal sealed class VersionCheckResponse
 {
     public required Uri ClientManifestUri { get; init; }
 

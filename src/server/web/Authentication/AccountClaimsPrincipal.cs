@@ -1,6 +1,6 @@
 namespace Arise.Server.Web.Authentication;
 
-public sealed class AccountClaimsPrincipal : ClaimsPrincipal
+internal sealed class AccountClaimsPrincipal : ClaimsPrincipal
 {
     public AccountDocument Document { get; }
 

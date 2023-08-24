@@ -1,6 +1,6 @@
 namespace Arise.Server.Web.Cryptography;
 
-public abstract class PasswordStrategy
+internal abstract class PasswordStrategy
 {
     public abstract AccountPasswordKind Kind { get; }
 

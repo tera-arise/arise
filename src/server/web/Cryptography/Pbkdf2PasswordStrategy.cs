@@ -1,6 +1,6 @@
 namespace Arise.Server.Web.Cryptography;
 
-public sealed class Pbkdf2PasswordStrategy : PasswordStrategy
+internal sealed class Pbkdf2PasswordStrategy : PasswordStrategy
 {
     private const int Length = SHA512.HashSizeInBytes;
 

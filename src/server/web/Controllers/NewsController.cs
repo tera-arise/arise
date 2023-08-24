@@ -3,7 +3,7 @@ using Arise.Server.Web.News;
 
 namespace Arise.Server.Web.Controllers;
 
-public sealed class NewsController : WebController
+internal sealed class NewsController : WebController
 {
     private readonly IOptionsSnapshot<WebOptions> _options;
 

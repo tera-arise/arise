@@ -7,7 +7,7 @@ namespace Arise.Server.Web.Controllers.Api;
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
 [Route("api/[controller]/[action]")]
-public abstract class ApiController : ControllerBase
+internal abstract class ApiController : ControllerBase
 {
     [BindProperty]
     public required CancellationToken CancellationToken { get; init; }

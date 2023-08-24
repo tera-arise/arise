@@ -25,6 +25,7 @@
         <Using Include="Microsoft.AspNetCore.Html" />
         <Using Include="Microsoft.AspNetCore.Http" />
         <Using Include="Microsoft.AspNetCore.Mvc" />
+        <Using Include="Microsoft.AspNetCore.Mvc.Controllers" />
         <Using Include="Microsoft.AspNetCore.Mvc.ModelBinding" />
         <Using Include="Microsoft.AspNetCore.Mvc.ModelBinding.Metadata" />
         <Using Include="Microsoft.AspNetCore.Mvc.RazorPages" />

@@ -5,7 +5,7 @@ using Arise.Server.Web.Models.Api.Accounts;
 
 namespace Arise.Server.Web.Controllers.Api;
 
-public sealed class AccountsController : ApiController
+internal sealed class AccountsController : ApiController
 {
     // TODO: Add rate limiting throughout.
 

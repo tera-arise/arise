@@ -3,7 +3,7 @@ using Arise.Server.Web.Services;
 
 namespace Arise.Server.Web.Controllers;
 
-public sealed class HomeController : WebController
+internal sealed class HomeController : WebController
 {
     public IActionResult Index()
     {

@@ -3,7 +3,7 @@ using Arise.Server.Web.Services;
 
 namespace Arise.Server.Web.Controllers.Api;
 
-public sealed class VersionController : ApiController
+internal sealed class VersionController : ApiController
 {
     [AllowAnonymous]
     [HttpGet]

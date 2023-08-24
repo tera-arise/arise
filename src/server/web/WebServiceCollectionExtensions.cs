@@ -1,4 +1,5 @@
 using Arise.Server.Web.Authentication;
+using Arise.Server.Web.Controllers;
 using Arise.Server.Web.Email;
 using Arise.Server.Web.ModelBinding;
 using Arise.Server.Web.Models.Api;
@@ -38,6 +39,8 @@ public static class WebServiceCollectionExtensions
 
                 _ = json.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
             })
+            .ConfigureApplicationPartManager(
+                static manager => manager.FeatureProviders.Add(InternalControllerFeatureProvider.Instance))
             .AddApplicationPart(typeof(ThisAssembly).Assembly)
             .Services
             .AddAuthentication()

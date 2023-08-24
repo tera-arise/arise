@@ -1,5 +1,5 @@
 namespace Arise.Server.Web.Controllers;
 
-public abstract class WebController : Controller
+internal abstract class WebController : Controller
 {
 }

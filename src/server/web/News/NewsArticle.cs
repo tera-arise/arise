@@ -1,6 +1,6 @@
 namespace Arise.Server.Web.News;
 
-public sealed class NewsArticle
+internal sealed class NewsArticle
 {
     public required LocalDate Date { get; init; }
 

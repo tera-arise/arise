@@ -2,7 +2,7 @@ using Arise.Server.Web.Cryptography;
 
 namespace Arise.Server.Web.Authentication;
 
-public sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthenticationOptions>
+internal sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthenticationOptions>
 {
     public const string Name = "Api";
 

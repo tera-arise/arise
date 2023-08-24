@@ -2,7 +2,7 @@ using Arise.Server.Web.DataAnnotations;
 
 namespace Arise.Server.Web.Models.Api.Accounts;
 
-public sealed class AccountsAuthenticateResponse
+internal sealed class AccountsAuthenticateResponse
 {
     public required bool IsVerifying { get; init; }
 

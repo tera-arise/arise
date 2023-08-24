@@ -1,6 +1,6 @@
 namespace Arise.Server.Web.Email;
 
-public sealed class DelegatingSendGridClient : ISendGridClient
+internal sealed class DelegatingSendGridClient : ISendGridClient
 {
     public string UrlPath
     {

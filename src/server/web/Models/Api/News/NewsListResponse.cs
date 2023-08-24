@@ -1,6 +1,6 @@
 namespace Arise.Server.Web.Models.Api.News;
 
-public sealed class NewsListResponse
+internal sealed class NewsListResponse
 {
     public sealed class NewsListResponseArticle
     {

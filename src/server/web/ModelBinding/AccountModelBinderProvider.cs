@@ -2,7 +2,7 @@ using Arise.Server.Web.Authentication;
 
 namespace Arise.Server.Web.ModelBinding;
 
-public sealed class AccountModelBinderProvider : IModelBinderProvider
+internal sealed class AccountModelBinderProvider : IModelBinderProvider
 {
     public static AccountModelBinderProvider Instance { get; } = new();
 

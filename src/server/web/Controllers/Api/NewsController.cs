@@ -3,7 +3,7 @@ using Arise.Server.Web.News;
 
 namespace Arise.Server.Web.Controllers.Api;
 
-public sealed class NewsController : ApiController
+internal sealed class NewsController : ApiController
 {
     [AllowAnonymous]
     [HttpGet]
