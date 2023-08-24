@@ -37,13 +37,14 @@ internal sealed partial class BridgeModuleGenerator : IHostedService
         _logger = logger;
     }
 
-    Task IHostedService.StartAsync(CancellationToken cancellationToken)
+    async Task IHostedService.StartAsync(CancellationToken cancellationToken)
     {
+        var ready = new TaskCompletionSource();
         var ct = _cts.Token;
 
-        _ = Task.Run(() => GenerateModulesAsync(ct), ct);
+        _ = Task.Run(() => GenerateModulesAsync(ready, ct), ct);
 
-        return Task.CompletedTask;
+        await ready.Task;
     }
 
     async Task IHostedService.StopAsync(CancellationToken cancellationToken)
@@ -58,7 +59,7 @@ internal sealed partial class BridgeModuleGenerator : IHostedService
         _cts.Dispose();
     }
 
-    private async Task GenerateModulesAsync(CancellationToken cancellationToken)
+    private async Task GenerateModulesAsync(TaskCompletionSource ready, CancellationToken cancellationToken)
     {
         ReadOnlyMemory<byte> CreateModule(BridgeModuleKind kind, int seed)
         {
@@ -98,8 +99,9 @@ internal sealed partial class BridgeModuleGenerator : IHostedService
                 Log.GeneratedBridgeModules(
                     _logger, _options.Value.ConcurrentModules, stopwatch.Elapsed.TotalMilliseconds);
 
-                // Note that running this method synchronously until this await ensures that we have a collection of valid
-                // modules before the host is allowed to finish the startup sequence.
+                // Signal that we have an initial set of modules so startup can continue.
+                _ = ready.TrySetResult();
+
                 await Task.Delay(_options.Value.ModuleRotationTime.ToTimeSpan(), cancellationToken);
             }
         }
