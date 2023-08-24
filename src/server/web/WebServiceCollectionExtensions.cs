@@ -1,6 +1,7 @@
 using Arise.Server.Web.Authentication;
 using Arise.Server.Web.Email;
 using Arise.Server.Web.ModelBinding;
+using Arise.Server.Web.Models.Api;
 
 namespace Arise.Server.Web;
 
@@ -32,13 +33,8 @@ public static class WebServiceCollectionExtensions
             {
                 var json = opts.JsonSerializerOptions;
 
-                json.AllowTrailingCommas = true;
-                json.NumberHandling |=
-                    JsonNumberHandling.WriteAsString | JsonNumberHandling.AllowNamedFloatingPointLiterals;
-                json.ReadCommentHandling = JsonCommentHandling.Skip;
+                json.TypeInfoResolver = ApiJsonSerializerContext.Default;
                 json.WriteIndented = true;
-
-                json.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false));
 
                 _ = json.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
             })
