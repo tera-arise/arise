@@ -1,3 +1,0 @@
-global_level = 4
-
-dotnet_diagnostic.CA1812.severity = none

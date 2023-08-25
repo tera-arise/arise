@@ -46,7 +46,8 @@
 
     <ItemGroup>
         <PackageReference Include="dnlib" />
-        <PackageReference Include="Injectio" />
+        <PackageReference Include="Injectio"
+                          PrivateAssets="all" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />

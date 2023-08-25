@@ -59,7 +59,8 @@
 
     <ItemGroup>
         <PackageReference Include="EmailValidation" />
-        <PackageReference Include="Injectio" />
+        <PackageReference Include="Injectio"
+                          PrivateAssets="all" />
         <PackageReference Include="Markdig" />
         <PackageReference Include="Marten.AspNetCore" />
         <PackageReference Include="SendGrid" />

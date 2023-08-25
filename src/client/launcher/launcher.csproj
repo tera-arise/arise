@@ -17,9 +17,17 @@
         <Using Include="Avalonia.Controls" />
         <Using Include="Avalonia.Controls.ApplicationLifetimes" />
         <Using Include="Avalonia.Controls.Templates" />
+        <Using Include="Avalonia.Logging" />
         <Using Include="Avalonia.Markup.Xaml" />
         <Using Include="Avalonia.ReactiveUI" />
+        <Using Include="Injectio.Attributes" />
+        <Using Include="Microsoft.Extensions.DependencyInjection" />
+        <Using Include="Microsoft.Extensions.Hosting" />
+        <Using Include="Microsoft.Extensions.Logging" />
         <Using Include="ReactiveUI" />
+        <Using Include="Serilog" />
+        <Using Include="Serilog.Events" />
+        <Using Include="Serilog.Sinks.SystemConsole.Themes" />
     </ItemGroup>
 
     <ItemGroup>
@@ -40,7 +48,10 @@
         <PackageReference Include="Avalonia.Skia" />
         <PackageReference Include="Avalonia.Themes.Fluent" />
         <PackageReference Include="Avalonia.Win32" />
+        <PackageReference Include="Injectio"
+                          PrivateAssets="all" />
         <PackageReference Include="Material.Icons.Avalonia" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" />
         <PackageReference Include="Microsoft.Windows.CsWin32"
                           PrivateAssets="all" />
         <PackageReference Include="Microsoft.Windows.SDK.Win32Docs"
@@ -50,6 +61,8 @@
         <PackageReference Include="NAudio.Extras" />
         <PackageReference Include="NAudio.Vorbis" />
         <PackageReference Include="RadLine" />
+        <PackageReference Include="Serilog.Extensions.Hosting" />
+        <PackageReference Include="Serilog.Sinks.Console" />
         <PackageReference Include="StreamJsonRpc" />
         <PackageReference Include="Vezel.Ruptura.Injection" />
     </ItemGroup>

@@ -1,12 +1,7 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:icons="using:Material.Icons.Avalonia"
-             xmlns:templates="using:Arise.Client.Launcher.Templates"
              x:Class="Arise.Client.Launcher.LauncherApplication">
-    <Application.DataTemplates>
-        <templates:WindowLocatorDataTemplate />
-    </Application.DataTemplates>
-
     <Application.Styles>
         <FluentTheme />
         <icons:MaterialIconStyles />

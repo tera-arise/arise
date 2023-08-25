@@ -3,12 +3,18 @@ using Arise.Client.Launcher.Windows;
 
 namespace Arise.Client.Launcher.Templates;
 
-[SuppressMessage("", "CA1812")]
 internal sealed class WindowLocatorDataTemplate : IDataTemplate
 {
     private static readonly Assembly _assembly = typeof(ThisAssembly).Assembly;
 
     private static readonly string _namespace = typeof(MainWindow).Namespace!;
+
+    private readonly IServiceProvider _services;
+
+    public WindowLocatorDataTemplate(IServiceProvider services)
+    {
+        _services = services;
+    }
 
     public bool Match(object? data)
     {
@@ -18,8 +24,8 @@ internal sealed class WindowLocatorDataTemplate : IDataTemplate
     public Control Build(object? param)
     {
         return Unsafe.As<Control>(
-            Activator.CreateInstance(
+            _services.GetRequiredService(
                 _assembly.GetType(
-                    $"{_namespace}.{param!.GetType().Name[..^"Controller".Length]}Window", throwOnError: true)!)!);
+                    $"{_namespace}.{param!.GetType().Name[..^"Controller".Length]}Window", throwOnError: true)!));
     }
 }
