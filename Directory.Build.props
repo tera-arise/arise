@@ -27,6 +27,7 @@
             win-arm64;
             win-x64
         </RuntimeIdentifiers>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
         <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
         <TargetFramework>net8.0</TargetFramework>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
