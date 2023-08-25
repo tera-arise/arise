@@ -86,7 +86,7 @@
         <PackageVersion Include="Serilog.Sinks.Async"
                         Version="1.5.0" />
         <PackageVersion Include="StreamJsonRpc"
-                        Version="2.15.29" />
+                        Version="2.16.36" />
         <PackageVersion Include="Vezel.Cathode"
                         Version="0.10.40" />
         <PackageVersion Include="Vezel.Novadrop.Formats"
