@@ -6,6 +6,7 @@
     <ItemGroup>
         <Using Include="System.Buffers" />
         <Using Include="System.Buffers.Binary" />
+        <Using Include="System.Collections.Concurrent" />
         <Using Include="System.Collections.Frozen" />
         <Using Include="System.Collections.Immutable" />
         <Using Include="System.ComponentModel" />
