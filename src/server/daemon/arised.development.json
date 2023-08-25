@@ -3,19 +3,6 @@
     "MinimumLevel": {
       "Default": "Verbose",
       "Microsoft.Extensions.Http.DefaultHttpClientFactory": "Information"
-    },
-    "WriteTo": {
-      "Async": {
-        "Args": {
-          "configure": {
-            "Console": {
-              "Args": {
-                "theme": "Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme::Code, Serilog.Sinks.Console"
-              }
-            }
-          }
-        }
-      }
     }
   },
   "Storage": {
