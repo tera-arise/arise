@@ -13,6 +13,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Using Include="Avalonia" />
+        <Using Include="Avalonia.Controls" />
+        <Using Include="Avalonia.Controls.ApplicationLifetimes" />
+        <Using Include="Avalonia.Controls.Templates" />
+        <Using Include="Avalonia.Markup.Xaml" />
+        <Using Include="Avalonia.ReactiveUI" />
+        <Using Include="ReactiveUI" />
+    </ItemGroup>
+
+    <ItemGroup>
         <AvaloniaResource Include="../../../arise.png"
                           Link="arise.png" />
     </ItemGroup>
@@ -27,6 +37,7 @@
     <ItemGroup>
         <PackageReference Include="Avalonia.Diagnostics" />
         <PackageReference Include="Avalonia.Fonts.Inter" />
+        <PackageReference Include="Avalonia.ReactiveUI" />
         <PackageReference Include="Avalonia.Skia" />
         <PackageReference Include="Avalonia.Themes.Fluent" />
         <PackageReference Include="Avalonia.Win32" />

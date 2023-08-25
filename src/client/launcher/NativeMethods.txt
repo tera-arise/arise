@@ -1,0 +1,3 @@
+AttachConsole
+
+ATTACH_PARENT_PROCESS
