@@ -45,7 +45,7 @@
             BeforeTargets="BeforeResGen"
             Condition="'$(ArisePartialBuild)' != 'true'">
         <PropertyGroup>
-            <_ExtraArgs Condition="'$(Configuration)' == 'Release'">--compression SmallestSize</_ExtraArgs>
+            <_ExtraArgs Condition="'$(AriseVendorBuild)' == 'true'">--compression SmallestSize</_ExtraArgs>
         </PropertyGroup>
 
         <Exec Command="dotnet novadrop-dc pack $(_DataSheetDirectory) $(_DataCenterPath) --revision $(AriseGameRevision) --encryption-key $(AriseDataCenterKey) --encryption-iv $(AriseDataCenterIV) $(_ExtraArgs)"

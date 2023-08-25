@@ -16,7 +16,7 @@
         <SelfContained>true</SelfContained>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <PropertyGroup Condition="'$(AriseVendorBuild)' == 'true'">
         <DebuggerSupport>false</DebuggerSupport>
         <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
         <UseSystemResourceKeys>true</UseSystemResourceKeys>

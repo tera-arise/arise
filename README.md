@@ -43,11 +43,13 @@ Building and running TERA Arise requires the following:
 * PostgreSQL 14.6+
 
 Simply run `./cake` to build client artifacts for Windows (x64) and server
-artifacts for the current platform (Windows or Linux, x64 or Arm64).
+artifacts for the current platform (Windows or Linux, x64 or Arm64). This will
+use the `Debug` configuration by default, which is suitable for development and
+debugging. Pass `-c Release` instead to use that configuration, resulting in an
+optimized build.
 
-By default, `./cake` will build in the `Debug` configuration which is suitable
-for local development. The `Release` configuration (i.e. `./cake -c Release`) is
-intended for staging and production deployments, but see the
+Note that `Debug` and `Release` configurations are independent of whether the
+resulting artifacts are suitable for deployment; see the
 [vendoring instructions](#vendoring).
 
 You will need to set up one or more databases to run the server daemon. Below is
@@ -94,7 +96,8 @@ base for customization.
 The vendor project path can be overridden by passing `--vendor <path>` to
 `./cake`. The recommended setup is to have a repository with the TERA Arise
 repository as a submodule, alongside a custom vendor project. A small build
-script can then invoke `arise/cake -c Release --vendor vendor/vendor.proj`.
+script can then invoke something like
+`arise/cake -c Release --vendor vendor/vendor.proj`.
 
 Additionally, for the server daemon, an extra configuration file is required,
 named either `arised.staging.json` or `arised.production.json` depending on
