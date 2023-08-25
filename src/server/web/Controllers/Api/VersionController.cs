@@ -11,8 +11,8 @@ internal sealed class VersionController : ApiController
     {
         return Ok(new VersionCheckResponse
         {
-            ClientManifestUri = provider.TeraManifestUri,
-            ClientDownloadFormat = provider.TeraDownloadUri,
+            TeraManifestUri = provider.TeraManifestUri,
+            TeraDownloadFormat = provider.TeraDownloadUri,
             AriseManifestUri = provider.AriseManifestUri,
             AriseDownloadFormat = provider.AriseDownloadUri,
         });

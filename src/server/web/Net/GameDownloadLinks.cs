@@ -20,7 +20,7 @@ internal sealed class GameDownloadLinks
             return (new($"{uri}manifest.json"), new($"{uri}{format}"));
         }
 
-        var teraRevision = options.Value.ClientRevision;
+        var teraRevision = options.Value.TeraRevision;
         var ariseRevision = int.Parse(
             typeof(ThisAssembly)
                 .Assembly

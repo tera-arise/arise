@@ -14,8 +14,8 @@ internal sealed class HomeController : WebController
     {
         return View(new HomeDownloadModel
         {
-            ClientManifestUri = provider.TeraManifestUri,
-            ClientDownloadUri = provider.TeraDownloadUri,
+            TeraManifestUri = provider.TeraManifestUri,
+            TeraDownloadUri = provider.TeraDownloadUri,
             AriseManifestUri = provider.AriseManifestUri,
             AriseDownloadUri = provider.AriseDownloadUri,
         });
