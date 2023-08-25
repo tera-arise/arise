@@ -66,7 +66,7 @@ internal sealed class TeraGamePacketSerializer : GamePacketSerializer<TeraGamePa
                     Assign(offset, accessor.Call(_readPacketOffset));
                     Assign(count, accessor.Call("ReadUInt16"));
                     If(count.NotEqual(((ushort)0).Const()))
-                        .Then((Action)(() =>
+                        .Then(() =>
                         {
                             var array = Variable(typeof(byte[]), "array");
                             var position = Variable(typeof(long), "position");
@@ -77,8 +77,8 @@ internal sealed class TeraGamePacketSerializer : GamePacketSerializer<TeraGamePa
                             Call(accessor, "Read", array.Convert(typeof(Span<byte>)));
                             Assign(accessor.Property("Position"), position);
                             Assign(memory, array.Convert<ReadOnlyMemory<byte>>());
-                        }))
-                        .Else((Action)(() => Assign(memory, ReadOnlyMemory<byte>.Empty.Const())))
+                        })
+                        .Else(() => Assign(memory, ReadOnlyMemory<byte>.Empty.Const()))
                         .End();
 
                     result = memory;
@@ -98,7 +98,7 @@ internal sealed class TeraGamePacketSerializer : GamePacketSerializer<TeraGamePa
                             _createBuilder.MakeGenericMethod(elemType), accessor.Call("ReadUInt16").Convert<int>()));
                     Assign(offset, accessor.Call(_readPacketOffset));
                     If(builder.Property("Capacity").NotEqual(0.Const()))
-                        .Then((Action)(() =>
+                        .Then(() =>
                         {
                             var position = Variable(typeof(long), "position");
                             var i = Variable(typeof(int), "i");
@@ -111,7 +111,7 @@ internal sealed class TeraGamePacketSerializer : GamePacketSerializer<TeraGamePa
                                 static i => PreIncrementAssign(i),
                                 i => GenerateForValue(elemType, value => builder.Call("Add", value)));
                             Assign(accessor.Property("Position"), position);
-                        }))
+                        })
                         .End();
                     Assign(array, builder.Call("MoveToImmutable"));
 
@@ -205,7 +205,7 @@ internal sealed class TeraGamePacketSerializer : GamePacketSerializer<TeraGamePa
                 }
                 else if (type == typeof(ReadOnlyMemory<byte>))
                     If(value.Property("Length").NotEqual(0.Const()))
-                        .Then((Action)(() =>
+                        .Then(() =>
                         {
                             var position = Variable(typeof(long), "position");
 
@@ -214,11 +214,11 @@ internal sealed class TeraGamePacketSerializer : GamePacketSerializer<TeraGamePa
                             Call(accessor, _writePacketOffset, position.Convert<ushort>());
                             Assign(accessor.Property("Position"), position);
                             Call(accessor, "Write", value.Property("Span"));
-                        }))
+                        })
                         .End();
                 else if (IsArrayType(type))
                     If(value.Property("Length").NotEqual(0.Const()))
-                        .Then((Action)(() =>
+                        .Then(() =>
                         {
                             var position = Variable(typeof(long), "position");
                             var i = Variable(typeof(int), "i");
@@ -241,7 +241,7 @@ internal sealed class TeraGamePacketSerializer : GamePacketSerializer<TeraGamePa
                                     GenerateFirstPassForValue(item, offset => GenerateSecondPassForValue(item, offset));
 
                                     If(i.NotEqual(value.Property("Length").Subtract(1.Const())))
-                                        .Then((Action)(() =>
+                                        .Then(() =>
                                         {
                                             var position3 = Variable(typeof(long), "position3");
 
@@ -252,10 +252,10 @@ internal sealed class TeraGamePacketSerializer : GamePacketSerializer<TeraGamePa
                                             Call(accessor, _writePacketOffset, position3.Convert<ushort>());
                                             Assign(accessor.Property("Position"), position3);
                                             PreIncrementAssign(i);
-                                        }))
+                                        })
                                         .End();
                                 });
-                        }))
+                        })
                         .End();
                 else
                     throw new UnreachableException();

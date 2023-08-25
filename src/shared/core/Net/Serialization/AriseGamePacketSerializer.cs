@@ -59,15 +59,15 @@ internal sealed class AriseGamePacketSerializer : GamePacketSerializer<AriseGame
 
                     Assign(count, accessor.Call("ReadCompactUInt16"));
                     If(count.NotEqual(((ushort)0).Const()))
-                        .Then((Action)(() =>
+                        .Then(() =>
                         {
                             var array = Variable(typeof(byte[]), "array");
 
                             Assign(array, typeof(byte[]).New(count.Convert<int>()));
                             Call(accessor, "Read", array.Convert(typeof(Span<byte>)));
                             Assign(memory, array.Convert<ReadOnlyMemory<byte>>());
-                        }))
-                        .Else((Action)(() => Assign(memory, ReadOnlyMemory<byte>.Empty.Const())))
+                        })
+                        .Else(() => Assign(memory, ReadOnlyMemory<byte>.Empty.Const()))
                         .End();
 
                     result = memory;
