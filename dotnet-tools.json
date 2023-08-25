@@ -67,12 +67,6 @@
       "commands": [
         "novadrop-dc"
       ]
-    },
-    "sourcelink": {
-      "version": "3.1.1",
-      "commands": [
-        "sourcelink"
-      ]
     }
   }
 }
