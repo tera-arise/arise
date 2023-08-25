@@ -49,7 +49,6 @@
                           PrivateAssets="all" />
         <PackageReference Include="NAudio.Extras" />
         <PackageReference Include="NAudio.Vorbis" />
-        <PackageReference Include="NAudio.Wasapi" />
         <PackageReference Include="RadLine" />
         <PackageReference Include="StreamJsonRpc" />
         <PackageReference Include="Vezel.Ruptura.Injection" />

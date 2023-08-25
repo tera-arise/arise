@@ -71,8 +71,6 @@
                         Version="2.1.0" />
         <PackageVersion Include="NAudio.Vorbis"
                         Version="1.5.0" />
-        <PackageVersion Include="NAudio.Wasapi"
-                        Version="2.1.0" />
         <PackageVersion Include="Octokit"
                         Version="7.1.0" />
         <PackageVersion Include="PeNet"
