@@ -44,11 +44,7 @@
             DependsOnTargets="_WriteDataCenterCache"
             BeforeTargets="BeforeResGen"
             Condition="'$(ArisePartialBuild)' != 'true'">
-        <PropertyGroup>
-            <_ExtraArgs Condition="'$(AriseVendorBuild)' == 'true'">--compression SmallestSize</_ExtraArgs>
-        </PropertyGroup>
-
-        <Exec Command="dotnet novadrop-dc pack $(_DataSheetDirectory) $(_DataCenterPath) --revision $(AriseGameRevision) --encryption-key $(AriseDataCenterKey) --encryption-iv $(AriseDataCenterIV) $(_ExtraArgs)"
+        <Exec Command="dotnet novadrop-dc pack $(_DataSheetDirectory) $(_DataCenterPath) --revision $(AriseGameRevision) --encryption-key $(AriseDataCenterKey) --encryption-iv $(AriseDataCenterIV)"
               StandardOutputImportance="low"
               StandardErrorImportance="low"
               CustomWarningRegularExpression="^  \[W\] \(\d+,\d+\): .*$"
