@@ -54,6 +54,34 @@
         <PackageReference Include="Vezel.Ruptura.Injection" />
     </ItemGroup>
 
+    <Target Name="_ApplyServerUriAttributes"
+            BeforeTargets="GetAssemblyAttributes">
+        <MSBuild Projects="$(AriseVendorProjectPath)"
+                 Targets="GetWebServerUri">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="AriseWebServerUri" />
+        </MSBuild>
+        <MSBuild Projects="$(AriseVendorProjectPath)"
+                 Targets="GetWorldServerUri">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="AriseWorldServerUri" />
+        </MSBuild>
+
+        <PropertyGroup>
+            <_WebServerUri>@(AriseWebServerUri)</_WebServerUri>
+            <_WorldServerUri>@(AriseWorldServerUri)</_WorldServerUri>
+        </PropertyGroup>
+
+        <ItemGroup>
+            <AssemblyMetadata Include="Arise.WebServerUri"
+                              Value="$(_WebServerUri)"
+                              Condition="'$(_WebServerUri)' != ''" />
+            <AssemblyMetadata Include="Arise.WorldServerUri"
+                              Value="$(_WorldServerUri)"
+                              Condition="'$(_WorldServerUri)' != ''" />
+        </ItemGroup>
+    </Target>
+
     <Target Name="_AddMultimediaAssets"
             BeforeTargets="AddAvaloniaResources">
         <MSBuild Projects="$(AriseVendorProjectPath)"

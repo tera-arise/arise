@@ -85,4 +85,10 @@
             <AriseNewsArticlesPath Include="$(MSBuildThisFileDirectory)articles" />
         </ItemGroup>
     </Target>
+
+    <Target Name="GetWebServerUri"
+            Returns="@(AriseWebServerUri)" />
+
+    <Target Name="GetWorldServerUri"
+            Returns="@(AriseWorldServerUri)" />
 </Project>

@@ -42,18 +42,6 @@
         </PropertyGroup>
     </Target>
 
-    <Target Name="_ApplyDataCenterAttributes"
-            DependsOnTargets="GetDataCenterParameters"
-            BeforeTargets="GetAssemblyAttributes"
-            Condition="'$(AriseApplyDataCenterAttributes)' == 'true'">
-        <ItemGroup>
-            <AssemblyMetadata Include="Arise.DataCenterKey"
-                              Value="$(AriseDataCenterKey)" />
-            <AssemblyMetadata Include="Arise.DataCenterIV"
-                              Value="$(AriseDataCenterIV)" />
-        </ItemGroup>
-    </Target>
-
     <Target Name="_EmbedNetworkCertificates"
             BeforeTargets="BeforeResGen"
             Condition="'$(AriseEmbedNetworkCertificate)' != ''">

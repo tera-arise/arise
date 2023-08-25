@@ -5,7 +5,6 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <AriseApplyDataCenterAttributes>true</AriseApplyDataCenterAttributes>
         <AriseEmbedNetworkCertificate>arised</AriseEmbedNetworkCertificate>
     </PropertyGroup>
 
@@ -53,4 +52,15 @@
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
         <PackageReference Include="Vezel.Novadrop.Formats" />
     </ItemGroup>
+
+    <Target Name="_ApplyDataCenterAttributes"
+            DependsOnTargets="GetDataCenterParameters"
+            BeforeTargets="GetAssemblyAttributes">
+        <ItemGroup>
+            <AssemblyMetadata Include="Arise.DataCenterKey"
+                              Value="$(AriseDataCenterKey)" />
+            <AssemblyMetadata Include="Arise.DataCenterIV"
+                              Value="$(AriseDataCenterIV)" />
+        </ItemGroup>
+    </Target>
 </Project>
