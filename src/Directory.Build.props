@@ -8,6 +8,6 @@
         deployable) build of TERA Arise. The default vendor project is only
         suitable for development.
         -->
-        <AriseVendorProjectPath>$(MSBuildThisFileDirectory)../vnd/vnd.proj</AriseVendorProjectPath>
+        <AriseVendorProjectPath Condition="'$(AriseVendorProjectPath)' == ''">$(MSBuildThisFileDirectory)../vnd/vnd.proj</AriseVendorProjectPath>
     </PropertyGroup>
 </Project>

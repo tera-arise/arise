@@ -16,12 +16,6 @@
         <SelfContained>true</SelfContained>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(AriseVendorBuild)' == 'true'">
-        <DebuggerSupport>false</DebuggerSupport>
-        <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
-        <UseSystemResourceKeys>true</UseSystemResourceKeys>
-    </PropertyGroup>
-
     <ItemGroup>
         <Using Include="Arise.Client.Launcher" />
     </ItemGroup>
