@@ -16,6 +16,7 @@
         <Using Include="Arise.Server.Web" />
         <Using Include="CommandLine" />
         <Using Include="Serilog" />
+        <Using Include="Serilog.Events" />
     </ItemGroup>
 
     <ItemGroup>

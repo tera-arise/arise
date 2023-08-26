@@ -1,14 +1,5 @@
 {
   "Serilog": {
-    "MinimumLevel": {
-      "Override": {
-        "Microsoft.AspNetCore": "Warning",
-        "Arise.Server.Web.Authentication.ApiAuthenticationHandler": "Information"
-      }
-    },
-    "Enrich": [
-      "FromLogContext"
-    ],
     "WriteTo": {
       "Async": {
         "Name": "Async",

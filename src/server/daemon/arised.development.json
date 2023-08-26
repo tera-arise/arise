@@ -1,10 +1,4 @@
 {
-  "Serilog": {
-    "MinimumLevel": {
-      "Default": "Verbose",
-      "Microsoft.Extensions.Http.DefaultHttpClientFactory": "Information"
-    }
-  },
   "Storage": {
     "ConnectionString": "Host=localhost; Username=arise; Password=arise; Database=arise; Include Error Detail=true"
   },

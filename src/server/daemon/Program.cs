@@ -45,6 +45,8 @@ internal static class Program
                                     reloadOnChange: true))
                         .UseSerilog(static (ctx, services, cfg) =>
                             cfg
+                                .MinimumLevel.Is(LogEventLevel.Information)
+                                .Enrich.FromLogContext()
                                 .ReadFrom.Configuration(ctx.Configuration)
                                 .ReadFrom.Services(services))
                         .ConfigureServices((ctx, services) =>
