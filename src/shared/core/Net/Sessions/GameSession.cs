@@ -1,8 +1,12 @@
+using Arise.Bridge;
+
 namespace Arise.Net.Sessions;
 
 public abstract class GameSession
 {
     public IPEndPoint EndPoint => _connection.EndPoint;
+
+    public BridgeModule Module => _connection.Module;
 
     public GameSessionPort LowPriority { get; }
 
