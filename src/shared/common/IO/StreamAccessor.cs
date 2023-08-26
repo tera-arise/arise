@@ -21,12 +21,12 @@ public class StreamAccessor
         Stream = stream;
     }
 
-    public void Read(Span<byte> buffer)
+    public void Read(scoped Span<byte> buffer)
     {
         Stream.ReadExactly(buffer);
     }
 
-    public void Write(ReadOnlySpan<byte> buffer)
+    public void Write(scoped ReadOnlySpan<byte> buffer)
     {
         Stream.Write(buffer);
     }

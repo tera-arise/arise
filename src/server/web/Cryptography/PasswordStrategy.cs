@@ -32,5 +32,5 @@ internal abstract class PasswordStrategy
 
     public abstract byte[] GenerateSalt();
 
-    public abstract byte[] CalculateHash(ReadOnlySpan<char> password, ReadOnlySpan<byte> salt);
+    public abstract byte[] CalculateHash(scoped ReadOnlySpan<char> password, ReadOnlySpan<byte> salt);
 }

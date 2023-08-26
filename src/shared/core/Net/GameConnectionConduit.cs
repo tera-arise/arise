@@ -75,22 +75,22 @@ public sealed class GameConnectionConduit
         return TryWritePacket(packet, completion: null);
     }
 
-    public void PostPacket(TeraGamePacketCode code, ReadOnlySpan<byte> payload)
+    public void PostPacket(TeraGamePacketCode code, scoped ReadOnlySpan<byte> payload)
     {
         _ = TryPostPacket(code, payload);
     }
 
-    public void PostPacket(AriseGamePacketCode code, ReadOnlySpan<byte> payload)
+    public void PostPacket(AriseGamePacketCode code, scoped ReadOnlySpan<byte> payload)
     {
         _ = TryPostPacket(code, payload);
     }
 
-    public bool TryPostPacket(TeraGamePacketCode code, ReadOnlySpan<byte> payload)
+    public bool TryPostPacket(TeraGamePacketCode code, scoped ReadOnlySpan<byte> payload)
     {
         return TryWritePacket(GameConnectionChannel.Tera, (ushort)code, payload, completion: null);
     }
 
-    public bool TryPostPacket(AriseGamePacketCode code, ReadOnlySpan<byte> payload)
+    public bool TryPostPacket(AriseGamePacketCode code, scoped ReadOnlySpan<byte> payload)
     {
         return TryWritePacket(GameConnectionChannel.Arise, (ushort)code, payload, completion: null);
     }
@@ -136,7 +136,10 @@ public sealed class GameConnectionConduit
     }
 
     private bool TryWritePacket(
-        GameConnectionChannel channel, ushort code, ReadOnlySpan<byte> payload, TaskCompletionSource<bool>? completion)
+        GameConnectionChannel channel,
+        ushort code,
+        scoped ReadOnlySpan<byte> payload,
+        TaskCompletionSource<bool>? completion)
     {
         var buffer = Connection.Manager.Buffers.Get();
 

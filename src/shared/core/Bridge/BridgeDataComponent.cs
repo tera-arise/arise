@@ -19,7 +19,7 @@ public abstract class BridgeDataComponent
         IV = iv;
     }
 
-    protected abstract void InitializeKey(Span<byte> key);
+    protected abstract void InitializeKey(scoped Span<byte> key);
 
-    protected abstract void InitializeIV(Span<byte> iv);
+    protected abstract void InitializeIV(scoped Span<byte> iv);
 }

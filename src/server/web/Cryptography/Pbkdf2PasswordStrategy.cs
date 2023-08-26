@@ -17,7 +17,7 @@ internal sealed class Pbkdf2PasswordStrategy : PasswordStrategy
         return RandomNumberGenerator.GetBytes(Length);
     }
 
-    public override byte[] CalculateHash(ReadOnlySpan<char> password, ReadOnlySpan<byte> salt)
+    public override byte[] CalculateHash(scoped ReadOnlySpan<char> password, ReadOnlySpan<byte> salt)
     {
         // https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#pbkdf2
         return Rfc2898DeriveBytes.Pbkdf2(password, salt, 210_000, HashAlgorithmName.SHA512, Length);
