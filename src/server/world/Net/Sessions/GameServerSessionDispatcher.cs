@@ -4,7 +4,8 @@ namespace Arise.Server.Net.Sessions;
 
 [RegisterSingleton]
 [SuppressMessage("", "CA1812")]
-internal sealed partial class GameServerSessionDispatcher : GameSessionDispatcher<GameServerSession, GamePacketHandler>
+internal sealed partial class GameServerSessionDispatcher :
+    GameSessionDispatcher<GameServerSession, GameServerPacketHandler>
 {
     private static partial class Log
     {
