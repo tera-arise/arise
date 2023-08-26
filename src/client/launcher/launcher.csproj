@@ -63,7 +63,6 @@
         <PackageReference Include="NAudio.Vorbis" />
         <PackageReference Include="Serilog.Extensions.Hosting" />
         <PackageReference Include="Serilog.Sinks.Console" />
-        <PackageReference Include="StreamJsonRpc" />
         <PackageReference Include="Vezel.Ruptura.Injection" />
     </ItemGroup>
 
