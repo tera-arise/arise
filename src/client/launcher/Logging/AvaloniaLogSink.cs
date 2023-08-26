@@ -15,30 +15,9 @@ internal sealed class AvaloniaLogSink : ILogSink
         _loggerFactory = loggerFactory;
     }
 
-    private static LogLevel TranslateLogLevel(Avalonia.Logging.LogEventLevel level)
-    {
-        return level switch
-        {
-            Avalonia.Logging.LogEventLevel.Verbose => LogLevel.Trace,
-            Avalonia.Logging.LogEventLevel.Debug => LogLevel.Debug,
-            Avalonia.Logging.LogEventLevel.Information => LogLevel.Information,
-            Avalonia.Logging.LogEventLevel.Warning => LogLevel.Warning,
-            Avalonia.Logging.LogEventLevel.Error => LogLevel.Error,
-            Avalonia.Logging.LogEventLevel.Fatal => LogLevel.Critical,
-            _ => throw new UnreachableException(),
-        };
-    }
-
-    private Microsoft.Extensions.Logging.ILogger GetLogger(string area)
-    {
-        var category = $"Avalonia.{area}";
-
-        return _loggers.GetOrAdd(category, category => _loggerFactory.CreateLogger(category));
-    }
-
     public bool IsEnabled(Avalonia.Logging.LogEventLevel level, string area)
     {
-        return GetLogger(area).IsEnabled(TranslateLogLevel(level));
+        return true;
     }
 
     public void Log(Avalonia.Logging.LogEventLevel level, string area, object? source, string messageTemplate)
@@ -53,7 +32,20 @@ internal sealed class AvaloniaLogSink : ILogSink
         string messageTemplate,
         params object?[] propertyValues)
     {
-        if (IsEnabled(level, area))
-            GetLogger(area).Log(TranslateLogLevel(level), messageTemplate, propertyValues);
+        var logger = _loggers.GetOrAdd(
+            source?.GetType()?.FullName ?? $"Avalonia.{area}", category => _loggerFactory.CreateLogger(category));
+        var logLevel = level switch
+        {
+            Avalonia.Logging.LogEventLevel.Verbose => LogLevel.Trace,
+            Avalonia.Logging.LogEventLevel.Debug => LogLevel.Debug,
+            Avalonia.Logging.LogEventLevel.Information => LogLevel.Information,
+            Avalonia.Logging.LogEventLevel.Warning => LogLevel.Warning,
+            Avalonia.Logging.LogEventLevel.Error => LogLevel.Error,
+            Avalonia.Logging.LogEventLevel.Fatal => LogLevel.Critical,
+            _ => throw new UnreachableException(),
+        };
+
+        if (logger.IsEnabled(logLevel))
+            logger.Log(logLevel, messageTemplate, propertyValues);
     }
 }

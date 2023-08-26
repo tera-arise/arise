@@ -18,8 +18,7 @@ public static class LauncherProgram
         await new HostBuilder()
             .UseSerilog(static (ctx, services, cfg) =>
                 cfg
-                    .MinimumLevel.Is(Serilog.Events.LogEventLevel.Verbose)
-                    .MinimumLevel.Override("Avalonia", Serilog.Events.LogEventLevel.Warning)
+                    .MinimumLevel.Is(Serilog.Events.LogEventLevel.Information)
                     .Enrich.FromLogContext()
                     .WriteTo.Console(
                         outputTemplate:
