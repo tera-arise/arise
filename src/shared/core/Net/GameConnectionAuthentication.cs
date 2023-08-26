@@ -3,10 +3,7 @@ namespace Arise.Net;
 internal static class GameConnectionAuthentication
 {
     // Only publicly mutable for efficiency reasons. Do not modify.
-    public static List<SslApplicationProtocol> Protocols { get; } = new()
-    {
-        new("arise"),
-    };
+    public static List<SslApplicationProtocol> Protocols { get; } = [new("arise")];
 
     // TODO: https://github.com/dotnet/runtime/issues/87270
 
@@ -26,6 +23,7 @@ internal static class GameConnectionAuthentication
 
     private static readonly Oid _clientAuth = new("1.3.6.1.5.5.7.3.2");
 
+    [SuppressMessage("", "CA2000")]
     public static SslClientAuthenticationOptions CreateClientOptions(
         X509Certificate2 authorityCertificate, X509Certificate2 clientCertificate, string hostName)
     {
@@ -34,7 +32,7 @@ internal static class GameConnectionAuthentication
             TargetHost = hostName,
             ApplicationProtocols = Protocols,
             CertificateChainPolicy = ConfigureChainPolicy(authorityCertificate, _serverAuth),
-            ClientCertificates = [clientCertificate],
+            ClientCertificates = [new(clientCertificate)],
             RemoteCertificateValidationCallback =
                 static (_, cert, _, errs) => ValidateCertificate(cert, errs, "OU=Server, O=TERA Arise"),
         };
@@ -73,7 +71,7 @@ internal static class GameConnectionAuthentication
             },
             CustomTrustStore =
             {
-                authorityCertificate,
+                new(authorityCertificate),
             },
             TrustMode = X509ChainTrustMode.CustomRootTrust,
             DisableCertificateDownloads = true,
