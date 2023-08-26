@@ -60,7 +60,6 @@
                           PrivateAssets="all" />
         <PackageReference Include="NAudio.Extras" />
         <PackageReference Include="NAudio.Vorbis" />
-        <PackageReference Include="RadLine" />
         <PackageReference Include="Serilog.Extensions.Hosting" />
         <PackageReference Include="Serilog.Sinks.Console" />
         <PackageReference Include="StreamJsonRpc" />
