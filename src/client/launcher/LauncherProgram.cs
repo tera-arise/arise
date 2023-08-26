@@ -39,7 +39,6 @@ public static class LauncherProgram
                 opts.ValidateOnBuild = true;
                 opts.ValidateScopes = true;
             })
-            .ConfigureHostOptions(static opts => opts.ShutdownTimeout = TimeSpan.FromMinutes(1))
             .RunConsoleAsync();
 
         return 0;
