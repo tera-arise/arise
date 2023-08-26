@@ -16,6 +16,7 @@ public static class LauncherProgram
             .CreateBootstrapLogger();
 
         await new HostBuilder()
+            .ConfigureAppConfiguration(builder => builder.AddCommandLine(args.ToArray()))
             .UseSerilog(static (_, services, cfg) =>
                 cfg
                     .MinimumLevel.Is(Serilog.Events.LogEventLevel.Information)
@@ -29,9 +30,10 @@ public static class LauncherProgram
                     .ReadFrom.Services(services))
             .ConfigureServices(services =>
                 services
+                    .AddOptions<LauncherOptions>()
+                    .BindConfiguration("Launcher")
+                    .Services
                     .AddAriseClientLauncher()
-                    .AddSingleton(
-                        provider => ActivatorUtilities.CreateInstance<LauncherApplicationHost>(provider, args))
                     .AddHostedService(static provider => provider.GetRequiredService<LauncherApplicationHost>()))
             .UseDefaultServiceProvider(static opts =>
             {

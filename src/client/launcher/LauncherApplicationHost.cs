@@ -2,6 +2,7 @@ using Arise.Client.Launcher.Logging;
 
 namespace Arise.Client.Launcher;
 
+[RegisterSingleton]
 [SuppressMessage("", "CA1812")]
 internal sealed class LauncherApplicationHost : BackgroundService
 {
@@ -9,14 +10,11 @@ internal sealed class LauncherApplicationHost : BackgroundService
 
     private readonly IHostApplicationLifetime _hostLifetime;
 
-    private readonly ReadOnlyMemory<string> _args;
-
     public LauncherApplicationHost(
-        IServiceProvider services, IHostApplicationLifetime hostLifetime, ReadOnlyMemory<string> args)
+        IServiceProvider services, IHostApplicationLifetime hostLifetime)
     {
         _services = services;
         _hostLifetime = hostLifetime;
-        _args = args;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -34,7 +32,7 @@ internal sealed class LauncherApplicationHost : BackgroundService
                 .UseSkia()
                 .UseReactiveUI()
                 .WithInterFont()
-                .StartWithClassicDesktopLifetime(_args.ToArray(), ShutdownMode.OnMainWindowClose);
+                .StartWithClassicDesktopLifetime([], ShutdownMode.OnMainWindowClose);
         }
         finally
         {

@@ -9,13 +9,42 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Using Include="Arise.Net" />
+        <Using Include="Arise.Net.Packets" />
+        <Using Include="Arise.Net.Packets.Server" />
+        <Using Include="Arise.Net.Sessions" />
+        <Using Include="Injectio.Attributes" />
+        <Using Include="Microsoft.Extensions.Configuration" />
+        <Using Include="Microsoft.Extensions.DependencyInjection" />
+        <Using Include="Microsoft.Extensions.DependencyInjection.Extensions" />
+        <Using Include="Microsoft.Extensions.Hosting" />
+        <Using Include="Microsoft.Extensions.Logging" />
+        <Using Include="Microsoft.Extensions.ObjectPool" />
+        <Using Include="Microsoft.Extensions.Options" />
+        <Using Include="Serilog" />
+        <Using Include="Serilog.Events" />
+        <Using Include="Serilog.Sinks.SystemConsole.Themes" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="../../shared/core/core.csproj" />
         <ProjectReference Include="../../shared/data/data.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Injectio"
+                          PrivateAssets="all" />
         <PackageReference Include="Microsoft.ClearScript.V8" />
         <PackageReference Include="Microsoft.ClearScript.V8.Native.win-x64" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" />
+        <PackageReference Include="Microsoft.Windows.CsWin32"
+                          PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Windows.SDK.Win32Docs"
+                          PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Windows.SDK.Win32Metadata"
+                          PrivateAssets="all" />
+        <PackageReference Include="Serilog.Extensions.Hosting" />
+        <PackageReference Include="Serilog.Sinks.Console" />
         <PackageReference Include="Vezel.Ruptura.Memory" />
     </ItemGroup>
 </Project>
