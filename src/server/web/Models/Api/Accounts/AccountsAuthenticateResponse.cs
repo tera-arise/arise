@@ -15,5 +15,5 @@ internal sealed class AccountsAuthenticateResponse
     public required string? BanReason { get; init; }
 
     [Token]
-    public required string? GameKey { get; init; }
+    public required string? SessionTicket { get; init; }
 }

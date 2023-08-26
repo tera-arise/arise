@@ -5,5 +5,5 @@ namespace Arise.Server.Web.Models.Api.Accounts;
 internal sealed class AccountsCreateResponse
 {
     [Token]
-    public required string? GameKey { get; init; }
+    public required string? SessionTicket { get; init; }
 }

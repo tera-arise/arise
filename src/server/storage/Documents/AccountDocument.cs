@@ -12,7 +12,7 @@ public sealed class AccountDocument : IDocument, IVersioned
 
     public required AccountAccess Access { get; set; }
 
-    public AccountToken? GameKey { get; set; }
+    public AccountToken? SessionTicket { get; set; }
 
     public AccountEmailChange? ChangingEmail { get; set; }
 

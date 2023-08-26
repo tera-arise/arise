@@ -49,7 +49,7 @@ internal static class Program
                                 .Enrich.FromLogContext()
                                 .ReadFrom.Configuration(ctx.Configuration)
                                 .ReadFrom.Services(services))
-                        .ConfigureServices((ctx, services) =>
+                        .ConfigureServices(services =>
                         {
                             _ = services.AddStorageServices();
 

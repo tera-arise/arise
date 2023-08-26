@@ -16,7 +16,7 @@ public static class LauncherProgram
             .CreateBootstrapLogger();
 
         await new HostBuilder()
-            .UseSerilog(static (ctx, services, cfg) =>
+            .UseSerilog(static (_, services, cfg) =>
                 cfg
                     .MinimumLevel.Is(Serilog.Events.LogEventLevel.Information)
                     .Enrich.FromLogContext()
@@ -27,7 +27,7 @@ public static class LauncherProgram
                         standardErrorFromLevel: Serilog.Events.LogEventLevel.Warning,
                         theme: AnsiConsoleTheme.Code)
                     .ReadFrom.Services(services))
-            .ConfigureServices((ctx, services) =>
+            .ConfigureServices(services =>
                 services
                     .AddAriseClientLauncher()
                     .AddSingleton(

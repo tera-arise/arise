@@ -62,10 +62,10 @@ internal sealed class AccountsController : ApiController
                 Hash = strategy.CalculateHash(body.Password, salt),
             },
             Access = AccountAccess.User,
-            GameKey = new()
+            SessionTicket = new()
             {
                 Value = key,
-                Period = new(now, now + options.AccountGameKeyTime),
+                Period = new(now, now + options.AccountSessionKeyTime),
             },
         };
 
@@ -98,7 +98,7 @@ internal sealed class AccountsController : ApiController
 
         return Ok(new AccountsCreateResponse
         {
-            GameKey = key,
+            SessionTicket = key,
         });
     }
 
@@ -427,10 +427,10 @@ internal sealed class AccountsController : ApiController
             : null;
 
         // Save new key or clear the previous one (for ban or deletion).
-        account.GameKey = key == null ? null : new()
+        account.SessionTicket = key == null ? null : new()
         {
             Value = key,
-            Period = new(now, now + Options.Value.AccountGameKeyTime),
+            Period = new(now, now + Options.Value.AccountSessionKeyTime),
         };
 
         return await UpdateAccountAsync(account)
@@ -441,7 +441,7 @@ internal sealed class AccountsController : ApiController
                 IsRecovered = principal.IsRecovered,
                 IsDeleting = deleting,
                 BanReason = reason,
-                GameKey = key,
+                SessionTicket = key,
             })
             : Conflict();
     }
