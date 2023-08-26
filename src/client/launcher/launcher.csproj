@@ -65,6 +65,7 @@
         <PackageReference Include="NAudio.Vorbis" />
         <PackageReference Include="Serilog.Extensions.Hosting" />
         <PackageReference Include="Serilog.Sinks.Console" />
+        <PackageReference Include="Vezel.Novadrop.Client" />
         <PackageReference Include="Vezel.Ruptura.Injection" />
     </ItemGroup>
 
