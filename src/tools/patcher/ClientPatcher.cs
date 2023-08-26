@@ -90,7 +90,7 @@ internal static class ClientPatcher
             static asm =>
             {
                 asm.ud2();
-                asm.nop(22);
+                asm.nop(21);
             });
 
         // This one is presumably used to detect private servers. It's a bit sneaky; the server details are
