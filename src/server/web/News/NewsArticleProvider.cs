@@ -6,7 +6,7 @@ internal sealed partial class NewsArticleProvider : IHostedService
     private static partial class Log
     {
         [LoggerMessage(0, LogLevel.Information, "Loaded {Count} news articles in {ElapsedMs:0.0000} ms")]
-        public static partial void LoadedNewsArticles(ILogger logger, int count, double elapsedMs);
+        public static partial void LoadedNewsArticles(ILogger<NewsArticleProvider> logger, int count, double elapsedMs);
     }
 
     public IEnumerable<NewsArticle> Articles { get; private set; } = null!;

@@ -10,37 +10,38 @@ internal sealed partial class GameServer : BackgroundService
     private static partial class Log
     {
         [LoggerMessage(0, LogLevel.Information, "Game server now listening on: {endPoint}")]
-        public static partial void StartedListening(ILogger logger, IPEndPoint endPoint);
+        public static partial void StartedListening(ILogger<GameServer> logger, IPEndPoint endPoint);
 
         [LoggerMessage(1, LogLevel.Information, "Game client connected from {endPoint}")]
-        public static partial void ClientConnected(ILogger logger, IPEndPoint endPoint);
+        public static partial void ClientConnected(ILogger<GameServer> logger, IPEndPoint endPoint);
 
         [LoggerMessage(2, LogLevel.Debug, "Game client dropped")]
-        public static partial void ClientDropped(ILogger logger, Exception? exception);
+        public static partial void ClientDropped(ILogger<GameServer> logger, Exception? exception);
 
         [LoggerMessage(3, LogLevel.Debug, "Game client from {endPoint} dropped")]
-        public static partial void ClientDropped(ILogger logger, Exception? exception, IPEndPoint endPoint);
+        public static partial void ClientDropped(ILogger<GameServer> logger, Exception? exception, IPEndPoint endPoint);
 
         [LoggerMessage(4, LogLevel.Information, "Game client from {endPoint} disconnected")]
-        public static partial void ClientDisconnected(ILogger logger, Exception? exception, IPEndPoint endPoint);
+        public static partial void ClientDisconnected(
+            ILogger<GameServer> logger, Exception? exception, IPEndPoint endPoint);
 
         // TODO: https://github.com/dotnet/runtime/issues/90589
 
         [LoggerMessage(5, LogLevel.Trace, "C -> S {EndPoint}: Tera:{Code} ({Length} bytes)")]
         public static partial void TeraPacketReceived(
-            ILogger logger, IPEndPoint endPoint, TeraGamePacketCode code, int length);
+            ILogger<GameServer> logger, IPEndPoint endPoint, TeraGamePacketCode code, int length);
 
         [LoggerMessage(6, LogLevel.Trace, "C -> S {EndPoint}: Arise:{Code} ({Length} bytes)")]
         public static partial void ArisePacketReceived(
-            ILogger logger, IPEndPoint endPoint, AriseGamePacketCode code, int length);
+            ILogger<GameServer> logger, IPEndPoint endPoint, AriseGamePacketCode code, int length);
 
         [LoggerMessage(7, LogLevel.Trace, "S -> C {EndPoint}: Tera:{Code} ({Length} bytes)")]
         public static partial void TeraPacketSent(
-            ILogger logger, IPEndPoint endPoint, TeraGamePacketCode code, int length);
+            ILogger<GameServer> logger, IPEndPoint endPoint, TeraGamePacketCode code, int length);
 
         [LoggerMessage(8, LogLevel.Trace, "S -> C {EndPoint}: Arise:{Code} ({Length} bytes)")]
         public static partial void ArisePacketSent(
-            ILogger logger, IPEndPoint endPoint, AriseGamePacketCode code, int length);
+            ILogger<GameServer> logger, IPEndPoint endPoint, AriseGamePacketCode code, int length);
     }
 
     private readonly IOptions<WorldOptions> _options;
@@ -119,7 +120,7 @@ internal sealed partial class GameServer : BackgroundService
                 GameConnectionConduit conduit,
                 T code,
                 ReadOnlyMemory<byte> payload,
-                Action<ILogger, IPEndPoint, T, int> logger)
+                Action<ILogger<GameServer>, IPEndPoint, T, int> logger)
                 where T : unmanaged, Enum
             {
                 logger(_logger, conduit.Connection.EndPoint, code, payload.Length);

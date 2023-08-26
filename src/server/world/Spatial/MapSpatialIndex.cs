@@ -7,7 +7,7 @@ internal sealed partial class MapSpatialIndex : IHostedService
     private static partial class Log
     {
         [LoggerMessage(0, LogLevel.Information, "Loaded {Count} zone geometry files in {ElapsedMs:0.0000} ms")]
-        public static partial void LoadedZoneGeometry(ILogger logger, int Count, double elapsedMs);
+        public static partial void LoadedZoneGeometry(ILogger<MapSpatialIndex> logger, int Count, double elapsedMs);
     }
 
     private sealed class SpatialZone

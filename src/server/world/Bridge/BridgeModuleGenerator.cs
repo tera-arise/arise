@@ -11,7 +11,7 @@ internal sealed partial class BridgeModuleGenerator : IHostedService
     {
         [LoggerMessage(0, LogLevel.Information, "Generated {Count} bridge modules in {ElapsedMs:0.0000} ms")]
         public static partial void GeneratedBridgeModules(
-            Microsoft.Extensions.Logging.ILogger logger, int count, double elapsedMs);
+            ILogger<BridgeModuleGenerator> logger, int count, double elapsedMs);
     }
 
     private static readonly ReadOnlyMemory<BridgeModulePass> _passes = new BridgeModulePass[]

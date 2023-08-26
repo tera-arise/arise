@@ -11,7 +11,7 @@ internal sealed partial class GameServerSessionDispatcher :
     {
         [LoggerMessage(0, LogLevel.Warning, "No game packet handler found for {Channel}:{Code} from {EndPoint}")]
         public static partial void NoHandlerFound(
-            ILogger logger, GameConnectionChannel channel, Enum code, IPEndPoint endPoint);
+            ILogger<GameServerSessionDispatcher> logger, GameConnectionChannel channel, Enum code, IPEndPoint endPoint);
     }
 
     private readonly ILogger<GameServerSessionDispatcher> _logger;

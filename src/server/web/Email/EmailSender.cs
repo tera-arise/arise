@@ -6,7 +6,8 @@ internal sealed partial class EmailSender
     private static partial class Log
     {
         [LoggerMessage(0, LogLevel.Information, "Sent email {Subject} to {Receiver} in {ElapsedMs:0.0000} ms")]
-        public static partial void SentEmail(ILogger logger, string receiver, string subject, double elapsedMs);
+        public static partial void SentEmail(
+            ILogger<EmailSender> logger, string receiver, string subject, double elapsedMs);
     }
 
     private readonly IHostEnvironment _environment;

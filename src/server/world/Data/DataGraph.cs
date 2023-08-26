@@ -7,7 +7,8 @@ internal sealed partial class DataGraph : IHostedService
     private static partial class Log
     {
         [LoggerMessage(0, LogLevel.Information, "Loaded embedded data center as {Mode} in {ElapsedMs:0.0000} ms")]
-        public static partial void LoadedDataCenter(ILogger logger, DataCenterLoaderMode mode, double elapsedMs);
+        public static partial void LoadedDataCenter(
+            ILogger<DataGraph> logger, DataCenterLoaderMode mode, double elapsedMs);
     }
 
     public DataCenterNode Root { get; private set; } = null!;
