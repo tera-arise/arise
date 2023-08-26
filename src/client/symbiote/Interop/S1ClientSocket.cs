@@ -17,6 +17,15 @@ public unsafe struct S1ClientSocket
         public delegate* unmanaged<S1ClientSocket*, void> Disconnect;
     }
 
+    public static delegate* unmanaged<S1ClientSocket*, IS1ConnectionEventHandler*, S1ClientSocket*> __ctor { get; } =
+        (delegate* unmanaged<S1ClientSocket*, IS1ConnectionEventHandler*, S1ClientSocket*>)Tera.Resolve(0x7ff69ba9fe80);
+
+    public static delegate* unmanaged<S1ClientSocket*, void> __dtor { get; } =
+        (delegate* unmanaged<S1ClientSocket*, void>)Tera.Resolve(0x7ff69baa38d0);
+
+    public static delegate* unmanaged<S1ClientSocket*, uint, S1ClientSocket*> __vdtor { get; } =
+        (delegate* unmanaged<S1ClientSocket*, uint, S1ClientSocket*>)Tera.Resolve(0x7ff69baa5540);
+
     public static delegate* unmanaged<S1ClientSocket*, uint, ushort, BOOL> Connect { get; } =
         (delegate* unmanaged<S1ClientSocket*, uint, ushort, BOOL>)Tera.Resolve(0x7ff69baa9de0);
 

@@ -9,6 +9,9 @@ public unsafe struct S1ClientSocketBuffer
         private byte _element;
     }
 
+    public static delegate* unmanaged<S1ClientSocketBuffer*, S1ClientSocketBuffer*> __ctor { get; } =
+        (delegate* unmanaged<S1ClientSocketBuffer*, S1ClientSocketBuffer*>)Tera.Resolve(0x7ff69baa27a0);
+
     public static delegate* unmanaged<S1ClientSocketBuffer*, int, int> Consume { get; } =
         (delegate* unmanaged<S1ClientSocketBuffer*, int, int>)Tera.Resolve(0x7ff69babc170);
 
