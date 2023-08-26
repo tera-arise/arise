@@ -9,19 +9,19 @@ internal sealed partial class GameServer : BackgroundService
 {
     private static partial class Log
     {
-        [LoggerMessage(0, LogLevel.Information, "Game server now listening on: {endPoint}")]
+        [LoggerMessage(0, LogLevel.Information, "Game server now listening on: {EndPoint}")]
         public static partial void StartedListening(ILogger<GameServer> logger, IPEndPoint endPoint);
 
-        [LoggerMessage(1, LogLevel.Information, "Game client connected from {endPoint}")]
+        [LoggerMessage(1, LogLevel.Information, "Game client connected from {EndPoint}")]
         public static partial void ClientConnected(ILogger<GameServer> logger, IPEndPoint endPoint);
 
         [LoggerMessage(2, LogLevel.Debug, "Game client dropped")]
         public static partial void ClientDropped(ILogger<GameServer> logger, Exception? exception);
 
-        [LoggerMessage(3, LogLevel.Debug, "Game client from {endPoint} dropped")]
+        [LoggerMessage(3, LogLevel.Debug, "Game client from {EndPoint} dropped")]
         public static partial void ClientDropped(ILogger<GameServer> logger, Exception? exception, IPEndPoint endPoint);
 
-        [LoggerMessage(4, LogLevel.Information, "Game client from {endPoint} disconnected")]
+        [LoggerMessage(4, LogLevel.Information, "Game client from {EndPoint} disconnected")]
         public static partial void ClientDisconnected(
             ILogger<GameServer> logger, Exception? exception, IPEndPoint endPoint);
 
@@ -128,13 +128,10 @@ internal sealed partial class GameServer : BackgroundService
 
             listener.RawTeraPacketReceived += (conduit, code, payload) =>
                 LogPacket(conduit, code, payload, Log.TeraPacketReceived);
-
             listener.RawArisePacketReceived += (conduit, code, payload) =>
                 LogPacket(conduit, code, payload, Log.ArisePacketReceived);
-
             listener.RawTeraPacketSent += (conduit, code, payload) =>
                 LogPacket(conduit, code, payload, Log.TeraPacketSent);
-
             listener.RawArisePacketSent += (conduit, code, payload) =>
                 LogPacket(conduit, code, payload, Log.ArisePacketSent);
 
