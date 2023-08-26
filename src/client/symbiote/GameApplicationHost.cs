@@ -1,6 +1,5 @@
 namespace Arise.Client;
 
-[RegisterSingleton]
 [SuppressMessage("", "CA1812")]
 internal sealed class GameApplicationHost : BackgroundService
 {
