@@ -9,6 +9,8 @@ public static class WorldServiceCollectionExtensions
 {
     public static IServiceCollection AddWorldServices(this IServiceCollection services)
     {
+        services.TryAddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
+
         return services
             .AddOptions<WorldOptions>()
             .BindConfiguration("World")
