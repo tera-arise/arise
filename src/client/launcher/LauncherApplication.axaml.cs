@@ -4,13 +4,17 @@ using Arise.Client.Launcher.Windows;
 
 namespace Arise.Client.Launcher;
 
+[SuppressMessage("", "CA1812")]
 internal sealed partial class LauncherApplication : Application
 {
     private readonly IServiceProvider _services;
 
-    public LauncherApplication(IServiceProvider services)
+    private readonly IHostApplicationLifetime _hostLifetime;
+
+    public LauncherApplication(IServiceProvider services, IHostApplicationLifetime hostLifetime)
     {
         _services = services;
+        _hostLifetime = hostLifetime;
     }
 
     public override void Initialize()
@@ -22,7 +26,13 @@ internal sealed partial class LauncherApplication : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        Unsafe.As<IClassicDesktopStyleApplicationLifetime>(ApplicationLifetime!).MainWindow = new MainWindow
+        var lifetime = Unsafe.As<IClassicDesktopStyleApplicationLifetime>(ApplicationLifetime!);
+
+        // Ensure that Ctrl-C in the console works as expected.
+        _ = _hostLifetime.ApplicationStopping.UnsafeRegister(
+            _ => Dispatcher.UIThread.Post(() => lifetime.Shutdown(), DispatcherPriority.MaxValue), null);
+
+        lifetime.MainWindow = new MainWindow
         {
             DataContext = new MainController(_services),
         };

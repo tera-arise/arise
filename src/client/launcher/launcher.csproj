@@ -20,6 +20,7 @@
         <Using Include="Avalonia.Logging" />
         <Using Include="Avalonia.Markup.Xaml" />
         <Using Include="Avalonia.ReactiveUI" />
+        <Using Include="Avalonia.Threading" />
         <Using Include="Injectio.Attributes" />
         <Using Include="Microsoft.Extensions.DependencyInjection" />
         <Using Include="Microsoft.Extensions.Hosting" />
