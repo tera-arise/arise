@@ -6,7 +6,6 @@ using static Iced.Intel.AssemblerRegisters;
 namespace Arise.Client.Data;
 
 [RegisterSingleton<DataCenterLoader>]
-[SuppressMessage("", "CA1812")]
 internal sealed unsafe class DataCenterLoader : IHostedService
 {
     private readonly CodeManager _codeManager;

@@ -1,6 +1,5 @@
 namespace Arise.Server.Daemon;
 
-[SuppressMessage("", "CA1812")]
 internal sealed class DaemonOptions
 {
     [Option(

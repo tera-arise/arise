@@ -3,7 +3,6 @@ using Arise.Server.Net.Handlers;
 namespace Arise.Server.Net.Sessions;
 
 [RegisterSingleton<GameServerSessionDispatcher>]
-[SuppressMessage("", "CA1812")]
 internal sealed partial class GameServerSessionDispatcher :
     GameSessionDispatcher<GameServerSession, GameServerPacketHandler>
 {

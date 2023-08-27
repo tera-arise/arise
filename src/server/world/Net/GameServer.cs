@@ -4,7 +4,6 @@ using Arise.Server.Net.Sessions;
 namespace Arise.Server.Net;
 
 [RegisterSingleton<GameServer>]
-[SuppressMessage("", "CA1812")]
 internal sealed partial class GameServer : IHostedService
 {
     private static partial class Log

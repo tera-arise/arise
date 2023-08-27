@@ -2,7 +2,6 @@ using Arise.Client.Net;
 
 namespace Arise.Client;
 
-[SuppressMessage("", "CA1812")]
 internal sealed class GameApplicationHost : IHostedService
 {
     private readonly BridgeProtectionComponent _protectionComponent;

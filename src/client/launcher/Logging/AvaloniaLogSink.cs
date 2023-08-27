@@ -1,7 +1,6 @@
 namespace Arise.Client.Launcher.Logging;
 
 [RegisterSingleton<AvaloniaLogSink>]
-[SuppressMessage("", "CA1812")]
 [SuppressMessage("", "CA1848")]
 [SuppressMessage("", "CA2254")]
 internal sealed class AvaloniaLogSink : ILogSink

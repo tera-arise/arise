@@ -4,7 +4,6 @@ namespace Arise.Server.Bridge;
 
 [RegisterSingleton<BridgeModuleGenerator>]
 [SuppressMessage("", "CA1001")]
-[SuppressMessage("", "CA1812")]
 internal sealed partial class BridgeModuleGenerator : IHostedService
 {
     private static partial class Log

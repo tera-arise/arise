@@ -1,7 +1,6 @@
 namespace Arise.Server.Spatial;
 
 [RegisterSingleton<MapSpatialIndex>]
-[SuppressMessage("", "CA1812")]
 internal sealed partial class MapSpatialIndex : IHostedService
 {
     private static partial class Log

@@ -1,6 +1,5 @@
 namespace Arise.Tools.Mapper;
 
-[SuppressMessage("", "CA1812")]
 internal sealed class MapperOptions
 {
     [Value(0, HelpText = "Path to TERA directory.")]

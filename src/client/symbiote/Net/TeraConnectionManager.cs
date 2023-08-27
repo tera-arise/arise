@@ -3,7 +3,6 @@ using Vezel.Novadrop.Interop;
 namespace Arise.Client.Net;
 
 [RegisterSingleton<TeraConnectionManager>]
-[SuppressMessage("", "CA1812")]
 internal sealed unsafe partial class TeraConnectionManager : IHostedService
 {
     private enum State

@@ -3,7 +3,6 @@ using Arise.Client.Launcher.Logging;
 namespace Arise.Client.Launcher;
 
 [RegisterSingleton<LauncherApplicationHost>]
-[SuppressMessage("", "CA1812")]
 internal sealed class LauncherApplicationHost : IHostedService
 {
     private readonly IServiceProvider _services;

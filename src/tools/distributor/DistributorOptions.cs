@@ -1,6 +1,5 @@
 namespace Arise.Tools.Distributor;
 
-[SuppressMessage("", "CA1812")]
 internal sealed class DistributorOptions
 {
     [Value(0, HelpText = "Path to TERA directory.")]
