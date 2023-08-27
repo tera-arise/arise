@@ -71,10 +71,6 @@ internal static class ClientPatcher
         // details without user consent, so patch it.
         await PatchAsync("S1LagLogDataSendingThread::SendReport", 0x7ff69b78e860, static asm => asm.ret());
 
-        // The symbiote will hook this function in order to know when it can free its memory-backed FArchive. Make sure
-        // that the unhooked version of the function just causes a crash.
-        await PatchAsync("S1DataDB::UnpackArchive", 0x7ff69b884ac0, static asm => asm.ud2());
-
         // Disable launching the damage meter application and serving messages from the named pipe.
         await PatchAsync("S1TeraAddOnPipeBase::Connect", 0x7ff69b9444e0, static asm => asm.ret());
         await PatchAsync("S1TeraAddOnManager::Initialize", 0x7ff69b9459e0, static asm => asm.ret());
