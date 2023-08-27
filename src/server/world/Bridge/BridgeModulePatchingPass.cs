@@ -71,7 +71,9 @@ internal sealed class BridgeModulePatchingPass : BridgeModulePass
 
             switch ((method.DeclaringType.Name.String, method.Name.String))
             {
-                case ("GameProtection", "Initialize") when kind == BridgeModuleKind.Normal:
+                case ("GameProtection", "Initialize") or
+                     ("PatchableBridgeProtectionComponent", "Start") or
+                     ("PatchableBridgeProtectionComponent", "Stop") when kind == BridgeModuleKind.Normal:
                 {
                     insns.Clear();
                     insns.Add(Instruction.Create(OpCodes.Ret));

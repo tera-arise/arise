@@ -1,29 +1,36 @@
 namespace Arise.Bridge.Protection;
 
+[SuppressMessage("", "CA1001")]
 internal abstract class GameProtectionTask
 {
-    private static volatile bool _unloading;
+    private readonly TaskCompletionSource _ready = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
-    static GameProtectionTask()
+    private readonly CancellationTokenSource _cts = new();
+
+    private readonly TaskCompletionSource _checkDone = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+    protected GameProtectionTask()
     {
-        // Make sure we exit when the client/server drops all references to us.
-        AssemblyLoadContext.GetLoadContext(typeof(ThisAssembly).Assembly)!.Unloading += static _ => _unloading = true;
+        var ct = _cts.Token;
+
+        _ = Task.Run(() => PerformCheckAsync(ct), ct);
     }
 
     public void Start()
     {
-        _ = Task.Run(async () =>
-        {
-            Initialize();
+        _ = _ready.TrySetResult();
+    }
 
-            while (!_unloading)
-            {
-                if (!Check())
-                    GameProtection.Terminate();
+    public void Stop()
+    {
+        // Signal the check task to shut down.
+        _cts.Cancel();
 
-                await Task.Delay(GetCheckInterval()).ConfigureAwait(false);
-            }
-        });
+        // Note that the check task is not expected to encounter any exceptions.
+        _checkDone.Task.GetAwaiter().GetResult();
+
+        // The task is gone; safe to dispose this now.
+        _cts.Dispose();
     }
 
     protected virtual void Initialize()
@@ -37,5 +44,18 @@ internal abstract class GameProtectionTask
     {
         // Filled in by the server's BridgeModuleGenerator.
         return 42;
+    }
+
+    private async Task PerformCheckAsync(CancellationToken cancellationToken)
+    {
+        Initialize();
+
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            if (!Check())
+                GameProtection.Terminate();
+
+            await Task.Delay(GetCheckInterval(), cancellationToken).ConfigureAwait(false);
+        }
     }
 }

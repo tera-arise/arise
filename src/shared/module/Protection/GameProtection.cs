@@ -4,24 +4,16 @@ namespace Arise.Bridge.Protection;
 
 internal static class GameProtection
 {
-    private static int _initialized;
-
     [Obfuscation]
     public static void Initialize()
     {
         // This method body is erased by the server's BridgeModuleGenerator for module instances that run on the server
         // and for module instances running on the client in development scenarios.
 
-        if (Interlocked.Exchange(ref _initialized, 1) == 1)
-            return;
-
         var culture = CultureInfo.InvariantCulture;
 
         if (DateTime.UtcNow - DateTime.Parse(GetIssueTime(), culture) > TimeSpan.Parse(GetValidDuration(), culture))
             Terminate();
-
-        new CodeChecksumTask().Start();
-        new DebuggerDetectionTask().Start();
     }
 
     [Obfuscation]
