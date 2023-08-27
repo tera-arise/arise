@@ -26,8 +26,8 @@ internal sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthen
     {
         var headers = Request.Headers;
 
-        if (!headers.TryGetValue("TERA-Arise-Address", out var addressHeader) ||
-            !headers.TryGetValue("TERA-Arise-Password", out var passwordHeader))
+        if (!headers.TryGetValue("Arise-Email", out var emailHeader) ||
+            !headers.TryGetValue("Arise-Password", out var passwordHeader))
             return AuthenticateResult.NoResult();
 
         static AuthenticateResult Fail(string message)
@@ -35,12 +35,12 @@ internal sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthen
             return AuthenticateResult.Fail(message);
         }
 
-        if (addressHeader.Count != 1 || passwordHeader.Count != 1)
+        if (emailHeader.Count != 1 || passwordHeader.Count != 1)
             return Fail("Authentication header format is invalid.");
 
-        var providedAddress = addressHeader[0]!;
+        var providedEmail = emailHeader[0]!;
 
-        if (!EmailValidator.Validate(providedAddress, allowTopLevelDomains: true, allowInternational: true))
+        if (!EmailValidator.Validate(providedEmail, allowTopLevelDomains: true, allowInternational: true))
             return Fail("Email address format is invalid.");
 
         var providedPassword = passwordHeader[0]!;
@@ -48,13 +48,13 @@ internal sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthen
         if (!PasswordStrategy.IsPasswordValid(providedPassword))
             return Fail("Password format is invalid.");
 
-        var normalizedAddress = providedAddress.Normalize().ToUpperInvariant();
+        var normalizedEmail = providedEmail.Normalize().ToUpperInvariant();
         var account = default(AccountDocument);
 
         await using (var session = _store.QuerySession())
             account = await session
                 .Query<AccountDocument>()
-                .SingleOrDefaultAsync(account => account.Email.Address == normalizedAddress);
+                .SingleOrDefaultAsync(account => account.Email.Address == normalizedEmail);
 
         // https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#login
         if (account == null)
