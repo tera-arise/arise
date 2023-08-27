@@ -53,6 +53,7 @@
         <PackageReference Include="Avalonia.Win32" />
         <PackageReference Include="Injectio"
                           PrivateAssets="all" />
+        <PackageReference Include="Markdown.Avalonia.Tight" />
         <PackageReference Include="Material.Icons.Avalonia" />
         <PackageReference Include="Microsoft.Extensions.Hosting" />
         <PackageReference Include="Microsoft.Windows.CsWin32"
