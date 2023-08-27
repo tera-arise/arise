@@ -38,4 +38,16 @@ public unsafe struct FBufferReader
 
     [FieldOffset(0x0)]
     public VirtualFunctionTable* VFT;
+
+    [FieldOffset(0x8c)]
+    public void* data;
+
+    [FieldOffset(0x94)]
+    public int position;
+
+    [FieldOffset(0x98)]
+    public int size;
+
+    [FieldOffset(0x9c)]
+    public BOOL free_on_close;
 }

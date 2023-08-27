@@ -93,4 +93,25 @@ public unsafe struct FArchive
 
     [FieldOffset(0x0)]
     public VirtualFunctionTable* VFT;
+
+    [FieldOffset(0xc)]
+    public int package_version;
+
+    [FieldOffset(0x10)]
+    public int network_version;
+
+    [FieldOffset(0x14)]
+    public int licensee_version;
+
+    [FieldOffset(0x18)]
+    public BOOL is_reader;
+
+    [FieldOffset(0x2c)]
+    public BOOL is_persistent;
+
+    [FieldOffset(0x3c)]
+    public BOOL has_errors;
+
+    [FieldOffset(0x50)]
+    public BOOL force_order_swap;
 }
