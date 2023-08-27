@@ -27,12 +27,16 @@ internal sealed partial class BridgeModuleGenerator : IHostedService
 
     private readonly List<(BridgeModule Server, ReadOnlyMemory<byte> Client)> _modules = new();
 
+    private readonly IHostEnvironment _hostEnvironment;
+
     private readonly IOptions<WorldOptions> _options;
 
     private readonly ILogger<BridgeModuleGenerator> _logger;
 
-    public BridgeModuleGenerator(IOptions<WorldOptions> options, ILogger<BridgeModuleGenerator> logger)
+    public BridgeModuleGenerator(
+        IHostEnvironment hostEnvironment, IOptions<WorldOptions> options, ILogger<BridgeModuleGenerator> logger)
     {
+        _hostEnvironment = hostEnvironment;
         _options = options;
         _logger = logger;
     }
@@ -86,13 +90,17 @@ internal sealed partial class BridgeModuleGenerator : IHostedService
                 {
                     _modules.Clear();
 
+                    var serverKind = _hostEnvironment.IsDevelopment()
+                        ? BridgeModuleKind.Normal
+                        : BridgeModuleKind.Hardened;
+
                     for (var i = 0; i < _options.Value.ConcurrentModules; i++)
                     {
                         var seed = Environment.TickCount;
 
                         _modules.Add(
-                            (BridgeModuleActivator.Create(CreateModule(BridgeModuleKind.Server, seed)),
-                            CreateModule(BridgeModuleKind.Client, seed)));
+                            (BridgeModuleActivator.Create(CreateModule(BridgeModuleKind.Normal, seed)),
+                             CreateModule(serverKind, seed)));
                     }
                 }
 

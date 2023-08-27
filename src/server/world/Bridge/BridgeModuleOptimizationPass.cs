@@ -12,12 +12,12 @@ internal sealed class BridgeModuleOptimizationPass : BridgeModulePass
             if (method.Body is not { } body)
                 continue;
 
-            if (kind == BridgeModuleKind.Server || rng.Next(0, 2) == 1)
+            if (kind == BridgeModuleKind.Normal || rng.Next(0, 2) == 1)
                 body.OptimizeBranches();
             else
                 body.SimplifyBranches();
 
-            if (kind == BridgeModuleKind.Server || rng.Next(0, 2) == 1)
+            if (kind == BridgeModuleKind.Normal || rng.Next(0, 2) == 1)
                 body.OptimizeMacros();
             else
                 body.SimplifyMacros(method.Parameters);
