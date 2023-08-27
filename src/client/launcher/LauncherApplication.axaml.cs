@@ -32,10 +32,11 @@ internal sealed partial class LauncherApplication : Application
         _ = _hostLifetime.ApplicationStopping.UnsafeRegister(
             _ => Dispatcher.UIThread.Post(() => lifetime.Shutdown(), DispatcherPriority.MaxValue), null);
 
-        lifetime.MainWindow = new MainWindow
-        {
-            DataContext = new MainController(_services),
-        };
+        var window = ActivatorUtilities.CreateInstance<MainWindow>(_services);
+
+        window.DataContext = ActivatorUtilities.CreateInstance<MainController>(_services);
+
+        lifetime.MainWindow = window;
 
         base.OnFrameworkInitializationCompleted();
     }

@@ -1,5 +1,6 @@
 namespace Arise.Client.Launcher.Controllers;
 
+[RegisterTransient<MainController>]
 internal sealed class MainController : LauncherController
 {
     public Bitmap Background => _background.Value;
