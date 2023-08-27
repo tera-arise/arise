@@ -10,38 +10,42 @@ internal sealed class LauncherApplicationHost : IHostedService
 
     private readonly IHostApplicationLifetime _hostLifetime;
 
+    private readonly AvaloniaLogSink _logSink;
+
     public LauncherApplicationHost(
-        IServiceProvider services, IHostApplicationLifetime hostLifetime)
+        IServiceProvider services, IHostApplicationLifetime hostLifetime, AvaloniaLogSink logSink)
     {
         _services = services;
         _hostLifetime = hostLifetime;
+        _logSink = logSink;
     }
 
     Task IHostedService.StartAsync(CancellationToken cancellationToken)
     {
-        _ = Task.Run(
-            () =>
+        var thread = new Thread(() =>
+        {
+            Logger.Sink = _logSink;
+
+            try
             {
-                Logger.Sink = _services.GetRequiredService<AvaloniaLogSink>();
+                _ = AppBuilder
+                    .Configure(() => ActivatorUtilities.CreateInstance<LauncherApplication>(_services))
+                    .UseWin32()
+                    .UseSkia()
+                    .UseReactiveUI()
+                    .WithInterFont()
+                    .StartWithClassicDesktopLifetime([], ShutdownMode.OnMainWindowClose);
+            }
+            finally
+            {
+                Logger.Sink = null;
+            }
 
-                try
-                {
-                    _ = AppBuilder
-                        .Configure(() => ActivatorUtilities.CreateInstance<LauncherApplication>(_services))
-                        .UseWin32()
-                        .UseSkia()
-                        .UseReactiveUI()
-                        .WithInterFont()
-                        .StartWithClassicDesktopLifetime([], ShutdownMode.OnMainWindowClose);
-                }
-                finally
-                {
-                    Logger.Sink = null;
-                }
+            _hostLifetime.StopApplication();
+        });
 
-                _hostLifetime.StopApplication();
-            },
-            cancellationToken);
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
 
         return Task.CompletedTask;
     }
