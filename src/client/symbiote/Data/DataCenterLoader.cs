@@ -7,17 +7,31 @@ namespace Arise.Client.Data;
 
 [RegisterSingleton<DataCenterLoader>]
 [SuppressMessage("", "CA1812")]
-internal sealed class DataCenterLoader : IHostedService
+internal sealed unsafe class DataCenterLoader : IHostedService
 {
+    private readonly CodeManager _codeManager;
+
     private readonly BridgeDataComponent _dataComponent;
 
-    public DataCenterLoader(GameClient client)
+    private FunctionHook _hook = null!;
+
+    private FBufferReader** _slot;
+
+    public DataCenterLoader(CodeManager codeManager, GameClient client)
     {
+        _codeManager = codeManager;
         _dataComponent = client.Session.Module.Data;
     }
 
     unsafe Task IHostedService.StartAsync(CancellationToken cancellationToken)
     {
+        _hook = FunctionHook.Create(
+            _codeManager, S1DataDB.Initialize, (delegate* unmanaged<S1DataDB*, void>)&InitializeHook, this);
+
+        _hook.IsActive = true;
+
+        _slot = (FBufferReader**)NativeMemory.Alloc((uint)sizeof(FBufferReader*));
+
         // Patch in the key and IV.
         DynamicAssembler.Patch(
             (void*)0x7ff69b884af4,
@@ -43,24 +57,40 @@ internal sealed class DataCenterLoader : IHostedService
                 asm.mov(__dword_ptr[r11 - 0x4c], ReadUInt32(iv, 3));
             });
 
-        using var stream = EmbeddedDataCenter.OpenStream();
-
-        var length = (int)stream.Length;
-        var buffer = TeraMemory.AllocArray<byte>(length);
-        var reader = TeraMemory.Alloc<FBufferReader>();
-
-        _ = FBufferReader.__ctor(reader, buffer, length, true, false);
-
-        stream.ReadExactly(new(buffer, length));
-
-        // Patch in the FBufferReader pointer. S1DataDB::UnpackArchive() will delete the reader and its buffer.
-        DynamicAssembler.Patch((void*)0x7ff69bb19f69, asm => asm.mov(rax, (ulong)reader));
+        // Patch in code to read the FBufferReader pointer from _slot.
+        DynamicAssembler.Patch(
+            (void*)0x7ff69bb19f69,
+            asm =>
+            {
+                asm.mov(rax, (nuint)_slot);
+                asm.mov(rax, __qword_ptr[rax]);
+            });
 
         return Task.CompletedTask;
     }
 
     Task IHostedService.StopAsync(CancellationToken cancellationToken)
     {
+        NativeMemory.Free(_slot);
+
+        _hook.Dispose();
+
         return Task.CompletedTask;
+    }
+
+    [UnmanagedCallersOnly]
+    private static void InitializeHook(S1DataDB* @this)
+    {
+        using var stream = EmbeddedDataCenter.OpenStream();
+
+        var length = (int)stream.Length;
+        var buffer = TeraMemory.AllocArray<byte>(length);
+        var reader = TeraMemory.Alloc<FBufferReader>();
+
+        stream.ReadExactly(new(buffer, length));
+
+        // S1DataDB::UnpackArchive() will free reader and buffer after decryption and decompression.
+        *Unsafe.As<DataCenterLoader>(FunctionHook.Current.State)._slot =
+            FBufferReader.__ctor(reader, buffer, length, true, false);
     }
 }

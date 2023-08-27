@@ -4,6 +4,8 @@ namespace Arise.Client.Memory;
 
 internal static unsafe class TeraMemory
 {
+    // Note: This class is only safe to use after the game has been woken up from suspension.
+
     public static T* Alloc<T>()
         where T : unmanaged
     {
