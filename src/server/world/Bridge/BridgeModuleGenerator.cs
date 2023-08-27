@@ -90,7 +90,7 @@ internal sealed partial class BridgeModuleGenerator : IHostedService
                 {
                     _modules.Clear();
 
-                    var serverKind = _hostEnvironment.IsDevelopment()
+                    var clientKind = _hostEnvironment.IsDevelopment()
                         ? BridgeModuleKind.Normal
                         : BridgeModuleKind.Hardened;
 
@@ -100,7 +100,7 @@ internal sealed partial class BridgeModuleGenerator : IHostedService
 
                         _modules.Add(
                             (BridgeModuleActivator.Create(CreateModule(BridgeModuleKind.Normal, seed)),
-                             CreateModule(serverKind, seed)));
+                             CreateModule(clientKind, seed)));
                     }
                 }
 

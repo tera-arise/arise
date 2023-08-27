@@ -1,3 +1,5 @@
+using Arise.Bridge.Protection;
+
 namespace Arise.Bridge;
 
 public sealed class PatchableBridgeModule : BridgeModule
@@ -9,4 +11,9 @@ public sealed class PatchableBridgeModule : BridgeModule
     public override PatchableBridgeProtocolComponent Protocol { get; } = new();
 
     public override PatchableBridgeWatchdogComponent Watchdog { get; } = new();
+
+    public PatchableBridgeModule()
+    {
+        GameProtection.Initialize();
+    }
 }

@@ -48,6 +48,8 @@ internal abstract class GameProtectionTask
 
     private async Task PerformCheckAsync(CancellationToken cancellationToken)
     {
+        await _ready.Task.ConfigureAwait(false);
+
         Initialize();
 
         while (!cancellationToken.IsCancellationRequested)
