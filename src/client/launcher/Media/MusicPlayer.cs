@@ -34,10 +34,7 @@ internal sealed class MusicPlayer : IDisposable
             new LoopStream(
                 new WaveChannel32(
                     new VorbisWaveReader(
-                        new SlimMemoryStream
-                        {
-                            Buffer = MemoryMarshal.AsMemory(_assets.Span[Random.Shared.Next() % _assets.Length]),
-                        }),
+                        SlimMemoryStream.CreateReadOnly(_assets.Span[Random.Shared.Next() % _assets.Length])),
                     volume: 0.1f,
                     pan: 0.0f)));
 

@@ -2,23 +2,13 @@ namespace Arise.IO;
 
 public sealed class SlimMemoryStream : Stream
 {
-    public Memory<byte> Buffer
-    {
-        get => _buffer;
-        set
-        {
-            _buffer = value;
-            _position = 0;
-        }
-    }
-
     public override bool CanRead => true;
 
-    public override bool CanWrite => true;
+    public override bool CanWrite => _writable;
 
     public override bool CanSeek => true;
 
-    public override long Length => Buffer.Length;
+    public override long Length => _buffer.Length;
 
     public override long Position
     {
@@ -28,7 +18,50 @@ public sealed class SlimMemoryStream : Stream
 
     private Memory<byte> _buffer;
 
+    private bool _writable;
+
     private int _position;
+
+    private SlimMemoryStream()
+    {
+    }
+
+    public static SlimMemoryStream CreateEmpty()
+    {
+        return new();
+    }
+
+    public static SlimMemoryStream CreateReadOnly(ReadOnlyMemory<byte> buffer)
+    {
+        var stream = new SlimMemoryStream();
+
+        stream.SetReadOnlyBuffer(buffer);
+
+        return stream;
+    }
+
+    public static SlimMemoryStream Create(Memory<byte> buffer)
+    {
+        var stream = new SlimMemoryStream();
+
+        stream.SetBuffer(buffer);
+
+        return stream;
+    }
+
+    public void SetReadOnlyBuffer(ReadOnlyMemory<byte> buffer)
+    {
+        _buffer = MemoryMarshal.AsMemory(buffer);
+        _writable = false;
+        _position = 0;
+    }
+
+    public void SetBuffer(Memory<byte> buffer)
+    {
+        _buffer = buffer;
+        _writable = true;
+        _position = 0;
+    }
 
     public override long Seek(long offset, SeekOrigin origin)
     {
@@ -36,7 +69,7 @@ public sealed class SlimMemoryStream : Stream
         {
             SeekOrigin.Begin => (int)offset,
             SeekOrigin.Current => _position + (int)offset,
-            SeekOrigin.End => Buffer.Length + (int)offset,
+            SeekOrigin.End => _buffer.Length + (int)offset,
             _ => throw new UnreachableException(),
         };
 
@@ -45,7 +78,7 @@ public sealed class SlimMemoryStream : Stream
 
     public override void SetLength(long value)
     {
-        Buffer = Buffer[..(int)value];
+        throw new NotSupportedException();
     }
 
     public override void Flush()
@@ -59,7 +92,7 @@ public sealed class SlimMemoryStream : Stream
 
     public override int Read(Span<byte> buffer)
     {
-        var n = Buffer.Length - _position;
+        var n = _buffer.Length - _position;
 
         if (n <= 0)
             return 0;
@@ -67,7 +100,7 @@ public sealed class SlimMemoryStream : Stream
         if (n > buffer.Length)
             n = buffer.Length;
 
-        Buffer.Span.Slice(_position, n).CopyTo(buffer);
+        _buffer.Span.Slice(_position, n).CopyTo(buffer);
 
         _position += n;
 
@@ -101,7 +134,7 @@ public sealed class SlimMemoryStream : Stream
 
     public override void Write(ReadOnlySpan<byte> buffer)
     {
-        if (_position < Buffer.Length && buffer.TryCopyTo(Buffer.Span[_position..]))
+        if (_writable && _position < _buffer.Length && buffer.TryCopyTo(_buffer.Span[_position..]))
             _position += buffer.Length;
         else
             throw new NotSupportedException();

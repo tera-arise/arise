@@ -56,13 +56,13 @@ internal sealed class GameConnectionBuffer
 
     public GameConnectionBuffer()
     {
-        PayloadStream = new();
+        PayloadStream = SlimMemoryStream.CreateEmpty();
         PayloadAccessor = new(PayloadStream);
     }
 
     public void ResetStream(int? length)
     {
-        PayloadStream.Buffer = _data.AsMemory(AriseHeaderSize, length ?? MaxPayloadSize);
+        PayloadStream.SetBuffer(_data.AsMemory(AriseHeaderSize, length ?? MaxPayloadSize));
     }
 
     public void ConvertToSession(BridgeProtocolComponent protocol)

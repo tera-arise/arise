@@ -4,10 +4,7 @@ public static class BridgeModuleActivator
 {
     public static BridgeModule Create(ReadOnlyMemory<byte> module)
     {
-        using var stream = new SlimMemoryStream
-        {
-            Buffer = MemoryMarshal.AsMemory(module),
-        };
+        using var stream = SlimMemoryStream.CreateReadOnly(module);
 
         return Unsafe.As<BridgeModule>(
             Activator.CreateInstance(
