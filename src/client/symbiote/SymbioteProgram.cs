@@ -41,6 +41,7 @@ public static class SymbioteProgram
                     .Services
                     .AddSingleton(services => ActivatorUtilities.CreateInstance<GameApplicationHost>(services, waker))
                     .AddAriseClientSymbiote()
+                    .AddHostedService(static provider => provider.GetRequiredService<TeraConnectionManager>())
                     .AddHostedService(static provider => provider.GetRequiredService<GameClient>())
                     .AddHostedService(static provider => provider.GetRequiredService<GameApplicationHost>());
             })

@@ -5,7 +5,7 @@ namespace Arise.Client.Net;
 
 [RegisterSingleton]
 [SuppressMessage("", "CA1812")]
-internal sealed partial class GameClient : BackgroundService
+internal sealed partial class GameClient : IHostedService
 {
     private static partial class Log
     {
@@ -32,35 +32,88 @@ internal sealed partial class GameClient : BackgroundService
         public static partial void ArisePacketSent(ILogger<GameClient> logger, AriseGamePacketCode code, int length);
     }
 
+    public GameClientSession Session { get; private set; } = null!;
+
+    private readonly IHostApplicationLifetime _hostLifetime;
+
     private readonly IOptions<SymbioteOptions> _options;
 
     private readonly ILogger<GameClient> _logger;
 
-    private readonly ObjectPoolProvider _objectPoolProvider;
-
     private readonly GameClientSessionDispatcher _sessionDispatcher;
 
+    private readonly TeraConnectionManager _connectionManager;
+
+    private readonly GameConnectionClient _client;
+
     public GameClient(
+        IHostApplicationLifetime hostLifetime,
         IOptions<SymbioteOptions> options,
         ILogger<GameClient> logger,
         ObjectPoolProvider objectPoolProvider,
-        GameClientSessionDispatcher sessionDispatcher)
+        GameClientSessionDispatcher sessionDispatcher,
+        TeraConnectionManager connectionManager)
     {
+        _hostLifetime = hostLifetime;
         _options = options;
         _logger = logger;
-        _objectPoolProvider = objectPoolProvider;
         _sessionDispatcher = sessionDispatcher;
+        _connectionManager = connectionManager;
+        _client = GameConnectionClient.Create(objectPoolProvider);
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    async Task IHostedService.StartAsync(CancellationToken cancellationToken)
     {
+        _client.ConnectionEstablished += conn =>
+        {
+            conn.UserState = Session = new GameClientSession(conn);
+
+            _connectionManager.Disconnected += () => conn.DisposeAsync().AsTask().GetAwaiter().GetResult();
+
+            // TODO: Use packet prioritization here - maybe a table of low/high priority codes.
+            _connectionManager.PacketSent += (payload, code) => conn.NormalPriority.PostPacket(code, payload);
+
+            Log.ClientConnected(_logger, conn.EndPoint);
+        };
+
+        _client.ConnectionClosed += (conn, ex) =>
+        {
+            // If something unexpected broke the connection, notify the game so it can act accordingly.
+            _connectionManager.Disconnect();
+
+            Log.ClientDisconnected(_logger, ex, conn.EndPoint);
+
+            // One way or another, a disconnection will cause the client to exit, so we should do the same.
+            _hostLifetime.StopApplication();
+        };
+
+        void LogPacket<T>(T code, ReadOnlyMemory<byte> payload, Action<ILogger<GameClient>, T, int> logger)
+            where T : unmanaged, Enum
+        {
+            logger(_logger, code, payload.Length);
+        }
+
+        _client.RawTeraPacketReceived += (conduit, code, payload) =>
+        {
+            _connectionManager.EnqueuePacket(code, payload.Span);
+
+            LogPacket(code, payload, Log.TeraPacketReceived);
+        };
+        _client.RawArisePacketReceived += (conduit, code, payload) => LogPacket(code, payload, Log.ArisePacketReceived);
+        _client.RawTeraPacketSent += (conduit, code, payload) => LogPacket(code, payload, Log.TeraPacketSent);
+        _client.RawArisePacketSent += (conduit, code, payload) => LogPacket(code, payload, Log.ArisePacketSent);
+
+        _client.ArisePacketReceived +=
+            (conduit, packet) =>
+                _sessionDispatcher.Dispatch(Unsafe.As<GameClientSession>(conduit.Connection.UserState!), packet);
+
         async ValueTask<string> GetManifestResourceAsync(string name)
         {
             await using var stream = typeof(ThisAssembly).Assembly.GetManifestResourceStream(name)!;
 
             var buffer = GC.AllocateUninitializedArray<byte>((int)stream.Length);
 
-            await stream.ReadExactlyAsync(buffer, stoppingToken);
+            await stream.ReadExactlyAsync(buffer, cancellationToken);
 
             return Encoding.UTF8.GetString(buffer);
         }
@@ -71,45 +124,13 @@ internal sealed partial class GameClient : BackgroundService
         using var caCert = X509Certificate2.CreateFromPem(await GetManifestResourceAsync("ca.pem"));
         using var clientCert = X509Certificate2.CreateFromPem(clientPem, clientKey);
 
-        await using var client = GameConnectionClient.Create(_objectPoolProvider);
-
-        client.ConnectionEstablished += conn =>
-        {
-            conn.UserState = new GameClientSession(conn);
-
-            Log.ClientConnected(_logger, conn.EndPoint);
-        };
-
-        client.ConnectionClosed += (conn, ex) => Log.ClientDisconnected(_logger, ex, conn.EndPoint);
-
-        void LogPacket<T>(
-            T code,
-            ReadOnlyMemory<byte> payload,
-            Action<ILogger<GameClient>, T, int> logger)
-            where T : unmanaged, Enum
-        {
-            logger(_logger, code, payload.Length);
-        }
-
-        client.RawTeraPacketReceived += (conduit, code, payload) => LogPacket(code, payload, Log.TeraPacketReceived);
-        client.RawArisePacketReceived += (conduit, code, payload) => LogPacket(code, payload, Log.ArisePacketReceived);
-        client.RawTeraPacketSent += (conduit, code, payload) => LogPacket(code, payload, Log.TeraPacketSent);
-        client.RawArisePacketSent += (conduit, code, payload) => LogPacket(code, payload, Log.ArisePacketSent);
-
-        void HandleTypedPacket(GameConnectionConduit conduit, GamePacket packet)
-        {
-            _sessionDispatcher.Dispatch(Unsafe.As<GameClientSession>(conduit.Connection.UserState!), packet);
-        }
-
-        // TODO: Dispatch TERA packets to the game.
-
-        client.TeraPacketReceived += HandleTypedPacket;
-        client.ArisePacketReceived += HandleTypedPacket;
-
         var uri = _options.Value.WorldServerUri;
 
-        _ = await client.ConnectAsync(new(uri.Host, uri.Port), caCert, clientCert, stoppingToken);
+        _ = await _client.ConnectAsync(new(uri.Host, uri.Port), caCert, clientCert, cancellationToken);
+    }
 
-        await Task.Delay(Timeout.InfiniteTimeSpan, stoppingToken);
+    Task IHostedService.StopAsync(CancellationToken cancellationToken)
+    {
+        return _client.DisposeAsync().AsTask();
     }
 }

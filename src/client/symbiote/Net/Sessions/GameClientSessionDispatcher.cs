@@ -12,7 +12,7 @@ internal sealed partial class GameClientSessionDispatcher :
     {
         [LoggerMessage(0, LogLevel.Warning, "No game packet handler found for Arise:{Code} from {EndPoint}")]
         public static partial void NoHandlerFound(
-            Microsoft.Extensions.Logging.ILogger logger, AriseGamePacketCode code, IPEndPoint endPoint);
+            ILogger<GameClientSessionDispatcher> logger, AriseGamePacketCode code, IPEndPoint endPoint);
     }
 
     private readonly ILogger<GameClientSessionDispatcher> _logger;
@@ -24,10 +24,6 @@ internal sealed partial class GameClientSessionDispatcher :
 
     protected override void UnhandledPacket(GameClientSession session, GamePacket packet)
     {
-        if (packet.Channel == GameConnectionChannel.Tera)
-        {
-        }
-        else
-            Log.NoHandlerFound(_logger, (AriseGamePacketCode)packet.RawCode, session.EndPoint);
+        Log.NoHandlerFound(_logger, (AriseGamePacketCode)packet.RawCode, session.EndPoint);
     }
 }

@@ -24,6 +24,7 @@
         <Using Include="Serilog" />
         <Using Include="Serilog.Events" />
         <Using Include="Serilog.Sinks.SystemConsole.Themes" />
+        <Using Include="Vezel.Novadrop.Interop" />
     </ItemGroup>
 
     <ItemGroup>
