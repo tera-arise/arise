@@ -5,7 +5,7 @@ namespace Arise.Client;
 
 public static class SymbioteProgram
 {
-    public static async Task<int> RunAsync(ReadOnlyMemory<string> args, Action waker)
+    public static async Task<int> RunAsync(ReadOnlyMemory<string> args, Action wake)
     {
         Log.Logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
@@ -39,7 +39,8 @@ public static class SymbioteProgram
                     .AddOptions<SymbioteOptions>()
                     .BindConfiguration("Symbiote")
                     .Services
-                    .AddSingleton(services => ActivatorUtilities.CreateInstance<GameApplicationHost>(services, waker))
+                    .AddSingleton<CodeManager, PageCodeManager>()
+                    .AddSingleton(services => ActivatorUtilities.CreateInstance<GameApplicationHost>(services, wake))
                     .AddAriseClientSymbiote()
                     .AddHostedService(static provider => provider.GetRequiredService<TeraConnectionManager>())
                     .AddHostedService(static provider => provider.GetRequiredService<GameClient>())

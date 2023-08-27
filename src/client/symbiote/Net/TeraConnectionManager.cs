@@ -1,7 +1,8 @@
+using Vezel.Novadrop.Interop;
+
 namespace Arise.Client.Net;
 
 [RegisterSingleton<TeraConnectionManager>]
-[SuppressMessage("", "CA1001")]
 [SuppressMessage("", "CA1812")]
 internal sealed unsafe partial class TeraConnectionManager : IHostedService
 {
@@ -16,13 +17,18 @@ internal sealed unsafe partial class TeraConnectionManager : IHostedService
 
     public event ReadOnlySpanAction<byte, TeraGamePacketCode>? PacketSent;
 
-    private readonly PageCodeManager _codeManager = new();
-
     private readonly Queue<FunctionHook> _hooks = new();
 
     private readonly ConcurrentQueue<byte[]> _receivedPackets = new();
 
+    private readonly CodeManager _codeManager;
+
     private int _state = (int)State.Connected;
+
+    public TeraConnectionManager(CodeManager codeManager)
+    {
+        _codeManager = codeManager;
+    }
 
     Task IHostedService.StartAsync(CancellationToken cancellationToken)
     {
@@ -52,8 +58,6 @@ internal sealed unsafe partial class TeraConnectionManager : IHostedService
         // around until the client fully exits.
         while (_hooks.TryDequeue(out var hook))
             hook.Dispose();
-
-        _codeManager.Dispose();
 
         return Task.CompletedTask;
     }

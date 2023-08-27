@@ -3,17 +3,17 @@ namespace Arise.Client;
 [SuppressMessage("", "CA1812")]
 internal sealed class GameApplicationHost : IHostedService
 {
-    private readonly Action _waker;
+    private readonly Action _wake;
 
-    public GameApplicationHost(Action waker)
+    public GameApplicationHost(Action wake)
     {
-        _waker = waker;
+        _wake = wake;
     }
 
     Task IHostedService.StartAsync(CancellationToken cancellationToken)
     {
         // Wake up the game now that we are fully initialized.
-        _waker();
+        _wake();
 
         return Task.CompletedTask;
     }
