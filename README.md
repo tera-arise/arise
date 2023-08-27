@@ -42,11 +42,11 @@ Building and running TERA Arise requires the following:
 * .NET SDK 8.0.0 Preview 7
 * PostgreSQL 14.6+
 
-Simply run `./cake` to build client artifacts for Windows (x64) and server
-artifacts for the current platform (Windows or Linux, x64 or Arm64). This will
-use the `Debug` configuration by default, which is suitable for development and
-debugging. Pass `-c Release` instead to use that configuration, resulting in an
-optimized build.
+Simply run `./cake` (a Bash script) to build client artifacts for Windows (x64)
+and server artifacts for the current platform (Windows or Linux, x64 or Arm64).
+This will use the `Debug` configuration by default, which is suitable for
+development and debugging. Pass `-c Release` instead to use that configuration,
+resulting in an optimized build.
 
 Note that `Debug` and `Release` configurations are independent of whether the
 resulting artifacts are suitable for deployment; see the
