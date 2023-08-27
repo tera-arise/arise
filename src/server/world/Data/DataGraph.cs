@@ -33,8 +33,8 @@ internal sealed partial class DataGraph : IHostedService
         Root = await DataCenter.LoadAsync(
             stream,
             new DataCenterLoadOptions()
-                .WithKey(DataCenterParameters.Key.Span)
-                .WithIV(DataCenterParameters.IV.Span)
+                .WithKey(ThisAssembly.DataCenterKey.Span)
+                .WithIV(ThisAssembly.DataCenterIV.Span)
                 .WithStrict(true)
                 .WithLoaderMode(mode)
                 .WithMutability(DataCenterMutability.Immutable),

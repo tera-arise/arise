@@ -39,6 +39,13 @@
         <Exec Command="jq .key $(_CertificateResponsePath) -j > $(_CertificateName).key" />
     </Target>
 
+    <Target Name="GetGameTitle"
+            Returns="@(AriseGameTitle)">
+        <ItemGroup>
+            <AriseGameTitle Include="TERA Arise" />
+        </ItemGroup>
+    </Target>
+
     <Target Name="GetGameRevision"
             DependsOnTargets="GetBuildVersion"
             Returns="@(AriseGameRevision)">

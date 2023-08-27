@@ -14,6 +14,7 @@
 
     <ItemGroup>
         <Using Include="Arise.IO" />
+        <Using Include="Arise.Reflection" />
         <Using Include="Avalonia" />
         <Using Include="Avalonia.Controls" />
         <Using Include="Avalonia.Controls.ApplicationLifetimes" />

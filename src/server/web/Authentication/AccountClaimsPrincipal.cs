@@ -18,7 +18,7 @@ internal sealed class AccountClaimsPrincipal : ClaimsPrincipal
         Document = account;
         IsRecovered = recovered;
 
-        var id = new ClaimsIdentity("TERA Arise", ClaimTypes.Email, ClaimTypes.Role);
+        var id = new ClaimsIdentity(ThisAssembly.GameTitle, ClaimTypes.Email, ClaimTypes.Role);
 
         id.AddClaim(new(ClaimTypes.Email, account.Email.Address));
 

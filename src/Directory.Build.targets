@@ -3,6 +3,24 @@
         <ProjectReference Include="$(AriseVendorProjectPath)" />
     </ItemGroup>
 
+    <Target Name="_ApplyGameTitleAttribute"
+            BeforeTargets="GetAssemblyAttributes">
+        <MSBuild Projects="$(AriseVendorProjectPath)"
+                 Targets="GetGameTitle">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="AriseGameTitle" />
+        </MSBuild>
+
+        <PropertyGroup>
+            <_AriseGameTitle>@(AriseGameTitle)</_AriseGameTitle>
+        </PropertyGroup>
+
+        <ItemGroup>
+            <AssemblyMetadata Include="Arise.GameTitle"
+                              Value="$(_AriseGameTitle)" />
+        </ItemGroup>
+    </Target>
+
     <Target Name="GetGameRevision">
         <MSBuild Projects="$(AriseVendorProjectPath)"
                  Targets="GetGameRevision">

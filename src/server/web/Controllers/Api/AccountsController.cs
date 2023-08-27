@@ -88,7 +88,7 @@ internal sealed class AccountsController : ApiController
             normalized,
             "Email Address Verification",
             $"""
-            Welcome to TERA Arise.
+            Welcome to {ThisAssembly.GameTitle}.
 
             To verify your email address, use this token in the launcher: {token}
 
@@ -127,7 +127,7 @@ internal sealed class AccountsController : ApiController
             email.Address,
             "Email Address Verification",
             $"""
-            Welcome to TERA Arise.
+            Welcome to {ThisAssembly.GameTitle}.
 
             To verify your email address, use this token in the launcher: {token}
 
@@ -216,7 +216,7 @@ internal sealed class AccountsController : ApiController
                 email.Address,
                 "Email Address Change Verification",
                 $"""
-                An email address change was recently requested for your TERA Arise account.
+                An email address change was recently requested for your {ThisAssembly.GameTitle} account.
 
                 The new email address is: {address}
 
@@ -248,7 +248,7 @@ internal sealed class AccountsController : ApiController
                 email.Address,
                 "Password Change",
                 $"""
-                A password change was recently performed for your TERA Arise account.
+                A password change was recently performed for your {ThisAssembly.GameTitle} account.
 
                 If you did not perform this change, please change your password immediately.
                 """,
@@ -303,7 +303,7 @@ internal sealed class AccountsController : ApiController
                 normalized,
                 "Password Recovery",
                 $"""
-                Password recovery was recently requested for your TERA Arise account.
+                Password recovery was recently requested for your {ThisAssembly.GameTitle} account.
 
                 A temporary password has been generated for you: {password}
 
@@ -350,7 +350,7 @@ internal sealed class AccountsController : ApiController
             account.Email.Address,
             "Account Deletion Verification",
             $"""
-            Deletion of your TERA Arise account was recently requested.
+            Deletion of your {ThisAssembly.GameTitle} account was recently requested.
 
             To confirm account deletion, use this token in the launcher: {token}
 

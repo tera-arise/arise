@@ -1,4 +1,3 @@
-using Arise.Server.Data;
 using dnlib.DotNet;
 
 namespace Arise.Server.Bridge;
@@ -116,7 +115,7 @@ internal sealed class BridgeModulePatchingPass : BridgeModulePass
 
                 case ("PatchableBridgeDataComponent", "InitializeKey"):
                 {
-                    foreach (var b in DataCenterParameters.Key.Span)
+                    foreach (var b in ThisAssembly.DataCenterKey.Span)
                         PatchInt32Marker(b);
 
                     break;
@@ -124,7 +123,7 @@ internal sealed class BridgeModulePatchingPass : BridgeModulePass
 
                 case ("PatchableBridgeDataComponent", "InitializeIV"):
                 {
-                    foreach (var b in DataCenterParameters.IV.Span)
+                    foreach (var b in ThisAssembly.DataCenterIV.Span)
                         PatchInt32Marker(b);
 
                     break;

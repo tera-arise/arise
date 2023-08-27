@@ -15,7 +15,7 @@
 
         <partial name="_Styles" />
 
-        <title>@(ViewData["Title"] is string title ? $"{title} | " : string.Empty)TERA Arise</title>
+        <title>@(ViewData["Title"] is string title ? $"{title} | " : string.Empty)@ThisAssembly.GameTitle</title>
     </head>
 
     <body class="container">

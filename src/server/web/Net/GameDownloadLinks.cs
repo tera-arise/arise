@@ -21,13 +21,7 @@ internal sealed class GameDownloadLinks
         }
 
         var teraRevision = options.Value.TeraRevision;
-        var ariseRevision = int.Parse(
-            typeof(ThisAssembly)
-                .Assembly
-                .GetCustomAttributes<AssemblyMetadataAttribute>()
-                .Single(static attr => attr.Key == "Arise.GameRevision")
-                .Value!,
-            CultureInfo.InvariantCulture);
+        var ariseRevision = ThisAssembly.GameRevision;
 
         (TeraManifestUri, TeraDownloadUri) = GetUris(
             "client", $"r{teraRevision}", $"TERA.EU.{teraRevision}.{{0}}.zip");

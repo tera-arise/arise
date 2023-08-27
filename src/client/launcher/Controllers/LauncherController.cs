@@ -6,6 +6,8 @@ internal abstract class LauncherController : ReactiveObject, IActivatableViewMod
 
     public IServiceProvider Services { get; }
 
+    public string Title { get; } = ThisAssembly.GameTitle;
+
     protected LauncherController(IServiceProvider services)
     {
         Services = services;

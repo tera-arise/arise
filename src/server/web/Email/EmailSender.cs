@@ -10,21 +10,14 @@ internal sealed partial class EmailSender
             ILogger<EmailSender> logger, string receiver, string subject, double elapsedMs);
     }
 
-    private readonly IHostEnvironment _environment;
-
     private readonly IOptionsMonitor<WebOptions> _options;
 
     private readonly ILogger<EmailSender> _logger;
 
     private readonly ISendGridClient _client;
 
-    public EmailSender(
-        IHostEnvironment environment,
-        IOptionsMonitor<WebOptions> options,
-        ILogger<EmailSender> logger,
-        ISendGridClient client)
+    public EmailSender(IOptionsMonitor<WebOptions> options, ILogger<EmailSender> logger, ISendGridClient client)
     {
-        _environment = environment;
         _options = options;
         _logger = logger;
         _client = client;
@@ -35,18 +28,18 @@ internal sealed partial class EmailSender
     {
         var stopwatch = SlimStopwatch.Create();
 
-        var suffix = _environment.IsStaging() ? " (Staging)" : string.Empty;
+        var title = ThisAssembly.GameTitle;
         var message = new SendGridMessage
         {
-            From = new(_options.CurrentValue.EmailAddress, $"TERA Arise{suffix}"),
-            Subject = $"{subject} | TERA Arise{suffix}",
+            From = new(_options.CurrentValue.EmailAddress, title),
+            Subject = $"{subject} | {title}",
             PlainTextContent = $"""
             Hi!
 
             {content}
 
             Regards,
-            TERA Arise Team
+            {title} Team
             """.ReplaceLineEndings("\r\n"), // Emails use CRLF.
         };
 
