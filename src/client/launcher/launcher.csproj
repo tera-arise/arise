@@ -141,7 +141,7 @@
 
     <!-- TODO: Specify inputs/outputs to make this target incremental. -->
     <Target Name="_PackClientExecutable"
-            BeforeTargets="BeforeResGen">
+            BeforeTargets="AddAvaloniaResources">
         <PropertyGroup>
             <_ClientPatchedPath>$(_ClientDirectory)TERA.arise.exe</_ClientPatchedPath>
         </PropertyGroup>
@@ -158,10 +158,8 @@
               StandardErrorImportance="low" />
 
         <ItemGroup>
-            <EmbeddedResource Include="$(_ClientPatchedPath)"
-                              LogicalName="TERA.arise.exe"
-                              Type="Non-Resx"
-                              WithCulture="false" />
+            <AvaloniaResource Include="$(_ClientPatchedPath)"
+                              Link="assets/TERA.arise.exe" />
         </ItemGroup>
     </Target>
 </Project>
