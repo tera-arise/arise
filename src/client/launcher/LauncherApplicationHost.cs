@@ -4,7 +4,7 @@ namespace Arise.Client.Launcher;
 
 [RegisterSingleton]
 [SuppressMessage("", "CA1812")]
-internal sealed class LauncherApplicationHost : BackgroundService
+internal sealed class LauncherApplicationHost : IHostedService
 {
     private readonly IServiceProvider _services;
 
@@ -17,28 +17,37 @@ internal sealed class LauncherApplicationHost : BackgroundService
         _hostLifetime = hostLifetime;
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    Task IHostedService.StartAsync(CancellationToken cancellationToken)
     {
-        // StartWithClassicDesktopLifetime will block until the Avalonia application exits, so avoid blocking the host.
-        await Task.Yield();
+        _ = Task.Run(
+            () =>
+            {
+                Logger.Sink = _services.GetRequiredService<AvaloniaLogSink>();
 
-        Logger.Sink = _services.GetRequiredService<AvaloniaLogSink>();
+                try
+                {
+                    _ = AppBuilder
+                        .Configure(() => ActivatorUtilities.CreateInstance<LauncherApplication>(_services))
+                        .UseWin32()
+                        .UseSkia()
+                        .UseReactiveUI()
+                        .WithInterFont()
+                        .StartWithClassicDesktopLifetime([], ShutdownMode.OnMainWindowClose);
+                }
+                finally
+                {
+                    Logger.Sink = null;
+                }
 
-        try
-        {
-            _ = AppBuilder
-                .Configure(() => ActivatorUtilities.CreateInstance<LauncherApplication>(_services))
-                .UseWin32()
-                .UseSkia()
-                .UseReactiveUI()
-                .WithInterFont()
-                .StartWithClassicDesktopLifetime([], ShutdownMode.OnMainWindowClose);
-        }
-        finally
-        {
-            Logger.Sink = null;
-        }
+                _hostLifetime.StopApplication();
+            },
+            cancellationToken);
 
-        _hostLifetime.StopApplication();
+        return Task.CompletedTask;
+    }
+
+    Task IHostedService.StopAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
     }
 }

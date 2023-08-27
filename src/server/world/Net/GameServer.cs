@@ -5,7 +5,7 @@ namespace Arise.Server.Net;
 
 [RegisterSingleton]
 [SuppressMessage("", "CA1812")]
-internal sealed partial class GameServer : BackgroundService
+internal sealed partial class GameServer : IHostedService
 {
     private static partial class Log
     {
@@ -44,6 +44,8 @@ internal sealed partial class GameServer : BackgroundService
             ILogger<GameServer> logger, IPEndPoint endPoint, AriseGamePacketCode code, int length);
     }
 
+    private readonly Queue<GameConnectionListener> _listeners = new();
+
     private readonly IOptions<WorldOptions> _options;
 
     private readonly ILogger<GameServer> _logger;
@@ -68,7 +70,7 @@ internal sealed partial class GameServer : BackgroundService
         _sessionDispatcher = sessionDispatcher;
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    async Task IHostedService.StartAsync(CancellationToken cancellationToken)
     {
         async ValueTask<string> GetManifestResourceAsync(string name)
         {
@@ -76,7 +78,7 @@ internal sealed partial class GameServer : BackgroundService
 
             var buffer = GC.AllocateUninitializedArray<byte>((int)stream.Length);
 
-            await stream.ReadExactlyAsync(buffer, stoppingToken);
+            await stream.ReadExactlyAsync(buffer, cancellationToken);
 
             return Encoding.UTF8.GetString(buffer);
         }
@@ -87,8 +89,6 @@ internal sealed partial class GameServer : BackgroundService
         using var caCert = X509Certificate2.CreateFromPem(await GetManifestResourceAsync("ca.pem"));
         using var serverCert = X509Certificate2.CreateFromPem(serverPem, serverKey);
 
-        var listeners = new List<GameConnectionListener>();
-
         foreach (var ep in _options.Value.Endpoints)
         {
             var listener = await GameConnectionListener.CreateAsync(
@@ -97,7 +97,7 @@ internal sealed partial class GameServer : BackgroundService
                 serverCert,
                 _moduleGenerator.GetRandomModulePair,
                 _objectPoolProvider,
-                stoppingToken);
+                cancellationToken);
 
             listener.ConnectionEstablished += conn =>
             {
@@ -143,28 +143,24 @@ internal sealed partial class GameServer : BackgroundService
             listener.TeraPacketReceived += HandleTypedPacket;
             listener.ArisePacketReceived += HandleTypedPacket;
 
-            listeners.Add(listener);
+            _listeners.Enqueue(listener);
         }
 
         // Loading the data center and zone geometry can allocate a lot of temporary memory, so force an aggressive
         // cleanup before allowing clients to connect.
         GC.Collect(GC.MaxGeneration, GCCollectionMode.Aggressive);
 
-        foreach (var listener in listeners)
+        foreach (var listener in _listeners)
         {
             listener.Start();
 
             Log.StartedListening(_logger, listener.EndPoint);
         }
+    }
 
-        try
-        {
-            await Task.Delay(Timeout.InfiniteTimeSpan, stoppingToken);
-        }
-        finally
-        {
-            foreach (var listener in listeners)
-                await listener.DisposeAsync();
-        }
+    async Task IHostedService.StopAsync(CancellationToken cancellationToken)
+    {
+        foreach (var listener in _listeners)
+            await listener.DisposeAsync();
     }
 }
