@@ -1,3 +1,5 @@
+using Arise.Client.Launcher.Media;
+
 namespace Arise.Client.Launcher.Controllers;
 
 [RegisterTransient<MainController>]
@@ -21,8 +23,18 @@ internal sealed class MainController : LauncherController
         },
         isThreadSafe: false);
 
-    public MainController(IServiceProvider services)
+    private readonly MusicPlayer _musicPlayer;
+
+    public MainController(IServiceProvider services, MusicPlayer musicPlayer)
         : base(services)
     {
+        _musicPlayer = musicPlayer;
+
+        this.WhenActivated((CompositeDisposable disposable) =>
+        {
+            _musicPlayer.PlayRandom();
+
+            disposable.Add(Disposable.Create(() => _musicPlayer.Stop()));
+        });
     }
 }

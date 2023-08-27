@@ -13,6 +13,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Using Include="Arise.IO" />
         <Using Include="Avalonia" />
         <Using Include="Avalonia.Controls" />
         <Using Include="Avalonia.Controls.ApplicationLifetimes" />
@@ -29,10 +30,14 @@
         <Using Include="Microsoft.Extensions.Hosting" />
         <Using Include="Microsoft.Extensions.Logging" />
         <Using Include="Microsoft.Extensions.Options" />
+        <Using Include="NAudio.Extras" />
+        <Using Include="NAudio.Vorbis" />
+        <Using Include="NAudio.Wave" />
         <Using Include="ReactiveUI" />
         <Using Include="Serilog" />
         <Using Include="Serilog.Events" />
         <Using Include="Serilog.Sinks.SystemConsole.Themes" />
+        <Using Include="System.Reactive.Disposables" />
     </ItemGroup>
 
     <ItemGroup>
