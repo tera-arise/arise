@@ -1,0 +1,11 @@
+<Styles xmlns="https://github.com/avaloniaui">
+    <Style Selector="Window">
+        <Setter Property="WindowStartupLocation" Value="CenterScreen" />
+        <Setter Property="Title" Value="TERA Arise" />
+        <Setter Property="Icon" Value="../arise.png" />
+        <Setter Property="CanResize" Value="False" />
+        <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
+        <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="25" />
+        <Setter Property="Padding" Value="25, 50, 25, 25" />
+    </Style>
+</Styles>

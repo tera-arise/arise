@@ -5,5 +5,7 @@
     <Application.Styles>
         <FluentTheme />
         <icons:MaterialIconStyles />
+
+        <StyleInclude Source="Styles/Window.axaml" />
     </Application.Styles>
 </Application>

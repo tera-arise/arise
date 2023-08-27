@@ -3,7 +3,12 @@
         xmlns:controllers="using:Arise.Client.Launcher.Controllers"
         x:Class="Arise.Client.Launcher.Windows.MainWindow"
         x:DataType="controllers:MainController"
-        Title="TERA Arise"
-        Icon="../arise.png">
+        Width="1280"
+        Height="720">
+    <Window.Background>
+        <ImageBrush Source="{Binding Background}"
+                    Stretch="Fill" />
+    </Window.Background>
+
     TODO
 </Window>

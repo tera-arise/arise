@@ -19,6 +19,8 @@
         <Using Include="Avalonia.Controls.Templates" />
         <Using Include="Avalonia.Logging" />
         <Using Include="Avalonia.Markup.Xaml" />
+        <Using Include="Avalonia.Media.Imaging" />
+        <Using Include="Avalonia.Platform" />
         <Using Include="Avalonia.ReactiveUI" />
         <Using Include="Avalonia.Threading" />
         <Using Include="Injectio.Attributes" />
