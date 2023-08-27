@@ -1,6 +1,6 @@
 namespace Arise.Server.Web.Email;
 
-[RegisterTransient]
+[RegisterTransient<EmailSender>]
 internal sealed partial class EmailSender
 {
     private static partial class Log

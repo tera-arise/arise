@@ -3,7 +3,7 @@ using Arise.Server.Net.Sessions;
 
 namespace Arise.Client.Net;
 
-[RegisterSingleton]
+[RegisterSingleton<GameClient>]
 [SuppressMessage("", "CA1812")]
 internal sealed partial class GameClient : IHostedService
 {

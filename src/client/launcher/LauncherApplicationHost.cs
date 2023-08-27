@@ -2,7 +2,7 @@ using Arise.Client.Launcher.Logging;
 
 namespace Arise.Client.Launcher;
 
-[RegisterSingleton]
+[RegisterSingleton<LauncherApplicationHost>]
 [SuppressMessage("", "CA1812")]
 internal sealed class LauncherApplicationHost : IHostedService
 {

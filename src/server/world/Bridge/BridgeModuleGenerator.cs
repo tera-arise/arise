@@ -2,7 +2,7 @@ using dnlib.DotNet;
 
 namespace Arise.Server.Bridge;
 
-[RegisterSingleton]
+[RegisterSingleton<BridgeModuleGenerator>]
 [SuppressMessage("", "CA1001")]
 [SuppressMessage("", "CA1812")]
 internal sealed partial class BridgeModuleGenerator : IHostedService

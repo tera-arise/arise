@@ -1,6 +1,6 @@
 namespace Arise.Server.Data;
 
-[RegisterSingleton]
+[RegisterSingleton<DataGraph>]
 [SuppressMessage("", "CA1812")]
 internal sealed partial class DataGraph : IHostedService
 {

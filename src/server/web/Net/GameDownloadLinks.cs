@@ -1,6 +1,6 @@
 namespace Arise.Server.Web.Net;
 
-[RegisterSingleton]
+[RegisterSingleton<GameDownloadLinks>]
 internal sealed class GameDownloadLinks
 {
     public Uri TeraManifestUri { get; }

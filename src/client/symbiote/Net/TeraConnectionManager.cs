@@ -1,6 +1,6 @@
 namespace Arise.Client.Net;
 
-[RegisterSingleton]
+[RegisterSingleton<TeraConnectionManager>]
 [SuppressMessage("", "CA1001")]
 [SuppressMessage("", "CA1812")]
 internal sealed unsafe partial class TeraConnectionManager : IHostedService
