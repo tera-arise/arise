@@ -12,7 +12,7 @@ internal sealed class MainController : LauncherController
         static () =>
         {
             var candidates = AssetLoader
-                .GetAssets(new($"avares://{ThisAssembly.AssemblyName}/assets"), null)
+                .GetAssets(new($"avares://{ThisAssembly.AssemblyName}"), null)
                 .Where(static uri =>
                     Path.GetFileName(uri.AbsolutePath).StartsWith("background_", StringComparison.Ordinal))
                 .ToArray();

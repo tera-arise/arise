@@ -121,7 +121,7 @@
         <ItemGroup>
             <_MultimediaAsset Include="$(_MultimediaAssetsPath)/**" />
             <AvaloniaResource Include="@(_MultimediaAsset)"
-                              Link="assets/%(RecursiveDir)%(Filename)%(Extension)" />
+                              Link="%(RecursiveDir)%(Filename)%(Extension)" />
         </ItemGroup>
     </Target>
 
@@ -159,7 +159,7 @@
 
         <ItemGroup>
             <AvaloniaResource Include="$(_ClientPatchedPath)"
-                              Link="assets/TERA.arise.exe" />
+                              Link="TERA.arise.exe" />
         </ItemGroup>
     </Target>
 </Project>

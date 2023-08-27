@@ -5,7 +5,7 @@ internal sealed class MusicPlayer : IDisposable
 {
     private static readonly ReadOnlyMemory<ReadOnlyMemory<byte>> _assets =
         AssetLoader
-            .GetAssets(new($"avares://{ThisAssembly.AssemblyName}/assets"), null)
+            .GetAssets(new($"avares://{ThisAssembly.AssemblyName}"), null)
             .Where(static uri => Path.GetFileName(uri.AbsolutePath).StartsWith("music_", StringComparison.Ordinal))
             .Select(static uri =>
             {
