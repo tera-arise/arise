@@ -8,9 +8,9 @@ public unsafe struct IS1ConnectionInfo
     {
         public IS1MemoryObject.VirtualFunctionTable IS1MemoryObject;
 
-        public delegate* unmanaged<IS1ConnectionInfo*, void> method_002;
+        public void* __slot2;
 
-        public delegate* unmanaged<IS1ConnectionInfo*, void> method_003;
+        public void* __slot3;
 
         public delegate* unmanaged<IS1ConnectionInfo*, S1ClientSocket*> CreateSocket;
     }
