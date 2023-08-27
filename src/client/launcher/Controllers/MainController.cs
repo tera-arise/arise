@@ -34,7 +34,7 @@ internal sealed class MainController : LauncherController
         {
             _musicPlayer.PlayRandom();
 
-            disposable.Add(Disposable.Create(() => _musicPlayer.Stop()));
+            disposable.Add(Disposable.Create(_musicPlayer, static player => player.Stop()));
         });
     }
 }
