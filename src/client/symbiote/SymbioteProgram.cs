@@ -1,3 +1,4 @@
+using Arise.Client.Data;
 using Arise.Client.Net;
 using static Windows.Win32.WindowsPInvoke;
 
@@ -44,6 +45,7 @@ public static class SymbioteProgram
                     .AddAriseClientSymbiote()
                     .AddHostedService(static provider => provider.GetRequiredService<TeraConnectionManager>())
                     .AddHostedService(static provider => provider.GetRequiredService<GameClient>())
+                    .AddHostedService(static provider => provider.GetRequiredService<DataCenterLoader>())
                     .AddHostedService(static provider => provider.GetRequiredService<GameApplicationHost>());
             })
             .UseDefaultServiceProvider(static opts =>

@@ -9,10 +9,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Using Include="Arise.Bridge" />
+        <Using Include="Arise.Data" />
         <Using Include="Arise.Net" />
         <Using Include="Arise.Net.Packets" />
         <Using Include="Arise.Net.Packets.Server" />
         <Using Include="Arise.Net.Sessions" />
+        <Using Include="Iced.Intel" />
         <Using Include="Injectio.Attributes" />
         <Using Include="Microsoft.Extensions.Configuration" />
         <Using Include="Microsoft.Extensions.DependencyInjection" />
