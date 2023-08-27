@@ -33,8 +33,7 @@ internal static class GameConnectionAuthentication
             ApplicationProtocols = Protocols,
             CertificateChainPolicy = ConfigureChainPolicy(authorityCertificate, _serverAuth),
             ClientCertificates = [new(clientCertificate)],
-            RemoteCertificateValidationCallback =
-                static (_, cert, _, errs) => ValidateCertificate(cert, errs, "OU=Server, O=TERA Arise"),
+            RemoteCertificateValidationCallback = static (_, cert, _, errs) => errs == SslPolicyErrors.None,
         };
     }
 
@@ -47,8 +46,7 @@ internal static class GameConnectionAuthentication
             CertificateChainPolicy = ConfigureChainPolicy(authorityCertificate, _clientAuth),
             ServerCertificate = serverCertificate,
             ClientCertificateRequired = true,
-            RemoteCertificateValidationCallback =
-                static (_, cert, _, errs) => ValidateCertificate(cert, errs, "OU=Client, O=TERA Arise"),
+            RemoteCertificateValidationCallback = static (_, cert, _, errs) => errs == SslPolicyErrors.None,
         };
     }
 
@@ -77,26 +75,5 @@ internal static class GameConnectionAuthentication
             DisableCertificateDownloads = true,
             RevocationMode = X509RevocationMode.NoCheck,
         };
-    }
-
-    private static bool ValidateCertificate(X509Certificate? certificate, SslPolicyErrors errors, string subject)
-    {
-        var certificate2 = Unsafe.As<X509Certificate2>(certificate);
-
-        return
-            errors == SslPolicyErrors.None &&
-            certificate2 is { Issuer: "OU=Development, O=TERA Arise", Extensions: var exts } &&
-            certificate2.Subject == subject &&
-            exts.Any(static ext => ext is X509KeyUsageExtension
-            {
-                Critical: true,
-                KeyUsages: X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.KeyEncipherment,
-            }) &&
-            exts.Any(static ext => ext is X509BasicConstraintsExtension
-            {
-                Critical: true,
-                CertificateAuthority: false,
-                PathLengthConstraint: 0,
-            });
     }
 }
