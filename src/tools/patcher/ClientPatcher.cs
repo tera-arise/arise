@@ -84,14 +84,8 @@ internal static class ClientPatcher
 
         // The symbiote will hook this function and provide a memory-backed FArchive. Make sure that the unhooked
         // version of the function just causes a crash.
-        await PatchAsync(
-            "S1DataDB::Initialize",
-            0x7ff69bb19f69,
-            static asm =>
-            {
-                asm.ud2();
-                asm.nop(21);
-            });
+        await PatchAsync("S1DataDB::Initialize", 0x7ff69bb19f30, static asm => asm.ud2());
+        await PatchAsync("S1DataDB::Initialize", 0x7ff69bb19f69, static asm => asm.nop(23));
 
         // This one is presumably used to detect private servers. It's a bit sneaky; the server details are
         // (sometimes, randomly) sent in the query string of an otherwise empty HTTP request to a static IP address,
