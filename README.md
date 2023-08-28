@@ -123,6 +123,7 @@ configuration:
     }
   },
   "Web": {
+    "EmailAddress": "system@my-tera.com",
     "SendGridKey": "<SendGrid API key>"
   },
   "World": {
