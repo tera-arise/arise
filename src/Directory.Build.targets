@@ -21,6 +21,23 @@
         </ItemGroup>
     </Target>
 
+    <Target Name="GetGameIcons">
+        <MSBuild Projects="$(AriseVendorProjectPath)"
+                 Targets="GetGameIcons">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="AriseGameIcon" />
+        </MSBuild>
+    </Target>
+
+    <Target Name="_ApplyGameApplicationIcon"
+            DependsOnTargets="GetGameIcons"
+            BeforeTargets="CoreCompile"
+            Condition="'$(OutputType)' != 'Library'">
+        <PropertyGroup>
+            <ApplicationIcon>@(AriseGameIcon->WithMetadataValue('Extension', '.ico'))</ApplicationIcon>
+        </PropertyGroup>
+    </Target>
+
     <Target Name="GetGameRevision">
         <MSBuild Projects="$(AriseVendorProjectPath)"
                  Targets="GetGameRevision">

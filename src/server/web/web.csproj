@@ -49,9 +49,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="../../../arise.ico; ../../../arise.png"
-                 Link="wwwroot/%(Filename)%(Extension)"
-                 CopyToOutputDirectory="PreserveNewest" />
         <Content Update="wwwroot/**"
                  CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
@@ -73,6 +70,16 @@
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
+
+    <Target Name="AddGameIcons"
+            DependsOnTargets="GetGameIcons"
+            BeforeTargets="AssignTargetPaths">
+        <ItemGroup>
+            <Content Include="@(AriseGameIcon)"
+                     Link="wwwroot/arise%(Extension)"
+                     CopyToOutputDirectory="PreserveNewest" />
+        </ItemGroup>
+    </Target>
 
     <Target Name="_AddMultimediaAssets"
             BeforeTargets="AssignTargetPaths">

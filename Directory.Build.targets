@@ -1,8 +1,4 @@
 <Project>
-    <PropertyGroup Condition="'$(OutputType)' != 'Library'">
-        <ApplicationIcon>$(MSBuildThisFileDirectory)arise.ico</ApplicationIcon>
-    </PropertyGroup>
-
     <ItemGroup>
         <Using Include="System.Buffers" />
         <Using Include="System.Buffers.Binary" />

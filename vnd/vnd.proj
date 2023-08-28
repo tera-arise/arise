@@ -46,6 +46,14 @@
         </ItemGroup>
     </Target>
 
+    <Target Name="GetGameIcons"
+            Returns="@(AriseGameIcon)">
+        <ItemGroup>
+            <AriseGameIcon Include="$(MSBuildThisFileDirectory)../arise.ico" />
+            <AriseGameIcon Include="$(MSBuildThisFileDirectory)../arise.png" />
+        </ItemGroup>
+    </Target>
+
     <Target Name="GetGameRevision"
             DependsOnTargets="GetBuildVersion"
             Returns="@(AriseGameRevision)">

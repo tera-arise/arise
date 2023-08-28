@@ -42,11 +42,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <AvaloniaResource Include="../../../arise.png"
-                          Link="arise.png" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="../../shared/gateway/gateway.csproj" />
         <ProjectReference Include="../../tools/patcher/patcher.csproj"
                           Private="false"
@@ -103,6 +98,16 @@
             <AssemblyMetadata Include="Arise.WorldServerUri"
                               Value="$(_WorldServerUri)"
                               Condition="'$(_WorldServerUri)' != ''" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="AddGameIcons"
+            DependsOnTargets="GetGameIcons"
+            BeforeTargets="AssignTargetPaths">
+        <ItemGroup>
+            <AvaloniaResource Include="@(AriseGameIcon)"
+                              Link="arise%(Extension)"
+                              Condition="'%(Extension)' == '.png'" />
         </ItemGroup>
     </Target>
 
