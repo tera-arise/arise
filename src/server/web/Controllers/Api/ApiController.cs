@@ -9,9 +9,6 @@ namespace Arise.Server.Web.Controllers.Api;
 [Route("api/[controller]/[action]")]
 internal abstract class ApiController : ControllerBase
 {
-    [BindProperty]
-    public required CancellationToken CancellationToken { get; init; }
-
     [NonAction]
     public virtual StatusCodeResult Gone()
     {

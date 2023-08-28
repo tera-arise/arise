@@ -14,7 +14,7 @@ internal sealed class AccountsController : ApiController
 
     [BindProperty]
     [FromServices]
-    public required IDocumentStore Store { get; init; }
+    public required IDocumentStore DocumentStore { get; init; }
 
     [BindProperty]
     [FromServices]
@@ -26,7 +26,7 @@ internal sealed class AccountsController : ApiController
 
     [AllowAnonymous]
     [HttpPost]
-    public async ValueTask<IActionResult> CreateAsync(AccountsCreateRequest body)
+    public async ValueTask<IActionResult> CreateAsync(AccountsCreateRequest body, CancellationToken cancellationToken)
     {
         if (User.Identity!.IsAuthenticated)
             return StatusCode(StatusCodes.Status403Forbidden);
@@ -68,13 +68,13 @@ internal sealed class AccountsController : ApiController
             },
         };
 
-        await using (var session = Store.LightweightSession())
+        await using (var session = DocumentStore.LightweightSession())
         {
             session.Insert(account);
 
             try
             {
-                await session.SaveChangesAsync(CancellationToken);
+                await session.SaveChangesAsync(cancellationToken);
             }
             catch (DocumentAlreadyExistsException)
             {
@@ -93,7 +93,7 @@ internal sealed class AccountsController : ApiController
 
             The token will expire on: {end.InUtc().Date.ToString(null, CultureInfo.InvariantCulture)}
             """,
-            CancellationToken);
+            cancellationToken);
 
         return Ok(new AccountsCreateResponse
         {
@@ -102,7 +102,7 @@ internal sealed class AccountsController : ApiController
     }
 
     [HttpPatch]
-    public async ValueTask<IActionResult> SendAsync(AccountDocument account)
+    public async ValueTask<IActionResult> SendAsync(AccountDocument account, CancellationToken cancellationToken)
     {
         var email = account.Email;
 
@@ -119,7 +119,7 @@ internal sealed class AccountsController : ApiController
             Period = new(now, end),
         };
 
-        if (!await UpdateAccountAsync(account))
+        if (!await UpdateAccountAsync(account, cancellationToken))
             return Conflict();
 
         await EmailSender.SendAsync(
@@ -132,13 +132,14 @@ internal sealed class AccountsController : ApiController
 
             The token will expire on: {end.InUtc().Date.ToString(null, CultureInfo.InvariantCulture)}
             """,
-            CancellationToken);
+            cancellationToken);
 
         return NoContent();
     }
 
     [HttpPatch]
-    public async ValueTask<IActionResult> VerifyAsync(AccountDocument account, AccountsVerifyRequest body)
+    public async ValueTask<IActionResult> VerifyAsync(
+        AccountDocument account, AccountsVerifyRequest body, CancellationToken cancellationToken)
     {
         var now = Clock.GetCurrentInstant();
 
@@ -171,7 +172,7 @@ internal sealed class AccountsController : ApiController
 
         try
         {
-            saved = await UpdateAccountAsync(account);
+            saved = await UpdateAccountAsync(account, cancellationToken);
         }
         catch (DocumentAlreadyExistsException)
         {
@@ -184,7 +185,8 @@ internal sealed class AccountsController : ApiController
     }
 
     [HttpPatch]
-    public async ValueTask<IActionResult> UpdateAsync(AccountDocument account, AccountsUpdateRequest body)
+    public async ValueTask<IActionResult> UpdateAsync(
+        AccountDocument account, AccountsUpdateRequest body, CancellationToken cancellationToken)
     {
         var email = account.Email;
 
@@ -208,7 +210,7 @@ internal sealed class AccountsController : ApiController
                 },
             };
 
-            if (!await UpdateAccountAsync(account))
+            if (!await UpdateAccountAsync(account, cancellationToken))
                 return Conflict();
 
             await EmailSender.SendAsync(
@@ -225,7 +227,7 @@ internal sealed class AccountsController : ApiController
 
                 If you did not initiate this request, please change your password immediately.
                 """,
-                CancellationToken);
+                cancellationToken);
         }
 
         if (body.Password is string password)
@@ -240,7 +242,7 @@ internal sealed class AccountsController : ApiController
                 Hash = strategy.CalculateHash(password, salt),
             };
 
-            if (!await UpdateAccountAsync(account))
+            if (!await UpdateAccountAsync(account, cancellationToken))
                 return Conflict();
 
             await EmailSender.SendAsync(
@@ -251,7 +253,7 @@ internal sealed class AccountsController : ApiController
 
                 If you did not perform this change, please change your password immediately.
                 """,
-                CancellationToken);
+                cancellationToken);
         }
 
         return NoContent();
@@ -259,7 +261,7 @@ internal sealed class AccountsController : ApiController
 
     [AllowAnonymous]
     [HttpPatch]
-    public async ValueTask<IActionResult> RecoverAsync(AccountsRecoverRequest body)
+    public async ValueTask<IActionResult> RecoverAsync(AccountsRecoverRequest body, CancellationToken cancellationToken)
     {
         if (User.Identity!.IsAuthenticated)
             return StatusCode(StatusCodes.Status403Forbidden);
@@ -267,10 +269,10 @@ internal sealed class AccountsController : ApiController
         var normalized = body.Address.Normalize().ToUpperInvariant();
         var account = default(AccountDocument);
 
-        await using (var session = Store.QuerySession())
+        await using (var session = DocumentStore.QuerySession())
             account = await session
                 .Query<AccountDocument>()
-                .SingleOrDefaultAsync(account => account.Email.Address == normalized, CancellationToken);
+                .SingleOrDefaultAsync(account => account.Email.Address == normalized, cancellationToken);
 
         if (account != null)
         {
@@ -292,7 +294,7 @@ internal sealed class AccountsController : ApiController
                 Period = new(now, end),
             };
 
-            if (!await UpdateAccountAsync(account))
+            if (!await UpdateAccountAsync(account, cancellationToken))
                 return Conflict();
 
             // TODO: This should ideally be done in a separate thread to prevent timing-based user enumeration.
@@ -314,7 +316,7 @@ internal sealed class AccountsController : ApiController
 
                 If you did not initiate this request, you can safely ignore this message.
                 """,
-                CancellationToken);
+                cancellationToken);
         }
 
         // https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#password-recovery
@@ -322,7 +324,7 @@ internal sealed class AccountsController : ApiController
     }
 
     [HttpDelete]
-    public async ValueTask<IActionResult> DeleteAsync(AccountDocument account)
+    public async ValueTask<IActionResult> DeleteAsync(AccountDocument account, CancellationToken cancellationToken)
     {
         if (account.Deletion != null)
             return BadRequest();
@@ -342,7 +344,7 @@ internal sealed class AccountsController : ApiController
             },
         };
 
-        if (!await UpdateAccountAsync(account))
+        if (!await UpdateAccountAsync(account, cancellationToken))
             return Conflict();
 
         await EmailSender.SendAsync(
@@ -357,25 +359,25 @@ internal sealed class AccountsController : ApiController
 
             If you did not initiate this request, please change your password immediately.
             """,
-            CancellationToken);
+            cancellationToken);
 
         return NoContent();
     }
 
     [HttpPatch]
-    public async ValueTask<IActionResult> RestoreAsync(AccountDocument account)
+    public async ValueTask<IActionResult> RestoreAsync(AccountDocument account, CancellationToken cancellationToken)
     {
         if (account.Deletion is null or { Verification: not null })
             return BadRequest();
 
         account.Deletion = null;
 
-        return await UpdateAccountAsync(account) ? NoContent() : Conflict();
+        return await UpdateAccountAsync(account, cancellationToken) ? NoContent() : Conflict();
     }
 
     [HttpPatch]
     public async ValueTask<IActionResult> AuthenticateAsync(
-        AccountClaimsPrincipal principal, IHostEnvironment environment)
+        AccountClaimsPrincipal principal, IHostEnvironment environment, CancellationToken cancellationToken)
     {
         var account = principal.Document;
         var now = Clock.GetCurrentInstant();
@@ -432,7 +434,7 @@ internal sealed class AccountsController : ApiController
             Period = new(now, now + Options.Value.AccountSessionKeyTime),
         };
 
-        return await UpdateAccountAsync(account)
+        return await UpdateAccountAsync(account, cancellationToken)
             ? Ok(new AccountsAuthenticateResponse
             {
                 IsVerifying = verifying,
@@ -445,15 +447,15 @@ internal sealed class AccountsController : ApiController
             : Conflict();
     }
 
-    private async ValueTask<bool> UpdateAccountAsync(AccountDocument account)
+    private async ValueTask<bool> UpdateAccountAsync(AccountDocument account, CancellationToken cancellationToken)
     {
-        await using var session = Store.LightweightSession();
+        await using var session = DocumentStore.LightweightSession();
 
         session.UpdateExpectedVersion(account, account.Version);
 
         try
         {
-            await session.SaveChangesAsync(CancellationToken);
+            await session.SaveChangesAsync(cancellationToken);
         }
         catch (ConcurrencyException e)
         {
