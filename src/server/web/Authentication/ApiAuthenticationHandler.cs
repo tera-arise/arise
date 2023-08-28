@@ -63,7 +63,7 @@ internal sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthen
         bool MatchPassword(AccountPassword password)
         {
             return CryptographicOperations.FixedTimeEquals(
-                PasswordStrategy.GetStrategy(password.Kind).CalculateHash(providedPassword, password.Salt),
+                PasswordStrategyProvider.GetStrategy(password.Kind).CalculateHash(providedPassword, password.Salt),
                 password.Hash);
         }
 

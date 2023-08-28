@@ -1,8 +1,8 @@
-using Arise.Server.Web.DataAnnotations;
+using Arise.DataAnnotations;
 
-namespace Arise.Server.Web.Models.Api.Accounts;
+namespace Arise.Gateway;
 
-internal sealed class AccountsCreateRequest
+public sealed class AccountsCreateRequest
 {
     [Email(allowTopLevelDomains: true, allowInternational: true)]
     public required string Address { get; init; }

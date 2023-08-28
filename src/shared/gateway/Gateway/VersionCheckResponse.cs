@@ -1,6 +1,6 @@
-namespace Arise.Server.Web.Models.Api.Version;
+namespace Arise.Gateway;
 
-internal sealed class VersionCheckResponse
+public sealed class VersionCheckResponse
 {
     public required Uri TeraManifestUri { get; init; }
 

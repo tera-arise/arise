@@ -1,8 +1,8 @@
-using Arise.Server.Web.DataAnnotations;
+using Arise.DataAnnotations;
 
-namespace Arise.Server.Web.Models.Api.Accounts;
+namespace Arise.Gateway;
 
-internal sealed class AccountsAuthenticateResponse
+public sealed class AccountsAuthenticateResponse
 {
     public required bool IsVerifying { get; init; }
 

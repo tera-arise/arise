@@ -93,8 +93,8 @@
         </ItemGroup>
     </Target>
 
-    <Target Name="GetWebServerUri"
-            Returns="@(AriseWebServerUri)" />
+    <Target Name="GetGatewayServerUri"
+            Returns="@(AriseGatewayServerUri)" />
 
     <Target Name="GetWorldServerUri"
             Returns="@(AriseWorldServerUri)" />

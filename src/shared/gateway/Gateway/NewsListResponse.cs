@@ -1,6 +1,6 @@
-namespace Arise.Server.Web.Models.Api.News;
+namespace Arise.Gateway;
 
-internal sealed class NewsListResponse
+public sealed class NewsListResponse
 {
     public sealed class NewsListResponseArticle
     {

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>Arise.Gateway</AssemblyName>
+        <RootNamespace>Arise</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="EmailValidation" />
+        <Using Include="NodaTime" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../common/common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="EmailValidation" />
+        <PackageReference Include="NodaTime" />
+    </ItemGroup>
+</Project>

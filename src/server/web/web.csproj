@@ -7,7 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Using Include="Arise.Cryptography" />
         <Using Include="Arise.Diagnostics" />
+        <Using Include="Arise.Gateway" />
         <Using Include="Arise.Reflection" />
         <Using Include="Arise.Server.Storage.Documents" />
         <Using Include="EmailValidation" />
@@ -55,11 +57,11 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="../../shared/gateway/gateway.csproj" />
         <ProjectReference Include="../storage/storage.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="EmailValidation" />
         <PackageReference Include="Injectio"
                           PrivateAssets="all" />
         <PackageReference Include="Markdig" />

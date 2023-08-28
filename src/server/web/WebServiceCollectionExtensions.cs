@@ -2,7 +2,6 @@ using Arise.Server.Web.Authentication;
 using Arise.Server.Web.Controllers;
 using Arise.Server.Web.Email;
 using Arise.Server.Web.ModelBinding;
-using Arise.Server.Web.Models.Api;
 using Arise.Server.Web.News;
 
 namespace Arise.Server.Web;
@@ -27,7 +26,7 @@ public static class WebServiceCollectionExtensions
             {
                 var json = opts.JsonSerializerOptions;
 
-                json.TypeInfoResolver = ApiJsonSerializerContext.Default;
+                json.TypeInfoResolver = GatewayClient.JsonContext;
                 json.WriteIndented = true;
 
                 _ = json.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);

@@ -1,13 +1,13 @@
-using Arise.Server.Web.Cryptography;
+using Arise.Cryptography;
 
-namespace Arise.Server.Web.DataAnnotations;
+namespace Arise.DataAnnotations;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
-internal sealed class PasswordAttribute : ValidationAttribute
+public sealed class PasswordAttribute : ValidationAttribute
 {
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
-        return value == null || PasswordStrategy.IsPasswordValid((string)value)
+        return value == null || PasswordStrategy.IsPasswordValid(Unsafe.As<string>(value))
             ? ValidationResult.Success
             : new ValidationResult(
                 "Password format is invalid.", validationContext?.MemberName is string name ? [name] : null);

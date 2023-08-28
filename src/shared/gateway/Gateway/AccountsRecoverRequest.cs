@@ -1,6 +1,6 @@
-namespace Arise.Server.Web.Models.Api.Accounts;
+namespace Arise.Gateway;
 
-internal sealed class AccountsRecoverRequest
+public sealed class AccountsRecoverRequest
 {
     [Email(allowTopLevelDomains: true, allowInternational: true)]
     public required string Address { get; init; }

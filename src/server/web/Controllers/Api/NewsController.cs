@@ -1,4 +1,3 @@
-using Arise.Server.Web.Models.Api.News;
 using Arise.Server.Web.News;
 
 namespace Arise.Server.Web.Controllers.Api;

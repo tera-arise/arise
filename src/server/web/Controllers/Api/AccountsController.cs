@@ -1,7 +1,6 @@
 using Arise.Server.Web.Authentication;
 using Arise.Server.Web.Cryptography;
 using Arise.Server.Web.Email;
-using Arise.Server.Web.Models.Api.Accounts;
 
 namespace Arise.Server.Web.Controllers.Api;
 
@@ -19,7 +18,7 @@ internal sealed class AccountsController : ApiController
 
     [BindProperty]
     [FromServices]
-    public required EmailSender Sender { get; init; }
+    public required EmailSender EmailSender { get; init; }
 
     [BindProperty]
     [FromServices]
@@ -39,7 +38,7 @@ internal sealed class AccountsController : ApiController
         var now = Clock.GetCurrentInstant();
         var end = now + options.AccountVerificationTime;
 
-        var strategy = PasswordStrategy.GetLatestStrategy();
+        var strategy = PasswordStrategyProvider.GetLatestStrategy();
         var salt = strategy.GenerateSalt();
 
         var key = TokenGenerator.GenerateToken();
@@ -57,7 +56,7 @@ internal sealed class AccountsController : ApiController
             },
             Password = new()
             {
-                Kind = strategy.Kind,
+                Kind = PasswordStrategyProvider.GetKind(strategy),
                 Salt = salt,
                 Hash = strategy.CalculateHash(body.Password, salt),
             },
@@ -84,7 +83,7 @@ internal sealed class AccountsController : ApiController
             }
         }
 
-        await Sender.SendAsync(
+        await EmailSender.SendAsync(
             normalized,
             "Email Address Verification",
             $"""
@@ -123,7 +122,7 @@ internal sealed class AccountsController : ApiController
         if (!await UpdateAccountAsync(account))
             return Conflict();
 
-        await Sender.SendAsync(
+        await EmailSender.SendAsync(
             email.Address,
             "Email Address Verification",
             $"""
@@ -212,7 +211,7 @@ internal sealed class AccountsController : ApiController
             if (!await UpdateAccountAsync(account))
                 return Conflict();
 
-            await Sender.SendAsync(
+            await EmailSender.SendAsync(
                 email.Address,
                 "Email Address Change Verification",
                 $"""
@@ -231,12 +230,12 @@ internal sealed class AccountsController : ApiController
 
         if (body.Password is string password)
         {
-            var strategy = PasswordStrategy.GetLatestStrategy();
+            var strategy = PasswordStrategyProvider.GetLatestStrategy();
             var salt = strategy.GenerateSalt();
 
             account.Password = new()
             {
-                Kind = strategy.Kind,
+                Kind = PasswordStrategyProvider.GetKind(strategy),
                 Salt = salt,
                 Hash = strategy.CalculateHash(password, salt),
             };
@@ -244,7 +243,7 @@ internal sealed class AccountsController : ApiController
             if (!await UpdateAccountAsync(account))
                 return Conflict();
 
-            await Sender.SendAsync(
+            await EmailSender.SendAsync(
                 email.Address,
                 "Password Change",
                 $"""
@@ -275,7 +274,7 @@ internal sealed class AccountsController : ApiController
 
         if (account != null)
         {
-            var strategy = PasswordStrategy.GetLatestStrategy();
+            var strategy = PasswordStrategyProvider.GetLatestStrategy();
             var salt = strategy.GenerateSalt();
             var password = PasswordStrategy.GeneratePassword();
 
@@ -286,7 +285,7 @@ internal sealed class AccountsController : ApiController
             {
                 Password = new()
                 {
-                    Kind = strategy.Kind,
+                    Kind = PasswordStrategyProvider.GetKind(strategy),
                     Salt = salt,
                     Hash = strategy.CalculateHash(password, salt),
                 },
@@ -299,7 +298,7 @@ internal sealed class AccountsController : ApiController
             // TODO: This should ideally be done in a separate thread to prevent timing-based user enumeration.
             //
             // https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html#forgot-password-request
-            await Sender.SendAsync(
+            await EmailSender.SendAsync(
                 normalized,
                 "Password Recovery",
                 $"""
@@ -346,7 +345,7 @@ internal sealed class AccountsController : ApiController
         if (!await UpdateAccountAsync(account))
             return Conflict();
 
-        await Sender.SendAsync(
+        await EmailSender.SendAsync(
             account.Email.Address,
             "Account Deletion Verification",
             $"""

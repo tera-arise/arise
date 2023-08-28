@@ -1,8 +1,4 @@
-using Arise.Server.Web.Models.Api.Accounts;
-using Arise.Server.Web.Models.Api.News;
-using Arise.Server.Web.Models.Api.Version;
-
-namespace Arise.Server.Web.Models.Api;
+namespace Arise.Gateway;
 
 [JsonSerializable(typeof(AccountsAuthenticateResponse))]
 [JsonSerializable(typeof(AccountsCreateRequest))]
@@ -12,7 +8,7 @@ namespace Arise.Server.Web.Models.Api;
 [JsonSerializable(typeof(AccountsVerifyRequest))]
 [JsonSerializable(typeof(NewsListResponse))]
 [JsonSerializable(typeof(VersionCheckResponse))]
-[JsonSourceGenerationOptions(UseStringEnumConverter = true, WriteIndented = true)]
-internal sealed partial class ApiJsonSerializerContext : JsonSerializerContext
+[JsonSourceGenerationOptions(WriteIndented = true)]
+internal sealed partial class GatewayJsonSerializerContext : JsonSerializerContext
 {
 }

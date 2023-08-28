@@ -1,6 +1,6 @@
-namespace Arise.Server.Web.Cryptography;
+namespace Arise.Cryptography;
 
-internal static class TokenGenerator
+public static class TokenGenerator
 {
     [SuppressMessage("", "CA1308")]
     public static string GenerateToken()

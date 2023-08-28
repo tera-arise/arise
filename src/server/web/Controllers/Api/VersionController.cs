@@ -1,4 +1,3 @@
-using Arise.Server.Web.Models.Api.Version;
 using Arise.Server.Web.Net;
 
 namespace Arise.Server.Web.Controllers.Api;

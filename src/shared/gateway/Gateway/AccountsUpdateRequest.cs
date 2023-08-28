@@ -1,8 +1,8 @@
-using Arise.Server.Web.DataAnnotations;
+using Arise.DataAnnotations;
 
-namespace Arise.Server.Web.Models.Api.Accounts;
+namespace Arise.Gateway;
 
-internal sealed class AccountsUpdateRequest
+public sealed class AccountsUpdateRequest
 {
     [Email(allowTopLevelDomains: true, allowInternational: true)]
     public required string? Address { get; init; }
