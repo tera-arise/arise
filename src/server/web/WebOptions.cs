@@ -4,6 +4,12 @@ public sealed class WebOptions : IOptions<WebOptions>
 {
     public int TeraRevision { get; set; } = 387486;
 
+    public string TeraDownloadFormat { get; set; } =
+        "https://github.com/tera-arise/arise-client/releases/r{0}/download/{1}";
+
+    public string AriseDownloadFormat { get; set; } =
+        "https://github.com/tera-arise/arise-release/releases/r{0}/download/{1}";
+
     public string? SendGridKey { get; set; }
 
     public string EmailAddress { get; set; } = "arise@localhost";

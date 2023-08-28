@@ -13,19 +13,23 @@ internal sealed class GameDownloadLinks
 
     public GameDownloadLinks(IOptions<WebOptions> options)
     {
-        static (Uri, Uri) GetUris(string repository, string version, string format)
+        // uri = https://github.com/tera-arise/arise-client/releases/r{0}/download/{1}
+        static Uri CreateUri(string uri, int revision, string path)
         {
-            var uri = $"https://github.com/tera-arise/arise-{repository}/releases/{version}/download/";
-
-            return (new($"{uri}manifest.json"), new($"{uri}{format}"));
+            return new(string.Format(CultureInfo.InvariantCulture, uri, revision, path));
         }
 
-        var teraRevision = options.Value.TeraRevision;
-        var ariseRevision = ThisAssembly.GameRevision;
+        var value = options.Value;
 
-        (TeraManifestUri, TeraDownloadUri) = GetUris(
-            "client", $"r{teraRevision}", $"TERA.EU.{teraRevision}.{{0}}.zip");
-        (AriseManifestUri, AriseDownloadUri) = GetUris(
-            "release", $"v{ariseRevision}", $"TERA.Arise.{ariseRevision}.zip");
+        var teraRevision = value.TeraRevision;
+        var teraFormat = value.TeraDownloadFormat;
+
+        var ariseRevision = ThisAssembly.GameRevision;
+        var ariseFormat = value.AriseDownloadFormat;
+
+        TeraManifestUri = CreateUri(teraFormat, teraRevision, "manifest.json");
+        TeraDownloadUri = CreateUri(teraFormat, teraRevision, $"TERA.EU.{teraRevision}.{{0}}.zip");
+        AriseManifestUri = CreateUri(ariseFormat, ariseRevision, "manifest.json");
+        AriseDownloadUri = CreateUri(ariseFormat, ariseRevision, $"TERA.Arise.{ariseRevision}.zip");
     }
 }
