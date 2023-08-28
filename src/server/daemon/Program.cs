@@ -46,6 +46,7 @@ internal static class Program
                         .UseSerilog(static (ctx, services, cfg) =>
                             cfg
                                 .MinimumLevel.Is(LogEventLevel.Information)
+                                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
                                 .Enrich.FromLogContext()
                                 .ReadFrom.Configuration(ctx.Configuration)
                                 .ReadFrom.Services(services))
