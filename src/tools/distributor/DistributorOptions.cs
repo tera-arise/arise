@@ -8,6 +8,12 @@ internal sealed class DistributorOptions
     [Value(1, HelpText = "GitHub personal access token.")]
     public required string Token { get; init; }
 
+    [Value(2, Default = "tera-arise", HelpText = "GitHub repository owner.")]
+    public required string Owner { get; init; }
+
+    [Value(3, Default = "arise-client", HelpText = "GitHub repository name.")]
+    public required string Repository { get; init; }
+
     [Option('r', "revision", Default = 387486, HelpText = "TERA client revision.")]
     public required int Revision { get; init; }
 

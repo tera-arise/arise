@@ -30,7 +30,7 @@ internal static class ClientDistributor
 
         await Terminal.OutLineAsync($"Creating release {releaseName}...");
 
-        var repository = await repositoryApi.Get("tera-arise", "arise-client");
+        var repository = await repositoryApi.Get(options.Owner, options.Repository);
         var root = options.Directory;
 
         Release release;
