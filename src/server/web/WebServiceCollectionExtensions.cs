@@ -55,6 +55,7 @@ public static class WebServiceCollectionExtensions
                 opts.LowercaseQueryStrings = true;
             })
             .AddAriseServerWeb()
-            .AddHostedService(static provider => provider.GetRequiredService<NewsArticleProvider>());
+            .AddHostedService(static provider => provider.GetRequiredService<NewsArticleProvider>())
+            .AddHostedService(static provider => provider.GetRequiredService<EmailSender>());
     }
 }

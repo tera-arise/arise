@@ -83,7 +83,7 @@ internal sealed class AccountsController : ApiController
             }
         }
 
-        await EmailSender.SendAsync(
+        EmailSender.EnqueueEmail(
             normalized,
             "Email Address Verification",
             $"""
@@ -92,8 +92,7 @@ internal sealed class AccountsController : ApiController
             To verify your email address, use this token in the launcher: {token}
 
             The token will expire on: {end.InUtc().Date.ToString(null, CultureInfo.InvariantCulture)}
-            """,
-            cancellationToken);
+            """);
 
         return Ok(new AccountsCreateResponse
         {
@@ -122,7 +121,7 @@ internal sealed class AccountsController : ApiController
         if (!await UpdateAccountAsync(account, cancellationToken))
             return Conflict();
 
-        await EmailSender.SendAsync(
+        EmailSender.EnqueueEmail(
             email.Address,
             "Email Address Verification",
             $"""
@@ -131,8 +130,7 @@ internal sealed class AccountsController : ApiController
             To verify your email address, use this token in the launcher: {token}
 
             The token will expire on: {end.InUtc().Date.ToString(null, CultureInfo.InvariantCulture)}
-            """,
-            cancellationToken);
+            """);
 
         return NoContent();
     }
@@ -213,7 +211,7 @@ internal sealed class AccountsController : ApiController
             if (!await UpdateAccountAsync(account, cancellationToken))
                 return Conflict();
 
-            await EmailSender.SendAsync(
+            EmailSender.EnqueueEmail(
                 email.Address,
                 "Email Address Change Verification",
                 $"""
@@ -226,8 +224,7 @@ internal sealed class AccountsController : ApiController
                 The token will expire on: {end.InUtc().Date.ToString(null, CultureInfo.InvariantCulture)}
 
                 If you did not initiate this request, please change your password immediately.
-                """,
-                cancellationToken);
+                """);
         }
 
         if (body.Password is string password)
@@ -245,15 +242,14 @@ internal sealed class AccountsController : ApiController
             if (!await UpdateAccountAsync(account, cancellationToken))
                 return Conflict();
 
-            await EmailSender.SendAsync(
+            EmailSender.EnqueueEmail(
                 email.Address,
                 "Password Change",
                 $"""
                 A password change was recently performed for your {ThisAssembly.GameTitle} account.
 
                 If you did not perform this change, please change your password immediately.
-                """,
-                cancellationToken);
+                """);
         }
 
         return NoContent();
@@ -297,10 +293,7 @@ internal sealed class AccountsController : ApiController
             if (!await UpdateAccountAsync(account, cancellationToken))
                 return Conflict();
 
-            // TODO: This should ideally be done in a separate thread to prevent timing-based user enumeration.
-            //
-            // https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html#forgot-password-request
-            await EmailSender.SendAsync(
+            EmailSender.EnqueueEmail(
                 normalized,
                 "Password Recovery",
                 $"""
@@ -315,8 +308,7 @@ internal sealed class AccountsController : ApiController
                 If you log in with your normal password, the temporary password will be removed from your account.
 
                 If you did not initiate this request, you can safely ignore this message.
-                """,
-                cancellationToken);
+                """);
         }
 
         // https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#password-recovery
@@ -347,7 +339,7 @@ internal sealed class AccountsController : ApiController
         if (!await UpdateAccountAsync(account, cancellationToken))
             return Conflict();
 
-        await EmailSender.SendAsync(
+        EmailSender.EnqueueEmail(
             account.Email.Address,
             "Account Deletion Verification",
             $"""
@@ -358,8 +350,7 @@ internal sealed class AccountsController : ApiController
             The token will expire on: {end.InUtc().Date.ToString(null, CultureInfo.InvariantCulture)}
 
             If you did not initiate this request, please change your password immediately.
-            """,
-            cancellationToken);
+            """);
 
         return NoContent();
     }

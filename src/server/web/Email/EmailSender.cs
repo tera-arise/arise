@@ -1,71 +1,119 @@
 namespace Arise.Server.Web.Email;
 
-[RegisterTransient<EmailSender>]
-internal sealed partial class EmailSender
+[RegisterSingleton<EmailSender>]
+[SuppressMessage("", "CA1001")]
+internal sealed partial class EmailSender : IHostedService
 {
     private static partial class Log
     {
         [LoggerMessage(0, LogLevel.Information, "Sent email {Subject} to {Receiver} in {ElapsedMs:0.0000} ms")]
         public static partial void SentEmail(
             ILogger<EmailSender> logger, string receiver, string subject, double elapsedMs);
+
+        [LoggerMessage(1, LogLevel.Information, "Email {Subject} to {Receiver} was dropped")]
+        public static partial void EmailDropped(
+            ILogger<EmailSender> logger, Exception? exception, string receiver, string subject);
     }
+
+    private readonly CancellationTokenSource _cts = new();
+
+    private readonly TaskCompletionSource _sendDone = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+    private readonly Channel<(string Receiver, string Subject, string Content)> _sendQueue =
+        Channel.CreateUnbounded<(string Receiver, string Subject, string Content)>(new()
+        {
+            SingleReader = true,
+        });
+
+    private readonly IServiceScopeFactory _scopeFactory;
 
     private readonly IOptionsMonitor<WebOptions> _options;
 
     private readonly ILogger<EmailSender> _logger;
 
-    private readonly ISendGridClient _client;
-
-    public EmailSender(IOptionsMonitor<WebOptions> options, ILogger<EmailSender> logger, ISendGridClient client)
+    public EmailSender(
+        IServiceScopeFactory scopeFactory, IOptionsMonitor<WebOptions> options, ILogger<EmailSender> logger)
     {
+        _scopeFactory = scopeFactory;
         _options = options;
         _logger = logger;
-        _client = client;
     }
 
-    public async ValueTask SendAsync(
-        string receiver, string subject, string content, CancellationToken cancellationToken)
+    public void EnqueueEmail(string receiver, string subject, string content)
     {
-        var stopwatch = SlimStopwatch.Create();
+        _ = _sendQueue.Writer.TryWrite((receiver, subject, content));
+    }
 
-        var title = ThisAssembly.GameTitle;
-        var message = new SendGridMessage
-        {
-            From = new(_options.CurrentValue.EmailAddress, title),
-            Subject = $"{subject} | {title}",
-            PlainTextContent = $"""
-            Hi!
+    Task IHostedService.StartAsync(CancellationToken cancellationToken)
+    {
+        var ct = _cts.Token;
 
-            {content}
+        _ = Task.Run(() => SendEmailsAsync(ct), ct);
 
-            Regards,
-            {title} Team
-            """.ReplaceLineEndings("\r\n"), // Emails use CRLF.
-        };
+        return Task.CompletedTask;
+    }
 
-        message.AddTo(receiver);
+    async Task IHostedService.StopAsync(CancellationToken cancellationToken)
+    {
+        // Signal the send task to shut down.
+        await _cts.CancelAsync();
 
+        // Note that the send task is not expected to encounter any exceptions.
+        await _sendDone.Task;
+
+        // The task is done; safe to dispose this now.
+        _cts.Dispose();
+    }
+
+    private async Task SendEmailsAsync(CancellationToken cancellationToken)
+    {
         try
         {
-            _ = await _client.SendEmailAsync(message, cancellationToken);
-        }
-        catch (HttpRequestException e)
-        {
-            throw new EmailException("A low-level connection error occurred.", e);
-        }
-        catch (TaskCanceledException e)
-        {
-            throw new EmailException("A connection timeout occurred.", e);
-        }
-        catch (RequestErrorException e)
-        {
-            throw new EmailException("A SendGrid request error occurred.", e);
-        }
-        catch (SendGridInternalException e)
-        {
-            throw new EmailException("An internal SendGrid error occurred.", e);
-        }
+            await foreach (var (receiver, subject, content) in _sendQueue.Reader.ReadAllAsync(cancellationToken))
+            {
+                var stopwatch = SlimStopwatch.Create();
 
-        Log.SentEmail(_logger, receiver, subject, stopwatch.Elapsed.TotalMilliseconds);
+                using var scope = _scopeFactory.CreateAsyncScope();
+
+                var client = scope.ServiceProvider.GetRequiredService<ISendGridClient>();
+                var message = new SendGridMessage
+                {
+                    From = new(_options.CurrentValue.EmailAddress, ThisAssembly.GameTitle),
+                    Subject = $"{subject} | {ThisAssembly.GameTitle}",
+                    PlainTextContent = $"""
+                    Hi!
+
+                    {content}
+
+                    Regards,
+                    {ThisAssembly.GameTitle} Team
+                    """.ReplaceLineEndings("\r\n"), // Emails use CRLF.
+                };
+
+                message.AddTo(receiver);
+
+                try
+                {
+                    _ = await client.SendEmailAsync(message, cancellationToken);
+                }
+                catch (Exception e) when (
+                    e is HttpRequestException or TimeoutException or RequestErrorException or SendGridInternalException)
+                {
+                    Log.EmailDropped(_logger, e, receiver, subject);
+
+                    continue;
+                }
+
+                Log.SentEmail(_logger, receiver, subject, stopwatch.Elapsed.TotalMilliseconds);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // StopAsync was called.
+        }
+        finally
+        {
+            _sendDone.SetResult();
+        }
     }
 }
