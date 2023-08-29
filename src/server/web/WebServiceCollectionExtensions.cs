@@ -3,6 +3,7 @@ using Arise.Server.Web.Controllers;
 using Arise.Server.Web.Email;
 using Arise.Server.Web.ModelBinding;
 using Arise.Server.Web.News;
+using Arise.Server.Web.RateLimiting;
 
 namespace Arise.Server.Web;
 
@@ -49,6 +50,12 @@ public static class WebServiceCollectionExtensions
             .AddResponseCompression(static opts => opts.EnableForHttps = true)
             .Configure<BrotliCompressionProviderOptions>(static opts => opts.Level = CompressionLevel.SmallestSize)
             .Configure<GzipCompressionProviderOptions>(static opts => opts.Level = CompressionLevel.SmallestSize)
+            .AddRateLimiter(static opts =>
+            {
+                opts.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+                _ = opts.AddPolicy<IPAddress, ApiRateLimiterPolicy>("Api");
+            })
             .AddRouting(static opts =>
             {
                 opts.LowercaseUrls = true;

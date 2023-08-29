@@ -48,6 +48,7 @@ public static class WebHostBuilderExtensions
                                         .UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}"))
                             .UseStaticFiles()
                             .UseRouting()
+                            .UseRateLimiter()
                             .UseAuthentication()
                             .UseAuthorization()
                             .UseEndpoints(static eps => eps.MapDefaultControllerRoute());

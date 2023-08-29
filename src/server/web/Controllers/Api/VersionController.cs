@@ -5,6 +5,7 @@ namespace Arise.Server.Web.Controllers.Api;
 internal sealed class VersionController : ApiController
 {
     [AllowAnonymous]
+    [DisableRateLimiting]
     [HttpGet]
     public IActionResult Check(GameDownloadLinks provider)
     {

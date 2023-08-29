@@ -366,6 +366,7 @@ internal sealed class AccountsController : ApiController
         return await UpdateAccountAsync(account, cancellationToken) ? NoContent() : Conflict();
     }
 
+    [DisableRateLimiting]
     [HttpPatch]
     public async ValueTask<IActionResult> AuthenticateAsync(
         AccountClaimsPrincipal principal, IHostEnvironment environment, CancellationToken cancellationToken)
@@ -411,7 +412,7 @@ internal sealed class AccountsController : ApiController
                 account.Ban = null; // Clear expired ban.
         }
 
-        // Accounts that are banned or in the process of being deleted cannot access the world service. We also prevent
+        // Accounts that are banned or in the process of being deleted cannot access the world server. We also prevent
         // unverified accounts from accessing it since the user could have signed up with a wrong email address and
         // might otherwise not notice until they have made significant progress in the game.
         var key = (environment.IsDevelopment() || !verifying) && !deleting && reason == null

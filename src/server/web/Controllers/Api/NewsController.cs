@@ -5,6 +5,7 @@ namespace Arise.Server.Web.Controllers.Api;
 internal sealed class NewsController : ApiController
 {
     [AllowAnonymous]
+    [DisableRateLimiting]
     [HttpGet]
     public IActionResult List(
         IOptions<WebOptions> options, NewsArticleProvider provider, [FromQuery][Range(0, int.MaxValue)] int page)

@@ -33,6 +33,7 @@
         <Using Include="Microsoft.AspNetCore.Mvc.ModelBinding" />
         <Using Include="Microsoft.AspNetCore.Mvc.ModelBinding.Metadata" />
         <Using Include="Microsoft.AspNetCore.Mvc.RazorPages" />
+        <Using Include="Microsoft.AspNetCore.RateLimiting" />
         <Using Include="Microsoft.AspNetCore.ResponseCompression" />
         <Using Include="Microsoft.AspNetCore.Server.Kestrel.Core" />
         <Using Include="Microsoft.AspNetCore.WebUtilities" />
@@ -47,6 +48,7 @@
         <Using Include="SendGrid" />
         <Using Include="SendGrid.Helpers.Errors.Model" />
         <Using Include="SendGrid.Helpers.Mail" />
+        <Using Include="System.Threading.RateLimiting" />
         <Using Include="YamlDotNet.RepresentationModel" />
     </ItemGroup>
 
