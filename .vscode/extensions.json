@@ -8,6 +8,7 @@
     "firefox-devtools.vscode-firefox-debug",
     "github.vscode-github-actions",
     "github.vscode-pull-request-github",
+    "ms-dotnettools.csdevkit",
     "ms-dotnettools.csharp",
     "redhat.vscode-xml",
     "redhat.vscode-yaml",
