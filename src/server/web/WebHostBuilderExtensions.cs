@@ -38,14 +38,14 @@ public static class WebHostBuilderExtensions
 
                         _ = builder
                             .UseForwardedHeaders(fho)
-                            .UseWhen(static ctx => IsApi(ctx), app => app.UseExceptionHandler())
+                            .UseResponseCompression()
+                            .UseWhen(static ctx => IsApi(ctx), static app => app.UseExceptionHandler())
                             .UseWhen(
                                 static ctx => !IsApi(ctx),
                                 static app =>
                                     app
                                         .UseExceptionHandler("/Home/Exception")
                                         .UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}"))
-                            .UseResponseCompression()
                             .UseStaticFiles()
                             .UseRouting()
                             .UseAuthentication()
