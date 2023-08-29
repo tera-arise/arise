@@ -27,10 +27,11 @@ public static class WebServiceCollectionExtensions
             {
                 var json = opts.JsonSerializerOptions;
 
-                json.TypeInfoResolver = GatewayClient.JsonContext;
                 json.WriteIndented = true;
 
                 _ = json.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
+
+                json.TypeInfoResolverChain.Add(GatewayClient.JsonContext);
             })
             .ConfigureApplicationPartManager(
                 static manager => manager.FeatureProviders.Add(InternalControllerFeatureProvider.Instance))
