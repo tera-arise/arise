@@ -15,8 +15,13 @@
         <Using Include="Arise.Server.Storage" />
         <Using Include="Arise.Server.Web" />
         <Using Include="CommandLine" />
+        <Using Include="Discord" />
+        <Using Include="Discord.WebSocket" />
         <Using Include="Serilog" />
+        <Using Include="Serilog.Configuration" />
+        <Using Include="Serilog.Core" />
         <Using Include="Serilog.Events" />
+        <Using Include="Serilog.Settings.Configuration" />
     </ItemGroup>
 
     <ItemGroup>
@@ -34,6 +39,7 @@
 
     <ItemGroup>
         <PackageReference Include="CommandLineParser" />
+        <PackageReference Include="Discord.Net" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" />
         <PackageReference Include="Serilog.AspNetCore" />
         <PackageReference Include="Serilog.Sinks.Async" />

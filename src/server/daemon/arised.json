@@ -1,5 +1,8 @@
 {
   "Serilog": {
+    "Using": [
+      "arised"
+    ],
     "WriteTo": {
       "Async": {
         "Name": "Async",
@@ -9,7 +12,6 @@
               "Name": "Console",
               "Args": {
                 "outputTemplate": "[{Timestamp:HH:mm:ss}][{Level:w3}][{SourceContext}] {Message:lj}{NewLine}{Exception}",
-                "formatProvider": "System.Globalization.CultureInfo::InvariantCulture",
                 "standardErrorFromLevel": "Warning",
                 "theme": "Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme::Code, Serilog.Sinks.Console"
               }

@@ -61,7 +61,13 @@ internal static class Program
                                 .MinimumLevel.Is(LogEventLevel.Information)
                                 .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
                                 .Enrich.FromLogContext()
-                                .ReadFrom.Configuration(ctx.Configuration)
+                                .ReadFrom.Configuration(
+                                    ctx.Configuration,
+                                    new ConfigurationReaderOptions
+                                    {
+                                        AllowInternalTypes = true,
+                                        AllowInternalMethods = true,
+                                    })
                                 .ReadFrom.Services(services));
 
                     if (flags.HasFlag(DaemonServices.Web))
