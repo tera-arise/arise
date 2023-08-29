@@ -22,6 +22,8 @@
 which was released a couple of months prior to the game's official shutdown on
 June 30, 2022.
 
+This project is still in heavy development.
+
 ## Philosophy
 
 Unlike typical server emulation projects, TERA Arise is not trying to replicate
@@ -42,13 +44,20 @@ Building and running TERA Arise requires the following:
 * .NET SDK 8.0.0 Preview 7
 * PostgreSQL 14.6+
 
+Development will typically require one of the following editors:
+
+* Visual Studio 2022 Preview 17.8.0+
+* Visual Studio Code 1.81.1+
+* JetBrains Rider 2023.2+
+* JetBrains Fleet 1.22+
+
 Simply run `./cake` (a Bash script) to build client artifacts for Windows (x64)
 and server artifacts for the current platform (Windows or Linux, x64 or Arm64).
 This will use the `Debug` configuration by default, which is suitable for
 development and debugging. Pass `-c Release` instead to use that configuration,
 resulting in an optimized build.
 
-Note that `Debug` and `Release` configurations are independent of whether the
+Note that `Debug` and `Release` configurations are orthogonal to whether the
 resulting artifacts are suitable for deployment; see the
 [vendoring instructions](#vendoring).
 
@@ -80,7 +89,7 @@ CREATE SCHEMA production AUTHORIZATION arise;
 CREATE SCHEMA staging AUTHORIZATION arise;
 ```
 
-(The latter two are only required for release deployments.)
+(The latter two are only required for non-development deployments.)
 
 With this setup, and assuming you have PostgreSQL listening locally, you should
 now be able to successfully do `dotnet run --project src/server/daemon`.
