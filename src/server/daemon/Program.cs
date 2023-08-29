@@ -41,13 +41,6 @@ internal static class Program
                                 .AddJsonFile(
                                     $"{ThisAssembly.AssemblyName}." +
                                     $"{ctx.HostingEnvironment.EnvironmentName.ToLowerInvariant()}.json"))
-                        .UseSerilog(static (ctx, services, cfg) =>
-                            cfg
-                                .MinimumLevel.Is(LogEventLevel.Information)
-                                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
-                                .Enrich.FromLogContext()
-                                .ReadFrom.Configuration(ctx.Configuration)
-                                .ReadFrom.Services(services))
                         .ConfigureServices(services =>
                         {
                             _ = services.AddStorageServices();
@@ -62,7 +55,14 @@ internal static class Program
                         {
                             opts.ValidateOnBuild = true;
                             opts.ValidateScopes = true;
-                        });
+                        })
+                        .UseSerilog(static (ctx, services, cfg) =>
+                            cfg
+                                .MinimumLevel.Is(LogEventLevel.Information)
+                                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+                                .Enrich.FromLogContext()
+                                .ReadFrom.Configuration(ctx.Configuration)
+                                .ReadFrom.Services(services));
 
                     if (flags.HasFlag(DaemonServices.Web))
                         _ = builder.ConfigureWebServices(static builder => builder.UseSerilogRequestLogging());

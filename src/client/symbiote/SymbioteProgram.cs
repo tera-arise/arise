@@ -14,24 +14,7 @@ public static class SymbioteProgram
             .CreateBootstrapLogger();
 
         await new HostBuilder()
-            .ConfigureHostConfiguration(builder => builder.AddCommandLine(args.ToArray()))
             .ConfigureAppConfiguration(builder => builder.AddCommandLine(args.ToArray()))
-            .UseSerilog(static (ctx, services, cfg) =>
-            {
-                if (ctx.Configuration["Console"] is { } str && bool.Parse(str))
-                    _ = AllocConsole();
-
-                _ = cfg
-                    .MinimumLevel.Is(LogEventLevel.Information)
-                    .Enrich.FromLogContext()
-                    .WriteTo.Console(
-                        outputTemplate:
-                            "[{Timestamp:HH:mm:ss}][{Level:w3}][{SourceContext}] {Message:lj}{NewLine}{Exception}",
-                        formatProvider: CultureInfo.InvariantCulture,
-                        standardErrorFromLevel: LogEventLevel.Warning,
-                        theme: AnsiConsoleTheme.Code)
-                    .ReadFrom.Services(services);
-            })
             .ConfigureServices(services =>
             {
                 services.TryAddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
@@ -52,6 +35,22 @@ public static class SymbioteProgram
             {
                 opts.ValidateOnBuild = true;
                 opts.ValidateScopes = true;
+            })
+            .UseSerilog(static (ctx, services, cfg) =>
+            {
+                if (services.GetRequiredService<IOptions<SymbioteOptions>>().Value.Console)
+                    _ = AllocConsole();
+
+                _ = cfg
+                    .MinimumLevel.Is(LogEventLevel.Information)
+                    .Enrich.FromLogContext()
+                    .WriteTo.Console(
+                        outputTemplate:
+                            "[{Timestamp:HH:mm:ss}][{Level:w3}][{SourceContext}] {Message:lj}{NewLine}{Exception}",
+                        formatProvider: CultureInfo.InvariantCulture,
+                        standardErrorFromLevel: LogEventLevel.Warning,
+                        theme: AnsiConsoleTheme.Code)
+                    .ReadFrom.Services(services);
             })
             .RunConsoleAsync();
 

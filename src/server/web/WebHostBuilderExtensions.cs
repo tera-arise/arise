@@ -16,17 +16,14 @@ public static class WebHostBuilderExtensions
                     })
                     .Configure((ctx, builder) =>
                     {
+                        configure(builder);
+
                         static bool IsApi(HttpContext context)
                         {
                             return context.Request.Path.StartsWithSegments("/Api", StringComparison.OrdinalIgnoreCase);
                         }
 
-                        configure(builder);
-
-                        var options = new WebOptions();
-
-                        ctx.Configuration.Bind("Web", options);
-
+                        var options = builder.ApplicationServices.GetRequiredService<IOptions<WebOptions>>().Value;
                         var fho = new ForwardedHeadersOptions
                         {
                             ForwardedForHeaderName = options.ForwardedForHeader,

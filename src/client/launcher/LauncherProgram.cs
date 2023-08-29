@@ -17,6 +17,18 @@ public static class LauncherProgram
 
         await new HostBuilder()
             .ConfigureAppConfiguration(builder => builder.AddCommandLine(args.ToArray()))
+            .UseDefaultServiceProvider(static opts =>
+            {
+                opts.ValidateOnBuild = true;
+                opts.ValidateScopes = true;
+            })
+            .ConfigureServices(services =>
+                services
+                    .AddOptions<LauncherOptions>()
+                    .BindConfiguration("Launcher")
+                    .Services
+                    .AddAriseClientLauncher()
+                    .AddHostedService(static provider => provider.GetRequiredService<LauncherApplicationHost>()))
             .UseSerilog(static (_, services, cfg) =>
                 cfg
                     .MinimumLevel.Is(Serilog.Events.LogEventLevel.Information)
@@ -28,18 +40,6 @@ public static class LauncherProgram
                         standardErrorFromLevel: Serilog.Events.LogEventLevel.Warning,
                         theme: AnsiConsoleTheme.Code)
                     .ReadFrom.Services(services))
-            .ConfigureServices(services =>
-                services
-                    .AddOptions<LauncherOptions>()
-                    .BindConfiguration("Launcher")
-                    .Services
-                    .AddAriseClientLauncher()
-                    .AddHostedService(static provider => provider.GetRequiredService<LauncherApplicationHost>()))
-            .UseDefaultServiceProvider(static opts =>
-            {
-                opts.ValidateOnBuild = true;
-                opts.ValidateScopes = true;
-            })
             .RunConsoleAsync();
 
         return 0;
