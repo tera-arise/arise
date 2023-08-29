@@ -12,7 +12,7 @@ public static class WebHostBuilderExtensions
                         opts.ConfigureEndpointDefaults(
                             static opts => opts.Protocols = HttpProtocols.Http1AndHttp2AndHttp3);
 
-                        _ = opts.Configure(ctx.Configuration.GetSection("Kestrel"), reloadOnChange: true);
+                        _ = opts.Configure(ctx.Configuration.GetSection("Kestrel"));
                     })
                     .Configure((ctx, builder) =>
                     {

@@ -27,12 +27,11 @@ internal sealed partial class EmailSender : IHostedService
 
     private readonly IServiceScopeFactory _scopeFactory;
 
-    private readonly IOptionsMonitor<WebOptions> _options;
+    private readonly IOptions<WebOptions> _options;
 
     private readonly ILogger<EmailSender> _logger;
 
-    public EmailSender(
-        IServiceScopeFactory scopeFactory, IOptionsMonitor<WebOptions> options, ILogger<EmailSender> logger)
+    public EmailSender(IServiceScopeFactory scopeFactory, IOptions<WebOptions> options, ILogger<EmailSender> logger)
     {
         _scopeFactory = scopeFactory;
         _options = options;
@@ -78,7 +77,7 @@ internal sealed partial class EmailSender : IHostedService
                 var client = scope.ServiceProvider.GetRequiredService<ISendGridClient>();
                 var message = new SendGridMessage
                 {
-                    From = new(_options.CurrentValue.EmailAddress, ThisAssembly.GameTitle),
+                    From = new(_options.Value.EmailAddress, ThisAssembly.GameTitle),
                     Subject = $"{subject} | {ThisAssembly.GameTitle}",
                     PlainTextContent = $"""
                     Hi!

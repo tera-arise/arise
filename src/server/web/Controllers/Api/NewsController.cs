@@ -7,9 +7,7 @@ internal sealed class NewsController : ApiController
     [AllowAnonymous]
     [HttpGet]
     public IActionResult List(
-        IOptionsSnapshot<WebOptions> options,
-        NewsArticleProvider provider,
-        [FromQuery][Range(0, int.MaxValue)] int page)
+        IOptions<WebOptions> options, NewsArticleProvider provider, [FromQuery][Range(0, int.MaxValue)] int page)
     {
         var size = options.Value.NewsPageSize;
 

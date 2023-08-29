@@ -37,12 +37,10 @@ internal static class Program
                         .UseEnvironment(options.Environment.ToString())
                         .ConfigureAppConfiguration(static (ctx, builder) =>
                             builder
-                                .AddJsonFile($"{ThisAssembly.AssemblyName}.json", optional: false, reloadOnChange: true)
+                                .AddJsonFile($"{ThisAssembly.AssemblyName}.json")
                                 .AddJsonFile(
                                     $"{ThisAssembly.AssemblyName}." +
-                                    $"{ctx.HostingEnvironment.EnvironmentName.ToLowerInvariant()}.json",
-                                    optional: false,
-                                    reloadOnChange: true))
+                                    $"{ctx.HostingEnvironment.EnvironmentName.ToLowerInvariant()}.json"))
                         .UseSerilog(static (ctx, services, cfg) =>
                             cfg
                                 .MinimumLevel.Is(LogEventLevel.Information)

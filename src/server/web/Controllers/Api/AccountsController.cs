@@ -22,7 +22,7 @@ internal sealed class AccountsController : ApiController
 
     [BindProperty]
     [FromServices]
-    public required IOptionsSnapshot<WebOptions> Options { get; init; }
+    public required IOptions<WebOptions> Options { get; init; }
 
     [AllowAnonymous]
     [HttpPost]

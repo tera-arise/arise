@@ -5,11 +5,11 @@ namespace Arise.Server.Web.Controllers;
 
 internal sealed class NewsController : WebController
 {
-    private readonly IOptionsSnapshot<WebOptions> _options;
+    private readonly IOptions<WebOptions> _options;
 
     private readonly NewsArticleProvider _provider;
 
-    public NewsController(IOptionsSnapshot<WebOptions> options, NewsArticleProvider provider)
+    public NewsController(IOptions<WebOptions> options, NewsArticleProvider provider)
     {
         _options = options;
         _provider = provider;
