@@ -23,7 +23,21 @@ public static class WebHostBuilderExtensions
 
                         configure(builder);
 
+                        var options = new WebOptions();
+
+                        ctx.Configuration.Bind("Web", options);
+
+                        var fho = new ForwardedHeadersOptions
+                        {
+                            ForwardedForHeaderName = options.ForwardedForHeader,
+                            ForwardedHeaders = ForwardedHeaders.XForwardedFor,
+                        };
+
+                        foreach (var range in options.ForwardingProxyRanges)
+                            fho.KnownNetworks.Add(Microsoft.AspNetCore.HttpOverrides.IPNetwork.Parse(range));
+
                         _ = builder
+                            .UseForwardedHeaders(fho)
                             .UseWhen(static ctx => IsApi(ctx), app => app.UseExceptionHandler())
                             .UseWhen(
                                 static ctx => !IsApi(ctx),

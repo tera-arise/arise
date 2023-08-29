@@ -27,6 +27,7 @@
         <Using Include="Microsoft.AspNetCore.Hosting" />
         <Using Include="Microsoft.AspNetCore.Html" />
         <Using Include="Microsoft.AspNetCore.Http" />
+        <Using Include="Microsoft.AspNetCore.HttpOverrides" />
         <Using Include="Microsoft.AspNetCore.Mvc" />
         <Using Include="Microsoft.AspNetCore.Mvc.Controllers" />
         <Using Include="Microsoft.AspNetCore.Mvc.ModelBinding" />
@@ -35,6 +36,7 @@
         <Using Include="Microsoft.AspNetCore.ResponseCompression" />
         <Using Include="Microsoft.AspNetCore.Server.Kestrel.Core" />
         <Using Include="Microsoft.AspNetCore.WebUtilities" />
+        <Using Include="Microsoft.Extensions.Configuration" />
         <Using Include="Microsoft.Extensions.DependencyInjection" />
         <Using Include="Microsoft.Extensions.FileProviders" />
         <Using Include="Microsoft.Extensions.Hosting" />

@@ -2,6 +2,10 @@ namespace Arise.Server.Web;
 
 public sealed class WebOptions : IOptions<WebOptions>
 {
+    public string ForwardedForHeader { get; set; } = "X-Forwarded-For";
+
+    public ICollection<string> ForwardingProxyRanges { get; } = new List<string>();
+
     public int TeraRevision { get; set; } = 387486;
 
     public string TeraDownloadFormat { get; set; } =
