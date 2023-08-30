@@ -8,9 +8,6 @@ public static class StorageServiceCollectionExtensions
     public static IServiceCollection AddStorageServices(this IServiceCollection services)
     {
         return services
-            .AddOptions<StorageOptions>()
-            .BindConfiguration("Storage")
-            .Services
             .AddSingleton<IClock>(SystemClock.Instance)
             .AddMarten(static provider =>
             {
@@ -49,6 +46,7 @@ public static class StorageServiceCollectionExtensions
             .UseLightweightSessions()
             .ApplyAllDatabaseChangesOnStartup()
             .AssertDatabaseMatchesConfigurationOnStartup()
-            .Services;
+            .Services
+            .AddAriseServerStorage();
     }
 }

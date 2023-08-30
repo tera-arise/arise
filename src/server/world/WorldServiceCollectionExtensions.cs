@@ -12,9 +12,6 @@ public static class WorldServiceCollectionExtensions
         services.TryAddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
 
         return services
-            .AddOptions<WorldOptions>()
-            .BindConfiguration("World")
-            .Services
             .AddHostedService(static provider => provider.GetRequiredService<DataGraph>())
             .AddHostedService(static provider => provider.GetRequiredService<MapSpatialIndex>())
             .AddHostedService(static provider => provider.GetRequiredService<BridgeModuleGenerator>())

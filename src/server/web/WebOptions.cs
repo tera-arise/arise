@@ -1,6 +1,6 @@
 namespace Arise.Server.Web;
 
-public sealed class WebOptions : IOptions<WebOptions>
+internal sealed class WebOptions : IOptions<WebOptions>
 {
     public string ForwardedForHeader { get; set; } = "X-Forwarded-For";
 
@@ -33,4 +33,12 @@ public sealed class WebOptions : IOptions<WebOptions>
     public int NewsPageSize { get; set; } = 10;
 
     WebOptions IOptions<WebOptions>.Value => this;
+
+    [RegisterServices]
+    public static void Register(IServiceCollection services)
+    {
+        _ = services
+            .AddOptions<WebOptions>()
+            .BindConfiguration("Web");
+    }
 }

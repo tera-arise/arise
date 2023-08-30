@@ -24,9 +24,6 @@ public static class LauncherProgram
             })
             .ConfigureServices(services =>
                 services
-                    .AddOptions<LauncherOptions>()
-                    .BindConfiguration("Launcher")
-                    .Services
                     .AddAriseClientLauncher()
                     .AddHostedService(static provider => provider.GetRequiredService<LauncherApplicationHost>()))
             .UseSerilog(static (_, services, cfg) =>

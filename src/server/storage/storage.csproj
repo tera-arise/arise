@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Using Include="Injectio.Attributes" />
         <Using Include="Marten" />
         <Using Include="Marten.Metadata" />
         <Using Include="Marten.NodaTimePlugin" />
@@ -22,6 +23,8 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Injectio"
+                          PrivateAssets="all" />
         <PackageReference Include="Marten.NodaTime" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
     </ItemGroup>

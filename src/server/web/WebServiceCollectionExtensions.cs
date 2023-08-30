@@ -12,11 +12,6 @@ public static class WebServiceCollectionExtensions
     public static IServiceCollection AddWebServices(this IServiceCollection services)
     {
         return services
-            .AddOptions<WebOptions>()
-            .BindConfiguration("Web")
-            .Services
-            .AddHttpClient<DelegatingSendGridClient>()
-            .Services
             .AddControllersWithViews(static opts =>
             {
                 opts.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());

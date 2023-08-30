@@ -1,6 +1,6 @@
 namespace Arise.Server;
 
-public sealed class WorldOptions : IOptions<WorldOptions>
+internal sealed class WorldOptions : IOptions<WorldOptions>
 {
     public int ConcurrentModules { get; } = 1;
 
@@ -11,4 +11,12 @@ public sealed class WorldOptions : IOptions<WorldOptions>
     public ICollection<string> Endpoints { get; } = new List<string>();
 
     WorldOptions IOptions<WorldOptions>.Value => this;
+
+    [RegisterServices]
+    public static void Register(IServiceCollection services)
+    {
+        _ = services
+            .AddOptions<WorldOptions>()
+            .BindConfiguration("World");
+    }
 }

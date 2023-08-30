@@ -20,9 +20,6 @@ public static class SymbioteProgram
                 services.TryAddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
 
                 _ = services
-                    .AddOptions<SymbioteOptions>()
-                    .BindConfiguration("Symbiote")
-                    .Services
                     .AddSingleton<CodeManager, PageCodeManager>()
                     .AddSingleton(services => ActivatorUtilities.CreateInstance<GameApplicationHost>(services, wake))
                     .AddAriseClientSymbiote()
