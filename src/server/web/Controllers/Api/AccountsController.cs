@@ -10,6 +10,10 @@ internal sealed class AccountsController : ApiController
 
     [BindProperty]
     [FromServices]
+    public required IHostEnvironment HostEnvironment { get; init; }
+
+    [BindProperty]
+    [FromServices]
     public required IClock Clock { get; init; }
 
     [BindProperty]
@@ -60,7 +64,7 @@ internal sealed class AccountsController : ApiController
                 Salt = salt,
                 Hash = strategy.CalculateHash(body.Password, salt),
             },
-            Access = AccountAccess.User,
+            Access = HostEnvironment.IsDevelopment() ? AccountAccess.Operator : AccountAccess.User,
             SessionTicket = new()
             {
                 Value = key,
@@ -191,7 +195,7 @@ internal sealed class AccountsController : ApiController
         if (body.Email is { } address)
         {
             // Unverified accounts cannot change their email address.
-            if (email.Verification != null)
+            if (!HostEnvironment.IsDevelopment() && email.Verification != null)
                 return BadRequest();
 
             var token = TokenGenerator.GenerateToken();
@@ -369,7 +373,7 @@ internal sealed class AccountsController : ApiController
     [DisableRateLimiting]
     [HttpPatch]
     public async ValueTask<IActionResult> AuthenticateAsync(
-        AccountClaimsPrincipal principal, IHostEnvironment environment, CancellationToken cancellationToken)
+        AccountClaimsPrincipal principal, CancellationToken cancellationToken)
     {
         var account = principal.Document;
         var now = Clock.GetCurrentInstant();
@@ -415,7 +419,7 @@ internal sealed class AccountsController : ApiController
         // Accounts that are banned or in the process of being deleted cannot access the world server. We also prevent
         // unverified accounts from accessing it since the user could have signed up with a wrong email address and
         // might otherwise not notice until they have made significant progress in the game.
-        var key = (environment.IsDevelopment() || !verifying) && !deleting && reason == null
+        var key = (HostEnvironment.IsDevelopment() || !verifying) && !deleting && reason == null
             ? TokenGenerator.GenerateToken()
             : null;
 
