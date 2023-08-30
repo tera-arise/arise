@@ -59,6 +59,8 @@
                         Version="8.0.0-preview.7.23375.6" />
         <PackageVersion Include="Microsoft.Extensions.Hosting.Systemd"
                         Version="8.0.0-preview.7.23375.6" />
+        <PackageVersion Include="Microsoft.Extensions.Http"
+                        Version="8.0.0-preview.7.23375.6" />
         <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions"
                         Version="8.0.0-preview.7.23375.6" />
         <PackageVersion Include="Microsoft.Extensions.ObjectPool"
@@ -81,6 +83,8 @@
                         Version="7.1.0" />
         <PackageVersion Include="PeNet"
                         Version="4.0.1" />
+        <PackageVersion Include="Refit"
+                        Version="7.0.0" />
         <PackageVersion Include="SendGrid"
                         Version="9.28.1" />
         <PackageVersion Include="Serilog"

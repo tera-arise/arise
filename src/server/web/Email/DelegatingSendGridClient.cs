@@ -31,7 +31,7 @@ internal sealed class DelegatingSendGridClient : ISendGridClient
     public DelegatingSendGridClient(HttpClient client, IOptions<WebOptions> options)
     {
         // If no API key is available, sending will just be a no-op.
-        if (options.Value.SendGridKey is string key)
+        if (options.Value.SendGridKey is { } key)
             _client = new(
                 client,
                 new()

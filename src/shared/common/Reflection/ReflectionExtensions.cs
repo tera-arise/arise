@@ -9,4 +9,14 @@ public static class ReflectionExtensions
             .Single(attr => attr.Key == key)
             .Value!;
     }
+
+    public static bool TryGetMetadata(this Assembly assembly, string key, [MaybeNullWhen(false)] out string value)
+    {
+        value = assembly
+            .GetCustomAttributes<AssemblyMetadataAttribute>()
+            .SingleOrDefault(attr => attr.Key == key)
+            ?.Value;
+
+        return value != null;
+    }
 }

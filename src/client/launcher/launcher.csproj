@@ -13,6 +13,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Using Include="Arise.Gateway" />
         <Using Include="Arise.IO" />
         <Using Include="Arise.Reflection" />
         <Using Include="Avalonia" />
@@ -35,6 +36,7 @@
         <Using Include="NAudio.Vorbis" />
         <Using Include="NAudio.Wave" />
         <Using Include="ReactiveUI" />
+        <Using Include="Refit" />
         <Using Include="Serilog" />
         <Using Include="Serilog.Events" />
         <Using Include="Serilog.Sinks.SystemConsole.Themes" />
@@ -59,6 +61,7 @@
         <PackageReference Include="Markdown.Avalonia.Tight" />
         <PackageReference Include="Material.Icons.Avalonia" />
         <PackageReference Include="Microsoft.Extensions.Hosting" />
+        <PackageReference Include="Microsoft.Extensions.Http" />
         <PackageReference Include="Microsoft.Windows.CsWin32"
                           PrivateAssets="all" />
         <PackageReference Include="Microsoft.Windows.SDK.Win32Docs"

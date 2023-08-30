@@ -2,7 +2,7 @@
 
 @model HomeErrorModel
 
-@if (Model.Code is int code && ReasonPhrases.GetReasonPhrase(code) is { Length: not 0 } desc)
+@if (Model.Code is { } code && ReasonPhrases.GetReasonPhrase(code) is not "" and var desc)
 {
     // TODO
 }

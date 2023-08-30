@@ -31,7 +31,7 @@ public static class WebServiceCollectionExtensions
 
                 _ = json.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
 
-                json.TypeInfoResolverChain.Add(GatewayClient.JsonContext);
+                json.TypeInfoResolverChain.Add(IGatewayClient.JsonContext);
             })
             .ConfigureApplicationPartManager(
                 static manager => manager.FeatureProviders.Add(InternalControllerFeatureProvider.Instance))

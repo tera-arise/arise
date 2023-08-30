@@ -31,7 +31,7 @@ internal sealed class AccountsController : ApiController
         if (User.Identity!.IsAuthenticated)
             return StatusCode(StatusCodes.Status403Forbidden);
 
-        var normalized = body.Address.Normalize().ToUpperInvariant();
+        var normalized = body.Email.Normalize().ToUpperInvariant();
 
         var token = TokenGenerator.GenerateToken();
         var options = Options.Value;
@@ -188,7 +188,7 @@ internal sealed class AccountsController : ApiController
     {
         var email = account.Email;
 
-        if (body.Address is string address)
+        if (body.Email is { } address)
         {
             // Unverified accounts cannot change their email address.
             if (email.Verification != null)
@@ -227,7 +227,7 @@ internal sealed class AccountsController : ApiController
                 """);
         }
 
-        if (body.Password is string password)
+        if (body.Password is { } password)
         {
             var strategy = PasswordStrategyProvider.GetLatestStrategy();
             var salt = strategy.GenerateSalt();
@@ -248,7 +248,7 @@ internal sealed class AccountsController : ApiController
                 $"""
                 A password change was recently performed for your {ThisAssembly.GameTitle} account.
 
-                If you did not perform this change, please change your password immediately.
+                If you did not perform this change, please change your password through password recovery immediately.
                 """);
         }
 
@@ -262,7 +262,7 @@ internal sealed class AccountsController : ApiController
         if (User.Identity!.IsAuthenticated)
             return StatusCode(StatusCodes.Status403Forbidden);
 
-        var normalized = body.Address.Normalize().ToUpperInvariant();
+        var normalized = body.Email.Normalize().ToUpperInvariant();
         var account = default(AccountDocument);
 
         await using (var session = DocumentStore.QuerySession())
@@ -379,7 +379,7 @@ internal sealed class AccountsController : ApiController
         var verifying = account.Email.Verification != null;
         var changing = false;
 
-        if (account.ChangingEmail is AccountEmailChange change)
+        if (account.ChangingEmail is { } change)
         {
             if (change.Verification.Period.Contains(now))
                 changing = true;
@@ -394,9 +394,9 @@ internal sealed class AccountsController : ApiController
 
         var deleting = false;
 
-        if (account.Deletion is AccountDeletion deletion)
+        if (account.Deletion is { } deletion)
         {
-            if (deletion.Verification is AccountToken verification && !verification.Period.Contains(now))
+            if (deletion.Verification is { } verification && !verification.Period.Contains(now))
                 account.Deletion = null; // Clear expired deletion request.
             else if (deletion.Verification == null)
                 deleting = true;
@@ -404,7 +404,7 @@ internal sealed class AccountsController : ApiController
 
         var reason = default(string);
 
-        if (account.Ban is AccountBan ban)
+        if (account.Ban is { } ban)
         {
             if (ban.Period.Contains(now))
                 reason = ban.Reason;
@@ -449,10 +449,8 @@ internal sealed class AccountsController : ApiController
         {
             await session.SaveChangesAsync(cancellationToken);
         }
-        catch (ConcurrencyException e)
+        catch (ConcurrencyException)
         {
-            Console.WriteLine(e);
-
             return false;
         }
 
