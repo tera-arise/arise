@@ -54,6 +54,8 @@ internal sealed partial class EmailSender : IHostedService
 
     async Task IHostedService.StopAsync(CancellationToken cancellationToken)
     {
+        _sendQueue.Writer.Complete();
+
         // Signal the send task to shut down.
         await _cts.CancelAsync();
 
