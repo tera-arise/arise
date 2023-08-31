@@ -13,10 +13,10 @@ internal static class ClientDistributor
         var ghc = new GitHubClient(
             new Octokit.ProductHeaderValue(ThisAssembly.AssemblyName, ThisAssembly.AssemblyVersion))
         {
-            Credentials = new Credentials(options.Token),
+            Credentials = new Credentials(options.GitHubToken),
         };
 
-        var timeout = options.Timeout;
+        var timeout = options.UploadTimeout;
 
         if (timeout == TimeSpan.Zero)
             timeout = TimeSpan.FromHours(1);
@@ -26,12 +26,12 @@ internal static class ClientDistributor
         var repositoryApi = ghc.Repository;
         var releaseApi = repositoryApi.Release;
 
-        var releaseName = $"r{options.Revision}";
+        var releaseName = $"r{options.TeraRevision}";
 
         await Terminal.OutLineAsync($"Creating release {releaseName}...");
 
-        var repository = await repositoryApi.Get(options.Owner, options.Repository);
-        var root = options.Directory;
+        var repository = await repositoryApi.Get(options.RepositoryOwner, options.RepositoryName);
+        var root = options.TeraDirectory;
 
         Release release;
 
@@ -80,7 +80,7 @@ internal static class ClientDistributor
         {
             await using var stream = new MemoryStream();
 
-            var zipName = $"TERA.EU.{options.Revision}.{i:00}.zip";
+            var zipName = $"TERA.EU.{options.TeraRevision}.{i:00}.zip";
 
             await Terminal.OutLineAsync($"Packing '{zipName}' in memory...");
 
@@ -125,7 +125,7 @@ internal static class ClientDistributor
 
             await JsonSerializer.SerializeAsync(
                 stream,
-                new Manifest(options.Revision, entries),
+                new Manifest(options.TeraRevision, entries),
                 new JsonSerializerOptions(JsonSerializerDefaults.Web)
                 {
                     WriteIndented = true,

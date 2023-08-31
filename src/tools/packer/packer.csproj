@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>arise-packer</AssemblyName>
+        <RootNamespace>Arise.Tools.Packer</RootNamespace>
+        <ServerGarbageCollection>true</ServerGarbageCollection>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Vezel.Novadrop.Data" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Vezel.Novadrop.Formats" />
+    </ItemGroup>
+</Project>

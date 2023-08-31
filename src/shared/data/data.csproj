@@ -15,10 +15,11 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="../../tools/packer/packer.csproj"
+                          Private="false"
+                          ReferenceOutputAssembly="false" />
         <ProjectReference Include="../common/common.csproj" />
     </ItemGroup>
-
-    <!-- TODO: XSLT support for stripping server-side data. -->
 
     <Target Name="_WriteDataCenterCache"
             DependsOnTargets="GetGameRevision; GetDataCenterParameters">
@@ -44,11 +45,9 @@
             DependsOnTargets="_WriteDataCenterCache"
             BeforeTargets="BeforeResGen"
             Condition="'$(ArisePartialBuild)' != 'true'">
-        <Exec Command="dotnet novadrop-dc pack $(_DataSheetDirectory) $(_DataCenterPath) --revision $(AriseGameRevision) --encryption-key $(AriseDataCenterKey) --encryption-iv $(AriseDataCenterIV)"
+        <Exec Command="dotnet run $(_DataSheetDirectory) $(_DataCenterPath) $(AriseGameRevision) $(AriseDataCenterKey) $(AriseDataCenterIV) --project ../../tools/packer -c $(Configuration) --no-build"
               StandardOutputImportance="low"
-              StandardErrorImportance="low"
-              CustomWarningRegularExpression="^  \[W\] \(\d+,\d+\): .*$"
-              CustomErrorRegularExpression="^  \[E\] \(\d+,\d+\): .*$" />
+              StandardErrorImportance="low" />
 
         <ItemGroup>
             <FileWrites Include="$(_DataCenterPath)" />

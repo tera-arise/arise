@@ -6,9 +6,9 @@ internal static class ClientPatcher
 {
     public static async ValueTask PatchAsync(PatcherOptions options)
     {
-        await Terminal.OutLineAsync($"Loading PE '{options.Executable}'...");
+        await Terminal.OutLineAsync($"Loading PE '{options.TeraExecutableFile}'...");
 
-        await using var stream = options.Executable.Open(FileMode.Open);
+        await using var stream = options.TeraExecutableFile.Open(FileMode.Open);
 
         var pe = new PeFile(stream);
         var imageBase = pe.ImageNtHeaders!.OptionalHeader.ImageBase;
@@ -92,6 +92,6 @@ internal static class ClientPatcher
         // tipping the developers off. Definitely get rid of this one.
         await PatchAsync("S1LobbySceneServer::SnoopLoginArbiter", 0x7ff69bd409c0, static asm => asm.ret());
 
-        await Terminal.OutLineAsync($"Saving PE '{options.Executable}'...");
+        await Terminal.OutLineAsync($"Saving PE '{options.TeraExecutableFile}'...");
     }
 }
