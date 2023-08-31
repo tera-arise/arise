@@ -32,7 +32,9 @@ internal sealed class AvaloniaLogSink : ILogSink
         params object?[] propertyValues)
     {
         var logger = _loggers.GetOrAdd(
-            source?.GetType()?.FullName ?? $"Avalonia.{area}", category => _loggerFactory.CreateLogger(category));
+            source?.GetType()?.FullName ?? $"Avalonia.{area}",
+            static (category, factory) => factory.CreateLogger(category),
+            _loggerFactory);
         var logLevel = level switch
         {
             Avalonia.Logging.LogEventLevel.Verbose => LogLevel.Trace,
