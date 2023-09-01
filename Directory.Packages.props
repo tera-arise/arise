@@ -83,6 +83,10 @@
                         Version="7.1.0" />
         <PackageVersion Include="PeNet"
                         Version="4.0.1" />
+        <PackageVersion Include="ReactiveUI"
+                        Version="19.4.1" />
+        <PackageVersion Include="ReactiveUI.Validation"
+                        Version="3.1.7" />
         <PackageVersion Include="Refit"
                         Version="7.0.0" />
         <PackageVersion Include="SendGrid"

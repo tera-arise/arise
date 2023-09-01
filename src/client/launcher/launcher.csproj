@@ -70,6 +70,7 @@
                           PrivateAssets="all" />
         <PackageReference Include="NAudio.Extras" />
         <PackageReference Include="NAudio.Vorbis" />
+        <PackageReference Include="ReactiveUI.Validation" />
         <PackageReference Include="Serilog.Extensions.Hosting" />
         <PackageReference Include="Serilog.Sinks.Console" />
         <PackageReference Include="Vezel.Novadrop.Client" />
