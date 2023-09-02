@@ -121,7 +121,7 @@ internal static class DataCenterPacker
 
                         validator.ValidateEndOfAttributes(null);
 
-                        if (info.SchemaElement?.ElementSchemaType?.UnhandledAttributes is [..] unhandled)
+                        if (info.SchemaElement?.ElementSchemaType?.UnhandledAttributes is [_, ..] unhandled)
                         {
                             var names = unhandled
                                 .Where(static a =>
