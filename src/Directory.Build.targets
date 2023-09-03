@@ -12,12 +12,12 @@
         </MSBuild>
 
         <PropertyGroup>
-            <_AriseGameTitle>@(AriseGameTitle)</_AriseGameTitle>
+            <_GameTitle>@(AriseGameTitle)</_GameTitle>
         </PropertyGroup>
 
         <ItemGroup>
             <AssemblyMetadata Include="Arise.GameTitle"
-                              Value="$(_AriseGameTitle)" />
+                              Value="$(_GameTitle)" />
         </ItemGroup>
     </Target>
 

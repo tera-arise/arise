@@ -75,6 +75,9 @@ internal static class ClientPatcher
         await PatchAsync("S1TeraAddOnPipeBase::Connect", 0x7ff69b9444e0, static asm => asm.ret());
         await PatchAsync("S1TeraAddOnManager::Initialize", 0x7ff69b9459e0, static asm => asm.ret());
 
+        // Disable scheduling S1AutoLogoutJob. We will handle idle disconnection on the server side.
+        await PatchAsync("S1Context::Initialize", 0x7ff69bab64e7, static asm => asm.nop(57));
+
         // These are all hooked by the symbiote to integrate the QUIC-based network protocol. Make sure that the
         // unhooked versions of the functions just cause a crash.
         await PatchAsync("S1Connection::Connect", 0x7ff69baa9fc0, static asm => asm.ud2());
