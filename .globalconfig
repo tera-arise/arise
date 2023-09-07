@@ -111,8 +111,7 @@ dotnet_style_qualification_for_property = false
 dotnet_style_readonly_field = true
 dotnet_style_require_accessibility_modifiers = always
 
-# TODO: https://github.com/dotnet/roslyn/issues/41640
-dotnet_diagnostic.EnableGenerateDocumentationFile.severity = none
+dotnet_diagnostic.EnableGenerateDocumentationFile.severity = none # TODO: https://github.com/dotnet/roslyn/issues/41640
 
 dotnet_diagnostic.CA1000.severity = none
 dotnet_diagnostic.CA1001.severity = error
@@ -522,8 +521,7 @@ dotnet_diagnostic.SA1006.severity = none
 dotnet_diagnostic.SA1007.severity = error
 dotnet_diagnostic.SA1008.severity = error
 dotnet_diagnostic.SA1009.severity = error
-# TODO: https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3687
-dotnet_diagnostic.SA1010.severity = none
+dotnet_diagnostic.SA1010.severity = none # TODO: https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3687
 dotnet_diagnostic.SA1011.severity = error
 dotnet_diagnostic.SA1012.severity = error
 dotnet_diagnostic.SA1013.severity = error
@@ -559,8 +557,6 @@ dotnet_diagnostic.SA1114.severity = error
 dotnet_diagnostic.SA1115.severity = error
 dotnet_diagnostic.SA1116.severity = error
 dotnet_diagnostic.SA1117.severity = error
-# TODO: https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3540
-# TODO: https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3541
 dotnet_diagnostic.SA1118.severity = none
 dotnet_diagnostic.SA1119.severity = error
 dotnet_diagnostic.SA1120.severity = error
@@ -639,8 +635,7 @@ dotnet_diagnostic.SA1505.severity = error
 dotnet_diagnostic.SA1506.severity = error
 dotnet_diagnostic.SA1507.severity = error
 dotnet_diagnostic.SA1508.severity = error
-# TODO: https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3539
-dotnet_diagnostic.SA1509.severity = none
+dotnet_diagnostic.SA1509.severity = none # TODO: https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3539
 dotnet_diagnostic.SA1510.severity = error
 dotnet_diagnostic.SA1511.severity = error
 dotnet_diagnostic.SA1512.severity = none
