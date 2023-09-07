@@ -6,10 +6,12 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <_ClientRevision>r387486</_ClientRevision>
-        <_ClientArchive>$(BaseIntermediateOutputPath)$(_ClientRevision).zip</_ClientArchive>
-        <_ClientDirectory>$(BaseIntermediateOutputPath)$(_ClientRevision)/</_ClientDirectory>
-        <_ClientStamp>$(BaseIntermediateOutputPath)$(_ClientRevision).stamp</_ClientStamp>
+        <_ClientExecutableRevision>r387486</_ClientExecutableRevision>
+        <_ClientExecutableArchive>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision).zip</_ClientExecutableArchive>
+        <_ClientExecutableStamp>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision).stamp</_ClientExecutableStamp>
+        <_ClientExecutableUnpackedPath>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision)/TERA.unpacked.exe</_ClientExecutableUnpackedPath>
+        <_ClientExecutableCache>$(BaseIntermediateOutputPath)TERA.arise.cache</_ClientExecutableCache>
+        <_ClientExecutablePatchedPath>$(BaseIntermediateOutputPath)TERA.arise.exe</_ClientExecutablePatchedPath>
     </PropertyGroup>
 
     <ItemGroup>
@@ -47,7 +49,8 @@
         <ProjectReference Include="../../shared/gateway/gateway.csproj" />
         <ProjectReference Include="../../tools/patcher/patcher.csproj"
                           Private="false"
-                          ReferenceOutputAssembly="false" />
+                          ReferenceOutputAssembly="false"
+                          OutputItemType="ArisePatcher" />
     </ItemGroup>
 
     <ItemGroup>
@@ -136,38 +139,50 @@
 
     <Target Name="_RestoreClientExecutable"
             AfterTargets="_GenerateRestoreProjectPathWalk">
-        <DownloadFile SourceUrl="https://github.com/alexrp/tera-re/releases/download/$(_ClientRevision)/$(_ClientRevision).zip"
+        <DownloadFile SourceUrl="https://github.com/alexrp/tera-re/releases/download/$(_ClientExecutableRevision)/$(_ClientExecutableRevision).zip"
                       DestinationFolder="$(BaseIntermediateOutputPath)"
-                      Condition="!Exists('$(_ClientArchive)')" />
+                      Condition="!Exists('$(_ClientExecutableArchive)')" />
 
-        <Unzip SourceFiles="$(_ClientArchive)"
+        <Unzip SourceFiles="$(_ClientExecutableArchive)"
                DestinationFolder="$(BaseIntermediateOutputPath)"
-               Condition="!Exists('$(_ClientStamp)')" />
+               Condition="!Exists('$(_ClientExecutableStamp)')" />
 
-        <Touch Files="$(_ClientStamp)"
+        <Touch Files="$(_ClientExecutableStamp)"
                AlwaysCreate="true" />
     </Target>
 
-    <!-- TODO: Specify inputs/outputs to make this target incremental. -->
-    <Target Name="_PackClientExecutable"
-            BeforeTargets="AddAvaloniaResources">
-        <PropertyGroup>
-            <_ClientPatchedPath>$(_ClientDirectory)TERA.arise.exe</_ClientPatchedPath>
-        </PropertyGroup>
+    <Target Name="_WriteClientExecutableCache">
+        <Hash ItemsToHash="$(MSBuildAllProjects); @(ArisePatcher); $(_ClientExecutableUnpackedPath)"
+              IgnoreCase="true">
+            <Output TaskParameter="HashResult"
+                    PropertyName="_ClientExecutableCacheHash" />
+        </Hash>
 
-        <Copy SourceFiles="$(_ClientDirectory)TERA.unpacked.exe"
-              DestinationFiles="$(_ClientPatchedPath)" />
+        <WriteLinesToFile Lines="$(_ClientExecutableCacheHash)"
+                          File="$(_ClientExecutableCache)"
+                          Overwrite="true"
+                          WriteOnlyWhenDifferent="true" />
 
         <ItemGroup>
-            <FileWrites Include="$(_ClientPatchedPath)" />
+            <FileWrites Include="$(_ClientExecutableCache)" />
         </ItemGroup>
+    </Target>
 
-        <Exec Command="dotnet run $(_ClientPatchedPath) --project ../../tools/patcher -c $(Configuration) --no-build"
+    <Target Name="_PackClientExecutable"
+            Inputs="@(ArisePatcher); $(_ClientExecutableUnpackedPath)"
+            Outputs="$(_ClientExecutablePatchedPath)"
+            DependsOnTargets="_WriteClientExecutableCache"
+            BeforeTargets="AddAvaloniaResources">
+        <Exec Command="dotnet @(ArisePatcher) $(_ClientExecutableUnpackedPath) $(_ClientExecutablePatchedPath)"
               StandardOutputImportance="low"
               StandardErrorImportance="low" />
 
         <ItemGroup>
-            <AvaloniaResource Include="$(_ClientPatchedPath)"
+            <FileWrites Include="$(_ClientExecutablePatchedPath)" />
+        </ItemGroup>
+
+        <ItemGroup>
+            <AvaloniaResource Include="$(_ClientExecutablePatchedPath)"
                               Link="TERA.arise.exe" />
         </ItemGroup>
     </Target>
