@@ -6,8 +6,6 @@ namespace Arise.Server.Web.Controllers.Api;
 
 internal sealed class AccountsController : ApiController
 {
-    // TODO: Add rate limiting throughout.
-
     [BindProperty]
     [FromServices]
     public required IHostEnvironment HostEnvironment { get; init; }
