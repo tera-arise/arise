@@ -17,13 +17,14 @@
     <ItemGroup>
         <ProjectReference Include="../../tools/packer/packer.csproj"
                           Private="false"
-                          ReferenceOutputAssembly="false" />
+                          ReferenceOutputAssembly="false"
+                          OutputItemType="ArisePacker" />
         <ProjectReference Include="../common/common.csproj" />
     </ItemGroup>
 
     <Target Name="_WriteDataCenterCache"
             DependsOnTargets="GetGameRevision; GetDataCenterParameters">
-        <Hash ItemsToHash="$(MSBuildAllProjects); @(_DataSheet); $(AriseGameRevision); $(AriseDataCenterKey); $(AriseDataCenterIV)"
+        <Hash ItemsToHash="$(MSBuildAllProjects); @(ArisePacker); @(_DataSheet); $(AriseGameRevision); $(AriseDataCenterKey); $(AriseDataCenterIV)"
               IgnoreCase="true">
             <Output TaskParameter="HashResult"
                     PropertyName="_DataCenterCacheHash" />
@@ -40,12 +41,12 @@
     </Target>
 
     <Target Name="_PackDataCenter"
-            Inputs="@(_DataSheet); $(_DataCenterCache)"
+            Inputs="@(ArisePacker); @(_DataSheet); $(_DataCenterCache)"
             Outputs="$(_DataCenterPath)"
             DependsOnTargets="_WriteDataCenterCache"
             BeforeTargets="BeforeResGen"
             Condition="'$(ArisePartialBuild)' != 'true'">
-        <Exec Command="dotnet run $(_DataSheetDirectory) $(_DataCenterPath) $(AriseGameRevision) $(AriseDataCenterKey) $(AriseDataCenterIV) --project ../../tools/packer -c $(Configuration) --no-build"
+        <Exec Command="dotnet @(ArisePacker) $(_DataSheetDirectory) $(_DataCenterPath) $(AriseGameRevision) $(AriseDataCenterKey) $(AriseDataCenterIV)"
               StandardOutputImportance="low"
               StandardErrorImportance="low" />
 
