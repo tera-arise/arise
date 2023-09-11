@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>Arise.Client.Link</AssemblyName>
+        <RootNamespace>Arise.Client.Link</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../../shared/common/common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="StreamJsonRpc" />
+    </ItemGroup>
+</Project>

@@ -101,6 +101,8 @@
                         Version="1.5.0" />
         <PackageVersion Include="Serilog.Sinks.Console"
                         Version="4.1.0" />
+        <PackageVersion Include="StreamJsonRpc"
+                        Version="2.16.36" />
         <PackageVersion Include="Vezel.Cathode"
                         Version="0.10.40" />
         <PackageVersion Include="Vezel.Novadrop.Client"
