@@ -92,6 +92,16 @@ internal static class ClientPatcher
         await PatchAsync("S1DataDB::Initialize", 0x7ff69bb19f30, static asm => asm.ud2());
         await PatchAsync("S1DataDB::Initialize", 0x7ff69bb19f69, static asm => asm.nop(23));
 
+        // Prevent the client from making use of the launcher proxy. We use a named pipe rather than window messages, so
+        // the client would try to detect a window that is not there and exit when that fails.
+        await PatchAsync("S1LauncherProxy::Dispose", 0x7ff69bccc1e0, static asm => asm.ret());
+        await PatchAsync("S1LauncherProxy::Initialize", 0x7ff69bcd0390, static asm => asm.ret());
+
+        // The symbiote will hook these functions to provide the necessary information. Make them crash by default.
+        await PatchAsync("S1LauncherProxy::SendSessionTicketRequest", 0x7ff69bccf390, static asm => asm.ud2());
+        await PatchAsync("S1LauncherProxy::SendAccountNameRequest", 0x7ff69bccfa90, static asm => asm.ud2());
+        await PatchAsync("S1LauncherProxy::SendServerListRequest", 0x7ff69bcdd2f0, static asm => asm.ud2());
+
         // This one is presumably used to detect private servers. It's a bit sneaky; the server details are
         // (sometimes, randomly) sent in the query string of an otherwise empty HTTP request to a static IP address,
         // tipping the developers off. Definitely get rid of this one.
