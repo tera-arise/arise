@@ -125,7 +125,7 @@ internal static class DataCenterPacker
                         {
                             var names = unhandled
                                 .Where(static a =>
-                                    a.NamespaceURI == "https://vezel.dev/novadrop/dc" && a.LocalName == "keys")
+                                    a.NamespaceURI == "https://tera-arise.io/dc" && a.LocalName == "keys")
                                 .Select(static a =>
                                     a.Value.Split(
                                         ' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
