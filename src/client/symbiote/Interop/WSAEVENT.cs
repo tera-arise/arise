@@ -16,6 +16,8 @@ public readonly unsafe struct WSAEVENT :
         _value = value;
     }
 
+    public static explicit operator void*(WSAEVENT value) => value._value;
+
     public static bool operator ==(WSAEVENT left, WSAEVENT right) => left.Equals(right);
 
     public static bool operator !=(WSAEVENT left, WSAEVENT right) => !left.Equals(right);

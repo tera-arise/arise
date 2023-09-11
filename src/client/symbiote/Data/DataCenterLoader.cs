@@ -1,6 +1,5 @@
 using Arise.Client.Memory;
 using Arise.Client.Net;
-using Vezel.Novadrop.Interop;
 using static Iced.Intel.AssemblerRegisters;
 
 namespace Arise.Client.Data;

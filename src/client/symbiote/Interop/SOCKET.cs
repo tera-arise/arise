@@ -16,6 +16,8 @@ public readonly unsafe struct SOCKET :
         _value = value;
     }
 
+    public static explicit operator ulong(SOCKET value) => value._value;
+
     public static bool operator ==(SOCKET left, SOCKET right) => left.Equals(right);
 
     public static bool operator !=(SOCKET left, SOCKET right) => !left.Equals(right);

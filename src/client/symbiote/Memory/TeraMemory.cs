@@ -1,5 +1,3 @@
-using Vezel.Novadrop.Interop;
-
 namespace Arise.Client.Memory;
 
 internal static unsafe class TeraMemory

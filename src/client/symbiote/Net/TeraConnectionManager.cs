@@ -1,5 +1,3 @@
-using Vezel.Novadrop.Interop;
-
 namespace Arise.Client.Net;
 
 [RegisterSingleton<TeraConnectionManager>]
@@ -65,7 +63,7 @@ internal sealed unsafe partial class TeraConnectionManager : IHostedService
     {
         var hook = FunctionHook.Current;
 
-        return (hook, Unsafe.As<TeraConnectionManager>(FunctionHook.Current.State));
+        return (hook, Unsafe.As<TeraConnectionManager>(hook.State));
     }
 
     [UnmanagedCallersOnly]

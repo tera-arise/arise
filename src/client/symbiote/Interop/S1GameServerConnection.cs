@@ -31,10 +31,16 @@ public unsafe struct S1GameServerConnection
         (delegate* unmanaged<S1GameServerConnection*, void>)Tera.Resolve(0x7ff69bc18890);
 
     [FieldOffset(0x0)]
+    public IS1MemoryObject IS1MemoryObject;
+
+    [FieldOffset(0x0)]
     public IS1ConnectionInfo IS1ConnectionInfo;
 
     [FieldOffset(0x0)]
     public VirtualFunctionTable* VFT;
+
+    [FieldOffset(0x8)]
+    public IS1ConnectionEventHandler IS1ConnectionEventHandler;
 
     [FieldOffset(0x8)]
     public VirtualFunctionTable_IS1ConnectionEventHandler VFT_IS1ConnectionEventHandler;
