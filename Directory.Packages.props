@@ -44,9 +44,9 @@
         <PackageVersion Include="Markdown.Avalonia.Tight"
                         Version="11.0.1" />
         <PackageVersion Include="Marten.AspNetCore"
-                        Version="6.0.5" />
+                        Version="6.1.0" />
         <PackageVersion Include="Marten.NodaTime"
-                        Version="6.0.5" />
+                        Version="6.1.0" />
         <PackageVersion Include="Material.Icons.Avalonia"
                         Version="2.0.1" />
         <PackageVersion Include="Microsoft.ClearScript.V8"
