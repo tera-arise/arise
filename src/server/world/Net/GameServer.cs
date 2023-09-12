@@ -119,10 +119,10 @@ internal sealed partial class GameServer : IHostedService
                 GameConnectionConduit conduit,
                 T code,
                 ReadOnlyMemory<byte> payload,
-                Action<ILogger<GameServer>, IPEndPoint, T, int> logger)
+                Action<ILogger<GameServer>, IPEndPoint, T, int> log)
                 where T : unmanaged, Enum
             {
-                logger(_logger, conduit.Connection.EndPoint, code, payload.Length);
+                log(_logger, conduit.Connection.EndPoint, code, payload.Length);
             }
 
             listener.RawTeraPacketReceived += (conduit, code, payload) =>

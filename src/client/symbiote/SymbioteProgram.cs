@@ -1,4 +1,5 @@
 using Arise.Client.Data;
+using Arise.Client.Launcher;
 using Arise.Client.Net;
 using static Windows.Win32.WindowsPInvoke;
 
@@ -23,6 +24,7 @@ public static class SymbioteProgram
                     .AddSingleton<CodeManager, PageCodeManager>()
                     .AddSingleton(services => ActivatorUtilities.CreateInstance<GameApplicationHost>(services, wake))
                     .AddAriseClientSymbiote()
+                    .AddHostedService(static provider => provider.GetRequiredService<TeraLauncherProxyManager>())
                     .AddHostedService(static provider => provider.GetRequiredService<TeraConnectionManager>())
                     .AddHostedService(static provider => provider.GetRequiredService<GameClient>())
                     .AddHostedService(static provider => provider.GetRequiredService<DataCenterLoader>())

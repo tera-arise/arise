@@ -86,10 +86,10 @@ internal sealed partial class GameClient : IHostedService
             _hostLifetime.StopApplication();
         };
 
-        void LogPacket<T>(T code, ReadOnlyMemory<byte> payload, Action<ILogger<GameClient>, T, int> logger)
+        void LogPacket<T>(T code, ReadOnlyMemory<byte> payload, Action<ILogger<GameClient>, T, int> log)
             where T : unmanaged, Enum
         {
-            logger(_logger, code, payload.Length);
+            log(_logger, code, payload.Length);
         }
 
         _client.RawTeraPacketReceived += (conduit, code, payload) =>
