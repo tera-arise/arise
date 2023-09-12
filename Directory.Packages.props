@@ -42,7 +42,7 @@
         <PackageVersion Include="Markdig"
                         Version="0.33.0" />
         <PackageVersion Include="Markdown.Avalonia.Tight"
-                        Version="11.0.1" />
+                        Version="11.0.2" />
         <PackageVersion Include="Marten.AspNetCore"
                         Version="6.1.0" />
         <PackageVersion Include="Marten.NodaTime"
