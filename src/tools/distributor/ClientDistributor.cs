@@ -8,6 +8,11 @@ internal static class ClientDistributor
 
     private const string ManifestName = "manifest.json";
 
+    private static readonly JsonSerializerOptions _jsonOptions = new(JsonSerializerDefaults.Web)
+    {
+        WriteIndented = true,
+    };
+
     public static async ValueTask DistributeAsync(DistributorOptions options)
     {
         var ghc = new GitHubClient(
@@ -123,13 +128,7 @@ internal static class ClientDistributor
 
             await Terminal.OutLineAsync($"Serializing '{ManifestName}' in memory...");
 
-            await JsonSerializer.SerializeAsync(
-                stream,
-                new Manifest(options.TeraRevision, entries),
-                new JsonSerializerOptions(JsonSerializerDefaults.Web)
-                {
-                    WriteIndented = true,
-                });
+            await JsonSerializer.SerializeAsync(stream, new Manifest(options.TeraRevision, entries), _jsonOptions);
 
             stream.Position = 0;
 
