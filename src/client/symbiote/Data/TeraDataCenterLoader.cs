@@ -4,8 +4,8 @@ using static Iced.Intel.AssemblerRegisters;
 
 namespace Arise.Client.Data;
 
-[RegisterSingleton<DataCenterLoader>]
-internal sealed unsafe class DataCenterLoader : IHostedService
+[RegisterSingleton<TeraDataCenterLoader>]
+internal sealed unsafe class TeraDataCenterLoader : IHostedService
 {
     private readonly CodeManager _codeManager;
 
@@ -15,7 +15,7 @@ internal sealed unsafe class DataCenterLoader : IHostedService
 
     private FBufferReader** _slot;
 
-    public DataCenterLoader(CodeManager codeManager, GameClient client)
+    public TeraDataCenterLoader(CodeManager codeManager, GameClient client)
     {
         _codeManager = codeManager;
         _dataComponent = client.Session.Module.Data;
@@ -88,7 +88,7 @@ internal sealed unsafe class DataCenterLoader : IHostedService
         stream.ReadExactly(new(buffer, length));
 
         // S1DataDB::UnpackArchive() will free reader and buffer after decryption and decompression.
-        *Unsafe.As<DataCenterLoader>(FunctionHook.Current.State)._slot =
+        *Unsafe.As<TeraDataCenterLoader>(FunctionHook.Current.State)._slot =
             FBufferReader.__ctor(reader, buffer, length, true, false);
     }
 }

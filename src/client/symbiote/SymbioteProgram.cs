@@ -27,7 +27,7 @@ public static class SymbioteProgram
                     .AddHostedService(static provider => provider.GetRequiredService<TeraLauncherProxyManager>())
                     .AddHostedService(static provider => provider.GetRequiredService<TeraConnectionManager>())
                     .AddHostedService(static provider => provider.GetRequiredService<GameClient>())
-                    .AddHostedService(static provider => provider.GetRequiredService<DataCenterLoader>())
+                    .AddHostedService(static provider => provider.GetRequiredService<TeraDataCenterLoader>())
                     .AddHostedService(static provider => provider.GetRequiredService<GameApplicationHost>());
             })
             .UseDefaultServiceProvider(static opts =>
