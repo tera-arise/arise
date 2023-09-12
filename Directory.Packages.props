@@ -40,7 +40,7 @@
         <PackageVersion Include="Injectio"
                         Version="2.6.2" />
         <PackageVersion Include="Markdig"
-                        Version="0.32.0" />
+                        Version="0.33.0" />
         <PackageVersion Include="Markdown.Avalonia.Tight"
                         Version="11.0.1" />
         <PackageVersion Include="Marten.AspNetCore"
