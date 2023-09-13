@@ -8,6 +8,10 @@ internal sealed class WorldOptions : IOptions<WorldOptions>
 
     public Duration ModuleValidityTime { get; } = Duration.FromDays(2);
 
+    public Duration SpatialDataPollingTime { get; } = Duration.FromMinutes(15);
+
+    public Duration SpatialDataRetentionTime { get; } = Duration.FromHours(1);
+
     public ICollection<string> Endpoints { get; } = new List<string>();
 
     WorldOptions IOptions<WorldOptions>.Value => this;

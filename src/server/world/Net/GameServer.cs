@@ -145,8 +145,8 @@ internal sealed partial class GameServer : IHostedService
             _listeners.Enqueue(listener);
         }
 
-        // Loading the data center and zone geometry can allocate a lot of temporary memory, so force an aggressive
-        // cleanup before allowing clients to connect.
+        // Loading data during startup can allocate a lot of temporary memory, so force an aggressive cleanup before
+        // allowing clients to connect.
         GC.Collect(GC.MaxGeneration, GCCollectionMode.Aggressive);
 
         foreach (var listener in _listeners)
