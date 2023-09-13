@@ -5,20 +5,16 @@ internal sealed partial class DataGraph : IHostedService
 {
     private static partial class Log
     {
-        [LoggerMessage(0, LogLevel.Information, "Loaded embedded data center as {Mode} in {ElapsedMs:0.0000} ms")]
-        public static partial void LoadedDataCenter(
-            ILogger<DataGraph> logger, DataCenterLoaderMode mode, double elapsedMs);
+        [LoggerMessage(0, LogLevel.Information, "Loaded embedded data center in {ElapsedMs:0.0000} ms")]
+        public static partial void LoadedDataCenter(ILogger<DataGraph> logger, double elapsedMs);
     }
 
     public DataCenterNode Root { get; private set; } = null!;
 
-    private readonly IHostEnvironment _environment;
-
     private readonly ILogger<DataGraph> _logger;
 
-    public DataGraph(IHostEnvironment environment, ILogger<DataGraph> logger)
+    public DataGraph(ILogger<DataGraph> logger)
     {
-        _environment = environment;
         _logger = logger;
     }
 
@@ -28,19 +24,16 @@ internal sealed partial class DataGraph : IHostedService
 
         await using var stream = EmbeddedDataCenter.OpenStream();
 
-        var mode = _environment.IsDevelopment() ? DataCenterLoaderMode.Lazy : DataCenterLoaderMode.Eager;
-
         Root = await DataCenter.LoadAsync(
             stream,
             new DataCenterLoadOptions()
                 .WithKey(ThisAssembly.DataCenterKey.Span)
                 .WithIV(ThisAssembly.DataCenterIV.Span)
                 .WithStrict(true)
-                .WithLoaderMode(mode)
                 .WithMutability(DataCenterMutability.Immutable),
             cancellationToken);
 
-        Log.LoadedDataCenter(_logger, mode, stopwatch.Elapsed.TotalMilliseconds);
+        Log.LoadedDataCenter(_logger, stopwatch.Elapsed.TotalMilliseconds);
     }
 
     Task IHostedService.StopAsync(CancellationToken cancellationToken)
