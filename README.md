@@ -39,16 +39,16 @@ own public servers, as long as the [licensing terms](#licensing) are observed.
 
 Building and running TERA Arise requires the following:
 
-* Windows 10+ or Ubuntu 23.04+
-* .NET SDK 8.0.0 Preview 7
-* PostgreSQL 14.6+
+* Windows 11+ or Ubuntu 23.04+
+* .NET SDK 8.0.0 RC 1
+* PostgreSQL 15.4+
 
 Development will typically require one of the following editors:
 
-* Visual Studio 2022 Preview 17.8.0+
-* Visual Studio Code 1.81.1+
+* Visual Studio 2022 17.8.0 Preview 3+
+* Visual Studio Code 1.83.0+
 * JetBrains Rider 2023.2+
-* JetBrains Fleet 1.22+
+* JetBrains Fleet 1.24+
 
 Simply run `./cake` (a Bash script) to build client artifacts for Windows (x64)
 and server artifacts for the current platform (Windows or Linux, x64 or Arm64).
@@ -73,8 +73,6 @@ CREATE USER arise PASSWORD 'arise';
 Create a database called `arise`, owned by `arise`:
 
 ```sql
--- PostgreSQL 14
-CREATE DATABASE arise OWNER 'arise' TEMPLATE 'template0' ENCODING 'utf8' LOCALE 'C';
 -- PostgreSQL 15
 CREATE DATABASE arise OWNER 'arise' TEMPLATE 'template0' ENCODING 'utf8' LOCALE 'und-x-icu' ICU_LOCALE 'und' LOCALE_PROVIDER 'icu';
 ```
