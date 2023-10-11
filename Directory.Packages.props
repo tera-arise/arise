@@ -114,6 +114,6 @@
         <PackageVersion Include="Vezel.Ruptura.Memory"
                         Version="1.0.2" />
         <PackageVersion Include="YamlDotNet"
-                        Version="13.3.1" />
+                        Version="13.7.0" />
     </ItemGroup>
 </Project>
