@@ -72,7 +72,7 @@
         <PackageVersion Include="Microsoft.Windows.SDK.Win32Docs"
                         Version="0.1.42-alpha" />
         <PackageVersion Include="Microsoft.Windows.SDK.Win32Metadata"
-                        Version="54.0.44-preview" />
+                        Version="55.0.45-preview" />
         <PackageVersion Include="NAudio.Extras"
                         Version="2.2.1" />
         <PackageVersion Include="NAudio.Vorbis"
