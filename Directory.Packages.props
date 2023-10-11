@@ -82,7 +82,7 @@
         <PackageVersion Include="Octokit"
                         Version="8.0.1" />
         <PackageVersion Include="PeNet"
-                        Version="4.0.1" />
+                        Version="4.0.2" />
         <PackageVersion Include="ReactiveUI"
                         Version="19.4.1" />
         <PackageVersion Include="ReactiveUI.Validation"
