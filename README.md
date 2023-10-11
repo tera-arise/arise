@@ -10,7 +10,6 @@
 [![License](https://img.shields.io/github/license/tera-arise/arise?color=brown)](LICENSE-AGPL-3.0)
 [![Commits](https://img.shields.io/github/commit-activity/m/tera-arise/arise/master?label=commits&color=slateblue)](https://github.com/tera-arise/arise/commits/master)
 [![Build](https://img.shields.io/github/actions/workflow/status/tera-arise/arise/build.yml?branch=master)](https://github.com/tera-arise/arise/actions/workflows/build.yml)
-[![Discussions](https://img.shields.io/github/discussions/tera-arise/arise?color=teal)](https://github.com/tera-arise/arise/discussions)
 [![Discord](https://img.shields.io/discord/1049553965987143750?color=peru&label=discord)](https://discord.gg/BZnmVMGYa9)
 
 </div>
