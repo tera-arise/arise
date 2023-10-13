@@ -10,5 +10,6 @@
                     Stretch="Fill" />
     </Window.Background>
 
-    TODO
+    <Image Source="{Binding Logo}"
+           Stretch="Uniform" />
 </Window>
