@@ -73,7 +73,6 @@ CREATE USER arise PASSWORD 'arise';
 Create a database called `arise`, owned by `arise`:
 
 ```sql
--- PostgreSQL 15
 CREATE DATABASE arise OWNER 'arise' TEMPLATE 'template0' ENCODING 'utf8' LOCALE 'und-x-icu' ICU_LOCALE 'und' LOCALE_PROVIDER 'icu';
 ```
 
