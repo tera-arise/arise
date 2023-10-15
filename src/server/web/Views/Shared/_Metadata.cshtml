@@ -1,0 +1,28 @@
+<environment exclude="Development">
+    @{
+        var request = Context.Request;
+        var host = request.Host;
+        var builder = new UriBuilder(request.Scheme, host.Host, host.Port ?? -1);
+
+        if (builder.Uri.IsDefaultPort)
+            builder.Port = -1;
+
+        var uri = builder.Uri.AbsoluteUri[..^1];
+    }
+
+    <!-- TODO: Open Graph metadata for news articles. -->
+
+    <meta name="og:type"
+          content="website" />
+    <meta name="og:title"
+          content="@ThisAssembly.GameTitle" />
+    <meta name="og:url"
+          content="@uri" />
+    <meta name="og:image"
+          content="@uri/assets/image_logo.png" />
+</environment>
+
+<meta name="viewport"
+      content="initial-scale=1, width=device-width" />
+
+<meta name="darkreader-lock" />

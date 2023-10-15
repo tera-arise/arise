@@ -80,7 +80,7 @@
             BeforeTargets="AssignTargetPaths">
         <ItemGroup>
             <Content Include="@(AriseGameIcon)"
-                     Link="wwwroot/arise%(Extension)"
+                     Link="wwwroot/favicon%(Extension)"
                      CopyToOutputDirectory="PreserveNewest" />
         </ItemGroup>
     </Target>
