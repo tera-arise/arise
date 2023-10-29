@@ -42,7 +42,7 @@ Building and running TERA Arise requires the following:
 
 * Windows 11+ or Ubuntu 23.04+
 * .NET SDK 8.0.0 RC 1
-* PostgreSQL 15.4+
+* PostgreSQL 16.0+
 
 Development will typically require one of the following editors:
 
@@ -51,11 +51,11 @@ Development will typically require one of the following editors:
 * JetBrains Rider 2023.2+
 * JetBrains Fleet 1.24+
 
-Simply run `./cake` (a Bash script) to build client artifacts for Windows (x64)
-and server artifacts for the current platform (Windows or Linux, x64 or Arm64).
-This will use the `Debug` configuration by default, which is suitable for
-development and debugging. Pass `-c Release` instead to use that configuration,
-resulting in an optimized build.
+Simply run `./cake` (a [Bash](https://www.gnu.org/software/bash) script) to
+build client artifacts for Windows (x64) and server artifacts for the current
+platform (Windows or Linux, x64 or Arm64). This will use the `Debug`
+configuration by default, which is suitable for development and debugging. Pass
+`-c Release` instead to use that configuration, resulting in an optimized build.
 
 Note that `Debug` and `Release` configurations are orthogonal to whether the
 resulting artifacts are suitable for deployment; see the
