@@ -32,6 +32,8 @@ public static class StorageServiceCollectionExtensions
                         .Where(static type => type.GetInterfaces().Contains(typeof(IDocument))));
                 _ = store.Policies.ForAllDocuments(static mapping =>
                     {
+                        mapping.Metadata.CreatedAt.Enabled = true;
+
                         if (mapping.DocumentType.Assembly == typeof(ThisAssembly).Assembly)
                             mapping.Alias = mapping.Alias[..^"Document".Length];
                     });
