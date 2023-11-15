@@ -16,15 +16,15 @@
 
     <ItemGroup>
         <PackageVersion Include="Avalonia.Fonts.Inter"
-                        Version="11.0.4" />
+                        Version="11.0.5" />
         <PackageVersion Include="Avalonia.ReactiveUI"
-                        Version="11.0.4" />
+                        Version="11.0.5" />
         <PackageVersion Include="Avalonia.Skia"
-                        Version="11.0.4" />
+                        Version="11.0.5" />
         <PackageVersion Include="Avalonia.Themes.Fluent"
-                        Version="11.0.4" />
+                        Version="11.0.5" />
         <PackageVersion Include="Avalonia.Win32"
-                        Version="11.0.4" />
+                        Version="11.0.5" />
         <PackageVersion Include="CommandLineParser"
                         Version="2.9.1" />
         <PackageVersion Include="Discord.Net"
