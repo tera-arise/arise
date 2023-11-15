@@ -24,7 +24,7 @@ internal sealed partial class BridgeModuleGenerator : IHostedService
 
     private readonly TaskCompletionSource _generateDone = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
-    private readonly List<(BridgeModule Server, ReadOnlyMemory<byte> Client)> _modules = new();
+    private readonly List<(BridgeModule Server, ReadOnlyMemory<byte> Client)> _modules = [];
 
     private readonly IHostEnvironment _environment;
 

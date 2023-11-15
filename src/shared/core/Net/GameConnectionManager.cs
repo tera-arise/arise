@@ -38,7 +38,7 @@ public abstract class GameConnectionManager : IAsyncDisposable
 
     private readonly object _lock = new();
 
-    private HashSet<GameConnection>? _connections = new();
+    private HashSet<GameConnection>? _connections = [];
 
     private int _disposed;
 
