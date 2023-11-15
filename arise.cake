@@ -42,7 +42,6 @@ DotNetMSBuildSettings ConfigureMSBuild(string target)
         {
             NoSummary = true,
         },
-        // TODO: https://github.com/cake-build/cake/issues/4144
         ArgumentCustomization = args => args.Append("-ds:false"),
     };
 
