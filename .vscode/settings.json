@@ -1,6 +1,8 @@
 {
   "files.exclude": {
     "out": true,
+    "**/.fleet": true,
+    "**/.idea": true,
     "**/.vs": true
   }
 }
