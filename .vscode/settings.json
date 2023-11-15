@@ -1,5 +1,4 @@
 {
-  "dotnet.defaultSolution": "arise.sln",
   "files.exclude": {
     "out": true,
     "**/.idea": true,
