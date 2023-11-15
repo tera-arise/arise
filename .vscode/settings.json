@@ -1,4 +1,5 @@
 {
+  "dotnet.defaultSolution": "arise.sln",
   "files.exclude": {
     "out": true,
     "**/.fleet": true,

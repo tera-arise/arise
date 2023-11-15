@@ -1,5 +1,4 @@
 /out
-*.sln
 *.user
 .fleet
 .idea
