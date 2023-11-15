@@ -80,7 +80,7 @@
         <PackageVersion Include="NodaTime"
                         Version="3.1.9" />
         <PackageVersion Include="Octokit"
-                        Version="8.0.1" />
+                        Version="9.0.0" />
         <PackageVersion Include="PeNet"
                         Version="4.0.2" />
         <PackageVersion Include="ReactiveUI"
