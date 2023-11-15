@@ -41,13 +41,13 @@ own public servers, as long as the [licensing terms](#licensing) are observed.
 Building and running TERA Arise requires the following:
 
 * Windows 11+ or Ubuntu 23.04+
-* .NET SDK 8.0.0 RC 1
+* .NET SDK 8.0.0
 * PostgreSQL 16.0+
 
 Development will typically require one of the following editors:
 
-* Visual Studio 2022 17.8.0 Preview 3+
-* Visual Studio Code 1.83.0+
+* Visual Studio 2022 17.7.6+
+* Visual Studio Code 1.84.2+
 * JetBrains Rider 2023.2+
 * JetBrains Fleet 1.24+
 
