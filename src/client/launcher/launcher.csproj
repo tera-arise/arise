@@ -2,7 +2,7 @@
     <PropertyGroup>
         <AssemblyName>Arise.Client.Launcher</AssemblyName>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-        <RootNamespace>$(AssemblyName)</RootNamespace>
+        <RootNamespace>Arise.Client.Launcher</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup>
