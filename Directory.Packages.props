@@ -50,9 +50,9 @@
         <PackageVersion Include="Material.Icons.Avalonia"
                         Version="2.0.1" />
         <PackageVersion Include="Microsoft.ClearScript.V8"
-                        Version="7.4.3" />
+                        Version="7.4.4" />
         <PackageVersion Include="Microsoft.ClearScript.V8.Native.win-x64"
-                        Version="7.4.3" />
+                        Version="7.4.4" />
         <PackageVersion Include="Microsoft.Extensions.Hosting"
                         Version="8.0.0-rc.1.23419.4" />
         <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions"
