@@ -50,6 +50,7 @@
                           PrivateAssets="all" />
         <PackageReference Include="Serilog.Extensions.Hosting" />
         <PackageReference Include="Serilog.Sinks.Console" />
+        <PackageReference Include="Vezel.Novadrop.Interop" />
         <PackageReference Include="Vezel.Ruptura.Memory" />
     </ItemGroup>
 </Project>
