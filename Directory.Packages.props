@@ -84,7 +84,7 @@
         <PackageVersion Include="PeNet"
                         Version="4.0.3" />
         <PackageVersion Include="ReactiveUI"
-                        Version="19.5.1" />
+                        Version="19.5.31" />
         <PackageVersion Include="ReactiveUI.Validation"
                         Version="3.1.7" />
         <PackageVersion Include="Refit"
