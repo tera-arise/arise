@@ -48,7 +48,7 @@
         <PackageVersion Include="Marten.NodaTime"
                         Version="6.4.1" />
         <PackageVersion Include="Material.Icons.Avalonia"
-                        Version="2.0.1" />
+                        Version="2.1.0" />
         <PackageVersion Include="Microsoft.ClearScript.V8"
                         Version="7.4.4" />
         <PackageVersion Include="Microsoft.ClearScript.V8.Native.win-x64"
