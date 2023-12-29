@@ -92,8 +92,9 @@ internal static class ClientPatcher
         await PatchAsync("S1DataDB::Initialize", 0x7ff69bb19f30, static asm => asm.ud2());
         await PatchAsync("S1DataDB::Initialize", 0x7ff69bb19f69, static asm => asm.nop(23));
 
-        // Prevent the client from making use of the launcher proxy. We use a named pipe rather than window messages, so
-        // the client would try to detect a window that is not there and exit when that fails.
+        // Prevent the client from making use of the launcher proxy. We pass session information on the command line
+        // rather than through window messages, so the client would try to detect a window that is not there and exit
+        // when that fails.
         await PatchAsync("S1LauncherProxy::Dispose", 0x7ff69bccc1e0, static asm => asm.ret());
         await PatchAsync("S1LauncherProxy::Initialize", 0x7ff69bcd0390, static asm => asm.ret());
 
