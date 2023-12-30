@@ -2,6 +2,7 @@
   "recommendations": [
     "cake-build.cake-vscode",
     "chdsbd.github-code-owners",
+    "codezombiech.gitignore",
     "davidanson.vscode-markdownlint",
     "ecmel.vscode-html-css",
     "editorconfig.editorconfig",
