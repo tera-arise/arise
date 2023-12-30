@@ -3,8 +3,10 @@
     url = https://github.com/tera-arise/arise-geometry.git
     branch = .
     shallow = true
+    update = rebase
 [submodule "dat"]
     path = dat
     url = https://github.com/tera-arise/arise-data.git
     branch = .
     shallow = true
+    update = rebase
