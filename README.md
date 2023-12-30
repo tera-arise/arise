@@ -91,6 +91,9 @@ CREATE SCHEMA staging AUTHORIZATION arise;
 With this setup, and assuming you have PostgreSQL listening locally, you should
 now be able to successfully do `dotnet run --project src/server/daemon`.
 
+For development purposes, you may wish to make the entire history of the
+submodules available by running `git submodule foreach git fetch --unshallow`.
+
 ## Vendoring
 
 In order to deploy TERA Arise in non-development scenarios, it is necessary to
