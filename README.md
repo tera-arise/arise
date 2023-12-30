@@ -51,6 +51,9 @@ Development will typically require one of the following editors:
 * JetBrains Rider
 * JetBrains Fleet
 
+Note that you must clone the Git repository with the `--recursive` option as we
+make use of submodules.
+
 Simply run `./cake` (a [Bash](https://www.gnu.org/software/bash) script) to
 build client artifacts for Windows (x64) and server artifacts for the current
 platform (Windows or Linux, x64 or Arm64). This will use the `Debug`
@@ -91,8 +94,15 @@ CREATE SCHEMA staging AUTHORIZATION arise;
 With this setup, and assuming you have PostgreSQL listening locally, you should
 now be able to successfully do `dotnet run --project src/server/daemon`.
 
-For development purposes, you may wish to make the entire history of the
-submodules available by running `git submodule foreach git fetch --unshallow`.
+For development purposes, you will likely want to make some adjustments to the
+default submodule setup:
+
+* `git submodule foreach git checkout master`: Switch all submodules from
+  detached `HEAD` to tracking the actual branch. Without this, commits made in
+  submodules might be lost.
+* `git submodule foreach git fetch --unshallow`: Make available the entire
+  history of all submodules. Without this, tools like `git log` and `git blame`
+  will be largely useless.
 
 ## Vendoring
 
