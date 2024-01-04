@@ -15,62 +15,58 @@ internal static class ClientDistributor
 
     public static async ValueTask DistributeAsync(DistributorOptions options)
     {
-        var ghc = new GitHubClient(
-            new Octokit.ProductHeaderValue(ThisAssembly.AssemblyName, ThisAssembly.AssemblyVersion))
-        {
-            Credentials = new Credentials(options.GitHubToken),
-        };
+        using var client = ClientFactory.Create();
+        using var adapter = RequestAdapter.Create(
+            new TokenAuthenticationProvider(
+                $"{ThisAssembly.AssemblyName} {ThisAssembly.AssemblyVersion}", options.GitHubToken),
+            client);
 
         var timeout = options.UploadTimeout;
 
         if (timeout == TimeSpan.Zero)
             timeout = TimeSpan.FromHours(1);
 
-        ghc.SetRequestTimeout(timeout);
+        client.Timeout = timeout;
 
-        var repositoryApi = ghc.Repository;
-        var releaseApi = repositoryApi.Release;
+        var ghc = new GitHubClient(adapter);
+
+        var repoBuilder = ghc.Repos[options.RepositoryOwner][options.RepositoryName];
+        var releaseBuilder = repoBuilder.Releases;
 
         var releaseName = $"r{options.TeraRevision}";
 
         await Terminal.OutLineAsync($"Creating release {releaseName}...");
 
-        var repository = await repositoryApi.Get(options.RepositoryOwner, options.RepositoryName);
         var root = options.TeraDirectory;
 
-        Release release;
+        var releaseWithTagBuilder = releaseBuilder.Tags[releaseName];
+        var release = await releaseWithTagBuilder.GetAsync();
 
-        try
+        if (release == null)
         {
-            release = await releaseApi.Get(repository.Id, releaseName);
-
-            await Terminal.OutLineAsync($"Existing release found at: {release.HtmlUrl}");
-        }
-        catch (ApiException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-        {
-            release = await releaseApi.Create(
-                repository.Id,
-                new(releaseName)
-                {
-                    Name = releaseName,
-                    Body =
-                        $"""
-                        ```text
-                        {(await File.ReadAllTextAsync(
-                            Path.Combine(root.FullName, "Client", "Binaries", "ReleaseRevision.txt"))).Trim()}
-                        ```
-                        """,
-                    TargetCommitish = "7c680c08e868e8365eb0b2eddf660155591f15f4",
-                    Draft = true,
-                });
+            release = (await releaseBuilder.PostAsync(new()
+            {
+                TagName = releaseName,
+                Body =
+                    $"""
+                    ```text
+                    {(await File.ReadAllTextAsync(
+                        Path.Combine(root.FullName, "Client", "Binaries", "ReleaseRevision.txt"))).Trim()}
+                    ```
+                    """,
+                TargetCommitish = "7c680c08e868e8365eb0b2eddf660155591f15f4",
+                Draft = true,
+            }))!;
 
             await Terminal.OutLineAsync($"Draft release created at: {release.HtmlUrl}");
         }
+        else
+            await Terminal.OutLineAsync($"Existing release found at: {release.HtmlUrl}");
 
-        await Terminal.OutLineAsync($"Deleting {release.Assets.Count} old assets...");
+        await Terminal.OutLineAsync($"Deleting {release.Assets!.Count} old assets...");
 
         foreach (var asset in release.Assets)
-            await releaseApi.DeleteAsset(repository.Id, asset.Id);
+            await releaseBuilder.Assets[(int)asset.Id!].DeleteAsync();
 
         await Terminal.OutLineAsync($"Gathering manifest files in '{root}'...");
 
@@ -120,7 +116,8 @@ internal static class ClientDistributor
 
             await Terminal.OutLineAsync($"Uploading '{zipName}' ({stream.Length} bytes) to release {releaseName}...");
 
-            _ = await releaseApi.UploadAsset(release, new(zipName, MediaTypeNames.Application.Zip, stream, timeout));
+            // TODO: https://github.com/octokit/dotnet-sdk/issues/27
+            _ = await releases.UploadAsset(release, new(zipName, MediaTypeNames.Application.Zip, stream, timeout));
         }
 
         {
@@ -135,7 +132,8 @@ internal static class ClientDistributor
             await Terminal.OutLineAsync(
                 $"Uploading '{ManifestName}' ({stream.Length} bytes) to release {releaseName}...");
 
-            _ = await releaseApi.UploadAsset(
+            // TODO: https://github.com/octokit/dotnet-sdk/issues/27
+            _ = await releases.UploadAsset(
                 release, new(ManifestName, MediaTypeNames.Application.Json, stream, timeout));
         }
     }

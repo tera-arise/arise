@@ -5,10 +5,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Using Include="Octokit" />
+        <Using Include="GitHub" />
+        <Using Include="GitHub.Authentication" />
+        <Using Include="GitHub.Client" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Octokit" />
+        <PackageReference Include="Octokit.NET.SDK" />
     </ItemGroup>
 </Project>
