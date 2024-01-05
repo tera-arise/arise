@@ -6,7 +6,8 @@ internal static class DataCenterPacker
 {
     // Adapted from PackCommand in Novadrop.
 
-    private static readonly XNamespace _xsi = (XNamespace)"http://www.w3.org/2001/XMLSchema-instance";
+    private static readonly XName _schemaLocation =
+        XName.Get("schemaLocation", "http://www.w3.org/2001/XMLSchema-instance");
 
     public static async ValueTask PackAsync(PackerOptions options)
     {
@@ -83,7 +84,7 @@ internal static class DataCenterPacker
                         info,
                         null,
                         null,
-                        parent == root ? (string?)element.Attribute(_xsi + "schemaLocation") : null,
+                        parent == root ? (string?)element.Attribute(_schemaLocation) : null,
                         null);
 
                     DataCenterNode current;
