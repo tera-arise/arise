@@ -24,10 +24,6 @@ internal static class DataCenterPacker
                 .EnumerateFiles("?*-?*.xml", SearchOption.AllDirectories)
                 .OrderBy(static file => file.FullName, StringComparer.Ordinal)
                 .Select(static (file, index) => (File: file, Index: index)),
-            new ParallelOptions
-            {
-                MaxDegreeOfParallelism = Environment.ProcessorCount / 2,
-            },
             async (tup, ct) =>
             {
                 var file = tup.File;
