@@ -110,11 +110,11 @@
         <PackageVersion Include="Vezel.Novadrop.Interop"
                         Version="2.1.24" />
         <PackageVersion Include="Vezel.Ruptura.Hosting"
-                        Version="2.0.179" />
+                        Version="2.0.183" />
         <PackageVersion Include="Vezel.Ruptura.Injection"
-                        Version="2.0.179" />
+                        Version="2.0.183" />
         <PackageVersion Include="Vezel.Ruptura.Memory"
-                        Version="2.0.179" />
+                        Version="2.0.183" />
         <PackageVersion Include="YamlDotNet"
                         Version="13.7.1" />
     </ItemGroup>
