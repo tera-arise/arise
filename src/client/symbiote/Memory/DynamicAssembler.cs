@@ -2,11 +2,11 @@ namespace Arise.Client.Memory;
 
 internal static class DynamicAssembler
 {
-    public static unsafe void Patch(void* ptr, Action<Assembler> assemble)
+    public static unsafe void Patch<T>(void* ptr, Action<Assembler, T> assemble, T state)
     {
         var asm = new Assembler(64);
 
-        assemble(asm);
+        assemble(asm, state);
 
         _ = asm.Assemble(new RawCodeWriter((byte*)ptr), (ulong)ptr);
     }

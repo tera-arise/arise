@@ -21,14 +21,16 @@ internal sealed class LauncherApplicationHost : IHostedService
 
     Task IHostedService.StartAsync(CancellationToken cancellationToken)
     {
-        var thread = new Thread(() =>
+        var thread = new Thread(static state =>
         {
-            Logger.Sink = _logSink;
+            var @this = Unsafe.As<LauncherApplicationHost>(state!);
+
+            Logger.Sink = @this._logSink;
 
             try
             {
                 _ = AppBuilder
-                    .Configure(() => ActivatorUtilities.CreateInstance<LauncherApplication>(_services))
+                    .Configure(() => ActivatorUtilities.CreateInstance<LauncherApplication>(@this._services))
                     .UseWin32()
                     .UseSkia()
                     .UseReactiveUI()
@@ -40,11 +42,11 @@ internal sealed class LauncherApplicationHost : IHostedService
                 Logger.Sink = null;
             }
 
-            _hostLifetime.StopApplication();
+            @this._hostLifetime.StopApplication();
         });
 
         thread.SetApartmentState(ApartmentState.STA);
-        thread.Start();
+        thread.Start(this);
 
         return Task.CompletedTask;
     }

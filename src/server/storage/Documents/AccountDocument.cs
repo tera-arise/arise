@@ -25,6 +25,6 @@ public sealed class AccountDocument : IDocument, IVersioned
     public static void ConfigureMarten(DocumentMapping<AccountDocument> mapping)
     {
         // Inner property access cannot be expressed with attributes.
-        mapping.Index(doc => doc.Email.Address, idx => idx.IsUnique = true);
+        mapping.Index(static doc => doc.Email.Address, static idx => idx.IsUnique = true);
     }
 }

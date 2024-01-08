@@ -93,7 +93,7 @@ internal sealed class AccountsController : ApiController
 
             To verify your email address, use this token in the launcher: {token}
 
-            The token will expire on: {end.InUtc().Date.ToString(null, CultureInfo.InvariantCulture)}
+            The token will expire on: {InstantToString(end)}
             """);
 
         return Ok(new AccountsCreateResponse
@@ -131,7 +131,7 @@ internal sealed class AccountsController : ApiController
 
             To verify your email address, use this token in the launcher: {token}
 
-            The token will expire on: {end.InUtc().Date.ToString(null, CultureInfo.InvariantCulture)}
+            The token will expire on: {InstantToString(end)}
             """);
 
         return NoContent();
@@ -223,7 +223,7 @@ internal sealed class AccountsController : ApiController
 
                 To confirm the change, use this token in the launcher: {token}
 
-                The token will expire on: {end.InUtc().Date.ToString(null, CultureInfo.InvariantCulture)}
+                The token will expire on: {InstantToString(end)}
 
                 If you did not initiate this request, please change your password immediately.
                 """);
@@ -303,7 +303,7 @@ internal sealed class AccountsController : ApiController
 
                 A temporary password has been generated for you: {password}
 
-                The temporary password will expire on: {end.InUtc().Date.ToString(null, CultureInfo.InvariantCulture)}
+                The temporary password will expire on: {InstantToString(end)}
 
                 If you log in with the above password, it will replace your current password.
 
@@ -349,7 +349,7 @@ internal sealed class AccountsController : ApiController
 
             To confirm account deletion, use this token in the launcher: {token}
 
-            The token will expire on: {end.InUtc().Date.ToString(null, CultureInfo.InvariantCulture)}
+            The token will expire on: {InstantToString(end)}
 
             If you did not initiate this request, please change your password immediately.
             """);
@@ -457,5 +457,10 @@ internal sealed class AccountsController : ApiController
         }
 
         return true;
+    }
+
+    private static string InstantToString(Instant date)
+    {
+        return date.InUtc().Date.ToString(patternText: null, CultureInfo.InvariantCulture);
     }
 }

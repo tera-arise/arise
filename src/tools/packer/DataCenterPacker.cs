@@ -82,10 +82,10 @@ internal static class DataCenterPacker
                         name.LocalName,
                         name.NamespaceName,
                         info,
-                        null,
-                        null,
+                        xsiType: null,
+                        xsiNil: null,
                         parent == root ? (string?)element.Attribute(_schemaLocation) : null,
-                        null);
+                        xsiNoNamespaceSchemaLocation: null);
 
                     DataCenterNode current;
 
@@ -111,7 +111,7 @@ internal static class DataCenterPacker
                     {
                         var attrName = attr.Name;
                         var attrValue = validator.ValidateAttribute(
-                            attrName.LocalName, attrName.NamespaceName, attr.Value, null)!;
+                            attrName.LocalName, attrName.NamespaceName, attr.Value, schemaInfo: null)!;
 
                         current.AddAttribute(attr.Name.LocalName, attrValue switch
                         {
@@ -123,7 +123,7 @@ internal static class DataCenterPacker
                         });
                     }
 
-                    validator.ValidateEndOfAttributes(null);
+                    validator.ValidateEndOfAttributes(schemaInfo: null);
 
                     if (info.SchemaElement?.ElementSchemaType?.UnhandledAttributes is [_, ..] unhandled)
                     {
@@ -161,7 +161,7 @@ internal static class DataCenterPacker
                         }
                     }
 
-                    var value = validator.ValidateEndElement(null)?.ToString();
+                    var value = validator.ValidateEndElement(schemaInfo: null)?.ToString();
 
                     if (!string.IsNullOrEmpty(value))
                         current.Value = value;

@@ -106,9 +106,9 @@ internal sealed unsafe class DebuggerDetectionTask : GameProtectionTask
     {
         OBJECT_ATTRIBUTES oa;
 
-        InitializeObjectAttributes(&oa, null, 0, 0, null);
+        InitializeObjectAttributes(&oa, n: null, a: 0, r: 0, s: null);
 
-        if (NtCreateDebugObject(out var dbg, DEBUG_ALL_ACCESS, &oa, 0) != STATUS_SUCCESS)
+        if (NtCreateDebugObject(out var dbg, DEBUG_ALL_ACCESS, &oa, killProcessOnExit: 0) != STATUS_SUCCESS)
             return true;
 
         try
@@ -130,14 +130,24 @@ internal sealed unsafe class DebuggerDetectionTask : GameProtectionTask
 
     private static bool CheckNtSystemDebugControl()
     {
-        return NtSystemDebugControl(SysDbgQuerySpecialCalls, null, 0, null, 0, out _) != STATUS_DEBUGGER_INACTIVE;
+        return NtSystemDebugControl(
+            SysDbgQuerySpecialCalls,
+            inputBuffer: null,
+            inputBufferLength: 0,
+            outputBuffer: null,
+            outputBufferLength: 0,
+            out _) != STATUS_DEBUGGER_INACTIVE;
     }
 
     private static bool CheckThreadHideFromDebugger()
     {
         bool hide;
 
-        return NtSetInformationThread(NtCurrentThread, ThreadHideFromDebugger, null, 0) != STATUS_SUCCESS &&
+        return NtSetInformationThread(
+            NtCurrentThread,
+            ThreadHideFromDebugger,
+            threadInformation: null,
+            threadInformationLength: 0) != STATUS_SUCCESS &&
             (NtQueryInformationThread(NtCurrentThread, ThreadHideFromDebugger, &hide, sizeof(byte), out _), hide) !=
             (STATUS_SUCCESS, false);
     }

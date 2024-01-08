@@ -22,7 +22,7 @@ public static class LauncherProgram
                 opts.ValidateOnBuild = true;
                 opts.ValidateScopes = true;
             })
-            .ConfigureServices(services =>
+            .ConfigureServices(static services =>
                 services
                     .AddAriseClientLauncher()
                     .AddHostedService(static provider => provider.GetRequiredService<LauncherApplicationHost>()))

@@ -33,7 +33,8 @@ public static class WebServiceCollectionExtensions
             .AddApplicationPart(typeof(ThisAssembly).Assembly)
             .Services
             .AddAuthentication()
-            .AddScheme<ApiAuthenticationOptions, ApiAuthenticationHandler>(ApiAuthenticationHandler.Name, null)
+            .AddScheme<ApiAuthenticationOptions, ApiAuthenticationHandler>(
+                ApiAuthenticationHandler.Name, configureOptions: null)
             .Services
             .AddAuthorization(static opts =>
                 opts.AddPolicy(

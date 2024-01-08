@@ -29,7 +29,11 @@ internal sealed partial class LauncherApplication : Application
 
         // Ensure that Ctrl-C in the console works as expected.
         _ = _hostLifetime.ApplicationStopping.UnsafeRegister(
-            _ => Dispatcher.UIThread.Post(() => lifetime.Shutdown(), DispatcherPriority.MaxValue), null);
+            static lifetime =>
+                Dispatcher.UIThread.Post(
+                    () => Unsafe.As<IClassicDesktopStyleApplicationLifetime>(lifetime!).Shutdown(),
+                    DispatcherPriority.MaxValue),
+            state: lifetime);
 
         var window = ActivatorUtilities.CreateInstance<MainWindow>(_services);
 

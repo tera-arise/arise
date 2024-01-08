@@ -33,36 +33,38 @@ internal sealed unsafe class TeraDataCenterLoader : IHostedService
         // Patch in the key and IV.
         DynamicAssembler.Patch(
             (void*)0x7ff69b884af4,
-            asm =>
+            static (asm, @this) =>
             {
                 static uint ReadUInt32(ReadOnlySpan<byte> buffer, int index)
                 {
                     return MemoryMarshal.Read<uint>(buffer[(sizeof(uint) * index)..]);
                 }
 
-                var key = _dataComponent.Key.Span;
+                var key = @this._dataComponent.Key.Span;
 
                 asm.mov(__dword_ptr[r11 - 0x48], ReadUInt32(key, 0));
                 asm.mov(__dword_ptr[r11 - 0x44], ReadUInt32(key, 1));
                 asm.mov(__dword_ptr[r11 - 0x40], ReadUInt32(key, 2));
                 asm.mov(__dword_ptr[r11 - 0x3c], ReadUInt32(key, 3));
 
-                var iv = _dataComponent.IV.Span;
+                var iv = @this._dataComponent.IV.Span;
 
                 asm.mov(__dword_ptr[r11 - 0x58], ReadUInt32(iv, 0));
                 asm.mov(__dword_ptr[r11 - 0x54], ReadUInt32(iv, 1));
                 asm.mov(__dword_ptr[r11 - 0x50], ReadUInt32(iv, 2));
                 asm.mov(__dword_ptr[r11 - 0x4c], ReadUInt32(iv, 3));
-            });
+            },
+            this);
 
         // Patch in code to read the FBufferReader pointer from _slot.
         DynamicAssembler.Patch(
             (void*)0x7ff69bb19f69,
-            asm =>
+            static (asm, @this) =>
             {
-                asm.mov(rax, (nuint)_slot);
+                asm.mov(rax, (nuint)@this._slot);
                 asm.mov(rax, __qword_ptr[rax]);
-            });
+            },
+            this);
 
         return Task.CompletedTask;
     }
