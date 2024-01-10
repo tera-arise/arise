@@ -80,15 +80,15 @@ internal static class ClientPatcher
         // Disable scheduling S1AutoLogoutJob. We will handle idle disconnection on the server side.
         await PatchAsync("S1Context::Initialize", 0x7ff69bab64e7, static asm => asm.nop(57));
 
-        // These are all hooked by the symbiote to integrate the QUIC-based network protocol. Make sure that the
-        // unhooked versions of the functions just cause a crash.
+        // These are all hooked by the client to integrate the QUIC-based network protocol. Make sure that the unhooked
+        // versions of the functions just cause a crash.
         await PatchAsync("S1Connection::Connect", 0x7ff69baa9fc0, static asm => asm.ud2());
         await PatchAsync("S1Connection::Disconnect", 0x7ff69baaa530, static asm => asm.ud2());
         await PatchAsync("S1CommandQueue::RunCommands", 0x7ff69baaa560, static asm => asm.ud2());
         await PatchAsync("S1ConnectionManager::SendPacket", 0x7ff69babe7b0, static asm => asm.ud2());
 
-        // The symbiote will hook this function and provide a memory-backed FArchive. Make sure that the unhooked
-        // version of the function just causes a crash.
+        // The client will hook this function and provide a memory-backed FArchive. Make sure that the unhooked version
+        // of the function just causes a crash.
         await PatchAsync("S1DataDB::Initialize", 0x7ff69bb19f30, static asm => asm.ud2());
         await PatchAsync("S1DataDB::Initialize", 0x7ff69bb19f69, static asm => asm.nop(23));
 
@@ -98,7 +98,7 @@ internal static class ClientPatcher
         await PatchAsync("S1LauncherProxy::Dispose", 0x7ff69bccc1e0, static asm => asm.ret());
         await PatchAsync("S1LauncherProxy::Initialize", 0x7ff69bcd0390, static asm => asm.ret());
 
-        // The symbiote will hook these functions to provide the necessary information. Make them crash by default.
+        // The client will hook these functions to provide the necessary information. Make them crash by default.
         await PatchAsync("S1LauncherProxy::SendSessionTicketRequest", 0x7ff69bccf390, static asm => asm.ud2());
         await PatchAsync("S1LauncherProxy::SendAccountNameRequest", 0x7ff69bccfa90, static asm => asm.ud2());
         await PatchAsync("S1LauncherProxy::SendServerListRequest", 0x7ff69bcdd2f0, static asm => asm.ud2());

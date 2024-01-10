@@ -2,7 +2,8 @@
 
 <div align="center">
     <img src="arise.png"
-         width="128" />
+         width="128"
+         alt="TERA Arise" />
 </div>
 
 <div align="center">

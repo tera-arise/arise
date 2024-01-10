@@ -1,0 +1,244 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>arise</AssemblyName>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <CopyDebugSymbolFilesFromPackages Condition="'$(DebugSymbols)' == 'true'">true</CopyDebugSymbolFilesFromPackages>
+        <EventSourceSupport>false</EventSourceSupport>
+        <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+        <IsPublishable>true</IsPublishable>
+        <NullabilityInfoContextSupport>false</NullabilityInfoContextSupport>
+        <OutputType>WinExe</OutputType>
+        <RootNamespace>Arise.Client</RootNamespace>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <RuntimeIdentifiers />
+        <SelfContained>true</SelfContained>
+        <!-- This is unfortunately needed due to the patcher reference. -->
+        <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AriseEmbedNetworkCertificate>arise</AriseEmbedNetworkCertificate>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <_ClientExecutableRevision>r387486</_ClientExecutableRevision>
+        <_ClientExecutableArchive>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision).zip</_ClientExecutableArchive>
+        <_ClientExecutableStamp>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision).stamp</_ClientExecutableStamp>
+        <_ClientExecutableUnpackedPath>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision)/TERA.unpacked.exe</_ClientExecutableUnpackedPath>
+        <_ClientExecutableCache>$(BaseIntermediateOutputPath)TERA.arise.cache</_ClientExecutableCache>
+        <_ClientExecutablePatchedPath>$(BaseIntermediateOutputPath)TERA.arise.exe</_ClientExecutablePatchedPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Arise.Bridge" />
+        <Using Include="Arise.Data" />
+        <Using Include="Arise.Gateway" />
+        <Using Include="Arise.IO" />
+        <Using Include="Arise.Net" />
+        <Using Include="Arise.Net.Packets" />
+        <Using Include="Arise.Net.Packets.Server" />
+        <Using Include="Arise.Net.Sessions" />
+        <Using Include="Arise.Reflection" />
+        <Using Include="Avalonia" />
+        <Using Include="Avalonia.Controls" />
+        <Using Include="Avalonia.Controls.ApplicationLifetimes" />
+        <Using Include="Avalonia.Controls.Templates" />
+        <Using Include="Avalonia.Logging" />
+        <Using Include="Avalonia.Markup.Xaml" />
+        <Using Include="Avalonia.Media.Imaging" />
+        <Using Include="Avalonia.Platform" />
+        <Using Include="Avalonia.ReactiveUI" />
+        <Using Include="Avalonia.Threading" />
+        <Using Include="Iced.Intel" />
+        <Using Include="Microsoft.Extensions.Configuration" />
+        <Using Include="Microsoft.Extensions.DependencyInjection" />
+        <Using Include="Microsoft.Extensions.DependencyInjection.Extensions" />
+        <Using Include="Microsoft.Extensions.Hosting" />
+        <Using Include="Microsoft.Extensions.Logging" />
+        <Using Include="Microsoft.Extensions.ObjectPool" />
+        <Using Include="Microsoft.Extensions.Options" />
+        <Using Include="NAudio.Extras" />
+        <Using Include="NAudio.Vorbis" />
+        <Using Include="NAudio.Wave" />
+        <Using Include="ReactiveUI" />
+        <Using Include="Refit" />
+        <Using Include="Serilog" />
+        <Using Include="Serilog.Events" />
+        <Using Include="Serilog.Sinks.SystemConsole.Themes" />
+        <Using Include="System.Reactive.Disposables" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../shared/core/core.csproj" />
+        <ProjectReference Include="../shared/data/data.csproj" />
+        <ProjectReference Include="../shared/gateway/gateway.csproj" />
+        <ProjectReference Include="../tools/patcher/patcher.csproj"
+                          Private="false"
+                          ReferenceOutputAssembly="false"
+                          OutputItemType="ArisePatcher" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Fonts.Inter" />
+        <PackageReference Include="Avalonia.ReactiveUI" />
+        <PackageReference Include="Avalonia.Skia" />
+        <PackageReference Include="Avalonia.Themes.Fluent" />
+        <PackageReference Include="Avalonia.Win32" />
+        <PackageReference Include="Markdown.Avalonia.Tight" />
+        <PackageReference Include="Material.Icons.Avalonia" />
+        <PackageReference Include="Microsoft.ClearScript.V8" />
+        <PackageReference Include="Microsoft.ClearScript.V8.Native.win-x64" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" />
+        <PackageReference Include="Microsoft.Extensions.Http" />
+        <PackageReference Include="Microsoft.Windows.CsWin32"
+                          PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Windows.SDK.Win32Docs"
+                          PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Windows.SDK.Win32Metadata"
+                          PrivateAssets="all" />
+        <PackageReference Include="NAudio.Extras" />
+        <PackageReference Include="NAudio.Vorbis" />
+        <PackageReference Include="ReactiveUI.Validation" />
+        <PackageReference Include="Serilog.Extensions.Hosting" />
+        <PackageReference Include="Serilog.Sinks.Console" />
+        <PackageReference Include="Vezel.Novadrop.Client" />
+        <PackageReference Include="Vezel.Novadrop.Interop" />
+        <PackageReference Include="Vezel.Ruptura.Hosting" />
+        <PackageReference Include="Vezel.Ruptura.Injection" />
+        <PackageReference Include="Vezel.Ruptura.Memory" />
+    </ItemGroup>
+
+    <Target Name="_ApplyServerUriAttributes"
+            BeforeTargets="GetAssemblyAttributes">
+        <MSBuild Projects="$(AriseVendorProjectPath)"
+                 Targets="GetGatewayServerUri">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="AriseGatewayServerUri" />
+        </MSBuild>
+        <MSBuild Projects="$(AriseVendorProjectPath)"
+                 Targets="GetWorldServerUri">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="AriseWorldServerUri" />
+        </MSBuild>
+
+        <PropertyGroup>
+            <_GatewayServerUri>@(AriseGatewayServerUri)</_GatewayServerUri>
+            <_WorldServerUri>@(AriseWorldServerUri)</_WorldServerUri>
+        </PropertyGroup>
+
+        <ItemGroup>
+            <AssemblyMetadata Include="Arise.GatewayServerUri"
+                              Value="$(_GatewayServerUri)"
+                              Condition="'$(_GatewayServerUri)' != ''" />
+            <AssemblyMetadata Include="Arise.WorldServerUri"
+                              Value="$(_WorldServerUri)"
+                              Condition="'$(_WorldServerUri)' != ''" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="AddGameIcons"
+            DependsOnTargets="GetGameIcons"
+            BeforeTargets="AssignTargetPaths">
+        <ItemGroup>
+            <AvaloniaResource Include="@(AriseGameIcon)"
+                              Link="arise%(Extension)"
+                              Condition="'%(Extension)' == '.png'" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="_AddMultimediaAssets"
+            BeforeTargets="AddAvaloniaResources">
+        <MSBuild Projects="$(AriseVendorProjectPath)"
+                 Targets="GetMultimediaAssetsPath">
+            <Output TaskParameter="TargetOutputs"
+                    ItemName="AriseMultimediaAssetsPath" />
+        </MSBuild>
+
+        <PropertyGroup>
+            <_MultimediaAssetsPath>@(AriseMultimediaAssetsPath)</_MultimediaAssetsPath>
+        </PropertyGroup>
+
+        <ItemGroup>
+            <_MultimediaAsset Include="$(_MultimediaAssetsPath)/**" />
+            <AvaloniaResource Include="@(_MultimediaAsset)"
+                              Link="%(RecursiveDir)%(Filename)%(Extension)" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="_RestoreClientExecutable"
+            AfterTargets="_GenerateRestoreProjectPathWalk">
+        <DownloadFile SourceUrl="https://github.com/alexrp/tera-re/releases/download/$(_ClientExecutableRevision)/$(_ClientExecutableRevision).zip"
+                      DestinationFolder="$(BaseIntermediateOutputPath)"
+                      Condition="!Exists('$(_ClientExecutableArchive)')" />
+
+        <Unzip SourceFiles="$(_ClientExecutableArchive)"
+               DestinationFolder="$(BaseIntermediateOutputPath)"
+               Condition="!Exists('$(_ClientExecutableStamp)')" />
+
+        <Touch Files="$(_ClientExecutableStamp)"
+               AlwaysCreate="true" />
+    </Target>
+
+    <Target Name="_WriteClientExecutableCache">
+        <Hash ItemsToHash="$(MSBuildAllProjects); @(ArisePatcher); $(_ClientExecutableUnpackedPath)"
+              IgnoreCase="true">
+            <Output TaskParameter="HashResult"
+                    PropertyName="_ClientExecutableCacheHash" />
+        </Hash>
+
+        <WriteLinesToFile Lines="$(_ClientExecutableCacheHash)"
+                          File="$(_ClientExecutableCache)"
+                          Overwrite="true"
+                          WriteOnlyWhenDifferent="true" />
+
+        <ItemGroup>
+            <FileWrites Include="$(_ClientExecutableCache)" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="_PackClientExecutable"
+            Inputs="@(ArisePatcher); $(_ClientExecutableUnpackedPath)"
+            Outputs="$(_ClientExecutablePatchedPath)"
+            DependsOnTargets="_WriteClientExecutableCache"
+            BeforeTargets="AddAvaloniaResources">
+        <Exec Command="dotnet @(ArisePatcher) $(_ClientExecutableUnpackedPath) $(_ClientExecutablePatchedPath)"
+              StandardOutputImportance="low"
+              StandardErrorImportance="low" />
+
+        <ItemGroup>
+            <FileWrites Include="$(_ClientExecutablePatchedPath)" />
+        </ItemGroup>
+
+        <ItemGroup>
+            <AvaloniaResource Include="$(_ClientExecutablePatchedPath)"
+                              Link="TERA.arise.exe" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="_WriteDeploymentManifest"
+            DependsOnTargets="GetGameRevision"
+            AfterTargets="AfterBuild">
+        <PropertyGroup>
+            <_ManifestJsonPath>$(OutputPath)manifest.json</_ManifestJsonPath>
+        </PropertyGroup>
+
+        <PropertyGroup>
+            <_ManifestJson>
+                <![CDATA[
+{
+  "version": "$(AriseGameRevision)"
+}
+                ]]>
+            </_ManifestJson>
+        </PropertyGroup>
+
+        <WriteLinesToFile File="$(_ManifestJsonPath)"
+                          Lines="$(_ManifestJson)"
+                          Overwrite="true"
+                          WriteOnlyWhenDifferent="true" />
+
+        <ItemGroup>
+            <FileWrites Include="$(_ManifestJsonPath)" />
+        </ItemGroup>
+    </Target>
+</Project>

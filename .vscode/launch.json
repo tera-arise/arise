@@ -38,7 +38,7 @@
       "program": "${workspaceFolder}/out/bin/src/server/daemon/debug/arised.dll"
     },
     {
-      "name": ".NET: Launch Switcher",
+      "name": ".NET: Launch Client",
       "presentation": {
         "group": "arise"
       },
@@ -52,8 +52,8 @@
         "searchNuGetOrgSymbolServer": true
       },
       "console": "internalConsole",
-      "cwd": "${workspaceFolder}/src/client/switcher",
-      "program": "${workspaceFolder}/out/bin/src/client/switcher/debug/arise.dll",
+      "cwd": "${workspaceFolder}/src/client",
+      "program": "${workspaceFolder}/out/bin/src/client/debug/arise.dll",
       "args": [
         "--Launcher:GameConsole",
         "true"
