@@ -1,0 +1,35 @@
+[file ".editorconfig"]
+	url = https://github.com/tera-arise/.github/blob/master/syn/.editorconfig
+	sha = a52fdae06d1a2fb13ec9d091eb9767373add18cb
+	etag = b64aa1799407b1fea7d7ffe1d258020ff960cd6612f6a101430e0df7075056c8
+	weak
+[file ".gitattributes"]
+	url = https://github.com/tera-arise/.github/blob/master/syn/.gitattributes
+	sha = a52fdae06d1a2fb13ec9d091eb9767373add18cb
+	etag = 7605f9ae4a51eb262a13224cdbf7c7586a5276aa51d024922abb4a9cc42d5848
+	weak
+[file ".markdownlint.json"]
+	url = https://github.com/tera-arise/.github/blob/master/syn/.markdownlint.json
+	sha = a52fdae06d1a2fb13ec9d091eb9767373add18cb
+	etag = cf98ac95cf318b52e206b9003e342de9db2ecb7be062eab6edf1681b1f374b3a
+	weak
+[file "LICENSE-AGPL-3.0"]
+	url = https://github.com/tera-arise/.github/blob/master/syn/LICENSE-AGPL-3.0
+	sha = a52fdae06d1a2fb13ec9d091eb9767373add18cb
+	etag = dfeb635963b5f5f0e1343e2e407e2c700c2c261f5610d2394350cb113853dc56
+	weak
+[file "allowed_signers"]
+	url = https://github.com/tera-arise/.github/blob/master/syn/allowed_signers
+	sha = a52fdae06d1a2fb13ec9d091eb9767373add18cb
+	etag = 61cb86e861d093c45ecc86d7e1a99ad9b315df0eb99cb216a844439d3678b8c8
+	weak
+[file "cake"]
+	url = https://github.com/tera-arise/.github/blob/master/syn/cake
+	sha = a52fdae06d1a2fb13ec9d091eb9767373add18cb
+	etag = e01672adb9650fad761fd21f0e2349afaf9294d5f00825a429ae3060a2f3576f
+	weak
+[file "cake.config"]
+	url = https://github.com/tera-arise/.github/blob/master/syn/cake.config
+	sha = a52fdae06d1a2fb13ec9d091eb9767373add18cb
+	etag = 71fbce2c699768f363332125e11b7e6335672c19932a369f7e146faf579371e9
+	weak
