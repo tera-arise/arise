@@ -38,3 +38,8 @@
 	sha = a52fdae06d1a2fb13ec9d091eb9767373add18cb
 	etag = 1a37c641ea5aeda5671440422578c1a054e7177257856b137191cf6e181e29e1
 	weak
+[file "tasks.vs.json"]
+	url = https://github.com/tera-arise/.github/blob/master/syn/tasks.vs.json
+	sha = 96bc579c85d292bf87d8d97188792d3adfc80e77
+	etag = e37280c2dccfe881742b68239db201d39758cff1f1c7472f358b7a1164a5771d
+	weak

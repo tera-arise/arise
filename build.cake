@@ -61,6 +61,9 @@ DotNetMSBuildSettings ConfigureMSBuild(string target)
 Task("default")
     .IsDependentOn("publish");
 
+Task("default-editor")
+    .IsDependentOn("publish");
+
 Task("restore")
     .Does(() =>
         DotNetRestore(
