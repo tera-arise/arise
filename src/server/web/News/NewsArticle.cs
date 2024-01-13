@@ -10,5 +10,5 @@ internal sealed class NewsArticle
 
     public required string Summary { get; init; }
 
-    public required HtmlString Content { get; init; }
+    public required string Content { get; init; }
 }

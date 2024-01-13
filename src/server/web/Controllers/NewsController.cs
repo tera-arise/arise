@@ -1,55 +1,29 @@
-using Arise.Server.Web.Models.News;
 using Arise.Server.Web.News;
 
 namespace Arise.Server.Web.Controllers;
 
-internal sealed class NewsController : WebController
+internal sealed class NewsController : ApiController
 {
-    private readonly IOptions<WebOptions> _options;
-
-    private readonly NewsArticleProvider _provider;
-
-    public NewsController(IOptions<WebOptions> options, NewsArticleProvider provider)
+    [AllowAnonymous]
+    [DisableRateLimiting]
+    [HttpGet]
+    public IActionResult List(
+        IOptions<WebOptions> options, NewsArticleProvider provider, [FromQuery][Range(0, int.MaxValue)] int page)
     {
-        _options = options;
-        _provider = provider;
-    }
+        var size = options.Value.NewsPageSize;
 
-    public IActionResult Index([FromQuery][Range(0, int.MaxValue)] int page)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest();
-
-        var size = _options.Value.NewsPageSize;
-
-        return View(new NewsIndexModel
+        return Ok(new NewsListResponse
         {
-            Articles = _provider.Articles
+            Articles = provider.Articles
                 .Skip(size * page)
-                .Take(size),
+                .Take(size)
+                .Select(static article => new NewsListResponse.NewsListResponseArticle
+                {
+                    Date = article.Date,
+                    Slug = article.Slug,
+                    Title = article.Title,
+                    Summary = article.Summary,
+                }),
         });
-    }
-
-    [Route("[controller]/{year}/{month}/{day}/{slug}")]
-    public IActionResult View([FromRoute] int year, [FromRoute] int month, [FromRoute] int day, [FromRoute] string slug)
-    {
-        LocalDate date;
-
-        try
-        {
-            date = new(year, month, day);
-        }
-        catch (ArgumentOutOfRangeException)
-        {
-            return NotFound();
-        }
-
-        return _provider.Articles.SingleOrDefault(
-            article => (article.Date, article.Slug) == (date, slug)) is { } article
-            ? View(new NewsViewModel
-            {
-                Article = article,
-            })
-            : NotFound();
     }
 }

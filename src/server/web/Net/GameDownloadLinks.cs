@@ -13,7 +13,6 @@ internal sealed class GameDownloadLinks
 
     public GameDownloadLinks(IOptions<WebOptions> options)
     {
-        // uri = https://github.com/tera-arise/arise-client/releases/r{0}/download/{1}
         static Uri CreateUri(string uri, int revision, string path)
         {
             return new(string.Format(CultureInfo.InvariantCulture, uri, revision, path));

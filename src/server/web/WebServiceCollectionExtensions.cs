@@ -12,7 +12,7 @@ public static class WebServiceCollectionExtensions
     public static IServiceCollection AddWebServices(this IServiceCollection services)
     {
         return services
-            .AddControllersWithViews(static opts =>
+            .AddControllers(static opts =>
             {
                 opts.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
 

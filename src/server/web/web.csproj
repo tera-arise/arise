@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
     <PropertyGroup>
-        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
         <AssemblyName>Arise.Server.Web</AssemblyName>
         <RootNamespace>Arise.Server.Web</RootNamespace>
         <StaticWebAssetsEnabled>false</StaticWebAssetsEnabled>
@@ -23,21 +22,16 @@
         <Using Include="Microsoft.AspNetCore.Authentication" />
         <Using Include="Microsoft.AspNetCore.Authorization" />
         <Using Include="Microsoft.AspNetCore.Builder" />
-        <Using Include="Microsoft.AspNetCore.Diagnostics" />
         <Using Include="Microsoft.AspNetCore.Hosting" />
-        <Using Include="Microsoft.AspNetCore.Html" />
         <Using Include="Microsoft.AspNetCore.Http" />
         <Using Include="Microsoft.AspNetCore.HttpOverrides" />
         <Using Include="Microsoft.AspNetCore.Mvc" />
         <Using Include="Microsoft.AspNetCore.Mvc.Controllers" />
         <Using Include="Microsoft.AspNetCore.Mvc.ModelBinding" />
         <Using Include="Microsoft.AspNetCore.Mvc.ModelBinding.Metadata" />
-        <Using Include="Microsoft.AspNetCore.Mvc.RazorPages" />
         <Using Include="Microsoft.AspNetCore.RateLimiting" />
         <Using Include="Microsoft.AspNetCore.ResponseCompression" />
         <Using Include="Microsoft.AspNetCore.Server.Kestrel.Core" />
-        <Using Include="Microsoft.AspNetCore.WebUtilities" />
-        <Using Include="Microsoft.Extensions.Configuration" />
         <Using Include="Microsoft.Extensions.DependencyInjection" />
         <Using Include="Microsoft.Extensions.FileProviders" />
         <Using Include="Microsoft.Extensions.Hosting" />
@@ -50,11 +44,6 @@
         <Using Include="SendGrid.Helpers.Mail" />
         <Using Include="System.Threading.RateLimiting" />
         <Using Include="YamlDotNet.RepresentationModel" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Update="wwwroot/**"
-                 CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
     <ItemGroup>
@@ -74,36 +63,6 @@
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
-
-    <Target Name="AddGameIcons"
-            DependsOnTargets="GetGameIcons"
-            BeforeTargets="AssignTargetPaths">
-        <ItemGroup>
-            <Content Include="@(AriseGameIcon)"
-                     Link="wwwroot/favicon%(Extension)"
-                     CopyToOutputDirectory="PreserveNewest" />
-        </ItemGroup>
-    </Target>
-
-    <Target Name="_AddMultimediaAssets"
-            BeforeTargets="AssignTargetPaths">
-        <MSBuild Projects="$(AriseVendorProjectPath)"
-                 Targets="GetMultimediaAssetsPath">
-            <Output TaskParameter="TargetOutputs"
-                    ItemName="AriseMultimediaAssetsPath" />
-        </MSBuild>
-
-        <PropertyGroup>
-            <_MultimediaAssetsPath>@(AriseMultimediaAssetsPath)</_MultimediaAssetsPath>
-        </PropertyGroup>
-
-        <ItemGroup>
-            <_MultimediaAsset Include="$(_MultimediaAssetsPath)/**" />
-            <Content Include="@(_MultimediaAsset)"
-                     Link="wwwroot/assets/%(RecursiveDir)%(Filename)%(Extension)"
-                     CopyToOutputDirectory="PreserveNewest" />
-        </ItemGroup>
-    </Target>
 
     <Target Name="_AddNewsArticles"
             BeforeTargets="AssignTargetPaths">

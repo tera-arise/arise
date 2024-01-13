@@ -1,6 +1,6 @@
 using Arise.Server.Web.Net;
 
-namespace Arise.Server.Web.Controllers.Api;
+namespace Arise.Server.Web.Controllers;
 
 internal sealed class VersionController : ApiController
 {

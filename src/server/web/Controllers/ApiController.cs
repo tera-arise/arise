@@ -1,14 +1,14 @@
 using Arise.Server.Web.Authentication;
 using Arise.Server.Web.RateLimiting;
 
-namespace Arise.Server.Web.Controllers.Api;
+namespace Arise.Server.Web.Controllers;
 
 [ApiController]
 [Authorize(ApiAuthenticationHandler.Name)]
 [Consumes(MediaTypeNames.Application.Json)]
 [EnableRateLimiting(ApiRateLimiterPolicy.Name)]
 [Produces(MediaTypeNames.Application.Json)]
-[Route("api/[controller]/[action]")]
+[Route("[controller]/[action]")]
 internal abstract class ApiController : ControllerBase
 {
     [NonAction]

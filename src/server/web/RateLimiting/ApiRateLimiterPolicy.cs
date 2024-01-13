@@ -25,8 +25,8 @@ internal sealed class ApiRateLimiterPolicy : IRateLimiterPolicy<IPAddress>
                 _ => new()
                 {
                     QueueLimit = 0,
-                    PermitLimit = value.ApiRateLimit,
-                    Window = value.ApiRateLimitPeriod.ToTimeSpan(),
+                    PermitLimit = value.RateLimit,
+                    Window = value.RateLimitPeriod.ToTimeSpan(),
                 });
     }
 }

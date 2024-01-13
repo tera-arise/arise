@@ -18,11 +18,6 @@ public static class WebHostBuilderExtensions
                     {
                         configure(builder);
 
-                        static bool IsApi(HttpContext context)
-                        {
-                            return context.Request.Path.StartsWithSegments("/Api", StringComparison.OrdinalIgnoreCase);
-                        }
-
                         var options = builder.ApplicationServices.GetRequiredService<IOptions<WebOptions>>().Value;
                         var fho = new ForwardedHeadersOptions
                         {
@@ -36,19 +31,12 @@ public static class WebHostBuilderExtensions
                         _ = builder
                             .UseForwardedHeaders(fho)
                             .UseResponseCompression()
-                            .UseWhen(static ctx => IsApi(ctx), static app => app.UseExceptionHandler())
-                            .UseWhen(
-                                static ctx => !IsApi(ctx),
-                                static app =>
-                                    app
-                                        .UseExceptionHandler("/Home/Exception")
-                                        .UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}"))
-                            .UseStaticFiles()
+                            .UseExceptionHandler()
                             .UseRouting()
                             .UseRateLimiter()
                             .UseAuthentication()
                             .UseAuthorization()
-                            .UseEndpoints(static eps => eps.MapDefaultControllerRoute());
+                            .UseEndpoints(static eps => eps.MapControllers());
                     }));
     }
 }

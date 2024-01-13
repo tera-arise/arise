@@ -88,7 +88,7 @@ internal sealed partial class NewsArticleProvider : IHostedService
                 Slug = Path.GetFileNameWithoutExtension(file.Name),
                 Title = (string)root["title"]!,
                 Summary = (string)root["summary"]!,
-                Content = new(ast.ToHtml(pipeline)),
+                Content = ast.ToHtml(pipeline),
             });
         }
 

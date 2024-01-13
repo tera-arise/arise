@@ -6,9 +6,9 @@ internal sealed class WebOptions : IOptions<WebOptions>
 
     public ICollection<string> ForwardingProxyRanges { get; } = new List<string>();
 
-    public int ApiRateLimit { get; set; } = 10;
+    public int RateLimit { get; set; } = 10;
 
-    public Duration ApiRateLimitPeriod { get; set; } = Duration.FromHours(1);
+    public Duration RateLimitPeriod { get; set; } = Duration.FromHours(1);
 
     public int TeraRevision { get; set; } = 387486;
 

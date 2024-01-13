@@ -2,7 +2,7 @@ using Arise.Server.Web.Authentication;
 using Arise.Server.Web.Cryptography;
 using Arise.Server.Web.Email;
 
-namespace Arise.Server.Web.Controllers.Api;
+namespace Arise.Server.Web.Controllers;
 
 internal sealed class AccountsController : ApiController
 {

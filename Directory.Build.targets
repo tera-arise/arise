@@ -5,7 +5,6 @@
         <Using Include="System.Collections.Concurrent" />
         <Using Include="System.Collections.Frozen" />
         <Using Include="System.Collections.Immutable" />
-        <Using Include="System.ComponentModel" />
         <Using Include="System.ComponentModel.DataAnnotations" />
         <Using Include="System.Diagnostics" />
         <Using Include="System.Diagnostics.CodeAnalysis" />
@@ -13,7 +12,6 @@
         <Using Include="System.IO.Compression" />
         <Using Include="System.Linq.Expressions" />
         <Using Include="System.Net" />
-        <Using Include="System.Net.Http" />
         <Using Include="System.Net.Http.Headers" />
         <Using Include="System.Net.Mime" />
         <Using Include="System.Net.Quic" />
