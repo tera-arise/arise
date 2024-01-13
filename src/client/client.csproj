@@ -69,8 +69,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="../shared/core/core.csproj" />
         <ProjectReference Include="../shared/data/data.csproj" />
+        <ProjectReference Include="../shared/game/game.csproj" />
         <ProjectReference Include="../shared/gateway/gateway.csproj" />
         <ProjectReference Include="../tools/patcher/patcher.csproj"
                           Private="false"
@@ -116,23 +116,23 @@
                     ItemName="AriseGatewayServerUri" />
         </MSBuild>
         <MSBuild Projects="$(AriseVendorProjectPath)"
-                 Targets="GetWorldServerUri">
+                 Targets="GetGameServerUri">
             <Output TaskParameter="TargetOutputs"
-                    ItemName="AriseWorldServerUri" />
+                    ItemName="AriseGameServerUri" />
         </MSBuild>
 
         <PropertyGroup>
             <_GatewayServerUri>@(AriseGatewayServerUri)</_GatewayServerUri>
-            <_WorldServerUri>@(AriseWorldServerUri)</_WorldServerUri>
+            <_GameServerUri>@(AriseGameServerUri)</_GameServerUri>
         </PropertyGroup>
 
         <ItemGroup>
             <AssemblyMetadata Include="Arise.GatewayServerUri"
                               Value="$(_GatewayServerUri)"
                               Condition="'$(_GatewayServerUri)' != ''" />
-            <AssemblyMetadata Include="Arise.WorldServerUri"
-                              Value="$(_WorldServerUri)"
-                              Condition="'$(_WorldServerUri)' != ''" />
+            <AssemblyMetadata Include="Arise.GameServerUri"
+                              Value="$(_GameServerUri)"
+                              Condition="'$(_GameServerUri)' != ''" />
         </ItemGroup>
     </Target>
 

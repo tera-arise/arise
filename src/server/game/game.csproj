@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>Arise.Server.Game</AssemblyName>
+        <RootNamespace>Arise.Server</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AriseEmbedNetworkCertificate>arised</AriseEmbedNetworkCertificate>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Arise.Bridge" />
+        <Using Include="Arise.Data" />
+        <Using Include="Arise.Diagnostics" />
+        <Using Include="Arise.Entities" />
+        <Using Include="Arise.IO" />
+        <Using Include="Arise.Net" />
+        <Using Include="Arise.Net.Packets" />
+        <Using Include="Arise.Net.Packets.Client" />
+        <Using Include="Arise.Net.Packets.Server" />
+        <Using Include="Arise.Net.Sessions" />
+        <Using Include="Arise.Reflection" />
+        <Using Include="dnlib.DotNet.Emit" />
+        <Using Include="DotNext.Linq.Expressions" />
+        <Using Include="Injectio.Attributes" />
+        <Using Include="Microsoft.Extensions.DependencyInjection" />
+        <Using Include="Microsoft.Extensions.DependencyInjection.Extensions" />
+        <Using Include="Microsoft.Extensions.FileProviders" />
+        <Using Include="Microsoft.Extensions.Hosting" />
+        <Using Include="Microsoft.Extensions.Logging" />
+        <Using Include="Microsoft.Extensions.ObjectPool" />
+        <Using Include="Microsoft.Extensions.Options" />
+        <Using Include="NodaTime" />
+        <Using Include="Vezel.Novadrop.Data" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="../../../geo/zones/x*y*.zone"
+                 Link="geometry/%(Filename)%(Extension)"
+                 CopyToOutputDirectory="PreserveNewest"
+                 Condition="'$(ArisePartialBuild)' != 'true'" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../../shared/data/data.csproj" />
+        <ProjectReference Include="../../shared/module/module.csproj" />
+        <ProjectReference Include="../storage/storage.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="dnlib" />
+        <PackageReference Include="Injectio"
+                          PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+        <PackageReference Include="Vezel.Novadrop.Formats" />
+    </ItemGroup>
+
+    <Target Name="_ApplyDataCenterAttributes"
+            DependsOnTargets="GetDataCenterParameters"
+            BeforeTargets="GetAssemblyAttributes">
+        <ItemGroup>
+            <AssemblyMetadata Include="Arise.DataCenterKey"
+                              Value="$(AriseDataCenterKey)" />
+            <AssemblyMetadata Include="Arise.DataCenterIV"
+                              Value="$(AriseDataCenterIV)" />
+        </ItemGroup>
+    </Target>
+</Project>

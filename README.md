@@ -65,8 +65,8 @@ Note that `Debug` and `Release` configurations are orthogonal to whether the
 resulting artifacts are suitable for deployment; see the
 [vendoring instructions](#vendoring).
 
-You will need to set up one or more databases to run the server daemon. Below is
-one possible way to do it which will match the expectations of the default
+You will need to set up one or more databases to run the server daemon(s). Below
+is one possible way to do it which will match the expectations of the default
 configuration files.
 
 Create a user called `arise`:
@@ -93,17 +93,7 @@ CREATE SCHEMA staging AUTHORIZATION arise;
 (The latter two are only required for non-development deployments.)
 
 With this setup, and assuming you have PostgreSQL listening locally, you should
-now be able to successfully do `dotnet run --project src/server/daemon`.
-
-For development purposes, you will likely want to make some adjustments to the
-default submodule setup:
-
-* `git submodule foreach git checkout master`: Switch all submodules from
-  detached `HEAD` to tracking the actual branch. Without this, commits made in
-  submodules might be lost.
-* `git submodule foreach git fetch --unshallow`: Make available the entire
-  history of all submodules. Without this, tools like `git log` and `git blame`
-  will be largely useless.
+now be able to successfully do `dotnet run --project src/daemons/uniond`.
 
 ## Vendoring
 
@@ -119,7 +109,7 @@ repository as a submodule, alongside a custom vendor project. A small build
 script can then invoke something like
 `arise/cake -c Release --vendor vendor/vendor.proj`.
 
-Additionally, for the server daemon, an extra configuration file is required,
+Additionally, for the server daemons, an extra configuration file is required,
 named either `arised.staging.json` or `arised.production.json` depending on
 environment. The following is an example of a bare-bones production
 configuration:
@@ -137,16 +127,16 @@ configuration:
       }
     },
     "Endpoints": {
-      "Web": {
+      "Gateway": {
         "Url": "https://my-tera.com:443"
       }
     }
   },
-  "Web": {
+  "Gateway": {
     "EmailAddress": "system@my-tera.com",
     "SendGridKey": "<SendGrid API key>"
   },
-  "World": {
+  "Game": {
     "Endpoints": [
       "0.0.0.0:7801",
       ":::7801"
@@ -154,6 +144,10 @@ configuration:
   }
 }
 ```
+
+If you intend to run the separate gateway and game daemons rather than the union
+daemon, you can also include the service name in the file name:
+`arise-gatewayd.json`, `arise-gamed.staging.json`, etc.
 
 ## Licensing
 
@@ -166,3 +160,23 @@ and server components to users.
 
 To be clear, this license only applies to TERA Arise itself; the original TERA
 game client and its assets are not subject to it.
+
+## Development
+
+For development purposes, you will likely want to make some adjustments to the
+default submodule setup:
+
+* `git submodule foreach git checkout master`: Switch all submodules from
+  detached `HEAD` to tracking the actual branch. Without this, commits made in
+  submodules might be lost.
+* `git submodule foreach git fetch --unshallow`: Make available the entire
+  history of all submodules. Without this, tools like `git log` and `git blame`
+  will be largely useless.
+
+Additionally, to verify commit signatures from other authors, you may wish to
+add this to your `.git/config` file:
+
+```gitconfig
+[gpg.ssh]
+    allowedSignersFile = allowed_signers
+```

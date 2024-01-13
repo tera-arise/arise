@@ -10,6 +10,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="../core/core.csproj" />
+        <ProjectReference Include="../game/game.csproj" />
     </ItemGroup>
 </Project>

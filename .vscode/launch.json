@@ -16,8 +16,8 @@
         "searchNuGetOrgSymbolServer": true
       },
       "console": "externalTerminal",
-      "cwd": "${workspaceFolder}/src/server/daemon",
-      "program": "${workspaceFolder}/out/bin/src/server/daemon/debug/arised.dll"
+      "cwd": "${workspaceFolder}/src/daemons/uniond",
+      "program": "${workspaceFolder}/out/bin/src/daemons/uniond/debug/arise-uniond.dll"
     },
     {
       "name": ".NET: Launch Daemon (Integrated)",
@@ -34,8 +34,8 @@
         "searchNuGetOrgSymbolServer": true
       },
       "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}/src/server/daemon",
-      "program": "${workspaceFolder}/out/bin/src/server/daemon/debug/arised.dll"
+      "cwd": "${workspaceFolder}/src/daemons/uniond",
+      "program": "${workspaceFolder}/out/bin/src/daemons/uniond/debug/arise-uniond.dll"
     },
     {
       "name": ".NET: Launch Client",

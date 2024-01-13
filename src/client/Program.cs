@@ -15,7 +15,7 @@ namespace Arise.Client;
 
 internal static class Program
 {
-    internal static Task Main(string[] args)
+    private static Task Main(string[] args)
     {
         var context = InjectedProgramContext.Instance;
         var isLauncher = context.InjectorProcessId == null;

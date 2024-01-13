@@ -106,24 +106,29 @@ internal sealed partial class GameClient : IHostedService
 
         async ValueTask<string> GetManifestResourceAsync(string name)
         {
-            await using var stream = typeof(ThisAssembly).Assembly.GetManifestResourceStream(name)!;
+            var stream = typeof(ThisAssembly).Assembly.GetManifestResourceStream(name)!;
 
-            var buffer = GC.AllocateUninitializedArray<byte>((int)stream.Length);
+            await using (stream.ConfigureAwait(false))
+            {
+                var buffer = GC.AllocateUninitializedArray<byte>((int)stream.Length);
 
-            await stream.ReadExactlyAsync(buffer, cancellationToken);
+                await stream.ReadExactlyAsync(buffer, cancellationToken).ConfigureAwait(false);
 
-            return Encoding.UTF8.GetString(buffer);
+                return Encoding.UTF8.GetString(buffer);
+            }
         }
 
-        var clientPem = await GetManifestResourceAsync("arise.pem");
-        var clientKey = await GetManifestResourceAsync("arise.key");
+        var clientPem = await GetManifestResourceAsync("arise.pem").ConfigureAwait(false);
+        var clientKey = await GetManifestResourceAsync("arise.key").ConfigureAwait(false);
 
-        using var caCert = X509Certificate2.CreateFromPem(await GetManifestResourceAsync("ca.pem"));
+        using var caCert = X509Certificate2.CreateFromPem(
+            await GetManifestResourceAsync("ca.pem").ConfigureAwait(false));
         using var clientCert = X509Certificate2.CreateFromPem(clientPem, clientKey);
 
-        var uri = _options.Value.WorldServerUri;
+        var uri = _options.Value.GameServerUri;
 
-        _ = await _client.ConnectAsync(new(uri.Host, uri.Port), caCert, clientCert, cancellationToken);
+        _ = await _client.ConnectAsync(new(uri.Host, uri.Port), caCert, clientCert, cancellationToken)
+            .ConfigureAwait(false);
     }
 
     Task IHostedService.StopAsync(CancellationToken cancellationToken)

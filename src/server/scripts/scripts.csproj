@@ -5,6 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="../world/world.csproj" />
+        <ProjectReference Include="../game/game.csproj" />
     </ItemGroup>
 </Project>

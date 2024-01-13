@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <AssemblyName>arise-gamed</AssemblyName>
+        <RootNamespace>Arise.Daemon.Game</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Arise.Server" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="arise-gamed.development.json"
+                 CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../../server/game/game.csproj" />
+        <ProjectReference Include="../../server/scripts/scripts.csproj" />
+        <ProjectReference Include="../host/host.csproj" />
+    </ItemGroup>
+</Project>

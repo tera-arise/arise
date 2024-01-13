@@ -4,7 +4,7 @@ internal sealed class GameOptions : IOptions<GameOptions>
 {
     public bool Console { get; set; }
 
-    public Uri WorldServerUri { get; set; } = new("arise://localhost:7801");
+    public Uri GameServerUri { get; set; } = new("arise://localhost:7801");
 
     public string AccountName { get; set; } = "arise@localhost";
 

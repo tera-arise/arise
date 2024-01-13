@@ -104,6 +104,6 @@
     <Target Name="GetGatewayServerUri"
             Returns="@(AriseGatewayServerUri)" />
 
-    <Target Name="GetWorldServerUri"
-            Returns="@(AriseWorldServerUri)" />
+    <Target Name="GetGameServerUri"
+            Returns="@(AriseGameServerUri)" />
 </Project>

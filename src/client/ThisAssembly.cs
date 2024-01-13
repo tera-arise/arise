@@ -2,7 +2,7 @@ internal static partial class ThisAssembly
 {
     public static string GameTitle { get; }
 
-    public static (Uri Gateway, Uri World)? ServerUris { get; }
+    public static (Uri Gateway, Uri Game)? ServerUris { get; }
 
     static ThisAssembly()
     {
@@ -11,7 +11,7 @@ internal static partial class ThisAssembly
         GameTitle = asm.GetMetadata("Arise.GameTitle");
 
         if (asm.TryGetMetadata("Arise.GatewayServerUri", out var gateway) &&
-            asm.TryGetMetadata("Arise.WorldServerUri", out var world))
-            ServerUris = (new(gateway), new(world));
+            asm.TryGetMetadata("Arise.GameServerUri", out var game))
+            ServerUris = (new(gateway), new(game));
     }
 }

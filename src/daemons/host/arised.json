@@ -1,0 +1,24 @@
+{
+  "Serilog": {
+    "Using": [
+      "Arise.Daemon.Host"
+    ],
+    "WriteTo": {
+      "Async": {
+        "Name": "Async",
+        "Args": {
+          "configure": {
+            "Console": {
+              "Name": "Console",
+              "Args": {
+                "outputTemplate": "[{Timestamp:HH:mm:ss}][{Level:w3}][{SourceContext}] {Message:lj}{NewLine}{Exception}",
+                "standardErrorFromLevel": "Warning",
+                "theme": "Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme::Code, Serilog.Sinks.Console"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

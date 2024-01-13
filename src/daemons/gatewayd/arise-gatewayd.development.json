@@ -1,0 +1,9 @@
+{
+  "Kestrel": {
+    "Endpoints": {
+      "Gateway": {
+        "Url": "https://localhost:5000"
+      }
+    }
+  }
+}

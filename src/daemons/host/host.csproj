@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>Arise.Daemon.Host</AssemblyName>
+        <RootNamespace>Arise.Daemon</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Arise.Server.Storage" />
+        <Using Include="CommandLine" />
+        <Using Include="Discord" />
+        <Using Include="Discord.WebSocket" />
+        <Using Include="Microsoft.Extensions.Configuration" />
+        <Using Include="Microsoft.Extensions.DependencyInjection" />
+        <Using Include="Microsoft.Extensions.Hosting" />
+        <Using Include="Serilog" />
+        <Using Include="Serilog.Configuration" />
+        <Using Include="Serilog.Core" />
+        <Using Include="Serilog.Events" />
+        <Using Include="Serilog.Settings.Configuration" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="arised.json; arised.development.json"
+                 CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../../server/storage/storage.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommandLineParser" />
+        <PackageReference Include="Discord.Net" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" />
+        <PackageReference Include="Serilog.Extensions.Hosting" />
+        <PackageReference Include="Serilog.Settings.Configuration" />
+        <PackageReference Include="Serilog.Sinks.Async" />
+        <PackageReference Include="Serilog.Sinks.Console" />
+    </ItemGroup>
+</Project>

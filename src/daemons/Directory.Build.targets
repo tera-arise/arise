@@ -1,0 +1,12 @@
+<Project>
+    <PropertyGroup Condition="'$(OutputType)' != 'Library'">
+        <CopyDebugSymbolFilesFromPackages Condition="'$(DebugSymbols)' == 'true'">true</CopyDebugSymbolFilesFromPackages>
+        <EnableDefaultContentItems>false</EnableDefaultContentItems>
+        <IsPublishable>true</IsPublishable>
+        <PublishIISAssets>false</PublishIISAssets>
+        <RetainVMGarbageCollection>true</RetainVMGarbageCollection>
+        <SelfContained>true</SelfContained>
+    </PropertyGroup>
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('$(MSBuildThisFile)', '$(MSBuildThisFileDirectory)..'))" />
+</Project>

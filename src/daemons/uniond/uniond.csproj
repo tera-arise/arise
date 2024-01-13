@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <AssemblyName>arise-uniond</AssemblyName>
+        <RootNamespace>Arise.Daemon.Union</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Arise.Server" />
+        <Using Include="Arise.Server.Gateway" />
+        <Using Include="Serilog" />
+        <Using Include="Serilog.Events" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="../gamed/arise-gamed.development.json; ../gatewayd/arise-gatewayd.development.json"
+                 Link="%(Filename)%(Extension)"
+                 CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../../server/game/game.csproj" />
+        <ProjectReference Include="../../server/gateway/gateway.csproj" />
+        <ProjectReference Include="../../server/scripts/scripts.csproj" />
+        <ProjectReference Include="../host/host.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Serilog.AspNetCore" />
+    </ItemGroup>
+</Project>
