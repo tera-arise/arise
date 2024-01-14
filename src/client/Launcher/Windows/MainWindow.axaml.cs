@@ -22,6 +22,9 @@ public sealed partial class MainWindow : LauncherWindow<MainController>
 
     private void OnCloseClick(object? sender, RoutedEventArgs e)
     {
+        if (Design.IsDesignMode)
+            return;
+
         // todo: check if something needs to be disposed beforehand
         // todo: check if this should just be minimized to tray instead of closing
         Close();
