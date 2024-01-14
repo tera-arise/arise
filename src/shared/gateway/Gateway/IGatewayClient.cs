@@ -9,7 +9,7 @@ public interface IGatewayClient
     public static JsonSerializerContext JsonContext => GatewayJsonSerializerContext.Default;
 
     [Post("/Accounts/Create")]
-    public abstract Task<IApiResponse<AccountsCreateResponse>> CreateAccountAsync([Body] AccountsCreateRequest request);
+    public abstract Task<IApiResponse<AccountsCreateResponse>> CreateAccountAsync([Body] AccountsCreateRequest body);
 
     [Patch("/Accounts/Send")]
     public abstract Task<IApiResponse> SendAccountEmailAsync(
@@ -19,16 +19,16 @@ public interface IGatewayClient
     public abstract Task<IApiResponse> VerifyAccountTokenAsync(
         [Header(EmailHeader)] string email,
         [Header(PasswordHeader)] string password,
-        [Body] AccountsVerifyRequest request);
+        [Body] AccountsVerifyRequest body);
 
     [Patch("/Accounts/Update")]
     public abstract Task<IApiResponse> UpdateAccountAsync(
         [Header(EmailHeader)] string email,
         [Header(PasswordHeader)] string password,
-        [Body] AccountsUpdateRequest request);
+        [Body] AccountsUpdateRequest body);
 
     [Patch("/Accounts/Recover")]
-    public abstract Task<IApiResponse> RecoverAccountAsync([Body] AccountsRecoverRequest request);
+    public abstract Task<IApiResponse> RecoverAccountAsync([Body] AccountsRecoverRequest body);
 
     [Delete("/Accounts/Delete")]
     public abstract Task<IApiResponse> RecoverAccountAsync(
@@ -46,8 +46,11 @@ public interface IGatewayClient
     public abstract Task<IApiResponse<AccountsAuthenticateResponse>> AuthenticateAccountAsync(
         [Header(EmailHeader)] string email, [Header(PasswordHeader)] string password);
 
-    [Get("/News/List?page={page}")]
-    public abstract Task<IApiResponse<NewsListResponse>> GetNewsAsync(int page);
+    [Get("/News/List")]
+    public abstract Task<IApiResponse<NewsListResponse>> ListNewsAsync([Body] NewsListRequest body);
+
+    [Get("/News/Get")]
+    public abstract Task<IApiResponse<NewsGetResponse>> GetNewsAsync([Body] NewsGetRequest body);
 
     [Get("/Version/Check")]
     public abstract Task<IApiResponse<VersionCheckResponse>> CheckVersionAsync();

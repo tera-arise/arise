@@ -2,20 +2,23 @@ using Arise.Server.Gateway.News;
 
 namespace Arise.Server.Gateway.Controllers;
 
+[AllowAnonymous]
+[DisableRateLimiting]
 internal sealed class NewsController : ApiController
 {
-    [AllowAnonymous]
-    [DisableRateLimiting]
+    [BindProperty]
+    [FromServices]
+    public required NewsArticleProvider ArticleProvider { get; init; }
+
     [HttpGet]
-    public IActionResult List(
-        IOptions<GatewayOptions> options, NewsArticleProvider provider, [FromQuery][Range(0, int.MaxValue)] int page)
+    public IActionResult List(NewsListRequest body, IOptions<GatewayOptions> options)
     {
         var size = options.Value.NewsPageSize;
 
         return Ok(new NewsListResponse
         {
-            Articles = provider.Articles
-                .Skip(size * page)
+            Articles = ArticleProvider.Articles
+                .Skip(size * body.Page)
                 .Take(size)
                 .Select(static article => new NewsListResponse.NewsListResponseArticle
                 {
@@ -25,5 +28,19 @@ internal sealed class NewsController : ApiController
                     Summary = article.Summary,
                 }),
         });
+    }
+
+    [HttpGet]
+    public IActionResult Get(NewsGetRequest body)
+    {
+        return ArticleProvider.Articles.SingleOrDefault(
+            article => (article.Date, article.Slug) == (body.Date, body.Slug)) is { } article
+            ? Ok(new NewsGetResponse
+            {
+                Title = article.Title,
+                Summary = article.Summary,
+                Content = article.Content,
+            })
+            : NotFound();
     }
 }

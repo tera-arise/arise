@@ -2,10 +2,10 @@ using Arise.Server.Gateway.Net;
 
 namespace Arise.Server.Gateway.Controllers;
 
+[AllowAnonymous]
+[DisableRateLimiting]
 internal sealed class VersionController : ApiController
 {
-    [AllowAnonymous]
-    [DisableRateLimiting]
     [HttpGet]
     public IActionResult Check(GameDownloadLinks provider)
     {
