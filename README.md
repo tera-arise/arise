@@ -78,7 +78,7 @@ CREATE USER arise PASSWORD 'arise';
 Create a database called `arise`, owned by `arise`:
 
 ```sql
-CREATE DATABASE arise OWNER 'arise' TEMPLATE 'template0' ENCODING 'utf8' LOCALE 'und-x-icu' ICU_LOCALE 'und' LOCALE_PROVIDER 'icu';
+CREATE DATABASE arise OWNER 'arise' TEMPLATE 'template0' ENCODING 'utf8' ICU_LOCALE 'und' LOCALE_PROVIDER 'icu';
 ```
 
 Finally, while connected to the `arise` database, create schemas for each kind
