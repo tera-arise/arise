@@ -1,5 +1,9 @@
 <Project Sdk="Microsoft.Build.NoTargets">
     <PropertyGroup>
+        <GenerateAssemblyVersionInfo>false</GenerateAssemblyVersionInfo>
+    </PropertyGroup>
+
+    <PropertyGroup>
         <_CAPemPath>ca.pem</_CAPemPath>
         <_CAKeyPath>ca.key</_CAKeyPath>
     </PropertyGroup>
