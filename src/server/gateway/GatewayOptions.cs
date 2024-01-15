@@ -20,6 +20,8 @@ internal sealed class GatewayOptions : IOptions<GatewayOptions>
 
     public string? SendGridKey { get; set; }
 
+    public string SendGridRegion { get; set; } = "global";
+
     public string EmailAddress { get; set; } = "arise@localhost";
 
     public Duration AccountVerificationTime { get; set; } = Duration.FromDays(7);

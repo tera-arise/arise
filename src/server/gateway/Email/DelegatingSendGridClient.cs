@@ -30,15 +30,17 @@ internal sealed class DelegatingSendGridClient : ISendGridClient
 
     public DelegatingSendGridClient(HttpClient client, IOptions<GatewayOptions> options)
     {
+        var value = options.Value;
+
         // If no API key is available, sending will just be a no-op.
-        if (options.Value.SendGridKey is { } key)
+        if (value.SendGridKey is { } key)
             _client = new(
                 client,
-                new()
+                new SendGridClientOptions
                 {
                     ApiKey = key,
                     HttpErrorAsException = true,
-                });
+                }.SetDataResidency(value.SendGridRegion));
     }
 
     [RegisterServices]
