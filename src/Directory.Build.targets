@@ -1,4 +1,8 @@
 <Project>
+    <ItemGroup>
+        <ProjectReference Include="$(AriseVendorProjectPath)" />
+    </ItemGroup>
+
     <Target Name="_ApplyGameTitleAttribute"
             BeforeTargets="GetAssemblyAttributes">
         <MSBuild Projects="$(AriseVendorProjectPath)"
