@@ -6,6 +6,7 @@
         <FluentTheme />
         <icons:MaterialIconStyles />
         <StyleInclude Source="/Launcher/Styles/Window.axaml" />
+        <StyleInclude Source="/Launcher/Styles/CheckBox.axaml" />
     </Application.Styles>
     <Application.Resources>
         <ResourceDictionary>
@@ -15,14 +16,22 @@
                     <SolidColorBrush x:Key="CloseButtonPointerOverBackground" Color="Red"/>
                     <SolidColorBrush x:Key="CloseButtonPressedBackground" Color="DarkRed"/>
                     <SolidColorBrush x:Key="DefaultButtonBackground" Color="#1000"/>
+                    <SolidColorBrush x:Key="ThemeTextMidBrush" Color="#bbb"/>
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="WindowBackground" Color="#222"/>
                     <SolidColorBrush x:Key="CloseButtonPointerOverBackground" Color="DarkRed"/>
                     <SolidColorBrush x:Key="CloseButtonPressedBackground" Color="Red"/>
                     <SolidColorBrush x:Key="DefaultButtonBackground" Color="#1fff"/>
+                    <SolidColorBrush x:Key="ThemeTextMidBrush" Color="#666"/>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
+        <!--9A2B70,76024F,6E014B,D764A1,412831 palette from arise logo-->
+        <SolidColorBrush x:Key="AccentBrush" Color="#9A2B70"/>
+
+        <!--not working; figure it out later-->
+        <!--<FontFamily x:Key="Quicksand">avares://Fonts#Quicksand Light</FontFamily>-->
+
     </Application.Resources>
 </Application>
