@@ -16,7 +16,7 @@
 
     <ItemGroup>
         <PackageVersion Include="Avalonia.Fonts.Inter"
-                        Version="11.0.6" />
+                        Version="11.0.7" />
         <PackageVersion Include="Avalonia.ReactiveUI"
                         Version="11.0.6" />
         <PackageVersion Include="Avalonia.Skia"
