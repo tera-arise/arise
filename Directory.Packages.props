@@ -30,7 +30,7 @@
         <PackageVersion Include="Discord.Net"
                         Version="3.13.0" />
         <PackageVersion Include="dnlib"
-                        Version="4.3.0" />
+                        Version="4.4.0" />
         <PackageVersion Include="DotNext.Metaprogramming"
                         Version="5.0.0" />
         <PackageVersion Include="EmailValidation"
