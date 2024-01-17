@@ -1,0 +1,102 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:controls="using:Arise.Client.Launcher.Controls"
+             xmlns:controllers="using:Arise.Client.Launcher.Controllers"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
+             x:DataType="controllers:MainController"
+             x:Class="Arise.Client.Launcher.Views.LoginForm"
+             Background="Transparent"
+             >
+
+    <Grid RowDefinitions="*,*,*,*,*,*"
+          >
+        <Grid.Styles>
+            <Style Selector="TextBox">
+                <Setter Property="Margin" Value="0 0 0 10"/>
+                <Setter Property="Padding" Value="12"/>
+                <Setter Property="CornerRadius" Value="8"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource ThemeTextMidBrush}"/>
+            </Style>
+        </Grid.Styles>
+        <TextBlock Margin="0 0 0 20"
+                   TextWrapping="Wrap">
+            <Run Text="TERA Arise"
+                 FontSize="22"
+                 FontWeight="DemiBold"/>
+            <LineBreak/>
+            <LineBreak/>
+            <Run Text="Use your account name and password to login"
+                 Foreground="{DynamicResource ThemeTextMidBrush}"/>
+        </TextBlock>
+        <Button HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Height="28"
+                Width="28"
+                CornerRadius="8"
+                Margin="0"
+                Background="Transparent"
+                Command="{Binding CloseModalCommand}">
+            <avalonia:MaterialIcon Kind="Close" />
+        </Button>
+        <TextBox VerticalAlignment="Center"
+                 Watermark="Username"
+                 x:Name="UsernameTextBox"
+                 Text="{Binding Username, Mode=TwoWay}"
+                 Grid.Row="1"
+                         />
+        <TextBox PasswordChar="•"
+                 Watermark="Password"
+                 VerticalAlignment="Center"
+                 Grid.Row="2"
+                 Text="{Binding Password, Mode=TwoWay}"
+                         />
+        <Button Content="Login"
+                Grid.Row="3"
+                CornerRadius="8"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Height="{Binding #UsernameTextBox.Bounds.Height}"
+                Command="{Binding LoginCommand}"
+                Background="{DynamicResource AccentBrush}"
+                        />
+        <CheckBox Grid.Row="4"
+                  Content="Remember me"
+                  FontSize="10"
+                  Padding="4 0 4 0"
+                  Classes="small"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Center"
+                  IsChecked="{Binding RememberMe}"
+                          />
+        <TextBlock HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Text="Recover password"
+                   Grid.Row="4"
+                   Padding="0 1 0 0"
+                   FontSize="10"
+                   Foreground="{DynamicResource AccentBrush}"
+                   Cursor="Hand"
+                   controls:CommandBehavior.Command="{Binding RecoverPasswordCommand}"
+                           />
+        <!--looks like we have no inline hyperlinks in avalonia
+                    https://github.com/AvaloniaUI/Avalonia/discussions/8818-->
+        <WrapPanel Grid.Row="5"
+                   Margin="0 10 0 0"
+                   Orientation="Horizontal"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center">
+            <TextBlock Text="You don't have an account? " FontSize="10"/>
+            <TextBlock Text="Register"
+                       FontSize="10"
+                       Foreground="{DynamicResource AccentBrush}"
+                       Cursor="Hand"
+                       controls:CommandBehavior.Command="{Binding RegisterCommand}"
+                               />
+            <TextBlock Text=" now." FontSize="10"/>
+        </WrapPanel>
+    </Grid>
+</UserControl>

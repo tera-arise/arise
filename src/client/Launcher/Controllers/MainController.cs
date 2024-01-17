@@ -1,5 +1,7 @@
 using System.Windows.Input;
+using Arise.Client.Gateway;
 using Arise.Client.Launcher.Media;
+using Avalonia.Data;
 
 namespace Arise.Client.Launcher.Controllers;
 
@@ -11,6 +13,7 @@ public sealed class MainController : LauncherController
     private string _password = string.Empty;
     private bool _rememberMe;
     private bool _isModalVisible;
+    private string _serverAddress = string.Empty;
 
     public bool IsLoggedIn
     {
@@ -48,6 +51,24 @@ public sealed class MainController : LauncherController
         set => this.RaiseAndSetIfChanged(ref _isModalVisible, value);
     }
 
+    public string ServerAddress
+    {
+        get => _serverAddress;
+        set
+        {
+            try
+            {
+                var svc = Services.GetService<GatewayClient>()!;
+                svc.BaseAddress = new Uri(value);
+                _ = this.RaiseAndSetIfChanged(ref _serverAddress, value);
+            }
+            catch (Exception ex)
+            {
+                throw new DataValidationException($"{ex.Message}");
+            }
+        }
+    }
+
     public ICommand LoginCommand { get; }
 
     public ICommand RecoverPasswordCommand { get; }
@@ -64,6 +85,9 @@ public sealed class MainController : LauncherController
         : base(services)
     {
         _musicPlayer = musicPlayer;
+
+        // todo: figure out where to get this URI from at startup
+        _serverAddress = Services.GetService<GatewayClient>()!.BaseAddress?.ToString() ?? string.Empty;
 
         LoginCommand = ReactiveCommand.Create(LoginAsync);
         RecoverPasswordCommand = ReactiveCommand.Create(RecoverPassword);
@@ -113,14 +137,43 @@ public sealed class MainController : LauncherController
 
     private async Task LoginAsync()
     {
+        // todo: add an IsLoggingIn state to signal the user that the request is being processed
+        // maybe bind it to a spinning indicator
+
+        // todo: use RememberMe setting (save it locally?)
+
         if (!IsLoggedIn)
         {
-            // todo: call GatewayClient
+            var client = Services.GetService<GatewayClient>()
+                ?? throw new InvalidOperationException("GatewayClient service not found"); // todo: idk how we should handle this case, if even possible
 
-            IsLoggedIn = true;
-            CurrentAccountName = "Foglio";
+            // todo: catch something?
+
+            try
+            {
+                var resp = await client.Rest.AuthenticateAccountAsync(Username, Password).ConfigureAwait(true);
+
+                if (resp.IsSuccessStatusCode)
+                {
+                    IsLoggedIn = true;
+                    CurrentAccountName = Username;
+
+                    // todo: handle all the data in the response (ban, mail verification, etc)
+                }
+                else
+                {
+                    // todo: handle login fail
+                }
+            }
+            finally
+            {
+                // clear the password as soon as it's been sent
+                Password = string.Empty;
+            }
         }
-
-        await Task.CompletedTask.ConfigureAwait(true);
+        else
+        {
+            // todo: warn?
+        }
     }
 }
