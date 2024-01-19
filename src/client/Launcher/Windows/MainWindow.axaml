@@ -26,8 +26,11 @@
         <Style Selector="Border#ModalDarkening">
             <Setter Property="Opacity" Value="0"/>
         </Style>
-     <Style Selector="Border#ModalDarkening.visible">
+        <Style Selector="Border#ModalDarkening.visible">
             <Setter Property="Opacity" Value="1"/>
+        </Style>
+        <Style Selector="controls|AcrylicBorder:pointerover">
+            <Setter Property="CornerRadius" Value="50"/>
         </Style>
     </Window.Styles>
 
@@ -101,10 +104,24 @@
                Stretch="Fill"
                IsHitTestVisible="False"
                Grid.Row="1" />
-        <!--
-        <Image Source="../../image_logo.webp"
+
+        <controls:AcrylicBorder
+            Width="300"
+            Height="200"
+            Grid.Row="1"
+            BoxShadow="0 10 15 0 #6000"
+            >
+            <controls:AcrylicBorder.Transitions>
+                <Transitions>
+                    <CornerRadiusTransition Property="CornerRadius" Duration="0:0:0.50"/>
+                </Transitions>
+            </controls:AcrylicBorder.Transitions>
+        </controls:AcrylicBorder>
+        
+        <!--<Image Source="../../image_logo.webp"
                IsHitTestVisible="False"
                Stretch="Uniform"
+               Width="280"
                Grid.Row="1" />-->
 
         <!--this should only be visible in dev builds
@@ -113,7 +130,6 @@
                  Grid.Row="1"
                  VerticalAlignment="Top"
                  Watermark="Server address"
-                 
                  />
 
         <Border x:Name="ModalDarkening"
