@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.Build.NoTargets">
+    <!-- TODO: https://github.com/dotnet/Nerdbank.GitVersioning/pull/1021 -->
     <PropertyGroup>
         <GenerateAssemblyVersionInfo>false</GenerateAssemblyVersionInfo>
     </PropertyGroup>
