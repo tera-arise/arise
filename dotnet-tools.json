@@ -8,12 +8,6 @@
         "dotnet-cake"
       ]
     },
-    "dotnet-aspnet-codegenerator": {
-      "version": "8.0.0",
-      "commands": [
-        "dotnet-aspnet-codegenerator"
-      ]
-    },
     "dotnet-config": {
       "version": "1.0.6",
       "commands": [
