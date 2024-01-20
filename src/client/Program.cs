@@ -9,6 +9,7 @@ using Arise.Client.Gateway;
 using Arise.Client.Launcher;
 using Arise.Client.Launcher.Controllers;
 using Arise.Client.Launcher.Media;
+using Arise.Client.Launcher.Settings;
 using Arise.Client.Launcher.Windows;
 using Arise.Client.Logging;
 using static Windows.Win32.WindowsPInvoke;
@@ -66,6 +67,7 @@ internal static class Program
                         .AddTransient<MainController>()
                         .AddTransient<MainWindow>()
                         .AddSingleton<MusicPlayer>()
+                        .AddSingleton<LauncherSettingsManager>()
                         .AddSingleton<AvaloniaLogSink>()
                         .AddSingleton<LauncherApplicationHost>()
                         .AddHttpClient<GatewayClient>()

@@ -1,19 +1,22 @@
 using System.Windows.Input;
 using Arise.Client.Gateway;
 using Arise.Client.Launcher.Media;
+using Arise.Client.Launcher.Settings;
 using Avalonia.Data;
 
 namespace Arise.Client.Launcher.Controllers;
 
 public sealed class MainController : LauncherController
 {
+    private readonly LauncherSettingsManager _launcherSettingsManager;
+    private readonly GatewayClient _gatewayClient;
     private bool _isLoggedIn;
     private string _currentAccountName = "LOGIN";
     private string _username = string.Empty;
     private string _password = string.Empty;
     private bool _rememberMe;
     private bool _isModalVisible;
-    private string _serverAddress = string.Empty;
+    private string _serverAddress;
 
     public bool IsLoggedIn
     {
@@ -81,13 +84,17 @@ public sealed class MainController : LauncherController
 
     private readonly MusicPlayer _musicPlayer;
 
-    public MainController(IServiceProvider services, MusicPlayer musicPlayer)
+    public MainController(IServiceProvider services, MusicPlayer musicPlayer, LauncherSettingsManager launcherSettingsManager)
         : base(services)
     {
         _musicPlayer = musicPlayer;
 
-        // todo: figure out where to get this URI from at startup
-        _serverAddress = Services.GetService<GatewayClient>()!.BaseAddress?.ToString() ?? string.Empty;
+        _launcherSettingsManager = launcherSettingsManager;
+
+        _gatewayClient = Services.GetService<GatewayClient>()!; // todo: inject this? it requires GatewayClient to be public tho
+        _gatewayClient.BaseAddress = _launcherSettingsManager.Settings.ServerAddress;
+
+        _serverAddress = _launcherSettingsManager.Settings.ServerAddress?.ToString() ?? string.Empty;
 
         LoginCommand = ReactiveCommand.Create(LoginAsync);
         RecoverPasswordCommand = ReactiveCommand.Create(RecoverPassword);
@@ -144,14 +151,11 @@ public sealed class MainController : LauncherController
 
         if (!IsLoggedIn)
         {
-            var client = Services.GetService<GatewayClient>()
-                ?? throw new InvalidOperationException("GatewayClient service not found"); // todo: idk how we should handle this case, if even possible
-
             // todo: catch something?
 
             try
             {
-                var resp = await client.Rest.AuthenticateAccountAsync(Username, Password).ConfigureAwait(true);
+                var resp = await _gatewayClient.Rest.AuthenticateAccountAsync(Username, Password).ConfigureAwait(true);
 
                 if (resp.IsSuccessStatusCode)
                 {
