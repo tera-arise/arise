@@ -45,7 +45,6 @@
         <Using Include="Avalonia.Controls.Templates" />
         <Using Include="Avalonia.Logging" />
         <Using Include="Avalonia.Markup.Xaml" />
-        <Using Include="Avalonia.Media.Imaging" />
         <Using Include="Avalonia.Platform" />
         <Using Include="Avalonia.Threading" />
         <Using Include="CommunityToolkit.Mvvm.ComponentModel" />
@@ -83,7 +82,6 @@
         <PackageReference Include="Avalonia.Themes.Fluent" />
         <PackageReference Include="Avalonia.Win32" />
         <PackageReference Include="CommunityToolkit.Mvvm" />
-        <PackageReference Include="Markdown.Avalonia.Tight" />
         <PackageReference Include="Material.Icons.Avalonia" />
         <PackageReference Include="Microsoft.ClearScript.V8" />
         <PackageReference Include="Microsoft.ClearScript.V8.Native.win-x64" />
@@ -99,7 +97,6 @@
         <PackageReference Include="NAudio.Vorbis" />
         <PackageReference Include="Serilog.Extensions.Hosting" />
         <PackageReference Include="Serilog.Sinks.Console" />
-        <PackageReference Include="Vezel.Novadrop.Client" />
         <PackageReference Include="Vezel.Novadrop.Interop" />
         <PackageReference Include="Vezel.Ruptura.Hosting" />
         <PackageReference Include="Vezel.Ruptura.Injection" />
