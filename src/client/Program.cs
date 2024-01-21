@@ -107,7 +107,6 @@ internal static class Program
             .Configure(factory)
             .UseWin32()
             .UseSkia()
-            .UseReactiveUI()
             .WithInterFont();
     }
 }

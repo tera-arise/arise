@@ -1,9 +1,7 @@
 namespace Arise.Client.Launcher.Controllers;
 
-public abstract class LauncherController : ReactiveObject, IActivatableViewModel
+public abstract class LauncherController : ObservableObject
 {
-    ViewModelActivator IActivatableViewModel.Activator { get; } = new();
-
     public IServiceProvider Services { get; }
 
     public string Title { get; } = ThisAssembly.GameTitle;

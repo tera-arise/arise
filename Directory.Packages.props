@@ -19,8 +19,6 @@
     <ItemGroup>
         <PackageVersion Include="Avalonia.Fonts.Inter"
                         Version="11.0.7" />
-        <PackageVersion Include="Avalonia.ReactiveUI"
-                        Version="11.0.7" />
         <PackageVersion Include="Avalonia.Skia"
                         Version="11.0.7" />
         <PackageVersion Include="Avalonia.Themes.Fluent"
@@ -29,6 +27,8 @@
                         Version="11.0.7" />
         <PackageVersion Include="CommandLineParser"
                         Version="2.9.1" />
+        <PackageVersion Include="CommunityToolkit.Mvvm"
+                        Version="8.2.2" />
         <PackageVersion Include="Discord.Net"
                         Version="3.13.0" />
         <PackageVersion Include="dnlib"
@@ -85,10 +85,6 @@
                         Version="9.1.0" />
         <PackageVersion Include="PeNet"
                         Version="4.0.4" />
-        <PackageVersion Include="ReactiveUI"
-                        Version="19.5.39" />
-        <PackageVersion Include="ReactiveUI.Validation"
-                        Version="3.1.7" />
         <PackageVersion Include="Refit"
                         Version="7.0.0" />
         <PackageVersion Include="SendGrid"

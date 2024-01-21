@@ -4,14 +4,21 @@ namespace Arise.Client.Launcher.Controllers;
 
 public sealed class MainController : LauncherController
 {
+    private readonly MusicPlayer _musicPlayer;
+
     public MainController(IServiceProvider services, MusicPlayer musicPlayer)
         : base(services)
     {
-        this.WhenActivated((CompositeDisposable disposable) =>
-        {
-            musicPlayer.Play();
+        _musicPlayer = musicPlayer;
+    }
 
-            disposable.Add(Disposable.Create(musicPlayer, static player => player.Stop()));
-        });
+    public void PlayMusic()
+    {
+        _musicPlayer.Play();
+    }
+
+    public void StopMusic()
+    {
+        _musicPlayer.Stop();
     }
 }
