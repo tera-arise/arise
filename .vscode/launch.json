@@ -8,6 +8,7 @@
       },
       "type": "coreclr",
       "request": "launch",
+      "checkForDevCert": true,
       "stopAtEntry": true,
       "suppressJITOptimizations": true,
       "justMyCode": false,
@@ -26,6 +27,7 @@
       },
       "type": "coreclr",
       "request": "launch",
+      "checkForDevCert": true,
       "stopAtEntry": true,
       "suppressJITOptimizations": true,
       "justMyCode": false,
@@ -53,7 +55,7 @@
       },
       "console": "internalConsole",
       "cwd": "${workspaceFolder}/src/client",
-      "program": "${workspaceFolder}/out/bin/src/client/debug/arise.dll",
+      "program": "${workspaceFolder}/out/bin/src/client/debug_win-x64/arise.dll",
       "args": [
         "--Launcher:GameConsole",
         "true"
