@@ -24,15 +24,18 @@ internal abstract class GamePacketSerializer<TCode, TPacket>
 
     private int _variableCounter;
 
+    [UnconditionalSuppressMessage("", "IL2026")]
+    [UnconditionalSuppressMessage("", "IL2072")]
     private protected GamePacketSerializer()
     {
         var creators = new Dictionary<TCode, Func<TPacket>>();
         var deserializers = new Dictionary<TCode, Action<TPacket, GameStreamAccessor>>();
         var serializers = new Dictionary<TCode, Action<TPacket, GameStreamAccessor>>();
 
+        [SuppressMessage("", "SA1134")]
         Action<TPacket, GameStreamAccessor> CompileFunction(Type type, Action<Expression, Expression> generator)
         {
-            return Lambda<Action<TPacket, GameStreamAccessor>>(ctx =>
+            return Lambda<Action<TPacket, GameStreamAccessor>>([UnconditionalSuppressMessage("", "IL2060")] (ctx) =>
             {
                 var (packet, accessor) = ctx;
 
@@ -62,7 +65,8 @@ internal abstract class GamePacketSerializer<TCode, TPacket>
         _serializers = serializers.ToFrozenDictionary();
     }
 
-    protected static IEnumerable<PropertyInfo> EnumerateProperties(Type type)
+    protected static IEnumerable<PropertyInfo> EnumerateProperties(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] Type type)
     {
         var isPacket = type.IsSubclassOf(typeof(GamePacket));
 

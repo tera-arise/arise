@@ -3,15 +3,23 @@
         <AssemblyName>arise</AssemblyName>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <CopyDebugSymbolFilesFromPackages Condition="'$(DebugSymbols)' == 'true'">true</CopyDebugSymbolFilesFromPackages>
+        <DebuggerSupport Condition="'$(DebugSymbols)' != 'true'">true</DebuggerSupport>
+        <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+        <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
         <EventSourceSupport>false</EventSourceSupport>
         <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+        <ILLinkTreatWarningsAsErrors>false</ILLinkTreatWarningsAsErrors>
         <IsPublishable>true</IsPublishable>
+        <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
         <NullabilityInfoContextSupport>false</NullabilityInfoContextSupport>
         <OutputType>WinExe</OutputType>
+        <PublishTrimmed>true</PublishTrimmed>
         <RootNamespace>Arise.Client</RootNamespace>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <RuntimeIdentifiers />
         <SelfContained>true</SelfContained>
+        <StartupHookSupport>false</StartupHookSupport>
+        <UseSystemResourceKeys>true</UseSystemResourceKeys>
         <!-- This is unfortunately needed due to the patcher reference. -->
         <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
     </PropertyGroup>

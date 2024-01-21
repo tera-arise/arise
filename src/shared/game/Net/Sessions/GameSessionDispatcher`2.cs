@@ -3,7 +3,7 @@ using static DotNext.Metaprogramming.CodeGenerator;
 
 namespace Arise.Net.Sessions;
 
-public abstract class GameSessionDispatcher<TSession, THandler>
+public abstract class GameSessionDispatcher<TSession, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] THandler>
     where TSession : GameSession
     where THandler : class
 {
@@ -11,6 +11,7 @@ public abstract class GameSessionDispatcher<TSession, THandler>
 
     private readonly FrozenDictionary<Type, Action<TSession, GamePacket>> _handlers;
 
+    [UnconditionalSuppressMessage("", "IL2060")]
     protected GameSessionDispatcher()
     {
         _handlers = typeof(THandler)

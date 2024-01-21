@@ -42,8 +42,10 @@ internal sealed class AriseGamePacketSerializer : GamePacketSerializer<AriseGame
 
     protected override void GenerateDeserializer(Expression packet, Expression accessor)
     {
+        [UnconditionalSuppressMessage("", "IL2072")]
         void GenerateForObject(Expression @object)
         {
+            [UnconditionalSuppressMessage("", "IL2060")]
             void GenerateForValue(Type type, Action<Expression> handler)
             {
                 Expression result;
@@ -119,8 +121,10 @@ internal sealed class AriseGamePacketSerializer : GamePacketSerializer<AriseGame
 
     protected override void GenerateSerializer(Expression packet, Expression accessor)
     {
+        [UnconditionalSuppressMessage("", "IL2072")]
         void GenerateForObject(Expression @object)
         {
+            [UnconditionalSuppressMessage("", "IL2060")]
             void GenerateForValue(Expression value)
             {
                 var type = value.Type;

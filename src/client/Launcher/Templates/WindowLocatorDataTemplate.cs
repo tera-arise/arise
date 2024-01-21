@@ -21,6 +21,7 @@ internal sealed class WindowLocatorDataTemplate : IDataTemplate
         return data is LauncherController;
     }
 
+    [UnconditionalSuppressMessage("", "IL2026")]
     public Control Build(object? param)
     {
         return Unsafe.As<Control>(

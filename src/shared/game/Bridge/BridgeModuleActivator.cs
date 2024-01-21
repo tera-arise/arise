@@ -2,6 +2,8 @@ namespace Arise.Bridge;
 
 public static class BridgeModuleActivator
 {
+    [UnconditionalSuppressMessage("", "IL2026")]
+    [UnconditionalSuppressMessage("", "IL2072")]
     public static BridgeModule Create(ReadOnlyMemory<byte> module)
     {
         using var stream = SlimMemoryStream.CreateReadOnly(module);

@@ -15,6 +15,7 @@ namespace Arise.Client;
 
 internal static class Program
 {
+    [UnconditionalSuppressMessage("", "IL2026")]
     private static Task Main(string[] args)
     {
         var context = InjectedProgramContext.Instance;

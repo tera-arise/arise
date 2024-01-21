@@ -1,0 +1,7 @@
+<Project>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('$(MSBuildThisFile)', '$(MSBuildThisFileDirectory)..'))" />
+
+    <PropertyGroup>
+        <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    </PropertyGroup>
+</Project>
