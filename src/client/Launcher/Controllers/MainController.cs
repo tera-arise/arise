@@ -2,7 +2,6 @@ using System.Windows.Input;
 using Arise.Client.Gateway;
 using Arise.Client.Launcher.Media;
 using Arise.Client.Launcher.Settings;
-using Avalonia.Data;
 
 namespace Arise.Client.Launcher.Controllers;
 
@@ -16,7 +15,7 @@ public sealed class MainController : LauncherController
     private string _password = string.Empty;
     private bool _rememberMe;
     private bool _isModalVisible;
-    private string _serverAddress;
+    private ReactiveObject _currentContent;
 
     public bool IsLoggedIn
     {
@@ -54,22 +53,10 @@ public sealed class MainController : LauncherController
         set => this.RaiseAndSetIfChanged(ref _isModalVisible, value);
     }
 
-    public string ServerAddress
+    public ReactiveObject CurrentContent
     {
-        get => _serverAddress;
-        set
-        {
-            try
-            {
-                var svc = Services.GetService<GatewayClient>()!;
-                svc.BaseAddress = new Uri(value);
-                _ = this.RaiseAndSetIfChanged(ref _serverAddress, value);
-            }
-            catch (Exception ex)
-            {
-                throw new DataValidationException($"{ex.Message}");
-            }
-        }
+        get => _currentContent;
+        set => this.RaiseAndSetIfChanged(ref _currentContent, value);
     }
 
     public ICommand LoginCommand { get; }
@@ -82,25 +69,31 @@ public sealed class MainController : LauncherController
 
     public ICommand CloseModalCommand { get; }
 
+    public ICommand OpenSettingsCommand { get; }
+
     private readonly MusicPlayer _musicPlayer;
 
     public MainController(IServiceProvider services, MusicPlayer musicPlayer, LauncherSettingsManager launcherSettingsManager)
         : base(services)
     {
         _musicPlayer = musicPlayer;
-
+        _currentContent = new DefaultController(services);
         _launcherSettingsManager = launcherSettingsManager;
 
         _gatewayClient = Services.GetService<GatewayClient>()!; // todo: inject this? it requires GatewayClient to be public tho
         _gatewayClient.BaseAddress = _launcherSettingsManager.Settings.ServerAddress;
-
-        _serverAddress = _launcherSettingsManager.Settings.ServerAddress?.ToString() ?? string.Empty;
 
         LoginCommand = ReactiveCommand.Create(LoginAsync);
         RecoverPasswordCommand = ReactiveCommand.Create(RecoverPassword);
         RegisterCommand = ReactiveCommand.Create(Register);
         ShowAccountPopupCommand = ReactiveCommand.Create(ShowAccountPopup);
         CloseModalCommand = ReactiveCommand.Create(CloseModal);
+        OpenSettingsCommand = ReactiveCommand.Create(OpenSettings);
+    }
+
+    private void OpenSettings()
+    {
+        CurrentContent = new SettingsController(Services, _launcherSettingsManager);
     }
 
     private void CloseModal()
@@ -151,11 +144,14 @@ public sealed class MainController : LauncherController
 
         if (!IsLoggedIn)
         {
+            var client = Services.GetService<GatewayClient>()
+                ?? throw new InvalidOperationException("GatewayClient service not found"); // todo: idk how we should handle this case, if even possible
+
             // todo: catch something?
 
             try
             {
-                var resp = await _gatewayClient.Rest.AuthenticateAccountAsync(Username, Password).ConfigureAwait(true);
+                var resp = await client.Rest.AuthenticateAccountAsync(Username, Password).ConfigureAwait(true);
 
                 if (resp.IsSuccessStatusCode)
                 {
