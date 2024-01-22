@@ -32,6 +32,7 @@ public sealed partial class LauncherApplication : Application
             return;
 
         DataTemplates.Add(new WindowLocatorDataTemplate(_services));
+        DataTemplates.Add(new MainContentLocator());
 
         var hostLifetime = _services.GetRequiredService<IHostApplicationLifetime>();
         var avaloniaLifetime = Unsafe.As<IClassicDesktopStyleApplicationLifetime>(ApplicationLifetime!);
