@@ -34,8 +34,9 @@ file, and work our way from there. Our overarching design goals are laid out on
 our [GitBook space](https://design.tera-arise.io).
 
 Once the project progresses far enough, our goal is to run official TERA Arise
-servers at <https://tera-arise.io>. That said, anyone is welcome to run their
-own public servers, as long as the [licensing terms](#licensing) are observed.
+servers at [tera-arise.io](https://tera-arise.io). That said, anyone is welcome
+to run their own public servers, as long as the [licensing terms](#licensing)
+are observed.
 
 ## Usage
 
