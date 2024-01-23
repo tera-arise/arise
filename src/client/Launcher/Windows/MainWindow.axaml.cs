@@ -12,8 +12,11 @@ public sealed partial class MainWindow : LauncherWindow<MainController>
 
     protected override void OnInitialized()
     {
-        Opened += (_, _) => DataContext.PlayMusic();
-        Closed += (_, _) => DataContext.StopMusic();
+        if (!Design.IsDesignMode)
+        {
+            Opened += (_, _) => DataContext.PlayMusic();
+            Closed += (_, _) => DataContext.StopMusic();
+        }
 
         base.OnInitialized();
     }
