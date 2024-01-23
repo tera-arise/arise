@@ -20,7 +20,7 @@
                     <SolidColorBrush x:Key="ThemeTextMidBrush" Color="#bbb"/>
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="WindowBackground" Color="#222"/>
+                    <SolidColorBrush x:Key="WindowBackground" Color="#1e263b"/>
                     <SolidColorBrush x:Key="CloseButtonPointerOverBackground" Color="DarkRed"/>
                     <SolidColorBrush x:Key="CloseButtonPressedBackground" Color="Red"/>
                     <SolidColorBrush x:Key="DefaultButtonBackground" Color="#1fff"/>
