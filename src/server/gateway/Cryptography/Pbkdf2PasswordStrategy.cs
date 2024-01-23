@@ -1,4 +1,4 @@
-namespace Arise.Cryptography;
+namespace Arise.Server.Gateway.Cryptography;
 
 public sealed class Pbkdf2PasswordStrategy : PasswordStrategy
 {

@@ -32,7 +32,7 @@ internal sealed class GatewayOptions : IOptions<GatewayOptions>
 
     public Duration AccountSessionKeyTime { get; set; } = Duration.FromHours(12);
 
-    public int NewsPageSize { get; set; } = 10;
+    public string? NewsUri { get; set; }
 
     GatewayOptions IOptions<GatewayOptions>.Value => this;
 

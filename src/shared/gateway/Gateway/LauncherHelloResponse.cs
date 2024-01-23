@@ -1,7 +1,9 @@
 namespace Arise.Gateway;
 
-public sealed class VersionCheckResponse
+public sealed class LauncherHelloResponse
 {
+    public required Uri? NewsUri { get; init; }
+
     public required Uri TeraManifestUri { get; init; }
 
     public required Uri TeraDownloadFormat { get; init; }

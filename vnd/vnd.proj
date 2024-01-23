@@ -99,13 +99,6 @@
         </ItemGroup>
     </Target>
 
-    <Target Name="GetNewsArticlesPath"
-            Returns="@(AriseNewsArticlesPath)">
-        <ItemGroup>
-            <AriseNewsArticlesPath Include="$(MSBuildThisFileDirectory)articles" />
-        </ItemGroup>
-    </Target>
-
     <Target Name="GetGatewayServerUri"
             Returns="@(AriseGatewayServerUri)" />
 

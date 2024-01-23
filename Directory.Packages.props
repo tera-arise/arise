@@ -41,8 +41,6 @@
                         Version="1.21.0" />
         <PackageVersion Include="Injectio"
                         Version="3.1.0" />
-        <PackageVersion Include="Markdig"
-                        Version="0.34.0" />
         <PackageVersion Include="Marten.AspNetCore"
                         Version="6.4.1" />
         <PackageVersion Include="Marten.NodaTime"
@@ -111,7 +109,5 @@
                         Version="2.1.7" />
         <PackageVersion Include="Vezel.Ruptura.Memory"
                         Version="2.1.7" />
-        <PackageVersion Include="YamlDotNet"
-                        Version="13.7.1" />
     </ItemGroup>
 </Project>

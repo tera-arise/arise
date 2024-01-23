@@ -30,10 +30,6 @@ public interface IGatewayClient
     [Patch("/Accounts/Recover")]
     public abstract Task<IApiResponse> RecoverAccountAsync([Body] AccountsRecoverRequest body);
 
-    [Delete("/Accounts/Delete")]
-    public abstract Task<IApiResponse> RecoverAccountAsync(
-        [Header(EmailHeader)] string email, [Header(PasswordHeader)] string password);
-
     [Patch("/Accounts/Delete")]
     public abstract Task<IApiResponse> DeleteAccountAsync(
         [Header(EmailHeader)] string email, [Header(PasswordHeader)] string password);
@@ -46,12 +42,6 @@ public interface IGatewayClient
     public abstract Task<IApiResponse<AccountsAuthenticateResponse>> AuthenticateAccountAsync(
         [Header(EmailHeader)] string email, [Header(PasswordHeader)] string password);
 
-    [Get("/News/List")]
-    public abstract Task<IApiResponse<NewsListResponse>> ListNewsAsync([Body] NewsListRequest body);
-
-    [Get("/News/Get")]
-    public abstract Task<IApiResponse<NewsGetResponse>> GetNewsAsync([Body] NewsGetRequest body);
-
-    [Get("/Version/Check")]
-    public abstract Task<IApiResponse<VersionCheckResponse>> CheckVersionAsync();
+    [Get("/Launcher/Hello")]
+    public abstract Task<IApiResponse<LauncherHelloResponse>> LauncherHelloAsync();
 }

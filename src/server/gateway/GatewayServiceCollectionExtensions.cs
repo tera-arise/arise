@@ -2,7 +2,6 @@ using Arise.Server.Gateway.Authentication;
 using Arise.Server.Gateway.Controllers;
 using Arise.Server.Gateway.Email;
 using Arise.Server.Gateway.ModelBinding;
-using Arise.Server.Gateway.News;
 using Arise.Server.Gateway.RateLimiting;
 
 namespace Arise.Server.Gateway;
@@ -59,7 +58,6 @@ public static class GatewayServiceCollectionExtensions
                 opts.LowercaseQueryStrings = true;
             })
             .AddAriseServerGateway()
-            .AddHostedService(static provider => provider.GetRequiredService<NewsArticleProvider>())
             .AddHostedService(static provider => provider.GetRequiredService<EmailSender>());
     }
 }
