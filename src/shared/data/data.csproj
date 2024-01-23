@@ -4,16 +4,6 @@
         <RootNamespace>Arise.Data</RootNamespace>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <_DataSheetDirectory>../../../dat/sheets/</_DataSheetDirectory>
-        <_DataCenterCache>$(BaseIntermediateOutputPath)DataCenter.cache</_DataCenterCache>
-        <_DataCenterPath>$(BaseIntermediateOutputPath)DataCenter.dat</_DataCenterPath>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <_DataSheet Include="$(_DataSheetDirectory)**" />
-    </ItemGroup>
-
     <ItemGroup>
         <ProjectReference Include="../../tools/packer/packer.csproj"
                           Private="false"
@@ -22,8 +12,21 @@
         <ProjectReference Include="../common/common.csproj" />
     </ItemGroup>
 
-    <Target Name="_WriteDataCenterCache"
+    <Target Name="_SetDataCenterInfo"
             DependsOnTargets="GetGameRevision; GetDataCenterParameters">
+        <PropertyGroup>
+            <_DataSheetDirectory>../../../dat/sheets/</_DataSheetDirectory>
+            <_DataCenterCache>$(IntermediateOutputPath)DataCenter.cache</_DataCenterCache>
+            <_DataCenterPath>$(IntermediateOutputPath)DataCenter.dat</_DataCenterPath>
+        </PropertyGroup>
+
+        <ItemGroup>
+            <_DataSheet Include="$(_DataSheetDirectory)**" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="_WriteDataCenterCache"
+            DependsOnTargets="_SetDataCenterInfo">
         <Hash ItemsToHash="$(MSBuildAllProjects); @(ArisePacker); @(_DataSheet); $(AriseGameRevision); $(AriseDataCenterKey); $(AriseDataCenterIV)"
               IgnoreCase="true">
             <Output TaskParameter="HashResult"
