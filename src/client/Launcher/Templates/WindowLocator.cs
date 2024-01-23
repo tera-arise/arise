@@ -3,7 +3,7 @@ using Arise.Client.Launcher.Windows;
 
 namespace Arise.Client.Launcher.Templates;
 
-internal sealed class WindowLocatorDataTemplate : IDataTemplate
+internal sealed class WindowLocator : IDataTemplate
 {
     private static readonly Assembly _assembly = typeof(ThisAssembly).Assembly;
 
@@ -11,15 +11,14 @@ internal sealed class WindowLocatorDataTemplate : IDataTemplate
 
     private readonly IServiceProvider _services;
 
-    public WindowLocatorDataTemplate(IServiceProvider services)
+    public WindowLocator(IServiceProvider services)
     {
         _services = services;
     }
 
     public bool Match(object? data)
     {
-        return data is LauncherController 
-            && data!.GetType().FullName!.Contains("Window", StringComparison.Ordinal);
+        return data is LauncherController;
     }
 
     public Control Build(object? param)
