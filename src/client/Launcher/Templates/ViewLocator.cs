@@ -2,7 +2,7 @@ using Arise.Client.Launcher.Controllers;
 
 namespace Arise.Client.Launcher.Templates;
 
-internal sealed class MainContentLocator : IDataTemplate
+internal sealed class ViewLocator : IDataTemplate
 {
     public Control? Build(object? data)
     {
@@ -19,6 +19,6 @@ internal sealed class MainContentLocator : IDataTemplate
 
     public bool Match(object? data)
     {
-        return data is LauncherController;
+        return data is ViewController;
     }
 }
