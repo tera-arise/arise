@@ -61,9 +61,7 @@
         <Using Include="NAudio.Vorbis" />
         <Using Include="NAudio.Wave" />
         <Using Include="Refit" />
-        <Using Include="Serilog" />
-        <Using Include="Serilog.Events" />
-        <Using Include="Serilog.Sinks.SystemConsole.Themes" />
+        <Using Include="Vezel.Cathode.Extensions.Logging" />
     </ItemGroup>
 
     <ItemGroup>
@@ -95,8 +93,7 @@
                           PrivateAssets="all" />
         <PackageReference Include="NAudio.Extras" />
         <PackageReference Include="NAudio.Vorbis" />
-        <PackageReference Include="Serilog.Extensions.Hosting" />
-        <PackageReference Include="Serilog.Sinks.Console" />
+        <PackageReference Include="Vezel.Cathode.Extensions" />
         <PackageReference Include="Vezel.Novadrop.Interop" />
         <PackageReference Include="Vezel.Ruptura.Hosting" />
         <PackageReference Include="Vezel.Ruptura.Injection" />
