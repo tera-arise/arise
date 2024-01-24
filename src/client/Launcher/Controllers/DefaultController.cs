@@ -1,11 +1,15 @@
+using Material.Icons;
+
 namespace Arise.Client.Launcher.Controllers;
 
 public sealed partial class DefaultController : ViewController
 {
     private readonly MainController _mainController;
 
+    public override MaterialIconKind IconKind => MaterialIconKind.Home;
+
     public DefaultController(IServiceProvider services, MainController mainController)
-        : base(services)
+        : base(services, mainController)
     {
         _mainController = mainController;
     }
