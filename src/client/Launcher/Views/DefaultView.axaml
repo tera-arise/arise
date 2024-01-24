@@ -9,7 +9,7 @@
              ClipToBounds="False"
              x:DataType="controllers:DefaultController">
     <Grid>
-        <Image Source="../../image_logo.webp"
+        <Image Source="../../image_logo_small.webp"
                IsHitTestVisible="False"
                Stretch="Uniform"
                Width="280"
