@@ -1,7 +1,10 @@
+#define FORCE_LOGIN
+
 using System.Windows.Input;
 using Arise.Client.Gateway;
 using Arise.Client.Launcher.Media;
 using Arise.Client.Launcher.Settings;
+using MsBox.Avalonia;
 
 namespace Arise.Client.Launcher.Controllers;
 
@@ -9,6 +12,7 @@ public sealed class MainController : LauncherController
 {
     private readonly LauncherSettingsManager _launcherSettingsManager;
     private readonly GatewayClient _gatewayClient;
+    private readonly MusicPlayer _musicPlayer;
     private bool _isLoggedIn;
     private string _currentAccountName = "LOGIN";
     private string _username = string.Empty;
@@ -71,19 +75,20 @@ public sealed class MainController : LauncherController
 
     public ICommand OpenSettingsCommand { get; }
 
-    private readonly MusicPlayer _musicPlayer;
-
     public MainController(IServiceProvider services, MusicPlayer musicPlayer, LauncherSettingsManager launcherSettingsManager)
         : base(services)
     {
         _musicPlayer = musicPlayer;
-        _currentContent = new DefaultController(services);
+        _currentContent = new DefaultController(services, this);
         _launcherSettingsManager = launcherSettingsManager;
 
         _gatewayClient = Services.GetService<GatewayClient>()!; // todo: inject this? it requires GatewayClient to be public tho
         _gatewayClient.BaseAddress = _launcherSettingsManager.Settings.ServerAddress;
-
+#if FORCE_LOGIN
+        LoginCommand = new RelayCommand(Login);
+#else
         LoginCommand = new AsyncRelayCommand(LoginAsync);
+#endif
         RecoverPasswordCommand = new RelayCommand(RecoverPassword);
         RegisterCommand = new RelayCommand(Register);
         ShowAccountPopupCommand = new RelayCommand(ShowAccountPopup);
@@ -109,7 +114,7 @@ public sealed class MainController : LauncherController
         }
         else
         {
-            IsModalVisible = true;
+            ShowLoginForm();
 
             // todo: also set the template of the modal
         }
@@ -135,7 +140,11 @@ public sealed class MainController : LauncherController
         // todo
     }
 
+#if FORCE_LOGIN
+    private void Login()
+#else
     private async Task LoginAsync()
+#endif
     {
         // todo: add an IsLoggingIn state to signal the user that the request is being processed
         // maybe bind it to a spinning indicator
@@ -144,14 +153,13 @@ public sealed class MainController : LauncherController
 
         if (!IsLoggedIn)
         {
-            var client = Services.GetService<GatewayClient>()
-                ?? throw new InvalidOperationException("GatewayClient service not found"); // todo: idk how we should handle this case, if even possible
-
             // todo: catch something?
-
             try
             {
-                var resp = await client.Rest.AuthenticateAccountAsync(Username, Password).ConfigureAwait(true);
+#if FORCE_LOGIN
+                IsLoggedIn = true;
+#else
+                var resp = await _gatewayClient.Rest.AuthenticateAccountAsync(Username, Password).ConfigureAwait(true);
 
                 if (resp.IsSuccessStatusCode)
                 {
@@ -164,16 +172,28 @@ public sealed class MainController : LauncherController
                 {
                     // todo: handle login fail
                 }
+#endif
             }
             finally
             {
                 // clear the password as soon as it's been sent
                 Password = string.Empty;
+                IsModalVisible = false;
             }
         }
         else
         {
             // todo: warn?
         }
+    }
+
+    public void ShowLoginForm()
+    {
+        IsModalVisible = true;
+    }
+
+    [SuppressMessage("", "CA1822")]
+    public void LaunchGame()
+    {
     }
 }
