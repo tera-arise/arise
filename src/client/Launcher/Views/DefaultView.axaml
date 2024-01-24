@@ -6,13 +6,14 @@
              xmlns:controllers="using:Arise.Client.Launcher.Controllers"
              mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
              x:Class="Arise.Client.Launcher.Views.DefaultView"
+             ClipToBounds="False"
              x:DataType="controllers:DefaultController">
     <Grid>
         <Image Source="../../image_logo.webp"
                IsHitTestVisible="False"
                Stretch="Uniform"
                Width="280"
-               Margin="40 20"
+               Margin="40 -32"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                RenderOptions.BitmapInterpolationMode="HighQuality"
@@ -63,6 +64,7 @@
                 Background="{StaticResource MainBrush}"
                 Foreground="White"
                 FontWeight="DemiBold"
+                Command="{Binding PlayCommand}"
                 />
     </Grid>
 </UserControl>

@@ -54,6 +54,7 @@
 
         <!--Title bar-->
         <Grid VerticalAlignment="Stretch"
+              ZIndex="99"
               Grid.Column="1"
               ColumnDefinitions="Auto,*"
               Margin="8">
@@ -70,7 +71,7 @@
             </Grid.Styles>
 
             <!--Logo-->
-            <Rectangle RadiusX="8"
+            <!--<Rectangle RadiusX="8"
                        RadiusY="8"
                        Height="24"
                        Width="24"
@@ -80,14 +81,14 @@
                     <ImageBrush Source="../../arise.png"
                                 Stretch="Fill" />
                 </Rectangle.Fill>
-            </Rectangle>
+            </Rectangle>-->
 
             <!--Title-->
-            <TextBlock Text="TERA Arise"
+            <!--<TextBlock Text="TERA Arise"
                        Grid.ColumnSpan="2"
                        IsHitTestVisible="False"
                        VerticalAlignment="Center"
-                       HorizontalAlignment="Center"/>
+                       HorizontalAlignment="Center"/>-->
 
             <!--Buttons-->
             <StackPanel Orientation="Horizontal"
@@ -127,7 +128,6 @@
             </StackPanel>
         </Grid>
 
-
         <!--Side bar-->
         <Border Background="{DynamicResource WindowBackground}"
                 Grid.RowSpan="2"
@@ -143,12 +143,21 @@
                 </Style>
             </Border.Styles>
             <StackPanel VerticalAlignment="Top"
-                        HorizontalAlignment="Center">
+                        HorizontalAlignment="Center"
+                        Spacing="12">
                 <!--<Button>
                     <avalonia:MaterialIcon Kind="ArrowBack"/>
                 </Button>-->
                 <Button>
-                    <avalonia:MaterialIcon Kind="Home"/>
+                    <Panel>
+                        <Rectangle Fill="{StaticResource MainBrush}"
+                                   HorizontalAlignment="Left"
+                                   Width="2"
+                                   Margin="-8 2"
+                                   RadiusX="1"
+                                   RadiusY="1"/>
+                        <avalonia:MaterialIcon Kind="Home"/>
+                    </Panel>
                 </Button>
                 <Button>
                     <avalonia:MaterialIcon Kind="Newspaper"/>
@@ -167,9 +176,10 @@
             Content="{Binding CurrentContent}"
             Grid.Row="1"
             Grid.Column="1"/>
-        <!-- <views:DefaultView
+         <!--<views:DefaultView
+             DataContext="{Binding CurrentContent}"
             Grid.Row="1"
-            Grid.Column="1"/> -->
+            Grid.Column="1"/>--> 
 
         <!--Modal-->
         <Border x:Name="ModalDarkening"
