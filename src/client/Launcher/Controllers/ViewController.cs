@@ -1,6 +1,6 @@
-﻿namespace Arise.Client.Launcher.Controllers;
+namespace Arise.Client.Launcher.Controllers;
 
-public abstract class ViewController : ObservableObject
+public abstract class ViewController : ObservableValidator
 {
     public IServiceProvider Services { get; }
 
