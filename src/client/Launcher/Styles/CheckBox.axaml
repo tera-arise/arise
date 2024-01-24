@@ -1,7 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controllers="using:Arise.Client.Launcher.Controllers"
-        x:DataType="controllers:LauncherController">
+        >
     <!-- Adding this here with different sizes, as the size properties of
         the checkbox rectangle don't seem to work when accessed via
         the /template/ selector -->
