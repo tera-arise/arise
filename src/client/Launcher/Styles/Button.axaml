@@ -1,11 +1,11 @@
 <Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        >
-
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style Selector="Button.main">
-        <Setter Property="Background" Value="{DynamicResource MainBrush}"/>
+        <Setter Property="Background"
+                Value="{DynamicResource MainBrush}" />
     </Style>
     <Style Selector="Button.main:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource MainBrushHilight}"/>
+        <Setter Property="Background"
+                Value="{DynamicResource MainBrushHilight}" />
     </Style>
 </Styles>
