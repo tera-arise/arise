@@ -1,22 +1,21 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:Arise.Client.Launcher.Controls"
-        >
+        xmlns:controls="using:Arise.Client.Launcher.Controls">
     <!-- Adding this here with different sizes, as the size properties of
         the checkbox rectangle don't seem to work when accessed via
         the /template/ selector -->
     <Style Selector="controls|AcrylicBorder">
-        <Setter Property="ClipToBounds" Value="False"/>
+        <Setter Property="ClipToBounds"
+                Value="False" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel Width="{TemplateBinding Width}"
                        Height="{TemplateBinding Height}">
                     <Border BoxShadow="{TemplateBinding BoxShadow}"
                             Background="Transparent"
-                            CornerRadius="{TemplateBinding CornerRadius}"/>
-                    <controls:CustomBlurBehind
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        Material="{TemplateBinding Material}"/>
+                            CornerRadius="{TemplateBinding CornerRadius}" />
+                    <controls:CustomBlurBehind CornerRadius="{TemplateBinding CornerRadius}"
+                                               Material="{TemplateBinding Material}" />
                 </Panel>
             </ControlTemplate>
         </Setter>
