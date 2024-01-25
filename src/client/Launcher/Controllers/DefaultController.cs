@@ -4,26 +4,23 @@ namespace Arise.Client.Launcher.Controllers;
 
 public sealed partial class DefaultController : ViewController
 {
-    private readonly MainController _mainController;
-
     public override MaterialIconKind IconKind => MaterialIconKind.Home;
 
     public DefaultController(IServiceProvider services, MainController mainController)
         : base(services, mainController)
     {
-        _mainController = mainController;
     }
 
     [RelayCommand]
     private void Play()
     {
-        if (!_mainController.IsLoggedIn)
+        if (!MainController.IsLoggedIn)
         {
-            _mainController.ShowLoginForm();
+            MainController.ShowLoginForm();
         }
         else
         {
-            _mainController.LaunchGame();
+            MainController.LaunchGame();
         }
     }
 }
