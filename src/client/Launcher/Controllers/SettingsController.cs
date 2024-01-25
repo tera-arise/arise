@@ -1,3 +1,4 @@
+using Arise.Client.Launcher.Controls;
 using Arise.Client.Launcher.Settings;
 using Material.Icons;
 
@@ -9,7 +10,9 @@ public sealed partial class SettingsController : ViewController
 
     [ObservableProperty]
     [UriValidation]
-    private string _serverAddress = string.Empty;
+    private string _serverAddress;
+
+    public static bool ShowServerUriSetting => ThisAssembly.ServerUris == null;
 
     public override MaterialIconKind IconKind => MaterialIconKind.Settings;
 
