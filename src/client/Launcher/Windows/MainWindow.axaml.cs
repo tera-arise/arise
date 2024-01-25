@@ -16,7 +16,6 @@ public sealed partial class MainWindow : LauncherWindow<MainController>
     {
         if (!Design.IsDesignMode)
         {
-            Opened += (_, _) => DataContext.PlayMusic();
             Closed += (_, _) => DataContext.StopMusic();
         }
 
