@@ -1,4 +1,4 @@
-namespace Arise.Client.Launcher.Controllers;
+namespace Arise.Client.Launcher.Controls;
 
 public class UriValidation : ValidationAttribute
 {
