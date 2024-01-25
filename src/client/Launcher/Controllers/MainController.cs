@@ -35,6 +35,9 @@ public sealed partial class MainController : LauncherController
     [ObservableProperty]
     private ViewController _currentContent;
 
+    [ObservableProperty]
+    private bool _isMusicEnabled;
+
     private bool CanExecuteLogin => !string.IsNullOrEmpty(Username)
                                  && !string.IsNullOrEmpty(Password);
 
@@ -58,6 +61,19 @@ public sealed partial class MainController : LauncherController
 
         _gatewayClient = Services.GetService<GatewayClient>()!; // todo: inject this? it requires GatewayClient to be public tho
         _gatewayClient.BaseAddress = _launcherSettingsManager.Settings.ServerAddress;
+
+        IsMusicEnabled = _launcherSettingsManager.Settings.IsMusicEnabled;
+    }
+
+    partial void OnIsMusicEnabledChanged(bool value)
+    {
+        if (value)
+            _musicPlayer.Play();
+        else
+            _musicPlayer.Stop();
+
+        _launcherSettingsManager.Settings.IsMusicEnabled = value;
+        _launcherSettingsManager.Save();
     }
 
     [RelayCommand]
@@ -118,7 +134,8 @@ public sealed partial class MainController : LauncherController
 #if FORCE_LOGIN // find a better way of doing this when you don't have a backend
                 if (await Task.FromResult(true).ConfigureAwait(true))
 #else
-                var resp = await _gatewayClient.Rest.AuthenticateAccountAsync(Username, Password).ConfigureAwait(true);
+                var resp = await _gatewayClient.Rest
+                    .AuthenticateAccountAsync(Username, Password).ConfigureAwait(true);
 
                 if (resp.IsSuccessStatusCode)
 #endif
@@ -144,11 +161,6 @@ public sealed partial class MainController : LauncherController
         {
             // todo: warn?
         }
-    }
-
-    public void PlayMusic()
-    {
-        _musicPlayer.Play();
     }
 
     public void StopMusic()
