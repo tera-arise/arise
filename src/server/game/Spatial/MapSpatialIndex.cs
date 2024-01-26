@@ -111,8 +111,8 @@ internal sealed partial class MapSpatialIndex : IHostedService
 
         await using var memoryStream = new MemoryStream();
 
-        await using (var fileStream = _fileProvider.GetFileInfo($"geometry/x{x:0000}y{y:0000}.zone").CreateReadStream())
-        await using (var zlibStream = new ZLibStream(fileStream, CompressionMode.Decompress, leaveOpen: true))
+        await using (var fileStream = _fileProvider.GetFileInfo($"zgd/x{x:0000}y{y:0000}.zgd").CreateReadStream())
+        await using (var zlibStream = new BrotliStream(fileStream, CompressionMode.Decompress, leaveOpen: true))
             await zlibStream.CopyToAsync(memoryStream, cancellationToken);
 
         var accessor = new StreamAccessor(memoryStream);

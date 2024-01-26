@@ -35,8 +35,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="../../../geo/zones/x*y*.zone"
-                 Link="geometry/%(Filename)%(Extension)"
+        <Content Include="../../../geo/apd/*.apd"
+                 Link="apd/%(Filename)%(Extension)"
+                 CopyToOutputDirectory="PreserveNewest"
+                 Condition="'$(ArisePartialBuild)' != 'true'" />
+        <Content Include="../../../geo/zgd/*.zgd"
+                 Link="apd/%(Filename)%(Extension)"
                  CopyToOutputDirectory="PreserveNewest"
                  Condition="'$(ArisePartialBuild)' != 'true'" />
     </ItemGroup>
