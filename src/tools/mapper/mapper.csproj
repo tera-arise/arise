@@ -3,4 +3,8 @@
         <AssemblyName>arise-mapper</AssemblyName>
         <RootNamespace>Arise.Tools.Mapper</RootNamespace>
     </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Arise.IO" />
+    </ItemGroup>
 </Project>

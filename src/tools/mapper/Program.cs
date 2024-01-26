@@ -21,11 +21,14 @@ internal static class Program
             return await parser
                 .ParseArguments<MapperOptions>(args)
                 .MapResult(
-                    static options =>
+                    static async options =>
                     {
-                        // TODO: Implement map/geometry extraction.
+                        options.GeometryDirectory.Create();
 
-                        return Task.FromResult(0);
+                        await GeometryDataConverter.ConvertAsync(options);
+                        await PathDataConverter.ConvertAsync(options);
+
+                        return 0;
                     },
                     static _ => Task.FromResult(1));
         }
