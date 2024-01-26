@@ -420,18 +420,6 @@ public class GameStreamAccessor : StreamAccessor
         }
     }
 
-    public Vector3 ReadVector3()
-    {
-        return new(ReadSingle(), ReadSingle(), ReadSingle());
-    }
-
-    public void WriteVector3(Vector3 value)
-    {
-        WriteSingle(value.X);
-        WriteSingle(value.Y);
-        WriteSingle(value.Z);
-    }
-
     public EntityId ReadEntityId()
     {
         var id = ReadInt32();

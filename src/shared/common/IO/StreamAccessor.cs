@@ -169,6 +169,18 @@ public class StreamAccessor
         Write(value);
     }
 
+    public Vector3 ReadVector3()
+    {
+        return new(ReadSingle(), ReadSingle(), ReadSingle());
+    }
+
+    public void WriteVector3(Vector3 value)
+    {
+        WriteSingle(value.X);
+        WriteSingle(value.Y);
+        WriteSingle(value.Z);
+    }
+
     public bool ReadBoolean()
     {
         // https://github.com/dotnet/roslyn/blob/main/docs/compilers/Boolean%20Representation.md
