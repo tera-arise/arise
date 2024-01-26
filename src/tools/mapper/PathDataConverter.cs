@@ -26,18 +26,11 @@ internal static class PathDataConverter
     {
         public required Vector3 Position { get; init; }
 
-        public Edge[] Edges { get; } = new Edge[SpatialFacts.EdgesPerNode];
+        public int[] Edges { get; } = new int[SpatialFacts.EdgesPerNode];
 
         public Node()
         {
         }
-    }
-
-    private readonly struct Edge
-    {
-        public required int Index { get; init; }
-
-        public int Distance { get; init; }
     }
 
     [SuppressMessage("", "CA1308")]
@@ -87,17 +80,10 @@ internal static class PathDataConverter
                             }).Edges;
 
                             for (var ei = 0; ei < SpatialFacts.EdgesPerNode; ei++)
-                                edges[ei] = new()
-                                {
-                                    Index = nod.ReadInt32(),
-                                };
+                                edges[ei] = nod.ReadInt32();
 
                             for (var ei = 0; ei < SpatialFacts.EdgesPerNode; ei++)
-                                edges[ei] = new()
-                                {
-                                    Index = edges[ei].Index,
-                                    Distance = nod.ReadInt32(),
-                                };
+                                _ = nod.ReadInt32(); // Distance along this edge.
                         }
                     }
 
@@ -158,14 +144,14 @@ internal static class PathDataConverter
                         var directions = (byte)0;
 
                         for (var ei = 0; ei < SpatialFacts.EdgesPerNode; ei++)
-                            if (node.Edges[ei].Index != -1)
+                            if (node.Edges[ei] != -1)
                                 directions |= (byte)(1 << ei);
 
                         apd.WriteByte(directions);
 
                         foreach (var edge in node.Edges)
-                            if (edge.Index != -1)
-                                apd.WriteInt32(edge.Index);
+                            if (edge != -1)
+                                apd.WriteInt32(edge);
                     }
 
                     apd.WriteInt32(zones.Length);
