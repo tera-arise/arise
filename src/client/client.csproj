@@ -151,7 +151,7 @@
     <Target Name="_SetClientExecutableInfo">
         <PropertyGroup>
             <_ClientExecutableRevision>r387486</_ClientExecutableRevision>
-            <_ClientExecutableUnpackedPath>$(IntermediateOutputPath)$(_ClientExecutableRevision)/TERA.unpacked.exe</_ClientExecutableUnpackedPath>
+            <_ClientExecutableUnpackedPath>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision)/TERA.unpacked.exe</_ClientExecutableUnpackedPath>
             <_ClientExecutableCache>$(IntermediateOutputPath)TERA.arise.cache</_ClientExecutableCache>
             <_ClientExecutablePatchedPath>$(IntermediateOutputPath)TERA.arise.exe</_ClientExecutablePatchedPath>
         </PropertyGroup>
@@ -161,16 +161,16 @@
             AfterTargets="_GenerateRestoreProjectPathWalk"
             DependsOnTargets="_SetClientExecutableInfo">
         <PropertyGroup>
-            <_ClientExecutableArchive>$(IntermediateOutputPath)$(_ClientExecutableRevision).zip</_ClientExecutableArchive>
-            <_ClientExecutableStamp>$(IntermediateOutputPath)$(_ClientExecutableRevision).stamp</_ClientExecutableStamp>
+            <_ClientExecutableArchive>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision).zip</_ClientExecutableArchive>
+            <_ClientExecutableStamp>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision).stamp</_ClientExecutableStamp>
         </PropertyGroup>
 
         <DownloadFile SourceUrl="https://github.com/alexrp/tera-re/releases/download/$(_ClientExecutableRevision)/$(_ClientExecutableRevision).zip"
-                      DestinationFolder="$(IntermediateOutputPath)"
+                      DestinationFolder="$(BaseIntermediateOutputPath)"
                       Condition="!Exists('$(_ClientExecutableArchive)')" />
 
         <Unzip SourceFiles="$(_ClientExecutableArchive)"
-               DestinationFolder="$(IntermediateOutputPath)"
+               DestinationFolder="$(BaseIntermediateOutputPath)"
                Condition="!Exists('$(_ClientExecutableStamp)')" />
 
         <Touch Files="$(_ClientExecutableStamp)"
