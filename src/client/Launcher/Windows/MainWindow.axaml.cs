@@ -1,4 +1,5 @@
 using Arise.Client.Launcher.Controllers;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -61,5 +62,10 @@ public sealed partial class MainWindow : LauncherWindow<MainController>
         parent.Children.Add(frozenImage);
 
         Debug.WriteLine($"Setting content took {sw.Elapsed}");
+    }
+
+    private void OnTitleBarPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        BeginMoveDrag(e);
     }
 }
