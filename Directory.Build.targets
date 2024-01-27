@@ -13,6 +13,7 @@
         <Using Include="System.Linq.Expressions" />
         <Using Include="System.Net" />
         <Using Include="System.Net.Http.Headers" />
+        <Using Include="System.Net.Http.Json" />
         <Using Include="System.Net.Mime" />
         <Using Include="System.Net.Quic" />
         <Using Include="System.Net.Security" />
@@ -31,6 +32,7 @@
         <Using Include="System.Text.Encodings.Web" />
         <Using Include="System.Text.Json" />
         <Using Include="System.Text.Json.Serialization" />
+        <Using Include="System.Text.Json.Serialization.Metadata" />
         <Using Include="System.Threading.Channels" />
         <Using Include="System.Xml" />
         <Using Include="System.Xml.Linq" />

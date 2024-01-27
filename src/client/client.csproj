@@ -51,7 +51,6 @@
         <Using Include="NAudio.Extras" />
         <Using Include="NAudio.Vorbis" />
         <Using Include="NAudio.Wave" />
-        <Using Include="Refit" />
         <Using Include="Vezel.Cathode.Extensions.Logging" />
     </ItemGroup>
 

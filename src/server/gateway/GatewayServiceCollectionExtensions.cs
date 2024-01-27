@@ -25,7 +25,7 @@ public static class GatewayServiceCollectionExtensions
 
                 _ = json.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
 
-                json.TypeInfoResolverChain.Add(IGatewayClient.JsonContext);
+                json.TypeInfoResolverChain.Add(GatewayHttpClient.JsonContext);
             })
             .ConfigureApplicationPartManager(
                 static manager => manager.FeatureProviders.Add(InternalControllerFeatureProvider.Instance))

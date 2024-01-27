@@ -7,7 +7,6 @@
     <ItemGroup>
         <Using Include="EmailValidation" />
         <Using Include="NodaTime" />
-        <Using Include="Refit" />
     </ItemGroup>
 
     <ItemGroup>
@@ -17,6 +16,5 @@
     <ItemGroup>
         <PackageReference Include="EmailValidation" />
         <PackageReference Include="NodaTime" />
-        <PackageReference Include="Refit" />
     </ItemGroup>
 </Project>

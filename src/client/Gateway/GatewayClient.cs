@@ -2,7 +2,7 @@ namespace Arise.Client.Gateway;
 
 internal sealed class GatewayClient
 {
-    public IGatewayClient Rest { get; }
+    public GatewayHttpClient Rest { get; }
 
     public Uri? BaseAddress
     {
@@ -14,8 +14,7 @@ internal sealed class GatewayClient
 
     public GatewayClient(HttpClient client)
     {
-        Rest = RestService.For<IGatewayClient>(
-            client, new RefitSettings(new SystemTextJsonContentSerializer(IGatewayClient.JsonContext.Options)));
+        Rest = new(client);
         _client = client;
     }
 }
