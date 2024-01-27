@@ -28,7 +28,7 @@
             <Setter Property="Opacity"
                     Value="0" />
             <Setter Property="RenderTransform"
-                    Value="translateY(50px)" />
+                    Value="translateY(20px)" />
         </Style>
         <Style Selector="Panel#ModalDarkening.visible">
             <Setter Property="Opacity"
@@ -80,9 +80,13 @@
                 <Image.Transitions>
                     <Transitions>
                         <EffectTransition Property="Effect"
-                                          Duration="0:0:0.15" />
+                                          Duration="0:0:0.25" />
                         <ThicknessTransition Property="Margin"
-                                             Duration="0:0:0.15" />
+                                             Duration="0:0:0.25" >
+                            <ThicknessTransition.Easing>
+                                <QuadraticEaseInOut/>
+                            </ThicknessTransition.Easing>
+                        </ThicknessTransition>
                     </Transitions>
                 </Image.Transitions>
             </Image>
@@ -160,7 +164,7 @@
                         Classes.blurred="{Binding IsModalVisible}">
                 <TabControl.DataTemplates>
                     <DataTemplate DataType="controllers:DefaultController">
-                        <views:DefaultView Margin="0 48" />
+                        <views:DefaultView Margin="0 48 0 0" />
                     </DataTemplate>
                     <DataTemplate DataType="controllers:NewsController">
                         <TextBlock Text="News here" />
@@ -195,10 +199,10 @@
                 <Panel.Transitions>
                     <Transitions>
                         <DoubleTransition Property="Opacity"
-                                          Duration="0:0:0.15"
+                                          Duration="0:0:0.25"
                                           Delay="0:0:0.075" />
                         <TransformOperationsTransition Property="RenderTransform"
-                                                       Duration="0:0:0.15"
+                                                       Duration="0:0:0.25"
                                                        Delay="0:0:0.075">
                             <TransformOperationsTransition.Easing>
                                 <QuadraticEaseOut />
