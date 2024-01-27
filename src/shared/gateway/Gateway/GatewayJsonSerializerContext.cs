@@ -2,7 +2,6 @@ namespace Arise.Gateway;
 
 [JsonSerializable(typeof(AccountsAuthenticateResponse))]
 [JsonSerializable(typeof(AccountsCreateRequest))]
-[JsonSerializable(typeof(AccountsCreateResponse))]
 [JsonSerializable(typeof(AccountsRecoverRequest))]
 [JsonSerializable(typeof(AccountsUpdateRequest))]
 [JsonSerializable(typeof(AccountsVerifyRequest))]

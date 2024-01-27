@@ -69,22 +69,6 @@ public sealed class GatewayHttpClient
         (await SendCoreAsync(method, path, credentials, content).ConfigureAwait(false)).Dispose();
     }
 
-    private async ValueTask<TResponse> SendAsync<TRequest, TResponse>(
-        HttpMethod method,
-        string path,
-        TRequest request,
-        JsonTypeInfo<TRequest> requestTypeInfo,
-        JsonTypeInfo<TResponse> responseTypeInfo,
-        (string Email, string Password)? credentials)
-        where TRequest : class
-        where TResponse : class
-    {
-        using var content = JsonContent.Create(request, requestTypeInfo);
-        using var response = await SendCoreAsync(method, path, credentials, content).ConfigureAwait(false);
-
-        return await DeserializeResponseAsync(response, responseTypeInfo).ConfigureAwait(false);
-    }
-
     private async ValueTask<TResponse> SendAsync<TResponse>(
         HttpMethod method,
         string path,
@@ -97,14 +81,13 @@ public sealed class GatewayHttpClient
         return await DeserializeResponseAsync(response, responseTypeInfo).ConfigureAwait(false);
     }
 
-    public ValueTask<AccountsCreateResponse> CreateAccountAsync(AccountsCreateRequest request)
+    public ValueTask CreateAccountAsync(AccountsCreateRequest request)
     {
         return SendAsync(
             HttpMethod.Post,
             "/Accounts/Create",
             request,
             _context.AccountsCreateRequest,
-            _context.AccountsCreateResponse,
             credentials: null);
     }
 

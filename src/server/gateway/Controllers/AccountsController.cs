@@ -43,8 +43,6 @@ internal sealed class AccountsController : ApiController
         var strategy = PasswordStrategyProvider.GetLatestStrategy();
         var salt = strategy.GenerateSalt();
 
-        var key = TokenGenerator.GenerateToken();
-
         var account = new AccountDocument
         {
             Email = new()
@@ -63,11 +61,6 @@ internal sealed class AccountsController : ApiController
                 Hash = strategy.CalculateHash(body.Password, salt),
             },
             Access = HostEnvironment.IsDevelopment() ? AccountAccess.Operator : AccountAccess.User,
-            SessionTicket = new()
-            {
-                Value = key,
-                Period = new(now, now + options.AccountSessionKeyTime),
-            },
         };
 
         await using (var session = DocumentStore.LightweightSession())
@@ -96,10 +89,7 @@ internal sealed class AccountsController : ApiController
             The token will expire on: {InstantToString(end)}
             """);
 
-        return Ok(new AccountsCreateResponse
-        {
-            SessionTicket = key,
-        });
+        return NoContent();
     }
 
     [HttpPatch]
