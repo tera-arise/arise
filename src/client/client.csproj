@@ -20,15 +20,6 @@
         <AriseEmbedNetworkCertificate>arise</AriseEmbedNetworkCertificate>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <_ClientExecutableRevision>r387486</_ClientExecutableRevision>
-        <_ClientExecutableArchive>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision).zip</_ClientExecutableArchive>
-        <_ClientExecutableStamp>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision).stamp</_ClientExecutableStamp>
-        <_ClientExecutableUnpackedPath>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision)/TERA.unpacked.exe</_ClientExecutableUnpackedPath>
-        <_ClientExecutableCache>$(BaseIntermediateOutputPath)TERA.arise.cache</_ClientExecutableCache>
-        <_ClientExecutablePatchedPath>$(BaseIntermediateOutputPath)TERA.arise.exe</_ClientExecutablePatchedPath>
-    </PropertyGroup>
-
     <ItemGroup>
         <Using Include="Arise.Bridge" />
         <Using Include="Arise.Data" />
@@ -157,21 +148,37 @@
         </ItemGroup>
     </Target>
 
+    <Target Name="_SetClientExecutableInfo">
+        <PropertyGroup>
+            <_ClientExecutableRevision>r387486</_ClientExecutableRevision>
+            <_ClientExecutableUnpackedPath>$(IntermediateOutputPath)$(_ClientExecutableRevision)/TERA.unpacked.exe</_ClientExecutableUnpackedPath>
+            <_ClientExecutableCache>$(IntermediateOutputPath)TERA.arise.cache</_ClientExecutableCache>
+            <_ClientExecutablePatchedPath>$(IntermediateOutputPath)TERA.arise.exe</_ClientExecutablePatchedPath>
+        </PropertyGroup>
+    </Target>
+
     <Target Name="_RestoreClientExecutable"
-            AfterTargets="_GenerateRestoreProjectPathWalk">
+            AfterTargets="_GenerateRestoreProjectPathWalk"
+            DependsOnTargets="_SetClientExecutableInfo">
+        <PropertyGroup>
+            <_ClientExecutableArchive>$(IntermediateOutputPath)$(_ClientExecutableRevision).zip</_ClientExecutableArchive>
+            <_ClientExecutableStamp>$(IntermediateOutputPath)$(_ClientExecutableRevision).stamp</_ClientExecutableStamp>
+        </PropertyGroup>
+
         <DownloadFile SourceUrl="https://github.com/alexrp/tera-re/releases/download/$(_ClientExecutableRevision)/$(_ClientExecutableRevision).zip"
-                      DestinationFolder="$(BaseIntermediateOutputPath)"
+                      DestinationFolder="$(IntermediateOutputPath)"
                       Condition="!Exists('$(_ClientExecutableArchive)')" />
 
         <Unzip SourceFiles="$(_ClientExecutableArchive)"
-               DestinationFolder="$(BaseIntermediateOutputPath)"
+               DestinationFolder="$(IntermediateOutputPath)"
                Condition="!Exists('$(_ClientExecutableStamp)')" />
 
         <Touch Files="$(_ClientExecutableStamp)"
                AlwaysCreate="true" />
     </Target>
 
-    <Target Name="_WriteClientExecutableCache">
+    <Target Name="_WriteClientExecutableCache"
+            DependsOnTargets="_SetClientExecutableInfo">
         <Hash ItemsToHash="$(MSBuildAllProjects); @(ArisePatcher); $(_ClientExecutableUnpackedPath)"
               IgnoreCase="true">
             <Output TaskParameter="HashResult"
@@ -189,7 +196,7 @@
     </Target>
 
     <Target Name="_PackClientExecutable"
-            Inputs="@(ArisePatcher); $(_ClientExecutableUnpackedPath)"
+            Inputs="@(ArisePatcher); $(_ClientExecutableUnpackedPath); $(_ClientExecutableCache)"
             Outputs="$(_ClientExecutablePatchedPath)"
             DependsOnTargets="_WriteClientExecutableCache"
             BeforeTargets="AddAvaloniaResources">
