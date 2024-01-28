@@ -80,11 +80,11 @@
                 <Image.Transitions>
                     <Transitions>
                         <EffectTransition Property="Effect"
-                                          Duration="0:0:0.25" />
+                                          Duration="0:0:0.15" />
                         <ThicknessTransition Property="Margin"
-                                             Duration="0:0:0.25" >
+                                             Duration="0:0:0.15">
                             <ThicknessTransition.Easing>
-                                <QuadraticEaseInOut/>
+                                <QuadraticEaseInOut />
                             </ThicknessTransition.Easing>
                         </ThicknessTransition>
                     </Transitions>
@@ -197,10 +197,10 @@
                 <Panel.Transitions>
                     <Transitions>
                         <DoubleTransition Property="Opacity"
-                                          Duration="0:0:0.25"
+                                          Duration="0:0:0.15"
                                           Delay="0:0:0.075" />
                         <TransformOperationsTransition Property="RenderTransform"
-                                                       Duration="0:0:0.25"
+                                                       Duration="0:0:0.15"
                                                        Delay="0:0:0.075">
                             <TransformOperationsTransition.Easing>
                                 <QuadraticEaseOut />
@@ -216,7 +216,30 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Width="300">
-                    <views:LoginForm />
+                    <TransitioningContentControl Content="{Binding CurrentModalController}">
+                        <TransitioningContentControl.PageTransition>
+                            <CompositePageTransition>
+                                <CrossFade Duration="0:0:0.25" />
+                                <PageSlide Duration="0:0:0.25"
+                                           Orientation="Horizontal">
+                                    <PageSlide.SlideInEasing>
+                                        <QuadraticEaseInOut />
+                                    </PageSlide.SlideInEasing>
+                                    <PageSlide.SlideOutEasing>
+                                        <QuadraticEaseInOut />
+                                    </PageSlide.SlideOutEasing>
+                                </PageSlide>
+                            </CompositePageTransition>
+                        </TransitioningContentControl.PageTransition>
+                        <TransitioningContentControl.DataTemplates>
+                            <DataTemplate DataType="controllers:LoginModalController">
+                                <views:LoginForm />
+                            </DataTemplate>
+                            <DataTemplate DataType="controllers:RegistrationModalController">
+                                <views:RegistrationForm />
+                            </DataTemplate>
+                        </TransitioningContentControl.DataTemplates>
+                    </TransitioningContentControl>
                 </Border>
             </Panel>
         </Grid>
