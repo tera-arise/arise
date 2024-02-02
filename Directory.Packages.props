@@ -78,7 +78,7 @@
         <PackageVersion Include="NodaTime"
                         Version="3.1.10" />
         <PackageVersion Include="Octokit"
-                        Version="9.1.1" />
+                        Version="9.1.2" />
         <PackageVersion Include="PeNet"
                         Version="4.0.4" />
         <PackageVersion Include="SendGrid"
