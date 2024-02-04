@@ -85,7 +85,7 @@ public sealed class GatewayHttpClient
     {
         return SendAsync(
             HttpMethod.Post,
-            "/Accounts/Create",
+            "Accounts/Create",
             request,
             _context.AccountsCreateRequest,
             credentials: null);
@@ -93,14 +93,14 @@ public sealed class GatewayHttpClient
 
     public ValueTask SendAccountEmailAsync(string email, string password)
     {
-        return SendAsync(HttpMethod.Patch, "/Accounts/Send", credentials: (email, password));
+        return SendAsync(HttpMethod.Patch, "Accounts/Send", credentials: (email, password));
     }
 
     public ValueTask VerifyAccountTokenAsync(string email, string password, AccountsVerifyRequest request)
     {
         return SendAsync(
             HttpMethod.Patch,
-            "/Accounts/Verify",
+            "Accounts/Verify",
             request,
             _context.AccountsVerifyRequest,
             credentials: (email, password));
@@ -110,7 +110,7 @@ public sealed class GatewayHttpClient
     {
         return SendAsync(
             HttpMethod.Patch,
-            "/Accounts/Update",
+            "Accounts/Update",
             request,
             _context.AccountsUpdateRequest,
             credentials: (email, password));
@@ -119,30 +119,30 @@ public sealed class GatewayHttpClient
     public ValueTask RecoverAccountAsync(AccountsRecoverRequest request)
     {
         return SendAsync(
-            HttpMethod.Patch, "/Accounts/Recover", request, _context.AccountsRecoverRequest, credentials: null);
+            HttpMethod.Patch, "Accounts/Recover", request, _context.AccountsRecoverRequest, credentials: null);
     }
 
     public ValueTask DeleteAccountAsync(string email, string password)
     {
-        return SendAsync(HttpMethod.Patch, "/Accounts/Delete", credentials: (email, password));
+        return SendAsync(HttpMethod.Patch, "Accounts/Delete", credentials: (email, password));
     }
 
     public ValueTask RestoreAccountAsync(string email, string password)
     {
-        return SendAsync(HttpMethod.Patch, "/Accounts/Restore", credentials: (email, password));
+        return SendAsync(HttpMethod.Patch, "Accounts/Restore", credentials: (email, password));
     }
 
     public ValueTask<AccountsAuthenticateResponse> AuthenticateAccountAsync(string email, string password)
     {
         return SendAsync(
             HttpMethod.Patch,
-            "/Accounts/Authenticate",
+            "Accounts/Authenticate",
             _context.AccountsAuthenticateResponse,
             credentials: (email, password));
     }
 
     public ValueTask<LauncherHelloResponse> HelloLauncherAsync()
     {
-        return SendAsync(HttpMethod.Get, "/Launcher/Hello", _context.LauncherHelloResponse, credentials: null);
+        return SendAsync(HttpMethod.Get, "Launcher/Hello", _context.LauncherHelloResponse, credentials: null);
     }
 }
