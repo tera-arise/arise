@@ -14,9 +14,28 @@ internal sealed partial class RegistrationModalController : ModalController
     }
 
     [RelayCommand]
-    private void Confirm()
+    private async Task ConfirmAsync()
     {
         MainController.CurrentModalController = null;
+
+        try
+        {
+            var result = await MainController.Gateway.Rest
+                .CreateAccountAsync(new AccountsCreateRequest
+                {
+                    Email = Email,
+                    Password = Password,
+                }).ConfigureAwait(true);
+
+            if (!string.IsNullOrEmpty(result.SessionTicket))
+            {
+                MainController.IsLoggedIn = true;
+            }
+        }
+        catch (GatewayHttpException)
+        {
+            // todo
+        }
     }
 
     [RelayCommand]
