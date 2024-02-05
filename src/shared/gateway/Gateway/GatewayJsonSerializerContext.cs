@@ -6,7 +6,7 @@ namespace Arise.Gateway;
 [JsonSerializable(typeof(AccountsUpdateRequest))]
 [JsonSerializable(typeof(AccountsVerifyRequest))]
 [JsonSerializable(typeof(LauncherHelloResponse))]
-[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSourceGenerationOptions(JsonSerializerDefaults.Web, WriteIndented = true)]
 internal sealed partial class GatewayJsonSerializerContext : JsonSerializerContext
 {
 }
