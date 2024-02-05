@@ -1,3 +1,5 @@
+using DotNext;
+
 namespace Arise.Client.Launcher.Controllers;
 
 internal sealed partial class RegistrationModalController : ModalController
@@ -20,14 +22,28 @@ internal sealed partial class RegistrationModalController : ModalController
 
         try
         {
-            var result = await MainController.Gateway.Rest
-                .CreateAccountAsync(new AccountsCreateRequest
-                {
-                    Email = Email,
-                    Password = Password,
-                }).ConfigureAwait(true);
+            var request = new AccountsCreateRequest
+            {
+                Email = Email,
+                Password = Password,
+            };
 
-            if (!string.IsNullOrEmpty(result.SessionTicket))
+            await MainController.Gateway.Rest
+                .CreateAccountAsync(request)
+                .ConfigureAwait(true);
+        }
+        catch (GatewayHttpException)
+        {
+            // todo
+        }
+
+        try
+        {
+            var loginResult = await MainController.Gateway.Rest
+                .AuthenticateAccountAsync(Email, Password)
+                .ConfigureAwait(true);
+
+            if (!string.IsNullOrEmpty(loginResult.SessionTicket))
             {
                 MainController.IsLoggedIn = true;
             }
@@ -35,6 +51,10 @@ internal sealed partial class RegistrationModalController : ModalController
         catch (GatewayHttpException)
         {
             // todo
+        }
+        finally
+        {
+            Password = string.Empty;
         }
     }
 
