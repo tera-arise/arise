@@ -4,7 +4,7 @@ using Material.Icons;
 
 namespace Arise.Client.Launcher.Controllers;
 
-public sealed partial class SettingsController : ViewController
+internal sealed partial class SettingsController : ViewController
 {
     private readonly LauncherSettingsManager _settingsManager;
 

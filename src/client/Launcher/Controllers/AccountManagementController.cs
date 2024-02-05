@@ -2,7 +2,7 @@ using Material.Icons;
 
 namespace Arise.Client.Launcher.Controllers;
 
-public class AccountManagementController : ViewController
+internal sealed class AccountManagementController : ViewController
 {
     public override MaterialIconKind IconKind => MaterialIconKind.Account;
 
