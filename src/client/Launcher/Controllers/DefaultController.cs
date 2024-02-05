@@ -2,7 +2,7 @@ using Material.Icons;
 
 namespace Arise.Client.Launcher.Controllers;
 
-public sealed partial class DefaultController : ViewController
+internal sealed partial class DefaultController : ViewController
 {
     public override MaterialIconKind IconKind => MaterialIconKind.Home;
 
