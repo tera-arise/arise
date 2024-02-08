@@ -20,7 +20,7 @@
         <PackageVersion Include="Avalonia.Fonts.Inter"
                         Version="11.0.7" />
         <PackageVersion Include="Avalonia.Skia"
-                        Version="11.0.7" />
+                        Version="11.0.8" />
         <PackageVersion Include="Avalonia.Themes.Fluent"
                         Version="11.0.7" />
         <PackageVersion Include="Avalonia.Win32"
