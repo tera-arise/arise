@@ -10,6 +10,7 @@
     <PropertyGroup>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AnalysisLevel>latest-all</AnalysisLevel>
+        <DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
         <EnablePreviewFeatures>true</EnablePreviewFeatures>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
