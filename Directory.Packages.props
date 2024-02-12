@@ -100,9 +100,9 @@
         <PackageVersion Include="Vezel.Cathode.Extensions"
                         Version="0.12.42" />
         <PackageVersion Include="Vezel.Novadrop.Formats"
-                        Version="2.1.28" />
+                        Version="2.2.7" />
         <PackageVersion Include="Vezel.Novadrop.Interop"
-                        Version="2.1.28" />
+                        Version="2.2.7" />
         <PackageVersion Include="Vezel.Ruptura.Hosting"
                         Version="2.1.7" />
         <PackageVersion Include="Vezel.Ruptura.Injection"

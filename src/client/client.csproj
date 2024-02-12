@@ -6,6 +6,11 @@
         <EventSourceSupport>false</EventSourceSupport>
         <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
         <IsPublishable>true</IsPublishable>
+        <!-- We use unstable Vezel.Novadrop.Interop APIs. -->
+        <NoWarn>
+            $(NoWarn);
+            ND0001
+        </NoWarn>
         <NullabilityInfoContextSupport>false</NullabilityInfoContextSupport>
         <OutputType>WinExe</OutputType>
         <RootNamespace>Arise.Client</RootNamespace>
