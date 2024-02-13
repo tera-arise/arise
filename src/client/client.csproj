@@ -155,8 +155,9 @@
     <Target Name="_SetClientExecutableInfo">
         <PropertyGroup>
             <_ClientExecutableRevision>r387486</_ClientExecutableRevision>
-            <_ClientExecutableUnpackedPath>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision)/TERA.unpacked.exe</_ClientExecutableUnpackedPath>
-            <_ClientExecutableCache>$(IntermediateOutputPath)TERA.arise.cache</_ClientExecutableCache>
+            <_ClientExecutableDownloadPath>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision)/</_ClientExecutableDownloadPath>
+            <_ClientExecutableUnpackedPath>$(_ClientExecutableDownloadPath)TERA.unpacked.exe</_ClientExecutableUnpackedPath>
+            <_ClientExecutableCachePath>$(IntermediateOutputPath)TERA.arise.cache</_ClientExecutableCachePath>
             <_ClientExecutablePatchedPath>$(IntermediateOutputPath)TERA.arise.exe</_ClientExecutablePatchedPath>
         </PropertyGroup>
     </Target>
@@ -164,21 +165,9 @@
     <Target Name="_RestoreClientExecutable"
             AfterTargets="_GenerateRestoreProjectPathWalk"
             DependsOnTargets="_SetClientExecutableInfo">
-        <PropertyGroup>
-            <_ClientExecutableArchive>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision).zip</_ClientExecutableArchive>
-            <_ClientExecutableStamp>$(BaseIntermediateOutputPath)$(_ClientExecutableRevision).stamp</_ClientExecutableStamp>
-        </PropertyGroup>
-
-        <DownloadFile SourceUrl="https://github.com/alexrp/tera-re/releases/download/$(_ClientExecutableRevision)/$(_ClientExecutableRevision).zip"
-                      DestinationFolder="$(BaseIntermediateOutputPath)"
-                      Condition="!Exists('$(_ClientExecutableArchive)')" />
-
-        <Unzip SourceFiles="$(_ClientExecutableArchive)"
-               DestinationFolder="$(BaseIntermediateOutputPath)"
-               Condition="!Exists('$(_ClientExecutableStamp)')" />
-
-        <Touch Files="$(_ClientExecutableStamp)"
-               AlwaysCreate="true" />
+        <DownloadFile SourceUrl="https://github.com/alexrp/tera-re/releases/download/$(_ClientExecutableRevision)/TERA.unpacked.exe"
+                      DestinationFolder="$(_ClientExecutableDownloadPath)"
+                      Condition="!Exists('$(_ClientExecutableUnpackedPath)')" />
     </Target>
 
     <Target Name="_WriteClientExecutableCache"
@@ -190,17 +179,17 @@
         </Hash>
 
         <WriteLinesToFile Lines="$(_ClientExecutableCacheHash)"
-                          File="$(_ClientExecutableCache)"
+                          File="$(_ClientExecutableCachePath)"
                           Overwrite="true"
                           WriteOnlyWhenDifferent="true" />
 
         <ItemGroup>
-            <FileWrites Include="$(_ClientExecutableCache)" />
+            <FileWrites Include="$(_ClientExecutableCachePath)" />
         </ItemGroup>
     </Target>
 
     <Target Name="_PackClientExecutable"
-            Inputs="@(ArisePatcher); $(_ClientExecutableUnpackedPath); $(_ClientExecutableCache)"
+            Inputs="@(ArisePatcher); $(_ClientExecutableUnpackedPath); $(_ClientExecutableCachePath)"
             Outputs="$(_ClientExecutablePatchedPath)"
             DependsOnTargets="_WriteClientExecutableCache"
             BeforeTargets="AddAvaloniaResources">
