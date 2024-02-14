@@ -1,8 +1,8 @@
 # TERA Arise
 
 <div align="center">
-    <img src="arise.png"
-         width="128"
+    <img src="vnd/assets/image_logo.webp"
+         height="256"
          alt="TERA Arise" />
 </div>
 
@@ -175,7 +175,7 @@ default submodule setup:
   will be largely useless.
 
 Additionally, to verify commit signatures from other authors, you may wish to
-add this to your `.git/config` file:
+add this to your `.git/config` file (or similar):
 
 ```gitconfig
 [gpg.ssh]
