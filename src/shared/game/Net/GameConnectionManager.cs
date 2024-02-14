@@ -63,9 +63,7 @@ public abstract class GameConnectionManager : IAsyncDisposable
 
         lock (_lock)
         {
-            disposeTasks = _connections!
-                .Select(static conn => conn.DisposeAsync().AsTask())
-                .ToArray();
+            disposeTasks = [.. _connections!.Select(static conn => conn.DisposeAsync().AsTask())];
 
             _connections = null;
         }

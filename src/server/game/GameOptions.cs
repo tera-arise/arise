@@ -12,7 +12,7 @@ internal sealed class GameOptions : IOptions<GameOptions>
 
     public Duration SpatialDataRetentionTime { get; } = Duration.FromHours(1);
 
-    public ICollection<string> Endpoints { get; } = new List<string>();
+    public ICollection<string> Endpoints { get; } = [];
 
     GameOptions IOptions<GameOptions>.Value => this;
 

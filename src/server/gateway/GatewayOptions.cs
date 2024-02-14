@@ -4,7 +4,7 @@ internal sealed class GatewayOptions : IOptions<GatewayOptions>
 {
     public string ForwardedForHeader { get; set; } = "X-Forwarded-For";
 
-    public ICollection<string> ForwardingProxyRanges { get; } = new List<string>();
+    public ICollection<string> ForwardingProxyRanges { get; } = [];
 
     public int RateLimit { get; set; } = 10;
 
