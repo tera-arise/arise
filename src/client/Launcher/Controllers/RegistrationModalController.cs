@@ -1,5 +1,3 @@
-using DotNext;
-
 namespace Arise.Client.Launcher.Controllers;
 
 internal sealed partial class RegistrationModalController : ModalController
@@ -35,6 +33,8 @@ internal sealed partial class RegistrationModalController : ModalController
         catch (GatewayHttpException)
         {
             // todo
+            Password = string.Empty;
+            return;
         }
 
         try
