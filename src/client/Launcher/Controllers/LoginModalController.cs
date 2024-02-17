@@ -16,10 +16,11 @@ internal sealed partial class LoginModalController : ModalController
     private bool _rememberMe;
 
     [ObservableProperty]
-    private LoginState _loginState;
+    private ActionStatus _actionStatus;
 
     private bool CanExecuteLogin => !string.IsNullOrEmpty(Email)
-                                    && !string.IsNullOrEmpty(Password);
+                                 && !string.IsNullOrEmpty(Password)
+                                 && ActionStatus is not ActionStatus.Pending;
 
     public LoginModalController(IServiceProvider services, MainController mainController)
         : base(services, mainController)
@@ -36,7 +37,7 @@ internal sealed partial class LoginModalController : ModalController
         {
             try
             {
-                LoginState = LoginState.Pending;
+                ActionStatus = ActionStatus.Pending;
 
                 var resp = await MainController.Gateway.Rest
                     .AuthenticateAccountAsync(Email, Password).ConfigureAwait(true);
@@ -45,19 +46,21 @@ internal sealed partial class LoginModalController : ModalController
                 {
                     _session.Login(Email, resp);
 
-                    LoginState = LoginState.Successful;
+                    ActionStatus = ActionStatus.Successful;
+
+                    await Task.Delay(1000).ConfigureAwait(true);
 
                     MainController.CurrentModalController = null;
                 }
                 else
                 {
-                    LoginState = LoginState.Failed;
+                    ActionStatus = ActionStatus.Failed;
                 }
             }
             catch (GatewayHttpException)
             {
                 // todo
-                LoginState = LoginState.Failed;
+                ActionStatus = ActionStatus.Failed;
             }
             finally
             {

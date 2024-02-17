@@ -21,6 +21,10 @@ internal sealed partial class DefaultController : ViewController
         {
             MainController.ShowLoginForm();
         }
+        else if (!_session.IsVerified)
+        {
+            MainController.ShowAccountVerificationForm();
+        }
         else
         {
             MainController.LaunchGame();

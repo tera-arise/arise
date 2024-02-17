@@ -17,10 +17,10 @@ internal sealed partial class MainController : LauncherController
     private bool _isLoggedIn;
 
     [ObservableProperty]
-    private bool _isVerified = true;
+    private bool _isVerified;
 
     [ObservableProperty]
-    private string _currentAccountName = "LOGIN";
+    private string _currentAccountName = string.Empty;
 
     [ObservableProperty]
     private ViewController _currentContent;
@@ -109,6 +109,11 @@ internal sealed partial class MainController : LauncherController
     public void ShowLoginForm()
     {
         CurrentModalController = new LoginModalController(Services, this);
+    }
+
+    public void ShowAccountVerificationForm()
+    {
+        CurrentModalController = new AccountVerificationModalController(Services, this);
     }
 
     [SuppressMessage("", "CA1822")]
