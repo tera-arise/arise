@@ -30,7 +30,7 @@ internal sealed class GatewayOptions : IOptions<GatewayOptions>
 
     public Duration AccountDeletionTime { get; set; } = Duration.FromDays(31);
 
-    public Duration AccountSessionKeyTime { get; set; } = Duration.FromHours(12);
+    public Duration AccountAuthenticationTime { get; set; } = Duration.FromHours(12);
 
     public string? NewsUri { get; set; }
 

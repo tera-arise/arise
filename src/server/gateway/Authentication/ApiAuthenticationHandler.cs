@@ -72,7 +72,7 @@ internal sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthen
         if (MatchPassword(account.Password))
             principal = new(account, recovered: false);
         else if (account.Recovery is AccountRecovery recovery &&
-            recovery.Period.Contains(_clock.GetCurrentInstant()) &&
+            _clock.GetCurrentInstant() < recovery.Expiry &&
             MatchPassword(recovery.Password))
             principal = new(account, recovered: true);
 

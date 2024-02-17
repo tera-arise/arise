@@ -16,7 +16,7 @@ internal sealed class ApiRateLimiterPolicy : IRateLimiterPolicy<IPAddress>
     public RateLimitPartition<IPAddress> GetPartition(HttpContext httpContext)
     {
         var ip = httpContext.Connection.RemoteIpAddress ?? IPAddress.Loopback;
-        var value = _options.Value;
+        var options = _options.Value;
 
         return IPAddress.IsLoopback(ip)
             ? RateLimitPartition.GetNoLimiter(ip)
@@ -25,8 +25,8 @@ internal sealed class ApiRateLimiterPolicy : IRateLimiterPolicy<IPAddress>
                 _ => new()
                 {
                     QueueLimit = 0,
-                    PermitLimit = value.RateLimit,
-                    Window = value.RateLimitPeriod.ToTimeSpan(),
+                    PermitLimit = options.RateLimit,
+                    Window = options.RateLimitPeriod.ToTimeSpan(),
                 });
     }
 }

@@ -36,9 +36,7 @@ internal sealed class AccountsController : ApiController
         var normalized = body.Email.Normalize().ToUpperInvariant();
 
         var token = TokenGenerator.GenerateToken();
-        var options = Options.Value;
-        var now = Clock.GetCurrentInstant();
-        var end = now + options.AccountVerificationTime;
+        var expiry = Clock.GetCurrentInstant() + Options.Value.AccountVerificationTime;
 
         var strategy = PasswordStrategyProvider.GetLatestStrategy();
         var salt = strategy.GenerateSalt();
@@ -51,7 +49,7 @@ internal sealed class AccountsController : ApiController
                 Verification = new()
                 {
                     Value = token,
-                    Period = new(now, end),
+                    Expiry = expiry,
                 },
             },
             Password = new()
@@ -86,7 +84,7 @@ internal sealed class AccountsController : ApiController
 
             To verify your email address, use this token in the launcher: {token}
 
-            The token will expire on: {InstantToString(end)}
+            The token will expire on: {InstantToString(expiry)}
             """);
 
         return NoContent();
@@ -97,17 +95,17 @@ internal sealed class AccountsController : ApiController
     {
         var email = account.Email;
 
+        // Is the account already verified?
         if (email.Verification == null)
             return BadRequest();
 
         var token = TokenGenerator.GenerateToken();
-        var now = Clock.GetCurrentInstant();
-        var end = now + Options.Value.AccountVerificationTime;
+        var expiry = Clock.GetCurrentInstant() + Options.Value.AccountVerificationTime;
 
         email.Verification = new()
         {
             Value = token,
-            Period = new(now, end),
+            Expiry = expiry,
         };
 
         if (!await UpdateAccountAsync(account, cancellationToken))
@@ -121,7 +119,7 @@ internal sealed class AccountsController : ApiController
 
             To verify your email address, use this token in the launcher: {token}
 
-            The token will expire on: {InstantToString(end)}
+            The token will expire on: {InstantToString(expiry)}
             """);
 
         return NoContent();
@@ -135,7 +133,7 @@ internal sealed class AccountsController : ApiController
 
         bool MatchToken([NotNullWhen(true)] AccountToken? token)
         {
-            return (token?.Period.Contains(now) ?? false) && body.Token == token.Value;
+            return now < token?.Expiry && body.Token == token.Value;
         }
 
         var email = account.Email;
@@ -187,8 +185,7 @@ internal sealed class AccountsController : ApiController
                 return BadRequest();
 
             var token = TokenGenerator.GenerateToken();
-            var now = Clock.GetCurrentInstant();
-            var end = now + Options.Value.AccountVerificationTime;
+            var expiry = Clock.GetCurrentInstant() + Options.Value.AccountVerificationTime;
 
             account.ChangingEmail = new()
             {
@@ -196,7 +193,7 @@ internal sealed class AccountsController : ApiController
                 Verification = new()
                 {
                     Value = token,
-                    Period = new(now, end),
+                    Expiry = expiry,
                 },
             };
 
@@ -213,7 +210,7 @@ internal sealed class AccountsController : ApiController
 
                 To confirm the change, use this token in the launcher: {token}
 
-                The token will expire on: {InstantToString(end)}
+                The token will expire on: {InstantToString(expiry)}
 
                 If you did not initiate this request, please change your password immediately.
                 """);
@@ -267,9 +264,7 @@ internal sealed class AccountsController : ApiController
             var strategy = PasswordStrategyProvider.GetLatestStrategy();
             var salt = strategy.GenerateSalt();
             var password = PasswordStrategy.GeneratePassword();
-
-            var now = Clock.GetCurrentInstant();
-            var end = now + Options.Value.AccountRecoveryTime;
+            var expiry = Clock.GetCurrentInstant() + Options.Value.AccountRecoveryTime;
 
             account.Recovery = new()
             {
@@ -279,7 +274,7 @@ internal sealed class AccountsController : ApiController
                     Salt = salt,
                     Hash = strategy.CalculateHash(password, salt),
                 },
-                Period = new(now, end),
+                Expiry = expiry,
             };
 
             if (!await UpdateAccountAsync(account, cancellationToken))
@@ -293,7 +288,7 @@ internal sealed class AccountsController : ApiController
 
                 A temporary password has been generated for you: {password}
 
-                The temporary password will expire on: {InstantToString(end)}
+                The temporary password will expire on: {InstantToString(expiry)}
 
                 If you log in with the above password, it will replace your current password.
 
@@ -313,18 +308,19 @@ internal sealed class AccountsController : ApiController
         if (account.Deletion != null)
             return BadRequest();
 
-        var token = TokenGenerator.GenerateToken();
         var options = Options.Value;
+
+        var token = TokenGenerator.GenerateToken();
         var now = Clock.GetCurrentInstant();
-        var end = now + options.AccountVerificationTime;
+        var expiry = now + options.AccountVerificationTime;
 
         account.Deletion = new()
         {
-            Period = new(now, now + options.AccountDeletionTime),
+            Due = now + options.AccountDeletionTime,
             Verification = new()
             {
                 Value = token,
-                Period = new(now, end),
+                Expiry = expiry,
             },
         };
 
@@ -339,7 +335,7 @@ internal sealed class AccountsController : ApiController
 
             To confirm account deletion, use this token in the launcher: {token}
 
-            The token will expire on: {InstantToString(end)}
+            The token will expire on: {InstantToString(expiry)}
 
             If you did not initiate this request, please change your password immediately.
             """);
@@ -373,12 +369,13 @@ internal sealed class AccountsController : ApiController
 
         if (account.ChangingEmail is { } change)
         {
-            if (change.Verification.Period.Contains(now))
+            if (now < change.Verification.Expiry)
                 changing = true;
             else
                 account.ChangingEmail = null; // Clear expired email address change request.
         }
 
+        // If the recovery password was used, make it the actual password.
         if (principal.IsRecovered)
             account.Password = account.Recovery!.Password;
 
@@ -388,7 +385,7 @@ internal sealed class AccountsController : ApiController
 
         if (account.Deletion is { } deletion)
         {
-            if (deletion.Verification is { } verification && !verification.Period.Contains(now))
+            if (deletion.Verification is { } verification && now >= verification.Expiry)
                 account.Deletion = null; // Clear expired deletion request.
             else if (deletion.Verification == null)
                 deleting = true;
@@ -398,7 +395,7 @@ internal sealed class AccountsController : ApiController
 
         if (account.Ban is { } ban)
         {
-            if (ban.Period.Contains(now))
+            if (now < ban.Expiry)
                 reason = ban.Reason;
             else
                 account.Ban = null; // Clear expired ban.
@@ -407,15 +404,15 @@ internal sealed class AccountsController : ApiController
         // Accounts that are banned or in the process of being deleted cannot access the world server. We also prevent
         // unverified accounts from accessing it since the user could have signed up with a wrong email address and
         // might otherwise not notice until they have made significant progress in the game.
-        var key = (HostEnvironment.IsDevelopment() || !verifying) && !deleting && reason == null
+        var ticket = (HostEnvironment.IsDevelopment() || !verifying) && !deleting && reason == null
             ? TokenGenerator.GenerateToken()
             : null;
 
         // Save new key or clear the previous one (for ban or deletion).
-        account.SessionTicket = key == null ? null : new()
+        account.SessionTicket = ticket == null ? null : new()
         {
-            Value = key,
-            Period = new(now, now + Options.Value.AccountSessionKeyTime),
+            Value = ticket,
+            Expiry = now + Options.Value.AccountAuthenticationTime,
         };
 
         return await UpdateAccountAsync(account, cancellationToken)
@@ -426,7 +423,7 @@ internal sealed class AccountsController : ApiController
                 IsRecovered = principal.IsRecovered,
                 IsDeleting = deleting,
                 BanReason = reason,
-                SessionTicket = key,
+                SessionTicket = ticket,
             })
             : Conflict();
     }
@@ -449,8 +446,8 @@ internal sealed class AccountsController : ApiController
         return true;
     }
 
-    private static string InstantToString(Instant date)
+    private static string InstantToString(Instant instant)
     {
-        return date.InUtc().Date.ToString(patternText: null, CultureInfo.InvariantCulture);
+        return instant.InUtc().Date.ToString(patternText: null, CultureInfo.InvariantCulture);
     }
 }
