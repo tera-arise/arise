@@ -15,7 +15,7 @@ public sealed class C_CHECK_VERSION : TeraGamePacket
         public required int Value { get; init; }
     }
 
-    public override TeraGamePacketCode Code => TeraGamePacketCode.C_CHECK_VERSION;
+    public override GamePacketCode Code => GamePacketCode.C_CHECK_VERSION;
 
     public required ImmutableArray<VersionInfo> Versions { get; init; }
 }

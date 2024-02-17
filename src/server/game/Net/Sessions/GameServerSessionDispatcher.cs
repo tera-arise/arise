@@ -8,9 +8,9 @@ internal sealed partial class GameServerSessionDispatcher :
 {
     private static partial class Log
     {
-        [LoggerMessage(0, LogLevel.Warning, "No game packet handler found for {Channel}:{Code} from {EndPoint}")]
+        [LoggerMessage(0, LogLevel.Warning, "No game packet handler found for {Code} from {EndPoint}")]
         public static partial void NoHandlerFound(
-            ILogger<GameServerSessionDispatcher> logger, GameConnectionChannel channel, Enum code, IPEndPoint endPoint);
+            ILogger<GameServerSessionDispatcher> logger, GamePacketCode code, IPEndPoint endPoint);
     }
 
     private readonly ILogger<GameServerSessionDispatcher> _logger;
@@ -22,15 +22,6 @@ internal sealed partial class GameServerSessionDispatcher :
 
     protected override void UnhandledPacket(GameServerSession session, GamePacket packet)
     {
-        Log.NoHandlerFound(
-            _logger,
-            packet.Channel,
-            packet.Channel switch
-            {
-                GameConnectionChannel.Tera => (TeraGamePacketCode)packet.RawCode,
-                GameConnectionChannel.Arise => (AriseGamePacketCode)packet.RawCode,
-                _ => throw new UnreachableException(),
-            },
-            session.EndPoint);
+        Log.NoHandlerFound(_logger, packet.Code, session.EndPoint);
     }
 }

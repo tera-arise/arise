@@ -3,7 +3,7 @@ using static DotNext.Metaprogramming.CodeGenerator;
 
 namespace Arise.Net.Serialization;
 
-internal sealed class TeraGamePacketSerializer : GamePacketSerializer<TeraGamePacketCode, TeraGamePacket>
+internal sealed class TeraGamePacketSerializer : GamePacketSerializer<TeraGamePacket>
 {
     public static TeraGamePacketSerializer Instance { get; }
 

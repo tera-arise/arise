@@ -18,17 +18,13 @@ public abstract class GameConnectionManager : IAsyncDisposable
 
     // Packet notification events may only throw InvalidDataException.
 
-    public event Action<GameConnectionConduit, TeraGamePacketCode, ReadOnlyMemory<byte>>? RawTeraPacketReceived;
-
-    public event Action<GameConnectionConduit, AriseGamePacketCode, ReadOnlyMemory<byte>>? RawArisePacketReceived;
+    public event Action<GameConnectionConduit, GamePacketCode, ReadOnlyMemory<byte>>? RawPacketReceived;
 
     public event Action<GameConnectionConduit, TeraGamePacket>? TeraPacketReceived;
 
     public event Action<GameConnectionConduit, AriseGamePacket>? ArisePacketReceived;
 
-    public event Action<GameConnectionConduit, TeraGamePacketCode, ReadOnlyMemory<byte>>? RawTeraPacketSent;
-
-    public event Action<GameConnectionConduit, AriseGamePacketCode, ReadOnlyMemory<byte>>? RawArisePacketSent;
+    public event Action<GameConnectionConduit, GamePacketCode, ReadOnlyMemory<byte>>? RawPacketSent;
 
     public event Action<GameConnectionConduit, TeraGamePacket>? TeraPacketSent;
 
@@ -90,34 +86,27 @@ public abstract class GameConnectionManager : IAsyncDisposable
 
     internal void HandleReceivedPacket(GameConnectionConduit conduit, GameConnectionBuffer buffer)
     {
-        HandlePacket(
-            conduit, buffer, RawTeraPacketReceived, RawArisePacketReceived, TeraPacketReceived, ArisePacketReceived);
+        HandlePacket(conduit, buffer, RawPacketReceived, TeraPacketReceived, ArisePacketReceived);
     }
 
     internal void HandleSentPacket(GameConnectionConduit conduit, GameConnectionBuffer buffer)
     {
-        HandlePacket(conduit, buffer, RawTeraPacketSent, RawArisePacketSent, TeraPacketSent, ArisePacketSent);
+        HandlePacket(conduit, buffer, RawPacketSent, TeraPacketSent, ArisePacketSent);
     }
 
     private static void HandlePacket(
         GameConnectionConduit conduit,
         GameConnectionBuffer buffer,
-        Action<GameConnectionConduit, TeraGamePacketCode, ReadOnlyMemory<byte>>? rawTeraEvent,
-        Action<GameConnectionConduit, AriseGamePacketCode, ReadOnlyMemory<byte>>? rawAriseEvent,
+        Action<GameConnectionConduit, GamePacketCode, ReadOnlyMemory<byte>>? rawEvent,
         Action<GameConnectionConduit, TeraGamePacket>? teraEvent,
         Action<GameConnectionConduit, AriseGamePacket>? ariseEvent)
     {
-        void RaisePacketEvents<TCode, TPacket>(
-            GamePacketSerializer<TCode, TPacket> serializer,
-            Action<GameConnectionConduit, TCode, ReadOnlyMemory<byte>>? rawEvent,
-            Action<GameConnectionConduit, TPacket>? @event)
-            where TCode : unmanaged, Enum
-            where TPacket : GamePacket<TCode>
+        var code = (GamePacketCode)buffer.Code;
+
+        void RaisePacketEvents<TPacket>(
+            GamePacketSerializer<TPacket> serializer, Action<GameConnectionConduit, TPacket>? @event)
+            where TPacket : GamePacket
         {
-            var code = Unsafe.BitCast<ushort, TCode>(buffer.Code);
-
-            rawEvent?.Invoke(conduit, code, buffer.Payload);
-
             if (@event == null || serializer.CreatePacket(code) is not { } packet)
                 return;
 
@@ -128,15 +117,13 @@ public abstract class GameConnectionManager : IAsyncDisposable
             @event.Invoke(conduit, packet);
         }
 
-        switch (buffer.Channel)
-        {
-            case GameConnectionChannel.Tera:
-                RaisePacketEvents(TeraGamePacketSerializer.Instance, rawTeraEvent, teraEvent);
-                break;
-            case GameConnectionChannel.Arise:
-                RaisePacketEvents(AriseGamePacketSerializer.Instance, rawAriseEvent, ariseEvent);
-                break;
-        }
+        rawEvent?.Invoke(conduit, code, buffer.Payload);
+
+        // See the comment in GamePacketCode.
+        if (code is > GamePacketCode.I_CLOSE_SERVER_CONNECTION and < GamePacketCode.C_CHECK_VERSION)
+            RaisePacketEvents(TeraGamePacketSerializer.Instance, teraEvent);
+        else
+            RaisePacketEvents(AriseGamePacketSerializer.Instance, ariseEvent);
     }
 
     private protected async ValueTask<GameConnection> CreateConnectionAsync(

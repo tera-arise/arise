@@ -4,9 +4,8 @@ using static DotNext.Metaprogramming.CodeGenerator;
 
 namespace Arise.Net.Serialization;
 
-internal abstract class GamePacketSerializer<TCode, TPacket>
-    where TCode : unmanaged, Enum
-    where TPacket : GamePacket<TCode>
+internal abstract class GamePacketSerializer<TPacket>
+    where TPacket : GamePacket
 {
     private static readonly FrozenSet<Type> _extraSimpleTypes = new[]
     {
@@ -16,19 +15,19 @@ internal abstract class GamePacketSerializer<TCode, TPacket>
 
     private static readonly MethodInfo _as = typeof(Unsafe).GetMethod("As", 1, [Type.MakeGenericMethodParameter(0)])!;
 
-    private readonly FrozenDictionary<TCode, Func<TPacket>> _creators;
+    private readonly FrozenDictionary<GamePacketCode, Func<TPacket>> _creators;
 
-    private readonly FrozenDictionary<TCode, Action<TPacket, GameStreamAccessor>> _deserializers;
+    private readonly FrozenDictionary<GamePacketCode, Action<TPacket, GameStreamAccessor>> _deserializers;
 
-    private readonly FrozenDictionary<TCode, Action<TPacket, GameStreamAccessor>> _serializers;
+    private readonly FrozenDictionary<GamePacketCode, Action<TPacket, GameStreamAccessor>> _serializers;
 
     private int _variableCounter;
 
     private protected GamePacketSerializer()
     {
-        var creators = new Dictionary<TCode, Func<TPacket>>();
-        var deserializers = new Dictionary<TCode, Action<TPacket, GameStreamAccessor>>();
-        var serializers = new Dictionary<TCode, Action<TPacket, GameStreamAccessor>>();
+        var creators = new Dictionary<GamePacketCode, Func<TPacket>>();
+        var deserializers = new Dictionary<GamePacketCode, Action<TPacket, GameStreamAccessor>>();
+        var serializers = new Dictionary<GamePacketCode, Action<TPacket, GameStreamAccessor>>();
 
         Action<TPacket, GameStreamAccessor> CompileFunction(Type type, Action<Expression, Expression> generator)
         {
@@ -91,7 +90,7 @@ internal abstract class GamePacketSerializer<TCode, TPacket>
 
     protected abstract void GenerateSerializer(Expression packet, Expression accessor);
 
-    public TPacket? CreatePacket(TCode code)
+    public TPacket? CreatePacket(GamePacketCode code)
     {
         return _creators.TryGetValue(code, out var creator) ? creator() : null;
     }

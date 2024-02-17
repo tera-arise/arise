@@ -75,24 +75,14 @@ public sealed class GameConnectionConduit
         return TryWritePacket(packet, completion: null);
     }
 
-    public void PostPacket(TeraGamePacketCode code, scoped ReadOnlySpan<byte> payload)
+    public void PostPacket(GamePacketCode code, scoped ReadOnlySpan<byte> payload)
     {
         _ = TryPostPacket(code, payload);
     }
 
-    public void PostPacket(AriseGamePacketCode code, scoped ReadOnlySpan<byte> payload)
+    public bool TryPostPacket(GamePacketCode code, scoped ReadOnlySpan<byte> payload)
     {
-        _ = TryPostPacket(code, payload);
-    }
-
-    public bool TryPostPacket(TeraGamePacketCode code, scoped ReadOnlySpan<byte> payload)
-    {
-        return TryWritePacket(GameConnectionChannel.Tera, (ushort)code, payload, completion: null);
-    }
-
-    public bool TryPostPacket(AriseGamePacketCode code, scoped ReadOnlySpan<byte> payload)
-    {
-        return TryWritePacket(GameConnectionChannel.Arise, (ushort)code, payload, completion: null);
+        return TryWritePacket(code, payload, completion: null);
     }
 
     public async ValueTask SendPacketAsync(GamePacket packet)
@@ -107,45 +97,27 @@ public sealed class GameConnectionConduit
         return TryWritePacket(packet, tcs) && await tcs.Task.ConfigureAwait(false);
     }
 
-    public async ValueTask SendPacketAsync(TeraGamePacketCode code, ReadOnlyMemory<byte> payload)
+    public async ValueTask SendPacketAsync(GamePacketCode code, ReadOnlyMemory<byte> payload)
     {
         _ = await TrySendPacketAsync(code, payload).ConfigureAwait(false);
     }
 
-    public async ValueTask SendPacketAsync(AriseGamePacketCode code, ReadOnlyMemory<byte> payload)
-    {
-        _ = await TrySendPacketAsync(code, payload).ConfigureAwait(false);
-    }
-
-    public async ValueTask<bool> TrySendPacketAsync(TeraGamePacketCode code, ReadOnlyMemory<byte> payload)
+    public async ValueTask<bool> TrySendPacketAsync(GamePacketCode code, ReadOnlyMemory<byte> payload)
     {
         var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-        return
-            TryWritePacket(GameConnectionChannel.Tera, (ushort)code, payload.Span, tcs) &&
-            await tcs.Task.ConfigureAwait(false);
-    }
-
-    public async ValueTask<bool> TrySendPacketAsync(AriseGamePacketCode code, ReadOnlyMemory<byte> payload)
-    {
-        var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
-
-        return
-            TryWritePacket(GameConnectionChannel.Arise, (ushort)code, payload.Span, tcs) &&
-            await tcs.Task.ConfigureAwait(false);
+        return TryWritePacket(code, payload.Span, tcs) && await tcs.Task.ConfigureAwait(false);
     }
 
     private bool TryWritePacket(
-        GameConnectionChannel channel,
-        ushort code,
+        GamePacketCode code,
         scoped ReadOnlySpan<byte> payload,
         TaskCompletionSource<bool>? completion)
     {
         var buffer = Connection.Manager.Buffers.Get();
 
-        buffer.Channel = channel;
         buffer.Length = (ushort)payload.Length;
-        buffer.Code = code;
+        buffer.Code = (ushort)code;
 
         buffer.ConvertToSession(Connection.Module.Protocol);
 
@@ -164,9 +136,8 @@ public sealed class GameConnectionConduit
 
         packet.Serialize(accessor);
 
-        buffer.Channel = packet.Channel;
         buffer.Length = (ushort)accessor.Position;
-        buffer.Code = packet.RawCode;
+        buffer.Code = (ushort)packet.Code;
 
         buffer.ConvertToSession(Connection.Module.Protocol);
 

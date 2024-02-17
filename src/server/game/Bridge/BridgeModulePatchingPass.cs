@@ -29,45 +29,6 @@ internal sealed class BridgeModulePatchingPass : BridgeModulePass
                 insn.Operand = value;
             }
 
-            void PatchPacketCodeSequences<T>()
-                where T : unmanaged, Enum
-            {
-                var template = insns
-                    .Where(static insn => insn.OpCode.Code != Code.Ret)
-                    .ToArray();
-
-                var codes = new HashSet<int>();
-
-                foreach (var value in Enum.GetValues<T>())
-                {
-                    var sequence = template
-                        .Select(static insn => insn.Clone())
-                        .ToArray();
-
-                    var insn1 = sequence.First(static insn => insn.IsLdcI4() && insn.GetLdcI4Value() == 0);
-
-                    insn1.OpCode = OpCodes.Ldc_I4;
-                    insn1.Operand = (int)Unsafe.BitCast<T, ushort>(value);
-
-                    int code;
-
-                    while (!codes.Add(code = rng.Next(ushort.MaxValue + 1)))
-                    {
-                        // Prevent duplicate packet codes.
-                    }
-
-                    var insn2 = sequence.First(static insn => insn.IsLdcI4() && insn.GetLdcI4Value() == 42);
-
-                    insn2.OpCode = OpCodes.Ldc_I4;
-                    insn2.Operand = code;
-
-                    foreach (var insn in sequence)
-                        insns.Add(insn.Clone());
-                }
-
-                insns.Add(Instruction.Create(OpCodes.Ret));
-            }
-
             switch (((string)method.DeclaringType.Name, (string)method.Name))
             {
                 case ("GameProtection", "Initialize") when kind == BridgeModuleKind.Normal:
@@ -129,16 +90,43 @@ internal sealed class BridgeModulePatchingPass : BridgeModulePass
                     break;
                 }
 
-                case ("PatchableBridgeProtocolComponent", "InitializeTeraCodes"):
+                case ("PatchableBridgeProtocolComponent", "InitializeCodes"):
                 {
-                    PatchPacketCodeSequences<TeraGamePacketCode>();
+                    var template = insns
+                        .Where(static insn => insn.OpCode.Code != Code.Ret)
+                        .ToArray();
 
-                    break;
-                }
+                    var codes = new HashSet<int>();
 
-                case ("PatchableBridgeProtocolComponent", "InitializeAriseCodes"):
-                {
-                    PatchPacketCodeSequences<AriseGamePacketCode>();
+                    foreach (var value in Enum.GetValues<GamePacketCode>())
+                    {
+                        var sequence = template
+                            .Select(static insn => insn.Clone())
+                            .ToArray();
+
+                        var insn1 = sequence.First(
+                            static insn => insn.IsLdcI4() && insn.GetLdcI4Value() == (int)default(GamePacketCode));
+
+                        insn1.OpCode = OpCodes.Ldc_I4;
+                        insn1.Operand = (int)value;
+
+                        int code;
+
+                        while (!codes.Add(code = rng.Next(ushort.MaxValue + 1)))
+                        {
+                            // Prevent duplicate packet codes.
+                        }
+
+                        var insn2 = sequence.First(static insn => insn.IsLdcI4() && insn.GetLdcI4Value() == 42);
+
+                        insn2.OpCode = OpCodes.Ldc_I4;
+                        insn2.Operand = code;
+
+                        foreach (var insn in sequence)
+                            insns.Add(insn.Clone());
+                    }
+
+                    insns.Add(Instruction.Create(OpCodes.Ret));
 
                     break;
                 }

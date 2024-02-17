@@ -2,10 +2,8 @@ using Arise.Net.Serialization;
 
 namespace Arise.Net.Packets;
 
-public abstract class AriseGamePacket : GamePacket<AriseGamePacketCode>
+public abstract class AriseGamePacket : GamePacket
 {
-    public override sealed GameConnectionChannel Channel => GameConnectionChannel.Arise;
-
     private protected AriseGamePacket()
     {
     }

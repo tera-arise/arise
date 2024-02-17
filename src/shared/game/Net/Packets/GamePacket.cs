@@ -2,9 +2,7 @@ namespace Arise.Net.Packets;
 
 public abstract class GamePacket
 {
-    public abstract GameConnectionChannel Channel { get; }
-
-    public abstract ushort RawCode { get; }
+    public abstract GamePacketCode Code { get; }
 
     private protected GamePacket()
     {

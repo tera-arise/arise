@@ -11,7 +11,9 @@ internal sealed unsafe partial class TeraConnectionManager : IHostedService
 
     public event Action? Disconnected;
 
-    public event ReadOnlySpanAction<byte, TeraGamePacketCode>? PacketSent;
+    public event ReadOnlySpanAction<byte, GamePacketCode>? PacketSent;
+
+    private const int HeaderSize = sizeof(ushort) * 2;
 
     private readonly Queue<FunctionHook> _hooks = new();
 
@@ -107,11 +109,10 @@ internal sealed unsafe partial class TeraConnectionManager : IHostedService
     [UnmanagedCallersOnly]
     private static void SendPacketHook(S1ConnectionManager* @this, FName* name, byte* packet, uint length)
     {
-        var span = new ReadOnlySpan<byte>(packet, (int)(length - sizeof(ushort) * 2));
+        var span = new ReadOnlySpan<byte>(packet, (int)(length - HeaderSize));
 
         GetContext().Manager.PacketSent?.Invoke(
-            span[(sizeof(ushort) * 2)..],
-            (TeraGamePacketCode)BinaryPrimitives.ReadUInt16LittleEndian(span[sizeof(ushort)..]));
+            span[HeaderSize..], (GamePacketCode)BinaryPrimitives.ReadUInt16LittleEndian(span[sizeof(ushort)..]));
     }
 
     public void Disconnect()
@@ -119,16 +120,16 @@ internal sealed unsafe partial class TeraConnectionManager : IHostedService
         _ = Interlocked.CompareExchange(ref _state, (int)State.Dropped, (int)State.Connected);
     }
 
-    public void EnqueuePacket(TeraGamePacketCode code, scoped ReadOnlySpan<byte> payload)
+    public void EnqueuePacket(GamePacketCode code, scoped ReadOnlySpan<byte> payload)
     {
-        var length = sizeof(ushort) * 2 + payload.Length;
+        var length = HeaderSize + payload.Length;
         var array = ArrayPool<byte>.Shared.Rent(length);
         var span = array.AsSpan(0, length);
 
         BinaryPrimitives.WriteUInt16LittleEndian(span, (ushort)length);
         BinaryPrimitives.WriteUInt16LittleEndian(span[sizeof(ushort)..], (ushort)code);
 
-        payload.CopyTo(span[(sizeof(ushort) * 2)..]);
+        payload.CopyTo(span[HeaderSize..]);
 
         _receivedPackets.Enqueue(array);
     }

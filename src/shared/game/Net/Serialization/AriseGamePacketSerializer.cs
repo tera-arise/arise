@@ -4,7 +4,7 @@ using static DotNext.Metaprogramming.CodeGenerator;
 
 namespace Arise.Net.Serialization;
 
-internal sealed class AriseGamePacketSerializer : GamePacketSerializer<AriseGamePacketCode, AriseGamePacket>
+internal sealed class AriseGamePacketSerializer : GamePacketSerializer<AriseGamePacket>
 {
     public static AriseGamePacketSerializer Instance { get; }
 

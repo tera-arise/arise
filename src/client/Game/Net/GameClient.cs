@@ -13,20 +13,11 @@ internal sealed partial class GameClient : IHostedService
         public static partial void ClientDisconnected(
             ILogger<GameClient> logger, Exception? exception, IPEndPoint endPoint);
 
-        // TODO: https://github.com/dotnet/runtime/issues/90589
+        [LoggerMessage(2, LogLevel.Trace, "S -> C: {Code} ({Length} bytes)")]
+        public static partial void PacketReceived(ILogger<GameClient> logger, GamePacketCode code, int length);
 
-        [LoggerMessage(2, LogLevel.Trace, "S -> C: Tera:{Code} ({Length} bytes)")]
-        public static partial void TeraPacketReceived(ILogger<GameClient> logger, TeraGamePacketCode code, int length);
-
-        [LoggerMessage(3, LogLevel.Trace, "S -> C: Arise:{Code} ({Length} bytes)")]
-        public static partial void ArisePacketReceived(
-            ILogger<GameClient> logger, AriseGamePacketCode code, int length);
-
-        [LoggerMessage(4, LogLevel.Trace, "C -> S: Tera:{Code} ({Length} bytes)")]
-        public static partial void TeraPacketSent(ILogger<GameClient> logger, TeraGamePacketCode code, int length);
-
-        [LoggerMessage(5, LogLevel.Trace, "C -> S: Arise:{Code} ({Length} bytes)")]
-        public static partial void ArisePacketSent(ILogger<GameClient> logger, AriseGamePacketCode code, int length);
+        [LoggerMessage(3, LogLevel.Trace, "C -> S: {Code} ({Length} bytes)")]
+        public static partial void PacketSent(ILogger<GameClient> logger, GamePacketCode code, int length);
     }
 
     public GameClientSession Session { get; private set; } = null!;
@@ -84,21 +75,21 @@ internal sealed partial class GameClient : IHostedService
             _hostLifetime.StopApplication();
         };
 
-        void LogPacket<T>(T code, ReadOnlyMemory<byte> payload, Action<ILogger<GameClient>, T, int> log)
-            where T : unmanaged, Enum
+        void LogPacket(
+            GamePacketCode code,
+            ReadOnlyMemory<byte> payload,
+            Action<ILogger<GameClient>, GamePacketCode, int> log)
         {
             log(_logger, code, payload.Length);
         }
 
-        _client.RawTeraPacketReceived += (conduit, code, payload) =>
+        _client.RawPacketReceived += (conduit, code, payload) =>
         {
             _connectionManager.EnqueuePacket(code, payload.Span);
 
-            LogPacket(code, payload, Log.TeraPacketReceived);
+            LogPacket(code, payload, Log.PacketReceived);
         };
-        _client.RawArisePacketReceived += (conduit, code, payload) => LogPacket(code, payload, Log.ArisePacketReceived);
-        _client.RawTeraPacketSent += (conduit, code, payload) => LogPacket(code, payload, Log.TeraPacketSent);
-        _client.RawArisePacketSent += (conduit, code, payload) => LogPacket(code, payload, Log.ArisePacketSent);
+        _client.RawPacketSent += (conduit, code, payload) => LogPacket(code, payload, Log.PacketSent);
 
         _client.ArisePacketReceived +=
             (conduit, packet) =>

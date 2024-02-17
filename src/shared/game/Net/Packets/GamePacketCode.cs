@@ -1,8 +1,15 @@
 namespace Arise.Net.Packets;
 
-public enum TeraGamePacketCode : ushort
+[SuppressMessage("", "CA1707")]
+public enum GamePacketCode : ushort
 {
-    // Keep the list sorted by name.
+    // Keep these sorted by name. All values between I_CLOSE_SERVER_CONNECTION and C_CHECK_VERSION can be used for
+    // custom Arise packets.
+
+    C_ARISE_WATCHDOG_REPORT = 10000,
+    S_ARISE_WATCHDOG_REPORT = 10001,
+
+    // Keep these sorted by name.
 
     C_ACCEPT_CONTRACT = 29719,
     C_ACCEPT_FRIEND = 57988,

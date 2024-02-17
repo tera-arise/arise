@@ -450,11 +450,11 @@ public class GameStreamAccessor : StreamAccessor
 
     internal ushort ReadPacketOffset()
     {
-        return (ushort)(ReadUInt16() - GameConnectionBuffer.TeraHeaderSize);
+        return (ushort)(ReadUInt16() - GameConnectionBuffer.HeaderSize);
     }
 
     internal void WritePacketOffset(ushort value)
     {
-        WriteUInt16((ushort)(value + GameConnectionBuffer.TeraHeaderSize));
+        WriteUInt16((ushort)(value + GameConnectionBuffer.HeaderSize));
     }
 }

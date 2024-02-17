@@ -2,10 +2,8 @@ using Arise.Net.Serialization;
 
 namespace Arise.Net.Packets;
 
-public abstract class TeraGamePacket : GamePacket<TeraGamePacketCode>
+public abstract class TeraGamePacket : GamePacket
 {
-    public override sealed GameConnectionChannel Channel => GameConnectionChannel.Tera;
-
     private protected TeraGamePacket()
     {
     }
