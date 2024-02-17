@@ -11,6 +11,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AnalysisLevel>latest-all</AnalysisLevel>
         <DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
         <EnablePreviewFeatures>true</EnablePreviewFeatures>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
