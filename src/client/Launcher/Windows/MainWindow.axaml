@@ -123,11 +123,34 @@
                             Command="{Binding ShowAccountPopupCommand}"
                             FontSize="10"
                             Padding="6 0"
-                            Width="NaN">
+                            Width="NaN"
+                            IsVisible="{Binding IsLoggedIn}">
+                        <!-- todo: style this thing -->
+                        <Button.Flyout>
+                            <MenuFlyout>
+                                <MenuItem Header="Logout"
+                                          Command="{Binding LogoutCommand}" />
+                            </MenuFlyout>
+                        </Button.Flyout>
                         <StackPanel Orientation="Horizontal">
-                            <icons:MaterialIcon Kind="Account"
-                                                IsVisible="{Binding IsLoggedIn}"
-                                                Margin="0 0 4 0" />
+                            <icons:MaterialIcon Classes.unverified="{Binding !IsVerified}"
+                                                Classes.notloggedin="{Binding !IsLoggedIn}"
+                                                Margin="0 0 4 0">
+                                <icons:MaterialIcon.Styles>
+                                    <Style Selector="icons|MaterialIcon">
+                                        <Setter Property="Kind"
+                                                Value="Account" />
+                                    </Style>
+                                    <Style Selector="icons|MaterialIcon.unverified">
+                                        <Setter Property="Kind"
+                                                Value="AccountPending" />
+                                    </Style>
+                                    <Style Selector="icons|MaterialIcon.notloggedin">
+                                        <Setter Property="IsVisible"
+                                                Value="False" />
+                                    </Style>
+                                </icons:MaterialIcon.Styles>
+                            </icons:MaterialIcon>
                             <TextBlock Text="{Binding CurrentAccountName}"
                                        VerticalAlignment="Center" />
                         </StackPanel>
