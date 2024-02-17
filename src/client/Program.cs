@@ -65,6 +65,7 @@ internal static class Program
                         .AddTransient<MainController>()
                         .AddTransient<MainWindow>()
                         .AddSingleton<MusicPlayer>()
+                        .AddSingleton<UserSession>()
                         .AddSingleton<LauncherSettingsManager>()
                         .AddSingleton<AvaloniaLogSink>()
                         .AddSingleton<LauncherApplicationHost>()

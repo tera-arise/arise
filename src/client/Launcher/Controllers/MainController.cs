@@ -11,8 +11,13 @@ internal sealed partial class MainController : LauncherController
 
     public GatewayClient Gateway { get; }
 
+    private readonly UserSession _session;
+
     [ObservableProperty]
     private bool _isLoggedIn;
+
+    [ObservableProperty]
+    private bool _isVerified = true;
 
     [ObservableProperty]
     private string _currentAccountName = "LOGIN";
@@ -38,6 +43,9 @@ internal sealed partial class MainController : LauncherController
         _currentContent = new DefaultController(services, this);
         _launcherSettingsManager = launcherSettingsManager;
 
+        _session = services.GetService<UserSession>()!;
+        _session.StatusChanged += OnSessionStatusChanged;
+
         Gateway = services.GetService<GatewayClient>()!;
         Gateway.BaseAddress = _launcherSettingsManager.Settings.ServerAddress;
 
@@ -50,6 +58,14 @@ internal sealed partial class MainController : LauncherController
         }.AsReadOnly();
 
         IsMusicEnabled = _launcherSettingsManager.Settings.IsMusicEnabled;
+    }
+
+    private void OnSessionStatusChanged()
+    {
+        CurrentAccountName = _session.IsLoggedIn ? _session.AccountName! : "LOGIN";
+
+        IsLoggedIn = _session.IsLoggedIn;
+        IsVerified = _session.IsVerified && _session.IsLoggedIn;
     }
 
     partial void OnIsMusicEnabledChanged(bool value)
@@ -73,7 +89,7 @@ internal sealed partial class MainController : LauncherController
     [RelayCommand]
     private void ShowAccountPopup()
     {
-        if (IsLoggedIn)
+        if (_session.IsLoggedIn)
         {
             // todo: show logout
         }
@@ -98,5 +114,11 @@ internal sealed partial class MainController : LauncherController
     [SuppressMessage("", "CA1822")]
     public void LaunchGame()
     {
+    }
+
+    [RelayCommand]
+    private void Logout()
+    {
+        _session.Logout();
     }
 }
