@@ -1,6 +1,6 @@
 namespace Arise.Client.Launcher.Controllers;
 
-public enum LoginState
+public enum ActionStatus
 {
     None,
     Pending,
