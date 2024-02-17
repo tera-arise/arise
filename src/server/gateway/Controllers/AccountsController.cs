@@ -305,7 +305,8 @@ internal sealed class AccountsController : ApiController
     [HttpDelete]
     public async ValueTask<IActionResult> DeleteAsync(AccountDocument account, CancellationToken cancellationToken)
     {
-        if (account.Deletion != null)
+        // Has deletion already been confirmed?
+        if (account.Deletion is { Verification: null })
             return BadRequest();
 
         var options = Options.Value;
