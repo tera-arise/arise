@@ -12,6 +12,12 @@ namespace Arise.Server.Gateway.Controllers;
 internal abstract class ApiController : ControllerBase
 {
     [NonAction]
+    public new virtual StatusCodeResult Forbid()
+    {
+        return new(StatusCodes.Status403Forbidden);
+    }
+
+    [NonAction]
     public virtual StatusCodeResult Gone()
     {
         return new(StatusCodes.Status410Gone);

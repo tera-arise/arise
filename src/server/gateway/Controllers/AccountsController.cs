@@ -31,7 +31,7 @@ internal sealed class AccountsController : ApiController
     public async ValueTask<IActionResult> CreateAsync(AccountsCreateRequest body, CancellationToken cancellationToken)
     {
         if (User.Identity!.IsAuthenticated)
-            return StatusCode(StatusCodes.Status403Forbidden);
+            return Forbid();
 
         var normalized = body.Email.Normalize().ToUpperInvariant();
 
@@ -249,7 +249,7 @@ internal sealed class AccountsController : ApiController
     public async ValueTask<IActionResult> RecoverAsync(AccountsRecoverRequest body, CancellationToken cancellationToken)
     {
         if (User.Identity!.IsAuthenticated)
-            return StatusCode(StatusCodes.Status403Forbidden);
+            return Forbid();
 
         var normalized = body.Email.Normalize().ToUpperInvariant();
         var account = default(AccountDocument);
