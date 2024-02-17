@@ -2,8 +2,7 @@ namespace Arise.Net;
 
 internal static class GameConnectionAuthentication
 {
-    // Only publicly mutable for efficiency reasons. Do not modify.
-    public static List<SslApplicationProtocol> Protocols { get; } = [new("arise")];
+    public static SslApplicationProtocol Protocol { get; } = new("arise");
 
     // TODO: https://github.com/dotnet/runtime/issues/87270
 
@@ -30,10 +29,10 @@ internal static class GameConnectionAuthentication
         return new()
         {
             TargetHost = hostName,
-            ApplicationProtocols = Protocols,
+            ApplicationProtocols = [Protocol],
             CertificateChainPolicy = ConfigureChainPolicy(authorityCertificate, _serverAuth),
             ClientCertificates = [new(clientCertificate)],
-            RemoteCertificateValidationCallback = static (_, cert, _, errs) => errs == SslPolicyErrors.None,
+            RemoteCertificateValidationCallback = static (_, _, _, errs) => errs == SslPolicyErrors.None,
         };
     }
 
@@ -42,11 +41,11 @@ internal static class GameConnectionAuthentication
     {
         return new()
         {
-            ApplicationProtocols = Protocols,
+            ApplicationProtocols = [Protocol],
             CertificateChainPolicy = ConfigureChainPolicy(authorityCertificate, _clientAuth),
             ServerCertificate = serverCertificate,
             ClientCertificateRequired = true,
-            RemoteCertificateValidationCallback = static (_, cert, _, errs) => errs == SslPolicyErrors.None,
+            RemoteCertificateValidationCallback = static (_, _, _, errs) => errs == SslPolicyErrors.None,
         };
     }
 

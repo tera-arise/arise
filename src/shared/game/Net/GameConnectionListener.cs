@@ -74,7 +74,7 @@ public sealed class GameConnectionListener : GameConnectionManager
         var listenerOptions = new QuicListenerOptions
         {
             ListenEndPoint = endPoint,
-            ApplicationProtocols = GameConnectionAuthentication.Protocols,
+            ApplicationProtocols = [GameConnectionAuthentication.Protocol],
             ConnectionOptionsCallback = (_, _, _) => ValueTask.FromResult(serverOptions),
         };
 
