@@ -48,7 +48,7 @@ internal sealed partial class RegistrationModalController : ModalController
 
             if (resp.SessionTicket != null)
             {
-                _session.Login(Email, resp);
+                _session.Login(Email, resp, Password);
 
                 ActionStatus = ActionStatus.Successful;
 

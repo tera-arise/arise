@@ -47,11 +47,11 @@
          x:Name="TokenTextBox"
          Text="{Binding Token, Mode=TwoWay}"
          />
-        <TextBox VerticalAlignment="Center"
+        <!--<TextBox VerticalAlignment="Center"
                  Watermark="Password"
                  PasswordChar="•"
                  Text="{Binding Password, Mode=TwoWay}"
-                 />
+                 />-->
         <Button CornerRadius="8"
                 Classes="main"
                 HorizontalAlignment="Stretch"
