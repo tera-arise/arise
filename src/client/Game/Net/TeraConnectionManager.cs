@@ -109,7 +109,7 @@ internal sealed unsafe partial class TeraConnectionManager : IHostedService
     [UnmanagedCallersOnly]
     private static void SendPacketHook(S1ConnectionManager* @this, FName* name, byte* packet, uint length)
     {
-        var span = new ReadOnlySpan<byte>(packet, (int)(length - HeaderSize));
+        var span = new ReadOnlySpan<byte>(packet, (int)length);
 
         GetContext().Manager.PacketSent?.Invoke(
             span[HeaderSize..], (GamePacketCode)BinaryPrimitives.ReadUInt16LittleEndian(span[sizeof(ushort)..]));
