@@ -28,8 +28,8 @@ internal sealed partial class RegistrationModalController : ModalController
                 Password = Password,
             };
 
-            await MainController.Gateway.Rest
-                .CreateAccountAsync(request)
+            await MainController.Gateway.Rest.Accounts
+                .CreateAsync(request)
                 .ConfigureAwait(true);
         }
         catch (GatewayHttpException)
@@ -42,8 +42,8 @@ internal sealed partial class RegistrationModalController : ModalController
 
         try
         {
-            var resp = await MainController.Gateway.Rest
-                .AuthenticateAccountAsync(Email, Password)
+            var resp = await MainController.Gateway.Rest.Accounts
+                .AuthenticateAsync(Email, Password)
                 .ConfigureAwait(true);
 
             if (resp.SessionTicket != null)
