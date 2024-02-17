@@ -185,7 +185,21 @@ internal sealed class AccountsController : ApiController
 
         deletion.Verification = null;
 
-        return await UpdateAccountAsync(account, cancellationToken) ? NoContent() : Conflict();
+        if (!await UpdateAccountAsync(account, cancellationToken))
+            return Conflict();
+
+        EmailSender.EnqueueEmail(
+            account.Email.Address,
+            "Account Deletion",
+            $"""
+            Deletion of your {ThisAssembly.GameTitle} account is now in progress.
+
+            Your account will be deleted on: {InstantToString(deletion.Due)}
+
+            If you change your mind, please cancel the deletion in the launcher.
+            """);
+
+        return NoContent();
     }
 
     [HttpPatch]
@@ -227,7 +241,7 @@ internal sealed class AccountsController : ApiController
 
             The token will expire on: {InstantToString(expiry)}
 
-            If you did not initiate this request, please change your password immediately.
+            If you did not initiate this request, please change your password in the launcher immediately.
             """);
 
         return NoContent();
@@ -256,7 +270,7 @@ internal sealed class AccountsController : ApiController
             $"""
             A password change was recently performed for your {ThisAssembly.GameTitle} account.
 
-            If you did not perform this change, please change your password through password recovery immediately.
+            If you did not perform this change, please perform password recovery in the launcher immediately.
             """);
 
         return NoContent();
@@ -357,7 +371,7 @@ internal sealed class AccountsController : ApiController
 
             The token will expire on: {InstantToString(expiry)}
 
-            If you did not initiate this request, please change your password immediately.
+            If you did not initiate this request, please change your password in the launcher immediately.
             """);
 
         return NoContent();
