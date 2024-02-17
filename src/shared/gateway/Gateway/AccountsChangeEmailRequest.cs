@@ -1,6 +1,6 @@
 namespace Arise.Gateway;
 
-public sealed class AccountsRecoverRequest
+public sealed class AccountsChangeEmailRequest
 {
     [Email(allowTopLevelDomains: true, allowInternational: true)]
     public required string Email { get; init; }

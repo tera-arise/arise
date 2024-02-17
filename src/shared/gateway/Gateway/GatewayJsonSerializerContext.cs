@@ -1,10 +1,13 @@
 namespace Arise.Gateway;
 
 [JsonSerializable(typeof(AccountsAuthenticateResponse))]
+[JsonSerializable(typeof(AccountsChangeEmailRequest))]
+[JsonSerializable(typeof(AccountsChangePasswordRequest))]
 [JsonSerializable(typeof(AccountsCreateRequest))]
-[JsonSerializable(typeof(AccountsRecoverRequest))]
-[JsonSerializable(typeof(AccountsUpdateRequest))]
+[JsonSerializable(typeof(AccountsRecoverPasswordRequest))]
 [JsonSerializable(typeof(AccountsVerifyRequest))]
+[JsonSerializable(typeof(AccountsVerifyDeletionRequest))]
+[JsonSerializable(typeof(AccountsVerifyEmailChangeRequest))]
 [JsonSerializable(typeof(LauncherHelloResponse))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web, WriteIndented = true)]
 internal sealed partial class GatewayJsonSerializerContext : JsonSerializerContext

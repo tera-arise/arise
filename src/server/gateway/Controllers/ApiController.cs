@@ -16,10 +16,4 @@ internal abstract class ApiController : ControllerBase
     {
         return new(StatusCodes.Status403Forbidden);
     }
-
-    [NonAction]
-    public virtual StatusCodeResult Gone()
-    {
-        return new(StatusCodes.Status410Gone);
-    }
 }

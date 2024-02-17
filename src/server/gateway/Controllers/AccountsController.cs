@@ -91,7 +91,8 @@ internal sealed class AccountsController : ApiController
     }
 
     [HttpPatch]
-    public async ValueTask<IActionResult> SendAsync(AccountDocument account, CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> SendVerificationAsync(
+        AccountDocument account, CancellationToken cancellationToken)
     {
         var email = account.Email;
 
@@ -129,32 +130,33 @@ internal sealed class AccountsController : ApiController
     public async ValueTask<IActionResult> VerifyAsync(
         AccountDocument account, AccountsVerifyRequest body, CancellationToken cancellationToken)
     {
-        var now = Clock.GetCurrentInstant();
-
-        bool MatchToken([NotNullWhen(true)] AccountToken? token)
-        {
-            return now < token?.Expiry && body.Token == token.Value;
-        }
-
         var email = account.Email;
-        var change = account.ChangingEmail;
-        var deletion = account.Deletion;
 
-        if (MatchToken(change?.Verification))
+        if (email.Verification is not { } verification ||
+            Clock.GetCurrentInstant() >= verification.Expiry ||
+            body.Token != verification.Value)
+            return BadRequest();
+
+        email.Verification = null;
+
+        return await UpdateAccountAsync(account, cancellationToken) ? NoContent() : Conflict();
+    }
+
+    [HttpPatch]
+    public async ValueTask<IActionResult> VerifyEmailChangeAsync(
+        AccountDocument account, AccountsVerifyEmailChangeRequest body, CancellationToken cancellationToken)
+    {
+        if (account.ChangingEmail is not { Verification: { } verification } change ||
+            Clock.GetCurrentInstant() >= verification.Expiry ||
+            body.Token != verification.Value)
+            return BadRequest();
+
+        account.Email = new()
         {
-            account.Email = new()
-            {
-                Address = change.Address,
-                Verification = null,
-            };
-            account.ChangingEmail = null;
-        }
-        else if (MatchToken(email.Verification))
-            email.Verification = null;
-        else if (MatchToken(deletion?.Verification))
-            deletion.Verification = null;
-        else
-            return Gone();
+            Address = change.Address,
+            Verification = null,
+        };
+        account.ChangingEmail = null;
 
         bool saved;
 
@@ -173,80 +175,97 @@ internal sealed class AccountsController : ApiController
     }
 
     [HttpPatch]
-    public async ValueTask<IActionResult> UpdateAsync(
-        AccountDocument account, AccountsUpdateRequest body, CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> VerifyDeletionAsync(
+        AccountDocument account, AccountsVerifyDeletionRequest body, CancellationToken cancellationToken)
+    {
+        if (account.Deletion is not { Verification: { } verification } deletion ||
+            Clock.GetCurrentInstant() >= verification.Expiry ||
+            body.Token != verification.Value)
+            return BadRequest();
+
+        deletion.Verification = null;
+
+        return await UpdateAccountAsync(account, cancellationToken) ? NoContent() : Conflict();
+    }
+
+    [HttpPatch]
+    public async ValueTask<IActionResult> ChangeEmailAsync(
+        AccountDocument account, AccountsChangeEmailRequest body, CancellationToken cancellationToken)
     {
         var email = account.Email;
 
-        if (body.Email is { } address)
+        // Unverified accounts cannot change their email address.
+        if (!HostEnvironment.IsDevelopment() && email.Verification != null)
+            return BadRequest();
+
+        var address = body.Email;
+        var token = TokenGenerator.GenerateToken();
+        var expiry = Clock.GetCurrentInstant() + Options.Value.AccountVerificationTime;
+
+        account.ChangingEmail = new()
         {
-            // Unverified accounts cannot change their email address.
-            if (!HostEnvironment.IsDevelopment() && email.Verification != null)
-                return BadRequest();
-
-            var token = TokenGenerator.GenerateToken();
-            var expiry = Clock.GetCurrentInstant() + Options.Value.AccountVerificationTime;
-
-            account.ChangingEmail = new()
+            Address = address.Normalize().ToUpperInvariant(),
+            Verification = new()
             {
-                Address = address.Normalize().ToUpperInvariant(),
-                Verification = new()
-                {
-                    Value = token,
-                    Expiry = expiry,
-                },
-            };
+                Value = token,
+                Expiry = expiry,
+            },
+        };
 
-            if (!await UpdateAccountAsync(account, cancellationToken))
-                return Conflict();
+        if (!await UpdateAccountAsync(account, cancellationToken))
+            return Conflict();
 
-            EmailSender.EnqueueEmail(
-                email.Address,
-                "Email Address Change Verification",
-                $"""
-                An email address change was recently requested for your {ThisAssembly.GameTitle} account.
+        EmailSender.EnqueueEmail(
+            email.Address,
+            "Email Address Change Verification",
+            $"""
+            An email address change was recently requested for your {ThisAssembly.GameTitle} account.
 
-                The new email address is: {address}
+            The new email address is: {address}
 
-                To confirm the change, use this token in the launcher: {token}
+            To confirm the change, use this token in the launcher: {token}
 
-                The token will expire on: {InstantToString(expiry)}
+            The token will expire on: {InstantToString(expiry)}
 
-                If you did not initiate this request, please change your password immediately.
-                """);
-        }
+            If you did not initiate this request, please change your password immediately.
+            """);
 
-        if (body.Password is { } password)
+        return NoContent();
+    }
+
+    [HttpPatch]
+    public async ValueTask<IActionResult> ChangePasswordAsync(
+        AccountDocument account, AccountsChangePasswordRequest body, CancellationToken cancellationToken)
+    {
+        var strategy = PasswordStrategyProvider.GetLatestStrategy();
+        var salt = strategy.GenerateSalt();
+
+        account.Password = new()
         {
-            var strategy = PasswordStrategyProvider.GetLatestStrategy();
-            var salt = strategy.GenerateSalt();
+            Kind = PasswordStrategyProvider.GetKind(strategy),
+            Salt = salt,
+            Hash = strategy.CalculateHash(body.Password, salt),
+        };
 
-            account.Password = new()
-            {
-                Kind = PasswordStrategyProvider.GetKind(strategy),
-                Salt = salt,
-                Hash = strategy.CalculateHash(password, salt),
-            };
+        if (!await UpdateAccountAsync(account, cancellationToken))
+            return Conflict();
 
-            if (!await UpdateAccountAsync(account, cancellationToken))
-                return Conflict();
+        EmailSender.EnqueueEmail(
+            account.Email.Address,
+            "Password Change",
+            $"""
+            A password change was recently performed for your {ThisAssembly.GameTitle} account.
 
-            EmailSender.EnqueueEmail(
-                email.Address,
-                "Password Change",
-                $"""
-                A password change was recently performed for your {ThisAssembly.GameTitle} account.
-
-                If you did not perform this change, please change your password through password recovery immediately.
-                """);
-        }
+            If you did not perform this change, please change your password through password recovery immediately.
+            """);
 
         return NoContent();
     }
 
     [AllowAnonymous]
     [HttpPatch]
-    public async ValueTask<IActionResult> RecoverAsync(AccountsRecoverRequest body, CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> RecoverPasswordAsync(
+        AccountsRecoverPasswordRequest body, CancellationToken cancellationToken)
     {
         if (User.Identity!.IsAuthenticated)
             return Forbid();
@@ -345,7 +364,8 @@ internal sealed class AccountsController : ApiController
     }
 
     [HttpPatch]
-    public async ValueTask<IActionResult> RestoreAsync(AccountDocument account, CancellationToken cancellationToken)
+    public async ValueTask<IActionResult> CancelDeletionAsync(
+        AccountDocument account, CancellationToken cancellationToken)
     {
         if (account.Deletion is null or { Verification: not null })
             return BadRequest();
