@@ -3,9 +3,7 @@
         <Using Include="System.Buffers" />
         <Using Include="System.Buffers.Binary" />
         <Using Include="System.Collections.Concurrent" />
-        <Using Include="System.Collections.Frozen" />
         <Using Include="System.Collections.Immutable" />
-        <Using Include="System.ComponentModel.DataAnnotations" />
         <Using Include="System.Diagnostics" />
         <Using Include="System.Diagnostics.CodeAnalysis" />
         <Using Include="System.Globalization" />
@@ -13,9 +11,7 @@
         <Using Include="System.Linq.Expressions" />
         <Using Include="System.Net" />
         <Using Include="System.Net.Http.Headers" />
-        <Using Include="System.Net.Http.Json" />
         <Using Include="System.Net.Mime" />
-        <Using Include="System.Net.Quic" />
         <Using Include="System.Net.Security" />
         <Using Include="System.Net.Sockets" />
         <Using Include="System.Numerics" />
@@ -23,20 +19,27 @@
         <Using Include="System.Runtime.CompilerServices" />
         <Using Include="System.Runtime.ExceptionServices" />
         <Using Include="System.Runtime.InteropServices" />
-        <Using Include="System.Runtime.Loader" />
         <Using Include="System.Security.Authentication" />
         <Using Include="System.Security.Claims" />
         <Using Include="System.Security.Cryptography" />
         <Using Include="System.Security.Cryptography.X509Certificates" />
         <Using Include="System.Text" />
+        <Using Include="System.Xml" />
+        <Using Include="System.Xml.Linq" />
+        <Using Include="System.Xml.Schema" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
+        <Using Include="System.Collections.Frozen" />
+        <Using Include="System.ComponentModel.DataAnnotations" />
+        <Using Include="System.Net.Http.Json" />
+        <Using Include="System.Net.Quic" />
+        <Using Include="System.Runtime.Loader" />
         <Using Include="System.Text.Encodings.Web" />
         <Using Include="System.Text.Json" />
         <Using Include="System.Text.Json.Serialization" />
         <Using Include="System.Text.Json.Serialization.Metadata" />
         <Using Include="System.Threading.Channels" />
-        <Using Include="System.Xml" />
-        <Using Include="System.Xml.Linq" />
-        <Using Include="System.Xml.Schema" />
     </ItemGroup>
 
     <ItemGroup>

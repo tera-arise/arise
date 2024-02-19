@@ -51,6 +51,8 @@
                         Version="7.4.4" />
         <PackageVersion Include="Microsoft.ClearScript.V8.Native.win-x64"
                         Version="7.4.4" />
+        <PackageVersion Include="Microsoft.CodeAnalysis.CSharp"
+                        Version="4.8.0" />
         <PackageVersion Include="Microsoft.Extensions.Hosting"
                         Version="8.0.0" />
         <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions"
