@@ -1,3 +1,2 @@
-global_level = 5
-
+[*.cs]
 dotnet_diagnostic.VSTHRD100.severity = none

@@ -1,5 +1,4 @@
-global_level = 62
-
+[*.cs]
 dotnet_diagnostic.CA1707.severity = none
 dotnet_diagnostic.CA1815.severity = none
 
