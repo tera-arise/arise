@@ -22,6 +22,7 @@
         <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
         <Nullable>enable</Nullable>
         <PackRelease>false</PackRelease>
+        <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
         <PublishRelease>false</PublishRelease>
         <RuntimeIdentifiers>
             linux-arm64;
