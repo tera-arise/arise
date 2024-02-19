@@ -105,19 +105,10 @@ internal sealed partial class GameServer : IHostedService
 
             listener.ConnectionClosed += (conn, ex) => Log.ClientDisconnected(_logger, ex, conn.EndPoint);
 
-            void LogPacket(
-                GameConnectionConduit conduit,
-                GamePacketCode code,
-                ReadOnlyMemory<byte> payload,
-                Action<ILogger<GameServer>, IPEndPoint, GamePacketCode, int> log)
-            {
-                log(_logger, conduit.Connection.EndPoint, code, payload.Length);
-            }
-
             listener.RawPacketReceived += (conduit, code, payload) =>
-                LogPacket(conduit, code, payload, Log.PacketReceived);
+                Log.PacketReceived(_logger, conduit.Connection.EndPoint, code, payload.Length);
             listener.RawPacketSent += (conduit, code, payload) =>
-                LogPacket(conduit, code, payload, Log.PacketSent);
+                Log.PacketSent(_logger, conduit.Connection.EndPoint, code, payload.Length);
 
             void HandlePacket(GameConnectionConduit conduit, GamePacket packet)
             {

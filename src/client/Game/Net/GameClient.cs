@@ -80,21 +80,15 @@ internal sealed partial class GameClient : IHostedService
             _hostLifetime.StopApplication();
         };
 
-        void LogPacket(
-            GamePacketCode code,
-            ReadOnlyMemory<byte> payload,
-            Action<ILogger<GameClient>, GamePacketCode, int> log)
-        {
-            log(_logger, code, payload.Length);
-        }
-
         _client.RawPacketReceived += (conduit, code, payload) =>
         {
-            _connectionManager.EnqueuePacket(code, payload.Span);
+            Log.PacketReceived(_logger, code, payload.Length);
 
-            LogPacket(code, payload, Log.PacketReceived);
+            // See the comment in GamePacketCode.
+            if (code is <= GamePacketCode.I_CLOSE_SERVER_CONNECTION or >= GamePacketCode.C_CHECK_VERSION)
+                _connectionManager.EnqueuePacket(code, payload.Span);
         };
-        _client.RawPacketSent += (conduit, code, payload) => LogPacket(code, payload, Log.PacketSent);
+        _client.RawPacketSent += (conduit, code, payload) => Log.PacketSent(_logger, code, payload.Length);
 
         _client.ArisePacketReceived += (conduit, packet) => _sessionDispatcher.Dispatch(Session, packet);
 
