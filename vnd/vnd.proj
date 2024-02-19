@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.Build.NoTargets">
-    <!-- TODO: https://github.com/dotnet/Nerdbank.GitVersioning/pull/1021 -->
     <PropertyGroup>
+        <!-- TODO: https://github.com/dotnet/Nerdbank.GitVersioning/pull/1021 -->
         <GenerateAssemblyVersionInfo>false</GenerateAssemblyVersionInfo>
+        <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
 
     <PropertyGroup>
