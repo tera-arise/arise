@@ -6,4 +6,10 @@ internal sealed class GameClientSession : GameSession
         : base(connection)
     {
     }
+
+    public override GameSessionPacketPriority GetPriority(GamePacketCode code)
+    {
+        // TODO: Actually sort packet codes into low/normal/high priority categories.
+        return GameSessionPacketPriority.Normal;
+    }
 }

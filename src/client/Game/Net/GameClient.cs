@@ -58,8 +58,13 @@ internal sealed partial class GameClient : IHostedService
 
             _connectionManager.Disconnected += () => conn.DisposeAsync().AsTask().GetAwaiter().GetResult();
 
-            // TODO: Use packet prioritization here - maybe a table of low/high priority codes.
-            _connectionManager.PacketSent += (payload, code) => conn.NormalPriority.PostPacket(code, payload);
+            _connectionManager.PacketSent += (payload, code) => (Session.GetPriority(code) switch
+            {
+                GameSessionPacketPriority.Low => conn.LowPriority,
+                GameSessionPacketPriority.Normal => conn.NormalPriority,
+                GameSessionPacketPriority.High => conn.HighPriority,
+                _ => throw new UnreachableException(),
+            }).PostPacket(code, payload);
 
             Log.ClientConnected(_logger, conn.EndPoint);
         };
@@ -91,9 +96,7 @@ internal sealed partial class GameClient : IHostedService
         };
         _client.RawPacketSent += (conduit, code, payload) => LogPacket(code, payload, Log.PacketSent);
 
-        _client.ArisePacketReceived +=
-            (conduit, packet) =>
-                _sessionDispatcher.Dispatch(Unsafe.As<GameClientSession>(conduit.Connection.UserState!), packet);
+        _client.ArisePacketReceived += (conduit, packet) => _sessionDispatcher.Dispatch(Session, packet);
 
         async ValueTask<string> GetManifestResourceAsync(string name)
         {
