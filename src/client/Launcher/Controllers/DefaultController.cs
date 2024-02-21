@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.Messaging;
 using Material.Icons;
 
 namespace Arise.Client.Launcher.Controllers;
@@ -19,11 +20,11 @@ internal sealed partial class DefaultController : ViewController
     {
         if (!_session.IsLoggedIn)
         {
-            MainController.ShowLoginForm();
+            _ = WeakReferenceMessenger.Default.Send(new NavigateModalMessage(typeof(LoginModalController)));
         }
         else if (!_session.IsVerified)
         {
-            MainController.ShowAccountVerificationForm();
+            _ = WeakReferenceMessenger.Default.Send(new NavigateModalMessage(typeof(AccountVerificationModalController)));
         }
         else
         {

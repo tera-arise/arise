@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.Messaging;
+
 namespace Arise.Client.Launcher.Controllers;
 
 internal partial class ModalController : LauncherController
@@ -14,9 +16,14 @@ internal partial class ModalController : LauncherController
     }
 
     [RelayCommand]
-    private void CloseModal()
+    protected static void CloseModal()
     {
-        // IsModalVisible = false; // todo: checks
-        MainController.CurrentModalController = null;
+        _ = WeakReferenceMessenger.Default.Send(new NavigateModalMessage(null));
+    }
+
+    protected static void NavigateTo<TModal>()
+        where TModal : ModalController
+    {
+        _ = WeakReferenceMessenger.Default.Send(new NavigateModalMessage(typeof(TModal)));
     }
 }
