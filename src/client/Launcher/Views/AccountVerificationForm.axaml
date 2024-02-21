@@ -22,24 +22,15 @@
             </Style>
         </StackPanel.Styles>
         <Image Source="/../../image_logo_small.webp" />
-        <TextBlock TextWrapping="WrapWithOverflow">
-            <!-- <Run Text="TERA Arise"
-                     FontSize="22"
-                     FontWeight="DemiBold" />
-                <LineBreak />
-                <LineBreak /> -->
-            <Run Text="Enter the verification token you received by email to verify your account."
+        <TextBlock TextWrapping="WrapWithOverflow"
+                   TextAlignment="Center">
+            <Run Text="Just one step left! Verify your account by entering the code from your email."
                  Foreground="{DynamicResource ThemeTextMidBrush}" />
         </TextBlock>
         <TextBox VerticalAlignment="Center"
                  Watermark="Verification token"
                  x:Name="TokenTextBox"
                  Text="{Binding Token, Mode=TwoWay}" />
-        <!-- <TextBox VerticalAlignment="Center"
-                 Watermark="Password"
-                 PasswordChar="•"
-                 Text="{Binding Password, Mode=TwoWay}"
-                 /> -->
         <Button CornerRadius="8"
                 Classes="main"
                 HorizontalAlignment="Stretch"
@@ -123,13 +114,24 @@
                 VerticalContentAlignment="Center"
                 Height="{Binding #TokenTextBox.Bounds.Height}"
                 Command="{Binding CancelCommand}" />
-        <TextBlock Text="Re-send verification email"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="10"
-                   Margin="0 10 0 0"
-                   Foreground="{DynamicResource MainBrush}"
-                   Cursor="Hand"
-                   controls:CommandBehavior.Command="{Binding ResendEmailCommand}" />
+        <StackPanel Margin="0 10 0 0">
+            <TextBlock Text="Didn't see the email yet?"
+                       FontSize="10"
+                       HorizontalAlignment="Center" />
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <TextBlock Text="No problem, click "
+                           Foreground="{DynamicResource ThemeTextMidBrush}"
+                           FontSize="10" />
+                <TextBlock Text="here"
+                           Foreground="{DynamicResource MainBrush}"
+                           Cursor="Hand"
+                           FontSize="10"
+                           controls:CommandBehavior.Command="{Binding ResendEmailCommand}" />
+                <TextBlock Text=" to resend it!"
+                           Foreground="{DynamicResource ThemeTextMidBrush}"
+                           FontSize="10" />
+            </StackPanel>
+        </StackPanel>
     </StackPanel>
 </UserControl>
