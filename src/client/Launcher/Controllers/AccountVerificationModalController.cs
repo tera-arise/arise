@@ -8,9 +8,6 @@ internal sealed partial class AccountVerificationModalController : ModalControll
     [NotifyCanExecuteChangedFor(nameof(ConfirmCommand))]
     private string _token = string.Empty;
 
-    [ObservableProperty]
-    private ActionStatus _actionStatus;
-
     public bool CanConfirm => !string.IsNullOrEmpty(Token)
                            && ActionStatus is not ActionStatus.Pending;
 
@@ -37,19 +34,18 @@ internal sealed partial class AccountVerificationModalController : ModalControll
 
             await Task.Delay(1000).ConfigureAwait(true); // wait a bit to show feedback before closing modal
 
-            MainController.CurrentModalController = null;
+            CloseModal();
         }
         catch (GatewayHttpException)
         {
-            // todo: something else?
             ActionStatus = ActionStatus.Failed;
         }
     }
 
     [RelayCommand]
-    private void Cancel()
+    private static void Cancel()
     {
-        MainController.CurrentModalController = null;
+        CloseModal();
     }
 
     [RelayCommand]
@@ -57,17 +53,12 @@ internal sealed partial class AccountVerificationModalController : ModalControll
     {
         try
         {
-            ActionStatus = ActionStatus.Pending;
             await MainController.Gateway.Rest.Accounts
                 .SendVerificationAsync(_session.AccountName!, _session.Password!)
                 .ConfigureAwait(true);
-
-            ActionStatus = ActionStatus.Successful;
         }
         catch (GatewayHttpException)
         {
-            // todo: something else?
-            ActionStatus = ActionStatus.Failed;
         }
     }
 }

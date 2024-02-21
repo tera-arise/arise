@@ -1,6 +1,7 @@
 using Arise.Client.Gateway;
 using Arise.Client.Launcher.Media;
 using Arise.Client.Launcher.Settings;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace Arise.Client.Launcher.Controllers;
 
@@ -28,9 +29,23 @@ internal sealed partial class MainController : LauncherController
     [ObservableProperty]
     private bool _isMusicEnabled;
 
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsModalVisible))]
     private ModalController? _currentModalController;
+
+    public ModalController? CurrentModalController
+    {
+        get => _currentModalController;
+        private set
+        {
+            if (_currentModalController == value)
+            {
+                return;
+            }
+
+            _currentModalController = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(IsModalVisible));
+        }
+    }
 
     public bool IsModalVisible => CurrentModalController is not null;
 
@@ -58,6 +73,15 @@ internal sealed partial class MainController : LauncherController
         }.AsReadOnly();
 
         IsMusicEnabled = _launcherSettingsManager.Settings.IsMusicEnabled;
+
+        WeakReferenceMessenger.Default.Register<NavigateModalMessage>(this, OnNavigateModalMessage);
+    }
+
+    private void OnNavigateModalMessage(object recipient, NavigateModalMessage message)
+    {
+        CurrentModalController = message.ModalType is null
+            ? null
+            : (ModalController?)Activator.CreateInstance(message.ModalType, Services, this);
     }
 
     private void OnSessionStatusChanged()
@@ -86,34 +110,9 @@ internal sealed partial class MainController : LauncherController
         // CurrentContent = new SettingsController(Services, _launcherSettingsManager);
     }
 
-    [RelayCommand]
-    private void ShowAccountPopup()
-    {
-        if (_session.IsLoggedIn)
-        {
-            // todo: show logout
-        }
-        else
-        {
-            ShowLoginForm();
-
-            // todo: also set the template of the modal
-        }
-    }
-
     public void StopMusic()
     {
         _musicPlayer.Stop();
-    }
-
-    public void ShowLoginForm()
-    {
-        CurrentModalController = new LoginModalController(Services, this);
-    }
-
-    public void ShowAccountVerificationForm()
-    {
-        CurrentModalController = new AccountVerificationModalController(Services, this);
     }
 
     [SuppressMessage("", "CA1822")]
