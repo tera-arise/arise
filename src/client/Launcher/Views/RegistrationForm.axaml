@@ -22,13 +22,9 @@
             </Style>
         </StackPanel.Styles>
         <Image Source="/../../image_logo_small.webp" />
-        <TextBlock TextWrapping="Wrap">
-            <!-- <Run Text="Create an account"
-                 FontSize="22"
-                 FontWeight="DemiBold" />
-            <LineBreak />
-            <LineBreak /> -->
-            <Run Text="Insert a valid email and password to create a new account"
+        <TextBlock TextWrapping="Wrap"
+                   TextAlignment="Center">
+            <Run Text="Ready to join the fun? Create your account with a valid email and password."
                  Foreground="{DynamicResource ThemeTextMidBrush}" />
         </TextBlock>
         <TextBox VerticalAlignment="Center"
