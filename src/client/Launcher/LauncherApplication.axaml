@@ -44,8 +44,10 @@
                                      Color="Red" />
                     <SolidColorBrush x:Key="DefaultButtonBackground"
                                      Color="#1fff" />
+                    <SolidColorBrush x:Key="ThemeTextDisabledBrush"
+                                     Color="#333f52" />
                     <SolidColorBrush x:Key="ThemeTextMidBrush"
-                                     Color="#666" />
+                                     Color="#7288ab" />
                     <SolidColorBrush x:Key="ThemeTextHighBrush"
                                      Color="#fff" />
                 </ResourceDictionary>
