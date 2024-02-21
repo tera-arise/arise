@@ -219,30 +219,60 @@
                 <Panel.Background>
                     <LinearGradientBrush StartPoint="0% 0%"
                                          EndPoint="100% 100%"
-                                         Opacity=".75">
+                                         Opacity=".85">
                         <GradientStop Color="{DynamicResource BackgroundDarkColor}"/>
-                        <GradientStop Color="{DynamicResource BackgroundColor}"
+                        <GradientStop Color="{DynamicResource BackgroundLightColor}"
                                       Offset="1"/>
                     </LinearGradientBrush>
                 </Panel.Background>
                 <Panel.Transitions>
                     <Transitions>
                         <DoubleTransition Property="Opacity"
-                                          Duration="0:0:0.25"
-                                          Delay="0:0:0.075" />
+                                          Duration="0:0:0.15"
+                                          Delay="0:0:0.030" />
                         <TransformOperationsTransition Property="RenderTransform"
-                                                       Duration="0:0:0.25"
-                                                       Delay="0:0:0.075">
+                                                       Duration="0:0:0.15"
+                                                       Delay="0:0:0.030">
                             <TransformOperationsTransition.Easing>
                                 <QuadraticEaseOut />
                             </TransformOperationsTransition.Easing>
                         </TransformOperationsTransition>
                     </Transitions>
                 </Panel.Transitions>
-                <Image Source="/../../sorc_elf.png"
+                <Panel>
+                    <Panel.OpacityMask>
+                        <ImageBrush Source="/../../cross_pattern1.png"
+                                    />
+                    </Panel.OpacityMask>
+                    <Rectangle HorizontalAlignment="Stretch"
+                               VerticalAlignment="Stretch">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush>
+                                <GradientStop Offset="1"
+                                              Color="White"/>
+                                <GradientStop Offset="0"
+                                              Color="{DynamicResource BackgroundLightColor}"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                        <Rectangle.OpacityMask>
+                            <LinearGradientBrush StartPoint="50% 0%"
+                                                 EndPoint="120% 120%">
+                                <GradientStop Offset="0"
+                                              Color="Transparent"/>
+                                <GradientStop Offset="1"
+                                              Color="#2fff"/>
+                            </LinearGradientBrush>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </Panel>
+                <Image Source="/../../Hildetta1.png"
                        Stretch="Uniform"
                        HorizontalAlignment="Right"
-                       Margin="-100 100 180 -300"/>
+                       Margin="0 -100 -50 -100">
+                    <Image.RenderTransform>
+                        <ScaleTransform ScaleX="-1"/>
+                    </Image.RenderTransform>
+                </Image>
                 <Button CornerRadius="50"
                         Background="Transparent"
                         Cursor="Hand"
@@ -257,19 +287,40 @@
                     </StackPanel>
                 </Button>
                 <Border x:Name="FormContainer"
-                        Background="{DynamicResource WindowBackground}"
                         CornerRadius="16"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         BoxShadow="0 00 30 5 #6000"
-                        Padding="24"
                         Margin="160 0"
-                        Width="300">
-                    <TransitioningContentControl Content="{Binding CurrentModalController}">
-                        <TransitioningContentControl.PageTransition>
-                            <CompositePageTransition>
-                                <CrossFade Duration="0:0:0.35" />
-                                <!--<PageSlide Duration="0:0:0.25"
+                        Width="300"
+                        Background="{DynamicResource BackgroundColor}">
+                    <Panel >
+
+                        <Border CornerRadius="16"
+                                Opacity="1">
+                            <Border.Background>
+                                <LinearGradientBrush
+                                    StartPoint="0% 100%"
+                                    EndPoint="0% 0%">
+                                    <GradientStop Offset="0"
+                                                  Color="{DynamicResource BackgroundColor}"/>
+                                    <GradientStop Offset="1"
+                                                  Color="{DynamicResource BackgroundLightColor}"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border.OpacityMask>
+                                <ImageBrush Source="/../../noise.png"
+                                            Stretch="UniformToFill"/>
+                            </Border.OpacityMask>
+                        </Border>
+
+                        <TransitioningContentControl
+                            Margin="24"
+                            Content="{Binding CurrentModalController}">
+                            <TransitioningContentControl.PageTransition>
+                                <CompositePageTransition>
+                                    <CrossFade Duration="0:0:0.20" />
+                                    <!--<PageSlide Duration="0:0:0.25"
                                            Orientation="Horizontal">
                                     <PageSlide.SlideInEasing>
                                         <QuadraticEaseInOut />
@@ -278,20 +329,22 @@
                                         <QuadraticEaseInOut />
                                     </PageSlide.SlideOutEasing>
                                 </PageSlide>-->
-                            </CompositePageTransition>
-                        </TransitioningContentControl.PageTransition>
-                        <TransitioningContentControl.DataTemplates>
-                            <DataTemplate DataType="controllers:LoginModalController">
-                                <views:LoginForm />
-                            </DataTemplate>
-                            <DataTemplate DataType="controllers:RegistrationModalController">
-                                <views:RegistrationForm />
-                            </DataTemplate>
-                            <DataTemplate DataType="controllers:AccountVerificationModalController">
-                                <views:AccountVerificationForm />
-                            </DataTemplate>
-                        </TransitioningContentControl.DataTemplates>
-                    </TransitioningContentControl>
+                                </CompositePageTransition>
+                            </TransitioningContentControl.PageTransition>
+                            <TransitioningContentControl.DataTemplates>
+                                <DataTemplate DataType="controllers:LoginModalController">
+                                    <views:LoginForm />
+                                </DataTemplate>
+                                <DataTemplate DataType="controllers:RegistrationModalController">
+                                    <views:RegistrationForm />
+                                </DataTemplate>
+                                <DataTemplate DataType="controllers:AccountVerificationModalController">
+                                    <views:AccountVerificationForm />
+                                </DataTemplate>
+                            </TransitioningContentControl.DataTemplates>
+                        </TransitioningContentControl>
+                    </Panel>
+
                 </Border>
                 <!--<StackPanel Margin="160 40"
                             Spacing="20"
