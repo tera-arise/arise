@@ -34,13 +34,17 @@
         <TextBox VerticalAlignment="Center"
                  Watermark="Email"
                  x:Name="EmailTextBox"
+				 controls:AttachedCommandBehavior.Command="{Binding LoginCommand}"
+				 controls:AttachedCommandBehavior.Trigger="Enter"
                  Text="{Binding Email, Mode=TwoWay}"
 				 Loaded="EmailTextBox_OnLoaded"
                  />
         <TextBox PasswordChar="•"
                  Watermark="Password"
                  VerticalAlignment="Center"
-                 Text="{Binding Password, Mode=TwoWay}" />
+                 Text="{Binding Password, Mode=TwoWay}"
+                 controls:AttachedCommandBehavior.Command="{Binding LoginCommand}"
+                 controls:AttachedCommandBehavior.Trigger="Enter"/>
         <Button CornerRadius="8"
                 Classes="main"
                 HorizontalAlignment="Stretch"
@@ -129,7 +133,7 @@
                            FontSize="10"
                            Foreground="{DynamicResource MainBrush}"
                            Cursor="Hand"
-                           controls:CommandBehavior.Command="{Binding RegisterCommand}" />
+                           controls:AttachedCommandBehavior.Command="{Binding RegisterCommand}" />
                 <TextBlock Text="now and start your own adventure!"
                            FontSize="10"
                            Foreground="{DynamicResource ThemeTextMidBrush}" />
@@ -149,7 +153,7 @@
                            FontSize="10"
                            Foreground="{DynamicResource MainBrush}"
                            Cursor="Hand"
-                           controls:CommandBehavior.Command="{Binding RecoverPasswordCommand}" />
+                           controls:AttachedCommandBehavior.Command="{Binding RecoverPasswordCommand}" />
                 <TextBlock Text=" and rejoin the fun!"
                            FontSize="10"
                            Foreground="{DynamicResource ThemeTextMidBrush}" />
