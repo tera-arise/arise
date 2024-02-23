@@ -1,6 +1,10 @@
+using System.Collections.ObjectModel;
 using Arise.Client.Gateway;
 using Arise.Client.Launcher.Media;
 using Arise.Client.Launcher.Settings;
+using Avalonia.Layout;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.Messaging;
 
 namespace Arise.Client.Launcher.Controllers;
@@ -49,7 +53,7 @@ internal sealed partial class MainController : LauncherController
 
     public bool IsModalVisible => CurrentModalController is not null;
 
-    public IReadOnlyList<ViewController> Controllers { get; }
+    public ObservableCollection<ViewController> Controllers { get; }
 
     public MainController(IServiceProvider services, MusicPlayer musicPlayer, LauncherSettingsManager launcherSettingsManager)
         : base(services)
@@ -64,17 +68,23 @@ internal sealed partial class MainController : LauncherController
         Gateway = services.GetService<GatewayClient>()!;
         Gateway.BaseAddress = _launcherSettingsManager.Settings.ServerAddress;
 
-        Controllers = new List<ViewController>
-        {
+        Controllers =
+        [
             new DefaultController(services, this),
             new NewsController(services, this),
-            new AccountManagementController(services, this),
             new SettingsController(services, launcherSettingsManager, this),
-        }.AsReadOnly();
+        ];
 
         IsMusicEnabled = _launcherSettingsManager.Settings.IsMusicEnabled;
 
         WeakReferenceMessenger.Default.Register<NavigateModalMessage>(this, OnNavigateModalMessage);
+    }
+
+    [RelayCommand]
+    private void ManageAccount()
+    {
+        var acm = Controllers.FirstOrDefault(x => x is AccountManagementController)!;
+        CurrentContent = acm;
     }
 
     private void OnNavigateModalMessage(object recipient, NavigateModalMessage message)
@@ -90,6 +100,16 @@ internal sealed partial class MainController : LauncherController
 
         IsLoggedIn = _session.IsLoggedIn;
         IsVerified = _session.IsVerified && _session.IsLoggedIn;
+
+        if (IsLoggedIn && !Controllers.OfType<AccountManagementController>().Any())
+        {
+            Controllers.Add(new AccountManagementController(Services, this));
+        }
+        else
+        {
+            var acm = Controllers.FirstOrDefault(x => x is AccountManagementController)!;
+            _ = Controllers.Remove(acm);
+        }
     }
 
     partial void OnIsMusicEnabledChanged(bool value)
@@ -103,21 +123,56 @@ internal sealed partial class MainController : LauncherController
         _launcherSettingsManager.Save();
     }
 
-    [RelayCommand]
-    [SuppressMessage("", "CA1822")]
-    private void OpenSettings()
-    {
-        // CurrentContent = new SettingsController(Services, _launcherSettingsManager);
-    }
-
     public void StopMusic()
     {
         _musicPlayer.Stop();
     }
 
     [SuppressMessage("", "CA1822")]
-    public void LaunchGame()
+    public async Task LaunchGameAsync()
     {
+        // mock stuff ----
+
+        var closebtn = new Button()
+        {
+            Content = "Ok",
+            HorizontalAlignment = HorizontalAlignment.Center,
+        };
+
+        var sp = new StackPanel
+        {
+            Spacing = 20,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(20),
+        };
+
+        var c = new HttpClient();
+
+        var bytes = await c.GetByteArrayAsync(new Uri("https://cdn.discordapp.com/attachments/287637525038628864/1210708326581674025/71eb7b9d4cc681cf3b04f58971813b8f4e87aa0152cb9328fe91bd4d1eb0cdd6.png?ex=65eb8afe&is=65d915fe&hm=fb782507a2e288a19c2e5899ad6cd4801ebaa9c1ca76659b636408047bfb8aec&"))
+            .ConfigureAwait(true);
+
+        sp.Children.Add(
+            new Image
+            {
+                Source = new Bitmap(new MemoryStream(bytes)),
+                VerticalAlignment = VerticalAlignment.Center,
+                Stretch = Stretch.Uniform,
+                MaxWidth = 300,
+            });
+
+        sp.Children.Add(closebtn);
+        var w = new Window
+        {
+            Content = sp,
+            SizeToContent = SizeToContent.WidthAndHeight,
+        };
+
+        closebtn.Click += (_, __) => w.Close();
+
+        var lt = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
+        await w.ShowDialog(lt!.MainWindow!).ConfigureAwait(false);
+        c.Dispose();
     }
 
     [RelayCommand]
