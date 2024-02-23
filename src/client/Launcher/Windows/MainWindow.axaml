@@ -126,6 +126,8 @@
                         <!-- todo: style this thing -->
                         <Button.Flyout>
                             <MenuFlyout>
+                                <MenuItem Header="Manage"
+                                          Command="{Binding ManageAccountCommand}" />
                                 <MenuItem Header="Logout"
                                           Command="{Binding LogoutCommand}" />
                             </MenuFlyout>
@@ -180,7 +182,8 @@
                         Grid.RowSpan="2"
                         Grid.ColumnSpan="2"
                         ClipToBounds="False"
-                        Classes.blurred="{Binding IsModalVisible}">
+                        Classes.blurred="{Binding IsModalVisible}"
+                        SelectedValue="{Binding CurrentContent}">
                 <TabControl.DataTemplates>
                     <DataTemplate DataType="controllers:DefaultController">
                         <views:DefaultView Margin="0 48 0 0" />
@@ -198,7 +201,7 @@
                 <TabControl.ItemTemplate>
                     <DataTemplate DataType="controllers:ViewController">
                         <icons:MaterialIcon Kind="{Binding IconKind}"
-                                            Margin="0 0 6 0" />
+                                            Margin="0 0 6 0"/>
                     </DataTemplate>
                 </TabControl.ItemTemplate>
                 <!-- <TabControl.Transitions>
