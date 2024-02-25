@@ -1,6 +1,4 @@
-using CommunityToolkit.Mvvm.Messaging;
-
-namespace Arise.Client.Launcher.Controllers;
+namespace Arise.Client.Launcher.Controllers.Modals;
 
 internal sealed partial class RegistrationModalController : ModalController
 {

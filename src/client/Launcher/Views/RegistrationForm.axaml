@@ -4,11 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:controllers="using:Arise.Client.Launcher.Controllers"
+             xmlns:modals="using:Arise.Client.Launcher.Controllers.Modals"
              xmlns:controls="using:Arise.Client.Launcher.Controls"
              mc:Ignorable="d"
              d:DesignWidth="300"
              d:DesignHeight="NaN"
-             x:DataType="controllers:RegistrationModalController"
+             x:DataType="modals:RegistrationModalController"
              x:Class="Arise.Client.Launcher.Views.RegistrationForm"
              Background="Transparent">
     <StackPanel Spacing="10">
