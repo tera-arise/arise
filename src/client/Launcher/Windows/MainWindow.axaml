@@ -6,6 +6,7 @@
         xmlns:views="using:Arise.Client.Launcher.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:modals="clr-namespace:Arise.Client.Launcher.Controllers.Modals"
         mc:Ignorable="d"
         x:Class="Arise.Client.Launcher.Windows.MainWindow"
         x:DataType="controllers:MainController"
@@ -332,16 +333,16 @@
                                 </CompositePageTransition>
                             </TransitioningContentControl.PageTransition>
                             <TransitioningContentControl.DataTemplates>
-                                <DataTemplate DataType="controllers:LoginModalController">
+                                <DataTemplate DataType="modals:LoginModalController">
                                     <views:LoginForm />
                                 </DataTemplate>
-                                <DataTemplate DataType="controllers:RegistrationModalController">
+                                <DataTemplate DataType="modals:RegistrationModalController">
                                     <views:RegistrationForm />
                                 </DataTemplate>
-                                <DataTemplate DataType="controllers:AccountVerificationModalController">
+                                <DataTemplate DataType="modals:AccountVerificationModalController">
                                     <views:AccountVerificationForm />
                                 </DataTemplate>
-                                <DataTemplate DataType="controllers:RecoverPasswordModalController">
+                                <DataTemplate DataType="modals:RecoverPasswordModalController">
                                     <views:RecoverPasswordForm />
                                 </DataTemplate>
                             </TransitioningContentControl.DataTemplates>

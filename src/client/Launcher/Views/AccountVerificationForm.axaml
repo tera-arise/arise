@@ -5,10 +5,11 @@
              mc:Ignorable="d"
              d:DesignWidth="300"
              d:DesignHeight="NaN"
-             x:DataType="controllers:AccountVerificationModalController"
+             x:DataType="modals:AccountVerificationModalController"
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:controls="using:Arise.Client.Launcher.Controls"
              xmlns:controllers="using:Arise.Client.Launcher.Controllers"
+             xmlns:modals="clr-namespace:Arise.Client.Launcher.Controllers.Modals"
              x:Class="Arise.Client.Launcher.Views.AccountVerificationForm">
     <StackPanel Spacing="10">
         <StackPanel.Styles>
