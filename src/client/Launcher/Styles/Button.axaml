@@ -6,6 +6,6 @@
     </Style>
     <Style Selector="Button.main:pointerover /template/ ContentPresenter">
         <Setter Property="Background"
-                Value="{DynamicResource MainBrushHilight}" />
+                Value="{DynamicResource MainBrushLight}" />
     </Style>
 </Styles>

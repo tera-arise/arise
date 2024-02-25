@@ -12,15 +12,15 @@
         d:DataContext="{x:Static controllers:DesignTimeControllers.Main}"
         Width="1280"
         Height="720"
-        RequestedThemeVariant="Dark">
+        >
     <Window.Styles>
         <Style Selector="#CloseButton:pointerover /template/ ContentPresenter">
             <Setter Property="Background"
-                    Value="{DynamicResource CloseButtonPointerOverBackground}" />
+                    Value="{DynamicResource ErrorDarkBrush}" />
         </Style>
         <Style Selector="#CloseButton:pressed /template/ ContentPresenter">
             <Setter Property="Background"
-                    Value="{DynamicResource CloseButtonPressedBackground}" />
+                    Value="{DynamicResource ErrorLightBrush}" />
         </Style>
         <!-- todo: this is slow on first display (even without transition)
             need to figure out a way to fix it; maybe render
@@ -56,7 +56,7 @@
         </Style>
         <Style Selector="TabControl /template/ Border#HeaderBorder">
             <Setter Property="Background"
-                    Value="{DynamicResource WindowBackground}" />
+                    Value="{DynamicResource BackgroundBrush}" />
         </Style>
     </Window.Styles>
     <Panel>
@@ -75,7 +75,7 @@
                         <LinearGradientBrush.GradientStops>
                             <GradientStop Color="Transparent"
                                           Offset="0" />
-                            <GradientStop Color="Black"
+                            <GradientStop Color="#fff"
                                           Offset="1" />
                         </LinearGradientBrush.GradientStops>
                     </LinearGradientBrush>
@@ -186,6 +186,7 @@
                         Grid.RowSpan="2"
                         Grid.ColumnSpan="2"
                         ClipToBounds="False"
+                        Padding="0"
                         Classes.blurred="{Binding IsModalVisible}"
                         SelectedValue="{Binding CurrentContent}">
                 <TabControl.DataTemplates>
@@ -225,8 +226,8 @@
                     <LinearGradientBrush StartPoint="0% 0%"
                                          EndPoint="100% 100%"
                                          Opacity=".85">
-                        <GradientStop Color="{DynamicResource BackgroundDarkColor}" />
-                        <GradientStop Color="{DynamicResource BackgroundLightColor}"
+                        <GradientStop Color="{DynamicResource BackgroundColorDark}" />
+                        <GradientStop Color="{DynamicResource BackgroundColorLight}"
                                       Offset="1" />
                     </LinearGradientBrush>
                 </Panel.Background>
@@ -255,7 +256,7 @@
                                 <GradientStop Offset="1"
                                               Color="White" />
                                 <GradientStop Offset="0"
-                                              Color="{DynamicResource BackgroundLightColor}" />
+                                              Color="{DynamicResource BackgroundColorLight}" />
                             </LinearGradientBrush>
                         </Rectangle.Fill>
                         <Rectangle.OpacityMask>
@@ -306,7 +307,7 @@
                                     <GradientStop Offset="0"
                                                   Color="{DynamicResource BackgroundColor}" />
                                     <GradientStop Offset="1"
-                                                  Color="{DynamicResource BackgroundLightColor}" />
+                                                  Color="{DynamicResource BackgroundColorLight}" />
                                 </LinearGradientBrush>
                             </Border.Background>
                             <Border.OpacityMask>

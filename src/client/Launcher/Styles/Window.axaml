@@ -20,6 +20,6 @@
         <Setter Property="Padding"
                 Value="0" />
         <Setter Property="Background"
-                Value="{DynamicResource WindowBackground}" />
+                Value="{DynamicResource BackgroundBrush}" />
     </Style>
 </Styles>

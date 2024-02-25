@@ -16,57 +16,48 @@
         <StyleInclude Source="/Launcher/Styles/ToggleButton.axaml" />
     </Application.Styles>
     <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="WindowBackground"
-                                     Color="#eee" />
-                    <SolidColorBrush x:Key="CloseButtonPointerOverBackground"
-                                     Color="Red" />
-                    <SolidColorBrush x:Key="CloseButtonPressedBackground"
-                                     Color="DarkRed" />
-                    <SolidColorBrush x:Key="DefaultButtonBackground"
-                                     Color="#1000" />
-                    <SolidColorBrush x:Key="ThemeTextMidBrush"
-                                     Color="#bbb" />
-                    <SolidColorBrush x:Key="ThemeTextHighBrush"
-                                     Color="#000" />
-                </ResourceDictionary>
-                <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="WindowBackground"
-                                     Color="#111e33" />
-                    <SolidColorBrush x:Key="WindowBackgroundDark"
-                                     Color="#141926" />
-                    <SolidColorBrush x:Key="WindowBackgroundLight"
-                                     Color="#1d3459" />
-                    <SolidColorBrush x:Key="CloseButtonPointerOverBackground"
-                                     Color="DarkRed" />
-                    <SolidColorBrush x:Key="CloseButtonPressedBackground"
-                                     Color="Red" />
-                    <SolidColorBrush x:Key="DefaultButtonBackground"
-                                     Color="#1fff" />
-                    <SolidColorBrush x:Key="ThemeTextDisabledBrush"
-                                     Color="#333f52" />
-                    <SolidColorBrush x:Key="ThemeTextMidBrush"
-                                     Color="#7288ab" />
-                    <SolidColorBrush x:Key="ThemeTextHighBrush"
-                                     Color="#fff" />
-                </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
-        </ResourceDictionary>
-        <!-- 9A2B70,76024F,6E014B,D764A1,412831 palette from arise logo -->
+        <Color x:Key="MainColorDark">#801f5a</Color>
         <Color x:Key="MainColor">#CC3391</Color>
+        <Color x:Key="MainColorLight">#e858b1</Color>
+        <Color x:Key="BackgroundColorDark">#080f1a</Color>
         <Color x:Key="BackgroundColor">#111e33</Color>
-        <Color x:Key="BackgroundDarkColor">#080f1a</Color>
-        <Color x:Key="BackgroundLightColor">#1d3459</Color>
+        <Color x:Key="BackgroundColorLight">#1d3459</Color>
+        <Color x:Key="BackgroundColorLighter">#2d4873</Color>
+        <Color x:Key="ErrorColorDark">#aa2222</Color>
+        <Color x:Key="ErrorColor">#ff3333</Color>
+        <Color x:Key="ErrorColorLight">#ff4444</Color>
         <SolidColorBrush x:Key="MainBrush"
                          Color="{StaticResource MainColor}" />
-        <SolidColorBrush x:Key="MainBrushHilight"
-                         Color="#e858b1" />
+        <SolidColorBrush x:Key="MainBrushLight"
+                         Color="{StaticResource MainColorLight}" />
         <SolidColorBrush x:Key="MainBrushDark"
-                         Color="#b02a7c" />
+                         Color="{StaticResource MainColorDark}" />
         <SolidColorBrush x:Key="TabItemHeaderSelectedPipeFill"
                          Color="{StaticResource MainColor}" />
+        <SolidColorBrush x:Key="BackgroundBrush"
+                         Color="{StaticResource BackgroundColor}" />
+        <SolidColorBrush x:Key="BackgroundBrushDark"
+                         Color="{StaticResource BackgroundColorDark}" />
+        <SolidColorBrush x:Key="BackgroundBrushLight"
+                         Color="{StaticResource BackgroundColorLight}" />
+        <SolidColorBrush x:Key="BackgroundBrushLighter"
+                         Color="{StaticResource BackgroundColorLighter}" />
+        <SolidColorBrush x:Key="ErrorBrush"
+                         Color="{StaticResource ErrorColor}" />
+        <SolidColorBrush x:Key="ErrorDarkBrush"
+                         Color="{StaticResource ErrorColorDark}" />
+        <SolidColorBrush x:Key="ErrorLightBrush"
+                         Color="{StaticResource ErrorColorLight}" />
+        <SolidColorBrush x:Key="DefaultButtonBackground"
+                         Color="#11ffffff" />
+        <SolidColorBrush x:Key="ThemeTextDisabledBrush"
+                         Color="#333f52" />
+        <SolidColorBrush x:Key="ThemeTextMidBrush"
+                         Color="#7288ab" />
+        <SolidColorBrush x:Key="ThemeTextMidHighBrush"
+                         Color="#89a2cc" />
+        <SolidColorBrush x:Key="ThemeTextHighBrush"
+                         Color="#ffffff" />
         <!-- not working; figure it out later -->
         <!-- <FontFamily x:Key="Quicksand">avares://Fonts#Quicksand Light</FontFamily> -->
         <controls:EqualityConverter x:Key="equals" />
