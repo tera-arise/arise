@@ -4,8 +4,12 @@
         xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         xmlns:controls="using:Arise.Client.Launcher.Controls"
         xmlns:views="using:Arise.Client.Launcher.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
         x:Class="Arise.Client.Launcher.Windows.MainWindow"
         x:DataType="controllers:MainController"
+        d:DataContext="{x:Static controllers:DesignTimeControllers.Main}"
         Width="1280"
         Height="720"
         RequestedThemeVariant="Dark">
