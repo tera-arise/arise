@@ -15,6 +15,8 @@ internal static class DesignTimeControllers
         var services = new ServiceCollection()
             .AddSingleton<LauncherApplicationHost>()
             .AddSingleton<UserSession>()
+            .AddSingleton<MusicPlayer>()
+            .AddSingleton<LauncherSettingsManager>()
             .AddHttpClient<GatewayClient>()
             .Services
             .BuildServiceProvider();
