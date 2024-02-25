@@ -56,12 +56,12 @@ internal sealed partial class MainController : LauncherController
 
     public ObservableCollection<ViewController> Controllers { get; }
 
-    public MainController(IServiceProvider services, MusicPlayer musicPlayer, LauncherSettingsManager launcherSettingsManager)
+    public MainController(IServiceProvider services)
         : base(services)
     {
-        _musicPlayer = musicPlayer;
+        _musicPlayer = services.GetService<MusicPlayer>()!;
         _currentContent = new DefaultController(services, this);
-        _launcherSettingsManager = launcherSettingsManager;
+        _launcherSettingsManager = services.GetService<LauncherSettingsManager>()!;
 
         _session = services.GetService<UserSession>()!;
         _session.StatusChanged += OnSessionStatusChanged;
@@ -73,7 +73,7 @@ internal sealed partial class MainController : LauncherController
         [
             new DefaultController(services, this),
             new NewsController(services, this),
-            new SettingsController(services, launcherSettingsManager, this),
+            new SettingsController(services, _launcherSettingsManager, this),
         ];
 
         IsMusicEnabled = _launcherSettingsManager.Settings.IsMusicEnabled;
