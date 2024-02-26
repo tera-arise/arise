@@ -23,8 +23,6 @@ public static class GatewayServiceCollectionExtensions
 
                 json.WriteIndented = true;
 
-                _ = json.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
-
                 json.TypeInfoResolverChain.Add(GatewayHttpClient.JsonContext);
             })
             .ConfigureApplicationPartManager(

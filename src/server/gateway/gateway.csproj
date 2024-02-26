@@ -34,7 +34,6 @@
         <Using Include="Microsoft.Extensions.Logging" />
         <Using Include="Microsoft.Extensions.Options" />
         <Using Include="NodaTime" />
-        <Using Include="NodaTime.Serialization.SystemTextJson" />
         <Using Include="SendGrid" />
         <Using Include="SendGrid.Helpers.Errors.Model" />
         <Using Include="SendGrid.Helpers.Mail" />
