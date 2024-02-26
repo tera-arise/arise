@@ -19,6 +19,7 @@
         <Color x:Key="MainColorDark">#801f5a</Color>
         <Color x:Key="MainColor">#CC3391</Color>
         <Color x:Key="MainColorLight">#e858b1</Color>
+        <Color x:Key="MainColorLighter">#ff8ad2</Color>
         <Color x:Key="BackgroundColorDark">#080f1a</Color>
         <Color x:Key="BackgroundColor">#111e33</Color>
         <Color x:Key="BackgroundColorLight">#1d3459</Color>
