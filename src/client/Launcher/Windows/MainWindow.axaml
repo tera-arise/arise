@@ -141,6 +141,7 @@
                         <StackPanel Orientation="Horizontal">
                             <icons:MaterialIcon Classes.unverified="{Binding !IsVerified}"
                                                 Classes.notloggedin="{Binding !IsLoggedIn}"
+                                                Classes.emailchanging="{Binding IsChangingEmail}"
                                                 Margin="0 0 4 0">
                                 <icons:MaterialIcon.Styles>
                                     <Style Selector="icons|MaterialIcon">
@@ -154,6 +155,10 @@
                                     <Style Selector="icons|MaterialIcon.notloggedin">
                                         <Setter Property="IsVisible"
                                                 Value="False" />
+                                    </Style>
+                                    <Style Selector="icons|MaterialIcon.emailchanging">
+                                        <Setter Property="Kind"
+                                                Value="EmailAlertOutline" />
                                     </Style>
                                 </icons:MaterialIcon.Styles>
                             </icons:MaterialIcon>
@@ -298,7 +303,6 @@
                         VerticalAlignment="Center"
                         BoxShadow="0 00 30 5 #6000"
                         Margin="160 0"
-                        Width="300"
                         Background="{DynamicResource BackgroundColor}">
                     <Panel>
                         <Border CornerRadius="16"
@@ -346,6 +350,13 @@
                                 <DataTemplate DataType="modals:RecoverPasswordModalController">
                                     <modalviews:RecoverPasswordForm />
                                 </DataTemplate>
+                                <DataTemplate DataType="modals:EmailChangeModalController">
+                                    <modalviews:EmailChangeForm />
+                                </DataTemplate>
+                                <!-- <DataTemplate DataType="modals:PasswordChangeModalController">
+                                </DataTemplate>
+                                <DataTemplate DataType="modals:AccountDeletionModalController">
+                                </DataTemplate> -->
                             </TransitioningContentControl.DataTemplates>
                         </TransitioningContentControl>
                     </Panel>

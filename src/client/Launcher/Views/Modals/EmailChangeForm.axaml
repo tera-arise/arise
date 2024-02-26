@@ -1,0 +1,281 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Arise.Client.Launcher.Controls"
+             xmlns:modals="clr-namespace:Arise.Client.Launcher.Controllers.Modals"
+             xmlns:controllers="clr-namespace:Arise.Client.Launcher.Controllers"
+             mc:Ignorable="d" Width="330" d:DesignHeight="NaN"
+             x:DataType="modals:EmailChangeModalController"
+             x:Class="Arise.Client.Launcher.Views.Modals.EmailChangeForm"
+             d:DataContext="{x:Static controllers:DesignTimeControllers.EmailChange}">
+    <UserControl.Styles>
+        <Style Selector="Grid.completed">
+            <Setter Property="Opacity" Value=".3"/>
+        </Style>
+    </UserControl.Styles>
+    <StackPanel Spacing="0"
+                VerticalAlignment="Center">
+        <StackPanel.Styles>
+            <Style Selector="TextBox">
+                <Setter Property="Padding"
+                        Value="12" />
+                <Setter Property="CornerRadius"
+                        Value="8" />
+                <Setter Property="BorderBrush"
+                        Value="{DynamicResource ThemeTextMidBrush}" />
+            </Style>
+        </StackPanel.Styles>
+        <TextBlock TextWrapping="WrapWithOverflow"
+                   TextAlignment="Left"
+                   Margin="0 0 0 20">
+            <Run FontSize="24"
+                 Text="Change email address"
+                 FontWeight="DemiBold" />
+            <LineBreak />
+            <Run Text="-TODO or not-"
+                 Foreground="{DynamicResource ThemeTextMidBrush}" />
+        </TextBlock>
+
+        <Grid ColumnDefinitions="Auto,*"
+              RowDefinitions="Auto,Auto"
+              Classes.completed="{Binding IsChangeInProgress}">
+
+            <!--todo: bind the color to the step-->
+            <Border HorizontalAlignment="Left"
+                    Background="{DynamicResource BackgroundBrushLighter}"
+                    Width="24"
+                    Height="24"
+                    CornerRadius="100"
+                    Margin="0 0 10 0">
+                <TextBlock Text="1"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center" />
+            </Border>
+
+            <TextBlock Text="TODO: Step 1 instructions"
+                       Grid.Column="1"
+                       Foreground="{DynamicResource ThemeTextMidHighBrush}"
+                       VerticalAlignment="Center" />
+
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1"
+                        Spacing="12"
+                        Margin="0 12"
+                        ClipToBounds="True"
+                        x:Name="Step1Content">
+
+                <TextBox VerticalAlignment="Center"
+                         Watermark="New email"
+                         x:Name="EmailTextBox"
+                         controls:AttachedCommandBehavior.Command="{Binding RequestChangeCommand}"
+                         controls:AttachedCommandBehavior.Trigger="Enter"
+                         Text="{Binding NewEmail, Mode=TwoWay}"
+                         Loaded="EmailTextBox_OnLoaded" />
+
+                <TextBox PasswordChar="•"
+                         Watermark="Password"
+                         VerticalAlignment="Center"
+                         Text="{Binding Password, Mode=TwoWay}"
+                         IsVisible="{Binding IsPasswordRequired}"
+                         controls:AttachedCommandBehavior.Command="{Binding RequestChangeCommand}"
+                         controls:AttachedCommandBehavior.Trigger="Enter" />
+
+                <Button CornerRadius="100"
+                         Classes="main"
+                         HorizontalAlignment="Right"
+                         HorizontalContentAlignment="Center"
+                         VerticalContentAlignment="Center"
+                        Command="{Binding RequestChangeCommand}"
+                         Height="{Binding #EmailTextBox.Bounds.Height}">
+                    <Panel>
+                        <TextBlock Text="Continue"
+                                   VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.None}}" />
+                        <TextBlock Text="Request failed. Click to retry."
+                                   VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Failed}}" />
+                        <TextBlock Text="Request successful!"
+                                   VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Successful}}" />
+                        <Arc Stroke="{DynamicResource ThemeTextHighBrush}"
+                             StrokeThickness="3"
+                             StartAngle="0"
+                             SweepAngle="359"
+                             StrokeLineCap="Round"
+                             Stretch="None"
+                             IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Pending}}"
+                             Width="{Binding $self.Bounds.Height}"
+                             Height="20">
+                            <Arc.Styles>
+                                <Style Selector="Arc">
+                                    <Style.Animations>
+                                        <Animation Duration="0:0:2"
+                                                   IterationCount="Infinite">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="StartAngle"
+                                                        Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="70%">
+                                                <Setter Property="StartAngle"
+                                                        Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="StartAngle"
+                                                        Value="360" />
+                                            </KeyFrame>
+                                        </Animation>
+                                        <Animation Duration="0:0:2"
+                                                   IterationCount="Infinite">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="RotateTransform.Angle"
+                                                        Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="RotateTransform.Angle"
+                                                        Value="360" />
+                                            </KeyFrame>
+                                        </Animation>
+                                        <Animation Duration="0:0:2"
+                                                   IterationCount="Infinite">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="SweepAngle"
+                                                        Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="70%">
+                                                <Setter Property="SweepAngle"
+                                                        Value="345" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="SweepAngle"
+                                                        Value="0" />
+                                            </KeyFrame>
+                                        </Animation>
+                                    </Style.Animations>
+                                </Style>
+                            </Arc.Styles>
+                        </Arc>
+                    </Panel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid ColumnDefinitions="Auto,*"
+              RowDefinitions="Auto,Auto"
+              Classes.completed="{Binding !IsChangeInProgress}">
+
+            <!--todo: bind the color to the step-->
+            <Border HorizontalAlignment="Left"
+                    Background="{DynamicResource BackgroundBrushLighter}"
+                    Width="24"
+                    Height="24"
+                    CornerRadius="100"
+                    Margin="0 0 10 0">
+                <TextBlock Text="2"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center" />
+            </Border>
+
+            <TextBlock Text="TODO: Step 2 instructions"
+                       Grid.Column="1"
+                       Foreground="{DynamicResource ThemeTextMidHighBrush}"
+                       VerticalAlignment="Center" />
+
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1"
+                        Spacing="12"
+                        Margin="0 12"
+                        x:Name="Step2Content"
+                        ClipToBounds="True"
+            >
+
+                <TextBox VerticalAlignment="Center"
+                         Watermark="Verification code"
+                         x:Name="TokenTextBox"
+                         controls:AttachedCommandBehavior.Command="{Binding VerifyChangeCommand}"
+                         controls:AttachedCommandBehavior.Trigger="Enter"
+                         Text="{Binding Token, Mode=TwoWay}"
+                         />
+
+                <Button CornerRadius="100"
+                         Classes="main"
+                         HorizontalAlignment="Stretch"
+                         HorizontalContentAlignment="Center"
+                         VerticalContentAlignment="Center"
+                         Height="{Binding #EmailTextBox.Bounds.Height}"
+                         Command="{Binding VerifyChangeCommand}"
+                         IsVisible="True">
+                    <Panel>
+                        <TextBlock Text="Verify new address"
+                                   VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.None}}" />
+                        <TextBlock Text="Verification failed. Click to retry."
+                                   VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Failed}}" />
+                        <TextBlock Text="Email address updated!"
+                                   VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Successful}}" />
+                        <Arc Stroke="{DynamicResource ThemeTextHighBrush}"
+                             StrokeThickness="3"
+                             StartAngle="0"
+                             SweepAngle="359"
+                             StrokeLineCap="Round"
+                             Stretch="None"
+                             IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Pending}}"
+                             Width="{Binding $self.Bounds.Height}"
+                             Height="20">
+                            <Arc.Styles>
+                                <Style Selector="Arc">
+                                    <Style.Animations>
+                                        <Animation Duration="0:0:2"
+                                                   IterationCount="Infinite">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="StartAngle"
+                                                        Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="70%">
+                                                <Setter Property="StartAngle"
+                                                        Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="StartAngle"
+                                                        Value="360" />
+                                            </KeyFrame>
+                                        </Animation>
+                                        <Animation Duration="0:0:2"
+                                                   IterationCount="Infinite">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="RotateTransform.Angle"
+                                                        Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="RotateTransform.Angle"
+                                                        Value="360" />
+                                            </KeyFrame>
+                                        </Animation>
+                                        <Animation Duration="0:0:2"
+                                                   IterationCount="Infinite">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="SweepAngle"
+                                                        Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="70%">
+                                                <Setter Property="SweepAngle"
+                                                        Value="345" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="SweepAngle"
+                                                        Value="0" />
+                                            </KeyFrame>
+                                        </Animation>
+                                    </Style.Animations>
+                                </Style>
+                            </Arc.Styles>
+                        </Arc>
+                    </Panel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+    </StackPanel>
+</UserControl>

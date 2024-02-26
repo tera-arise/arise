@@ -28,7 +28,7 @@ internal sealed partial class DefaultController : ViewController
         }
         else
         {
-            return MainController.LaunchGameAsync();
+            return MainController.LaunchGameAsync(); // todo: use message?
         }
 
         return Task.CompletedTask;
