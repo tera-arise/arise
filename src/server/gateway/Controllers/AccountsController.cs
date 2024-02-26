@@ -391,6 +391,7 @@ internal sealed class AccountsController : ApiController
 
     [DisableRateLimiting]
     [HttpPatch]
+    [SuppressMessage("", "CA1508")] // TODO: https://github.com/dotnet/roslyn-analyzers/issues/7164
     public async ValueTask<IActionResult> AuthenticateAsync(
         AccountClaimsPrincipal principal, CancellationToken cancellationToken)
     {
@@ -416,22 +417,22 @@ internal sealed class AccountsController : ApiController
 
         account.Recovery = null; // Clear used/expired recovery password.
 
-        var deleting = false;
+        var deletionDue = default(Instant?);
 
         if (account.Deletion is { } deletion)
         {
             if (deletion.Verification is { } verification && now >= verification.Expiry)
                 account.Deletion = null; // Clear expired deletion request.
             else if (deletion.Verification == null)
-                deleting = true;
+                deletionDue = deletion.Due;
         }
 
-        var reason = default(string);
+        var activeBan = default(AccountBan);
 
         if (account.Ban is { } ban)
         {
             if (now < ban.Expiry)
-                reason = ban.Reason;
+                activeBan = ban;
             else
                 account.Ban = null; // Clear expired ban.
         }
@@ -439,7 +440,7 @@ internal sealed class AccountsController : ApiController
         // Accounts that are banned or in the process of being deleted cannot access the world server. We also prevent
         // unverified accounts from accessing it since the user could have signed up with a wrong email address and
         // might otherwise not notice until they have made significant progress in the game.
-        var ticket = (HostEnvironment.IsDevelopment() || !verifying) && !deleting && reason == null
+        var ticket = (HostEnvironment.IsDevelopment() || !verifying) && (deletionDue, activeBan) == (null, null)
             ? TokenGenerator.GenerateToken()
             : null;
 
@@ -456,8 +457,14 @@ internal sealed class AccountsController : ApiController
                 IsVerifying = verifying,
                 IsChangingEmail = changing,
                 IsRecovered = principal.IsRecovered,
-                IsDeleting = deleting,
-                BanReason = reason,
+                DeletionDue = deletionDue,
+                Ban = activeBan != null
+                    ? new()
+                    {
+                        Expiry = activeBan.Expiry,
+                        Reason = activeBan.Reason,
+                    }
+                    : null,
                 SessionTicket = ticket,
             })
             : Conflict();

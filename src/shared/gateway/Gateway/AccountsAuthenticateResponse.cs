@@ -10,9 +10,10 @@ public sealed class AccountsAuthenticateResponse
 
     public required bool IsRecovered { get; init; }
 
-    public required bool IsDeleting { get; init; }
+    [JsonConverter(typeof(NodaTimeDefaultJsonConverterFactory))]
+    public required Instant? DeletionDue { get; init; }
 
-    public required string? BanReason { get; init; }
+    public required AccountsAuthenticateResponseBan? Ban { get; init; }
 
     [Token]
     public required string? SessionTicket { get; init; }

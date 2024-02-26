@@ -9,13 +9,16 @@ internal sealed class LauncherController : ApiController
     [HttpGet]
     public IActionResult Hello(IOptions<GatewayOptions> options, GameDownloadLinks links)
     {
+        var value = options.Value;
+
         return Ok(new LauncherHelloResponse
         {
-            NewsUri = options.Value.NewsUri is { } uri ? new(uri) : null,
+            NewsUri = value.NewsUri is { } uri ? new(uri) : null,
             TeraManifestUri = links.TeraManifestUri,
             TeraDownloadFormat = links.TeraDownloadUri,
             AriseManifestUri = links.AriseManifestUri,
             AriseDownloadFormat = links.AriseDownloadUri,
+            AccountDeletionTime = value.AccountDeletionTime,
         });
     }
 }
