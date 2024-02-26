@@ -440,7 +440,7 @@ internal sealed class AccountsController : ApiController
         // Accounts that are banned or in the process of being deleted cannot access the world server. We also prevent
         // unverified accounts from accessing it since the user could have signed up with a wrong email address and
         // might otherwise not notice until they have made significant progress in the game.
-        var ticket = (HostEnvironment.IsDevelopment() || !verifying) && (deletionDue, activeBan) == (null, null)
+        var ticket = HostEnvironment.IsDevelopment() || (!verifying && (deletionDue, activeBan) == (null, null))
             ? TokenGenerator.GenerateToken()
             : null;
 
