@@ -11,6 +11,8 @@ internal sealed partial class MainWindow : LauncherWindow<MainController>
     public MainWindow()
     {
         InitializeComponent();
+
+        // RendererDiagnostics.DebugOverlays = Avalonia.Rendering.RendererDebugOverlays.LayoutTimeGraph | Avalonia.Rendering.RendererDebugOverlays.RenderTimeGraph | Avalonia.Rendering.RendererDebugOverlays.Fps;
     }
 
     protected override void OnInitialized()
