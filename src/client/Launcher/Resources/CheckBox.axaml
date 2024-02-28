@@ -1,11 +1,12 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <!-- Adding this here with different sizes, as the size properties of
+    <!--
+        Adding this here with different sizes, as the size properties of
         the checkbox rectangle don't seem to work when accessed via
-        the /template/ selector -->
+        the /template/ selector
+    -->
     <Style Selector="CheckBox.small">
-        <Setter Property="FontSize"
-                Value="10" />
+        <Setter Property="FontSize" Value="10" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid x:Name="RootGrid"
@@ -18,43 +19,41 @@
                             CornerRadius="{TemplateBinding CornerRadius}" />
                     <Grid VerticalAlignment="Center">
                         <Border x:Name="NormalRectangle"
-                                BorderBrush="{DynamicResource CheckBoxCheckBackgroundStrokeUnchecked}"
+                                Width="14"
+                                Height="14"
                                 Background="{DynamicResource CheckBoxCheckBackgroundFillUnchecked}"
+                                BorderBrush="{DynamicResource CheckBoxCheckBackgroundStrokeUnchecked}"
                                 BorderThickness="{DynamicResource CheckBoxBorderThemeThickness}"
                                 CornerRadius="{TemplateBinding CornerRadius}"
-                                UseLayoutRounding="False"
-                                Height="14"
-                                Width="14" />
+                                UseLayoutRounding="False" />
                         <Viewbox UseLayoutRounding="False">
                             <Panel>
-                                <Panel Height="18"
-                                       Width="18" />
+                                <Panel Width="18"
+                                       Height="18" />
                                 <Path x:Name="CheckGlyph"
-                                      Opacity="0"
-                                      Fill="{DynamicResource CheckBoxCheckGlyphForegroundUnchecked}"
-                                      Stretch="Uniform"
                                       VerticalAlignment="Center"
-                                      FlowDirection="LeftToRight" />
+                                      Fill="{DynamicResource CheckBoxCheckGlyphForegroundUnchecked}"
+                                      FlowDirection="LeftToRight"
+                                      Opacity="0"
+                                      Stretch="Uniform" />
                             </Panel>
                         </Viewbox>
                     </Grid>
                     <ContentPresenter x:Name="ContentPresenter"
-                                      ContentTemplate="{TemplateBinding ContentTemplate}"
-                                      Content="{TemplateBinding Content}"
+                                      Grid.Column="1"
                                       Margin="{TemplateBinding Padding}"
-                                      RecognizesAccessKey="True"
                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                      TextWrapping="Wrap"
-                                      Grid.Column="1" />
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      RecognizesAccessKey="True"
+                                      TextWrapping="Wrap" />
                 </Grid>
             </ControlTemplate>
         </Setter>
     </Style>
     <Style Selector="CheckBox:checked /template/ Border#NormalRectangle">
-        <Setter Property="Background"
-                Value="{DynamicResource MainBrush}" />
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource MainBrush}" />
+        <Setter Property="Background" Value="{DynamicResource MainBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MainBrush}" />
     </Style>
 </Styles>

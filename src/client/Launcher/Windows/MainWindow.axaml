@@ -1,84 +1,71 @@
-<Window xmlns="https://github.com/avaloniaui"
+<Window x:Class="Arise.Client.Launcher.Windows.MainWindow"
+        xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controllers="using:Arise.Client.Launcher.Controllers"
-        xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         xmlns:controls="using:Arise.Client.Launcher.Controls"
-        xmlns:views="using:Arise.Client.Launcher.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:modals="clr-namespace:Arise.Client.Launcher.Controllers.Modals"
         xmlns:modalviews="clr-namespace:Arise.Client.Launcher.Views.Modals"
-        mc:Ignorable="d"
-        x:Class="Arise.Client.Launcher.Windows.MainWindow"
-        x:DataType="controllers:MainController"
-        d:DataContext="{x:Static controllers:DesignTimeControllers.Main}"
+        xmlns:views="using:Arise.Client.Launcher.Views"
         Width="1280"
         Height="720"
-        >
+        d:DataContext="{x:Static controllers:DesignTimeControllers.Main}"
+        x:DataType="controllers:MainController"
+        mc:Ignorable="d">
     <Window.Styles>
         <Style Selector="#CloseButton:pointerover /template/ ContentPresenter">
-            <Setter Property="Background"
-                    Value="{DynamicResource ErrorDarkBrush}" />
+            <Setter Property="Background" Value="{DynamicResource ErrorDarkBrush}" />
         </Style>
         <Style Selector="#CloseButton:pressed /template/ ContentPresenter">
-            <Setter Property="Background"
-                    Value="{DynamicResource ErrorLightBrush}" />
+            <Setter Property="Background" Value="{DynamicResource ErrorLightBrush}" />
         </Style>
-        <!-- todo: this is slow on first display (even without transition)
+        <!--
+            todo: this is slow on first display (even without transition)
             need to figure out a way to fix it; maybe render
             the form outside of the window (or under the background image)
             as soon as the window is loaded, then hide it and bring it
-            in position for any following show requests -->
-        <!-- https://github.com/AvaloniaUI/Avalonia/issues/1529 -->
+            in position for any following show requests
+        -->
+        <!--  https://github.com/AvaloniaUI/Avalonia/issues/1529  -->
         <Style Selector="Panel#ModalDarkening">
-            <Setter Property="Opacity"
-                    Value="0" />
-            <Setter Property="RenderTransform"
-                    Value="translateY(10px)" />
+            <Setter Property="Opacity" Value="0" />
+            <Setter Property="RenderTransform" Value="translateY(10px)" />
         </Style>
         <Style Selector="Panel#ModalDarkening.visible">
-            <Setter Property="Opacity"
-                    Value="1" />
-            <Setter Property="RenderTransform"
-                    Value="translateY(0px)" />
+            <Setter Property="Opacity" Value="1" />
+            <Setter Property="RenderTransform" Value="translateY(0px)" />
         </Style>
         <Style Selector="Image.blurred">
-            <Setter Property="Effect"
-                    Value="blur(48)" />
-            <Setter Property="Margin"
-                    Value="-40" />
+            <Setter Property="Effect" Value="blur(48)" />
+            <Setter Property="Margin" Value="-40" />
         </Style>
         <Style Selector="TabControl.blurred">
-            <Setter Property="Effect"
-                    Value="blur(48)" />
+            <Setter Property="Effect" Value="blur(48)" />
         </Style>
         <Style Selector="controls|AcrylicBorder:pointerover">
-            <Setter Property="CornerRadius"
-                    Value="50" />
+            <Setter Property="CornerRadius" Value="50" />
         </Style>
         <Style Selector="TabControl /template/ Border#HeaderBorder">
-            <Setter Property="Background"
-                    Value="{DynamicResource BackgroundBrush}" />
+            <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
         </Style>
     </Window.Styles>
     <Panel>
         <Grid x:Name="Root"
-              RowDefinitions="Auto,*"
-              ColumnDefinitions="48,*">
-            <Image Source="../../image_background.webp"
-                   Stretch="UniformToFill"
-                   IsHitTestVisible="False"
+              ColumnDefinitions="48,*"
+              RowDefinitions="Auto,*">
+            <Image Grid.RowSpan="2"
+                   Grid.ColumnSpan="2"
                    Classes.blurred="{Binding IsModalVisible}"
-                   Grid.RowSpan="2"
-                   Grid.ColumnSpan="2">
+                   IsHitTestVisible="False"
+                   Source="../../image_background.webp"
+                   Stretch="UniformToFill">
                 <Image.OpacityMask>
-                    <LinearGradientBrush StartPoint="0 0"
-                                         EndPoint="0% 100%">
+                    <LinearGradientBrush StartPoint="0 0" EndPoint="0% 100%">
                         <LinearGradientBrush.GradientStops>
-                            <GradientStop Color="Transparent"
-                                          Offset="0" />
-                            <GradientStop Color="#fff"
-                                          Offset="1" />
+                            <GradientStop Offset="0" Color="Transparent" />
+                            <GradientStop Offset="1" Color="#fff" />
                         </LinearGradientBrush.GradientStops>
                     </LinearGradientBrush>
                 </Image.OpacityMask>
@@ -95,87 +82,78 @@
                     </Transitions>
                 </Image.Transitions>
             </Image>
-            <!-- Title bar -->
-            <Grid VerticalAlignment="Stretch"
-                  ZIndex="99"
-                  Grid.Column="1"
-                  ColumnDefinitions="Auto,*"
+            <!--  Title bar  -->
+            <Grid Grid.Column="1"
+                  VerticalAlignment="Stretch"
                   Background="Transparent"
-                  PointerPressed="OnTitleBarPointerPressed">
+                  ColumnDefinitions="Auto,*"
+                  PointerPressed="OnTitleBarPointerPressed"
+                  ZIndex="99">
                 <Grid.Styles>
                     <Style Selector="Button">
-                        <Setter Property="Background"
-                                Value="Transparent" />
-                        <Setter Property="CornerRadius"
-                                Value="8" />
-                        <Setter Property="Height"
-                                Value="28" />
-                        <Setter Property="Width"
-                                Value="28" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="CornerRadius" Value="8" />
+                        <Setter Property="Height" Value="28" />
+                        <Setter Property="Width" Value="28" />
                     </Style>
                     <Style Selector="Button:disabled /template/ ContentPresenter">
-                        <Setter Property="Background"
-                                Value="Transparent" />
+                        <Setter Property="Background" Value="Transparent" />
                     </Style>
                 </Grid.Styles>
-                <!-- Buttons -->
-                <StackPanel Orientation="Horizontal"
-                            Grid.Column="1"
+                <!--  Buttons  -->
+                <StackPanel Grid.Column="1"
+                            Margin="8"
                             HorizontalAlignment="Right"
-                            Spacing="6"
-                            Margin="8">
+                            Orientation="Horizontal"
+                            Spacing="6">
                     <Button x:Name="AccountButton"
-                            FontSize="10"
-                            Padding="6 0"
                             Width="NaN"
+                            Padding="6 0"
+                            FontSize="10"
                             IsVisible="{Binding IsLoggedIn}">
-                        <!-- todo: style this thing -->
+                        <!--  todo: style this thing  -->
                         <Button.Flyout>
                             <MenuFlyout>
-                                <MenuItem Header="Manage"
-                                          Command="{Binding ManageAccountCommand}" />
-                                <MenuItem Header="Logout"
-                                          Command="{Binding LogoutCommand}" />
+                                <MenuItem Command="{Binding ManageAccountCommand}"
+                                          Header="Manage" />
+                                <MenuItem Command="{Binding LogoutCommand}"
+                                          Header="Logout" />
                             </MenuFlyout>
                         </Button.Flyout>
                         <StackPanel Orientation="Horizontal">
-                            <icons:MaterialIcon Classes.unverified="{Binding !IsVerified}"
-                                                Classes.notloggedin="{Binding !IsLoggedIn}"
+                            <icons:MaterialIcon Margin="0 0 4 0"
                                                 Classes.emailchanging="{Binding IsChangingEmail}"
-                                                Margin="0 0 4 0">
+                                                Classes.notloggedin="{Binding !IsLoggedIn}"
+                                                Classes.unverified="{Binding !IsVerified}">
                                 <icons:MaterialIcon.Styles>
                                     <Style Selector="icons|MaterialIcon">
-                                        <Setter Property="Kind"
-                                                Value="Account" />
+                                        <Setter Property="Kind" Value="Account" />
                                     </Style>
                                     <Style Selector="icons|MaterialIcon.unverified">
-                                        <Setter Property="Kind"
-                                                Value="AccountPending" />
+                                        <Setter Property="Kind" Value="AccountPending" />
                                     </Style>
                                     <Style Selector="icons|MaterialIcon.notloggedin">
-                                        <Setter Property="IsVisible"
-                                                Value="False" />
+                                        <Setter Property="IsVisible" Value="False" />
                                     </Style>
                                     <Style Selector="icons|MaterialIcon.emailchanging">
-                                        <Setter Property="Kind"
-                                                Value="EmailAlertOutline" />
+                                        <Setter Property="Kind" Value="EmailAlertOutline" />
                                     </Style>
                                 </icons:MaterialIcon.Styles>
                             </icons:MaterialIcon>
-                            <TextBlock Text="{Binding CurrentAccountName}"
-                                       VerticalAlignment="Center" />
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="{Binding CurrentAccountName}" />
                         </StackPanel>
                     </Button>
                     <ToggleButton x:Name="MusicToggleButton"
-                                  IsChecked="{Binding IsMusicEnabled, Mode=TwoWay}"
-                                  CornerRadius="8"
+                                  Width="28"
                                   Height="28"
-                                  Width="28">
+                                  CornerRadius="8"
+                                  IsChecked="{Binding IsMusicEnabled, Mode=TwoWay}">
                         <Panel>
-                            <icons:MaterialIcon Kind="MusicNoteOff"
-                                                IsVisible="{Binding !IsMusicEnabled}" />
-                            <icons:MaterialIcon Kind="MusicNote"
-                                                IsVisible="{Binding IsMusicEnabled}" />
+                            <icons:MaterialIcon IsVisible="{Binding !IsMusicEnabled}"
+                                                Kind="MusicNoteOff" />
+                            <icons:MaterialIcon IsVisible="{Binding IsMusicEnabled}"
+                                                Kind="MusicNote" />
                         </Panel>
                     </ToggleButton>
                     <Button x:Name="MinimizeButton"
@@ -191,45 +169,43 @@
 
             <Grid Grid.RowSpan="2"
                   Grid.ColumnSpan="2"
-                  ClipToBounds="False"
                   Classes.blurred="{Binding IsModalVisible}"
+                  ClipToBounds="False"
                   ColumnDefinitions="Auto,*">
 
                 <ItemsControl ItemsSource="{Binding Controllers}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="controllers:ViewController">
-                            <Button Command="{Binding ActivateCommand}"
-                                    Background="Transparent"
+                            <Button Height="{Binding $self.Bounds.Width}"
                                     Margin="2"
-                                    Height="{Binding $self.Bounds.Width}">
+                                    Background="Transparent"
+                                    Command="{Binding ActivateCommand}">
                                 <Panel>
 
-                                    <Rectangle Fill="{DynamicResource MainBrush}"
-                                               Width="3"
+                                    <Rectangle Width="3"
                                                Height="12"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Left"
                                                Margin="-5 0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Fill="{DynamicResource MainBrush}"
+                                               IsVisible="{Binding IsActive}"
                                                RadiusX="1.5"
-                                               RadiusY="1.5"
-                                               IsVisible="{Binding IsActive}"/>
-                                    <icons:MaterialIcon Kind="{Binding IconKind}"/>
+                                               RadiusY="1.5" />
+                                    <icons:MaterialIcon Kind="{Binding IconKind}" />
                                 </Panel>
                             </Button>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-                
-                <TransitioningContentControl Content="{Binding CurrentContent}"
-                                             Grid.Column="1">
+
+                <TransitioningContentControl Grid.Column="1"
+                                             Content="{Binding CurrentContent}">
                     <TransitioningContentControl.PageTransition>
                         <CompositePageTransition>
                             <CrossFade Duration="0:0:0.20" />
-                            <controls:SizeTransition
-                                Duration="0:0:0.20"
-                                SizeFactor="0.97"
-                                >
+                            <controls:SizeTransition SizeFactor="0.97"
+                                                     Duration="0:0:0.20">
                                 <controls:SizeTransition.SlideInEasing>
                                     <QuadraticEaseOut />
                                 </controls:SizeTransition.SlideInEasing>
@@ -244,12 +220,12 @@
                             <views:DefaultView Margin="0 48 0 0" />
                         </DataTemplate>
                         <DataTemplate DataType="controllers:NewsController">
-                            <TextBlock Text="News here"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
+                            <TextBlock HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Text="News here" />
                         </DataTemplate>
                         <DataTemplate DataType="controllers:AccountManagementController">
-                            <views:AccountManagementView/>
+                            <views:AccountManagementView />
                         </DataTemplate>
                         <DataTemplate DataType="controllers:SettingsController">
                             <views:SettingsView Margin="0 48" />
@@ -257,29 +233,26 @@
                     </TransitioningContentControl.DataTemplates>
                 </TransitioningContentControl>
             </Grid>
-            <!-- Modal -->
+            <!--  Modal  -->
             <Panel x:Name="ModalDarkening"
-                   IsHitTestVisible="{Binding IsModalVisible}"
-                   Classes.visible="{Binding IsModalVisible}"
                    Grid.RowSpan="2"
-                   Grid.ColumnSpan="2">
+                   Grid.ColumnSpan="2"
+                   Classes.visible="{Binding IsModalVisible}"
+                   IsHitTestVisible="{Binding IsModalVisible}">
                 <Panel.Background>
-                    <LinearGradientBrush StartPoint="0% 0%"
-                                         EndPoint="100% 100%"
-                                         Opacity=".85">
+                    <LinearGradientBrush Opacity=".85" StartPoint="0% 0%" EndPoint="100% 100%">
                         <GradientStop Color="{DynamicResource BackgroundColorDark}" />
-                        <GradientStop Color="{DynamicResource BackgroundColorLight}"
-                                      Offset="1" />
+                        <GradientStop Offset="1" Color="{DynamicResource BackgroundColorLight}" />
                     </LinearGradientBrush>
                 </Panel.Background>
                 <Panel.Transitions>
                     <Transitions>
-                        <DoubleTransition Property="Opacity"
-                                          Duration="0:0:0.15"
-                                          Delay="0:0:0.030" />
-                        <TransformOperationsTransition Property="RenderTransform"
-                                                       Duration="0:0:0.15"
-                                                       Delay="0:0:0.030">
+                        <DoubleTransition Delay="0:0:0.030"
+                                          Property="Opacity"
+                                          Duration="0:0:0.15" />
+                        <TransformOperationsTransition Delay="0:0:0.030"
+                                                       Property="RenderTransform"
+                                                       Duration="0:0:0.15">
                             <TransformOperationsTransition.Easing>
                                 <QuadraticEaseOut />
                             </TransformOperationsTransition.Easing>
@@ -294,37 +267,32 @@
                                VerticalAlignment="Stretch">
                         <Rectangle.Fill>
                             <LinearGradientBrush>
-                                <GradientStop Offset="1"
-                                              Color="White" />
-                                <GradientStop Offset="0"
-                                              Color="{DynamicResource BackgroundColorLight}" />
+                                <GradientStop Offset="1" Color="White" />
+                                <GradientStop Offset="0" Color="{DynamicResource BackgroundColorLight}" />
                             </LinearGradientBrush>
                         </Rectangle.Fill>
                         <Rectangle.OpacityMask>
-                            <LinearGradientBrush StartPoint="50% 0%"
-                                                 EndPoint="120% 120%">
-                                <GradientStop Offset="0"
-                                              Color="Transparent" />
-                                <GradientStop Offset="1"
-                                              Color="#2fff" />
+                            <LinearGradientBrush StartPoint="50% 0%" EndPoint="120% 120%">
+                                <GradientStop Offset="0" Color="Transparent" />
+                                <GradientStop Offset="1" Color="#2fff" />
                             </LinearGradientBrush>
                         </Rectangle.OpacityMask>
                     </Rectangle>
                 </Panel>
-                <Image Source="/../../Hildetta1.png"
-                       Stretch="Uniform"
+                <Image Margin="0 -100 -50 -100"
                        HorizontalAlignment="Right"
-                       Margin="0 -100 -50 -100">
+                       Source="/../../Hildetta1.png"
+                       Stretch="Uniform">
                     <Image.RenderTransform>
                         <ScaleTransform ScaleX="-1" />
                     </Image.RenderTransform>
                 </Image>
-                <Button CornerRadius="50"
-                        Background="Transparent"
-                        Cursor="Hand"
+                <Button Margin="50"
                         VerticalAlignment="Top"
-                        Margin="50"
-                        Command="{Binding CurrentModalController.CloseModalCommand}">
+                        Background="Transparent"
+                        Command="{Binding CurrentModalController.CloseModalCommand}"
+                        CornerRadius="50"
+                        Cursor="Hand">
                     <StackPanel Orientation="Horizontal"
                                 Spacing="10">
                         <icons:MaterialIcon Kind="ArrowBack" />
@@ -332,22 +300,19 @@
                     </StackPanel>
                 </Button>
                 <Border x:Name="FormContainer"
-                        CornerRadius="16"
+                        Margin="160 0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
+                        Background="{DynamicResource BackgroundColor}"
                         BoxShadow="0 00 30 5 #6000"
-                        Margin="160 0"
-                        Background="{DynamicResource BackgroundColor}">
+                        CornerRadius="16">
                     <Panel>
                         <Border CornerRadius="16"
                                 Opacity="1">
                             <Border.Background>
-                                <LinearGradientBrush StartPoint="0% 100%"
-                                                     EndPoint="0% 0%">
-                                    <GradientStop Offset="0"
-                                                  Color="{DynamicResource BackgroundColor}" />
-                                    <GradientStop Offset="1"
-                                                  Color="{DynamicResource BackgroundColorLight}" />
+                                <LinearGradientBrush StartPoint="0% 100%" EndPoint="0% 0%">
+                                    <GradientStop Offset="0" Color="{DynamicResource BackgroundColor}" />
+                                    <GradientStop Offset="1" Color="{DynamicResource BackgroundColorLight}" />
                                 </LinearGradientBrush>
                             </Border.Background>
                             <Border.OpacityMask>
@@ -368,7 +333,7 @@
                                     <PageSlide.SlideOutEasing>
                                         <QuadraticEaseInOut />
                                     </PageSlide.SlideOutEasing>
-                                </PageSlide> -->
+                                </PageSlide>-->
                                 </CompositePageTransition>
                             </TransitioningContentControl.PageTransition>
                             <TransitioningContentControl.DataTemplates>
@@ -388,7 +353,7 @@
                                     <modalviews:EmailChangeForm />
                                 </DataTemplate>
                                 <DataTemplate DataType="modals:PasswordChangeModalController">
-                                    <modalviews:PasswordChangeForm/>
+                                    <modalviews:PasswordChangeForm />
                                 </DataTemplate>
                                 <!--<DataTemplate DataType="modals:AccountDeletionModalController">-->
                                 <!--</DataTemplate>-->
@@ -402,7 +367,7 @@
                     VerticalAlignment="Top"
                             >
                     <Image Source="/../../image_logo_small.webp" Width="300"/>
-                </StackPanel> -->
+                </StackPanel>-->
             </Panel>
         </Grid>
     </Panel>
