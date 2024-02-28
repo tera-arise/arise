@@ -32,12 +32,18 @@ internal sealed partial class BridgeModuleGenerator : IHostedService
 
     private readonly ILogger<BridgeModuleGenerator> _logger;
 
+    private readonly TimeProvider _timeProvider;
+
     public BridgeModuleGenerator(
-        IHostEnvironment environment, IOptions<GameOptions> options, ILogger<BridgeModuleGenerator> logger)
+        IHostEnvironment environment,
+        IOptions<GameOptions> options,
+        ILogger<BridgeModuleGenerator> logger,
+        TimeProvider timeProvider)
     {
         _environment = environment;
         _options = options;
         _logger = logger;
+        _timeProvider = timeProvider;
     }
 
     async Task IHostedService.StartAsync(CancellationToken cancellationToken)
@@ -107,12 +113,12 @@ internal sealed partial class BridgeModuleGenerator : IHostedService
                 // Signal that we have an initial set of modules so startup can continue.
                 _ = ready.TrySetResult();
 
-                await Task.Delay(_options.Value.ModuleRotationTime, cancellationToken);
+                await Task.Delay(_options.Value.ModuleRotationTime, _timeProvider, cancellationToken);
             }
         }
         catch (OperationCanceledException)
         {
-            // StopAsync was called.
+            // StopAsync() was called.
         }
         finally
         {

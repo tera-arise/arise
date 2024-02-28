@@ -62,20 +62,20 @@ internal sealed partial class MapSpatialIndex : IHostedService
 
     private readonly IOptions<GameOptions> _options;
 
-    private readonly TimeProvider _timeProvider;
-
     private readonly ILogger<MapSpatialIndex> _logger;
+
+    private readonly TimeProvider _timeProvider;
 
     public MapSpatialIndex(
         IHostEnvironment environment,
         IOptions<GameOptions> options,
-        TimeProvider timeProvider,
-        ILogger<MapSpatialIndex> logger)
+        ILogger<MapSpatialIndex> logger,
+        TimeProvider timeProvider)
     {
         _fileProvider = environment.ContentRootFileProvider;
         _options = options;
-        _timeProvider = timeProvider;
         _logger = logger;
+        _timeProvider = timeProvider;
     }
 
     Task IHostedService.StartAsync(CancellationToken cancellationToken)
@@ -189,7 +189,7 @@ internal sealed partial class MapSpatialIndex : IHostedService
         }
         catch (OperationCanceledException)
         {
-            // StopAsync was called.
+            // StopAsync() was called.
         }
         finally
         {

@@ -110,7 +110,7 @@ internal sealed partial class EmailSender : IHostedService
         }
         catch (OperationCanceledException)
         {
-            // StopAsync was called.
+            // StopAsync() was called.
         }
         finally
         {
