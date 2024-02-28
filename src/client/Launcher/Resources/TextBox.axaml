@@ -1,16 +1,14 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource MainBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MainBrush}" />
         <Style Selector="^ /template/ TextBlock#PART_Watermark, ^ /template/ TextBlock#PART_FloatingWatermark">
             <Setter Property="Foreground" Value="{DynamicResource ThemeTextDisabledBrush}" />
         </Style>
     </Style>
 
     <Style Selector="TextBox /template/ TextBlock#PART_Watermark, TextBox /template/ TextBlock#PART_FloatingWatermark">
-        <Setter Property="Foreground"
-                Value="{DynamicResource ThemeTextMidBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource ThemeTextMidBrush}" />
     </Style>
 
     <Style Selector="TextBox:disabled">

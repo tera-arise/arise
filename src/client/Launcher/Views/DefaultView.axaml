@@ -1,78 +1,74 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl x:Class="Arise.Client.Launcher.Views.DefaultView"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controllers="using:Arise.Client.Launcher.Controllers"
              xmlns:controls="clr-namespace:Arise.Client.Launcher.Controls"
-             mc:Ignorable="d"
-             d:DesignWidth="1280"
-             d:DesignHeight="720"
-             x:Class="Arise.Client.Launcher.Views.DefaultView"
-             ClipToBounds="False"
-             x:DataType="controllers:DefaultController"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DataContext="{x:Static controllers:DesignTimeControllers.Default}"
-             >
+             d:DesignHeight="720"
+             d:DesignWidth="1280"
+             x:DataType="controllers:DefaultController"
+             ClipToBounds="False"
+             mc:Ignorable="d">
     <Grid>
-        <Image Source="../../image_logo_small.webp"
-               IsHitTestVisible="False"
-               Stretch="Uniform"
-               Width="280"
+        <Image Width="280"
                Margin="40 -32"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
-               RenderOptions.BitmapInterpolationMode="HighQuality" />
+               IsHitTestVisible="False"
+               RenderOptions.BitmapInterpolationMode="HighQuality"
+               Source="../../image_logo_small.webp"
+               Stretch="Uniform" />
         <Border Width="600"
                 Height="400"
-                CornerRadius="10"
-                VerticalAlignment="Top"
                 Margin="40"
                 HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                BorderBrush="Red"
                 BorderThickness="2"
-                BorderBrush="Red">
-            <TextBlock Text="news here"
-                       Width="100"
-                       TextWrapping="Wrap"
-                       TextAlignment="Center"
+                CornerRadius="10">
+            <TextBlock Width="100"
+                       HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       HorizontalAlignment="Center" />
+                       Text="news here"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap" />
         </Border>
         <Border Width="400"
                 Height="400"
-                CornerRadius="10"
-                VerticalAlignment="Bottom"
                 Margin="40"
                 HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                BorderBrush="Red"
                 BorderThickness="2"
-                BorderBrush="Red">
-            <TextBlock Text="something else goes here, like server status and more"
-                       Width="100"
-                       TextWrapping="Wrap"
-                       TextAlignment="Center"
+                CornerRadius="10">
+            <TextBlock Width="100"
+                       HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       HorizontalAlignment="Center" />
+                       Text="something else goes here, like server status and more"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap" />
         </Border>
-        <controls:SparkleBorder
-            VerticalAlignment="Bottom"
-            HorizontalAlignment="Right"
-            Margin="40"
-            SparklesEnabled="{Binding #PlayButton.IsEffectivelyEnabled}"
-            Color="{DynamicResource MainColorLight}"
-            >
+        <controls:SparkleBorder Margin="40"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                SparklesEnabled="{Binding #PlayButton.IsEffectivelyEnabled}"
+                                Color="{DynamicResource MainColorLight}">
             <controls:SparkleBorder.Styles>
                 <Style Selector="controls|SparkleBorder">
-                    <Setter Property="Probability" Value=".1"/>
-                    <Setter Property="AnimationDuration" Value="0:0:2"/>
+                    <Setter Property="Probability" Value=".1" />
+                    <Setter Property="AnimationDuration" Value="0:0:2" />
                     <Style Selector="^:pointerover">
-                        <Setter Property="Probability" Value=".5"/>
-                        <Setter Property="AnimationDuration" Value="0:0:1"/>
+                        <Setter Property="Probability" Value=".5" />
+                        <Setter Property="AnimationDuration" Value="0:0:1" />
                     </Style>
                 </Style>
             </controls:SparkleBorder.Styles>
-            <Button Content="Play"
-                    x:Name="PlayButton"
+            <Button x:Name="PlayButton"
                     Classes="play"
-                    Command="{Binding PlayCommand}">
-            </Button>
+                    Command="{Binding PlayCommand}"
+                    Content="Play" />
         </controls:SparkleBorder>
 
     </Grid>

@@ -1,37 +1,27 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.PreviewWith>
-        <Button Content="Play"
+        <Button Margin="40"
                 Classes="play"
-                Margin="40"/>
+                Content="Play" />
     </Design.PreviewWith>
     <Style Selector="Button.main">
-        <Setter Property="Background"
-                Value="{DynamicResource MainBrush}" />
+        <Setter Property="Background" Value="{DynamicResource MainBrush}" />
     </Style>
     <Style Selector="Button.main:pointerover /template/ ContentPresenter">
-        <Setter Property="Background"
-                Value="{DynamicResource MainBrushLight}" />
+        <Setter Property="Background" Value="{DynamicResource MainBrushLight}" />
     </Style>
 
     <Style Selector="Button.play">
-        <Setter Property="Background"
-                Value="{DynamicResource MainBrush}" />
-       
-        <Setter Property="CornerRadius"
-                Value="100"/>
-        <Setter Property="Padding"
-                Value="16"/>
-        <Setter Property="FontSize"
-                Value="16"/>
-        <Setter Property="FontWeight"
-                Value="DemiBold"/>
-        <Setter Property="Foreground"
-                Value="White"/>
-        <Setter Property="Width"
-                Value="160"/>
-        <Setter Property="HorizontalContentAlignment"
-                Value="Center"/>
+        <Setter Property="Background" Value="{DynamicResource MainBrush}" />
+
+        <Setter Property="CornerRadius" Value="100" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="DemiBold" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Width" Value="160" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
         <!--<Setter Property="BorderThickness"
                 Value="1"/>-->
         <!--<Setter Property="BorderBrush">
@@ -41,17 +31,15 @@
             </LinearGradientBrush>
         </Setter>-->
         <Setter Property="Effect">
-            <DropShadowEffect OffsetX="0"
+            <DropShadowEffect BlurRadius="25"
+                              OffsetX="0"
                               OffsetY="0"
-                              BlurRadius="25"
                               Opacity=".8"
-                              Color="{DynamicResource MainColorDark}"
-                                  />
+                              Color="{DynamicResource MainColorDark}" />
         </Setter>
 
         <Style Selector="^:pointerover /template/ ContentPresenter">
-            <Setter Property="Background"
-                    Value="{DynamicResource MainBrushLight}" />
+            <Setter Property="Background" Value="{DynamicResource MainBrushLight}" />
             <!--<Setter Property="BorderBrush">
                 <LinearGradientBrush StartPoint="0% 0%" EndPoint="1% 100%">
                     <GradientStop Offset="0" Color="{DynamicResource MainColorLighter}"/>
