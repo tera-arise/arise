@@ -23,13 +23,15 @@ public sealed class GatewayHttpClientAccountsController : GatewayHttpClientContr
             HttpMethod.Patch, "Verify", request, Context.AccountsVerifyRequest, credentials: (email, password));
     }
 
-    public ValueTask VerifyEmailChangeAsync(string email, string password, AccountsVerifyEmailChangeRequest request)
+    public ValueTask<AccountsVerifyEmailChangeResponse> VerifyEmailChangeAsync(
+        string email, string password, AccountsVerifyEmailChangeRequest request)
     {
         return SendAsync(
             HttpMethod.Patch,
             "VerifyEmailChange",
             request,
             Context.AccountsVerifyEmailChangeRequest,
+            Context.AccountsVerifyEmailChangeResponse,
             credentials: (email, password));
     }
 

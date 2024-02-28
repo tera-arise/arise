@@ -47,6 +47,23 @@ public abstract class GatewayHttpClientController
         return await DeserializeResponseAsync(response, responseTypeInfo).ConfigureAwait(false);
     }
 
+    private protected async ValueTask<TResponse> SendAsync<TRequest, TResponse>(
+        HttpMethod method,
+        string action,
+        TRequest request,
+        JsonTypeInfo<TRequest> requestTypeInfo,
+        JsonTypeInfo<TResponse> responseTypeInfo,
+        (string Email, string Password)? credentials)
+        where TRequest : class
+        where TResponse : class
+    {
+        using var content = JsonContent.Create(request, requestTypeInfo);
+        using var response = await _client.SendAsync(method, _controller, action, credentials, content)
+            .ConfigureAwait(false);
+
+        return await DeserializeResponseAsync(response, responseTypeInfo).ConfigureAwait(false);
+    }
+
     private static async ValueTask<TResponse> DeserializeResponseAsync<TResponse>(
         HttpResponseMessage response, JsonTypeInfo<TResponse> typeInfo)
         where TResponse : class

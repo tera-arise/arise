@@ -171,7 +171,12 @@ internal sealed class AccountsController : ApiController
             return UnprocessableEntity();
         }
 
-        return saved ? NoContent() : Conflict();
+        return saved
+            ? Ok(new AccountsVerifyEmailChangeResponse
+            {
+                Email = change.Address,
+            })
+            : Conflict();
     }
 
     [HttpPatch]
