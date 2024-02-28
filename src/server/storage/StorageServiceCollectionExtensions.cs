@@ -8,7 +8,6 @@ public static class StorageServiceCollectionExtensions
     public static IServiceCollection AddStorageServices(this IServiceCollection services)
     {
         return services
-            .AddSingleton<IClock>(SystemClock.Instance)
             .AddMarten(static provider =>
             {
                 var store = new StoreOptions
@@ -23,7 +22,6 @@ public static class StorageServiceCollectionExtensions
                     enumStorage: EnumStorage.AsString,
                     casing: Casing.SnakeCase,
                     serializerType: SerializerType.SystemTextJson);
-                store.UseNodaTime();
 
                 store.RegisterDocumentTypes(
                     typeof(ThisAssembly)

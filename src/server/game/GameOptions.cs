@@ -4,13 +4,13 @@ internal sealed class GameOptions : IOptions<GameOptions>
 {
     public int ConcurrentModules { get; } = 1;
 
-    public Duration ModuleRotationTime { get; } = Duration.FromDays(1);
+    public TimeSpan ModuleRotationTime { get; } = TimeSpan.FromDays(1);
 
-    public Duration ModuleValidityTime { get; } = Duration.FromDays(2);
+    public TimeSpan ModuleValidityTime { get; } = TimeSpan.FromDays(2);
 
-    public Duration SpatialDataPollingTime { get; } = Duration.FromMinutes(15);
+    public TimeSpan SpatialDataPollingTime { get; } = TimeSpan.FromMinutes(15);
 
-    public Duration SpatialDataRetentionTime { get; } = Duration.FromHours(1);
+    public TimeSpan SpatialDataRetentionTime { get; } = TimeSpan.FromHours(1);
 
     public ICollection<string> Endpoints { get; } = [];
 

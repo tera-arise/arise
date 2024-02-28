@@ -107,7 +107,7 @@ internal sealed partial class BridgeModuleGenerator : IHostedService
                 // Signal that we have an initial set of modules so startup can continue.
                 _ = ready.TrySetResult();
 
-                await Task.Delay(_options.Value.ModuleRotationTime.ToTimeSpan(), cancellationToken);
+                await Task.Delay(_options.Value.ModuleRotationTime, cancellationToken);
             }
         }
         catch (OperationCanceledException)

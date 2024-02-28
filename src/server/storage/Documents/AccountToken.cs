@@ -4,5 +4,5 @@ public sealed class AccountToken
 {
     public required string Value { get; init; }
 
-    public required Instant Expiry { get; init; }
+    public required DateTime Expiry { get; init; }
 }

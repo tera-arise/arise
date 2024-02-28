@@ -8,13 +8,11 @@
         <Using Include="Injectio.Attributes" />
         <Using Include="Marten" />
         <Using Include="Marten.Metadata" />
-        <Using Include="Marten.NodaTimePlugin" />
         <Using Include="Marten.Schema" />
         <Using Include="Marten.Services.Json" />
         <Using Include="Microsoft.Extensions.DependencyInjection" />
         <Using Include="Microsoft.Extensions.Hosting" />
         <Using Include="Microsoft.Extensions.Options" />
-        <Using Include="NodaTime" />
         <Using Include="Weasel.Core" />
     </ItemGroup>
 
@@ -25,7 +23,7 @@
     <ItemGroup>
         <PackageReference Include="Injectio"
                           PrivateAssets="all" />
-        <PackageReference Include="Marten.NodaTime" />
+        <PackageReference Include="Marten" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
     </ItemGroup>
 </Project>

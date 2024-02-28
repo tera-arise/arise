@@ -1,7 +1,5 @@
 namespace Arise.Gateway;
 
-[JsonSerializable(typeof(Duration), GenerationMode = JsonSourceGenerationMode.Metadata)]
-[JsonSerializable(typeof(Instant), GenerationMode = JsonSourceGenerationMode.Metadata)]
 [JsonSerializable(typeof(AccountsAuthenticateResponse))]
 [JsonSerializable(typeof(AccountsChangeEmailRequest))]
 [JsonSerializable(typeof(AccountsChangePasswordRequest))]

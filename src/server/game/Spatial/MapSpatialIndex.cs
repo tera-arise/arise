@@ -19,7 +19,7 @@ internal sealed partial class MapSpatialIndex : IHostedService
             _volumes.Span.Slice(
                 _volumeIndices[squareX, squareY, cellX, cellY], _volumeCounts[squareX, squareY, cellX, cellY]);
 
-        public required Instant Timestamp { get; set; }
+        public required DateTimeOffset Timestamp { get; set; }
 
         private readonly int[,,,] _volumeIndices;
 
@@ -62,16 +62,19 @@ internal sealed partial class MapSpatialIndex : IHostedService
 
     private readonly IOptions<GameOptions> _options;
 
-    private readonly IClock _clock;
+    private readonly TimeProvider _timeProvider;
 
     private readonly ILogger<MapSpatialIndex> _logger;
 
     public MapSpatialIndex(
-        IHostEnvironment environment, IOptions<GameOptions> options, IClock clock, ILogger<MapSpatialIndex> logger)
+        IHostEnvironment environment,
+        IOptions<GameOptions> options,
+        TimeProvider timeProvider,
+        ILogger<MapSpatialIndex> logger)
     {
         _fileProvider = environment.ContentRootFileProvider;
         _options = options;
-        _clock = clock;
+        _timeProvider = timeProvider;
         _logger = logger;
     }
 
@@ -102,7 +105,7 @@ internal sealed partial class MapSpatialIndex : IHostedService
     {
         if (_zones.TryGetValue((x, y), out var zone))
         {
-            zone.Timestamp = _clock.GetCurrentInstant();
+            zone.Timestamp = _timeProvider.GetUtcNow();
 
             return zone;
         }
@@ -154,7 +157,7 @@ internal sealed partial class MapSpatialIndex : IHostedService
 
         zone = new(volumeIndices, volumeCounts, volumes.ToArray())
         {
-            Timestamp = _clock.GetCurrentInstant(),
+            Timestamp = _timeProvider.GetUtcNow(),
         };
 
         // We might not have won the race; only log if we did.
@@ -173,7 +176,7 @@ internal sealed partial class MapSpatialIndex : IHostedService
                 // This enumerates a snapshot of the dictionary.
                 foreach (var (coords, zone) in _zones)
                 {
-                    if (_clock.GetCurrentInstant() - zone.Timestamp <= _options.Value.SpatialDataRetentionTime)
+                    if (_timeProvider.GetUtcNow() - zone.Timestamp <= _options.Value.SpatialDataRetentionTime)
                         continue;
 
                     _ = _zones.TryRemove(coords, out _);
@@ -181,7 +184,7 @@ internal sealed partial class MapSpatialIndex : IHostedService
                     Log.UnloadedSpatialData(_logger, coords.X, coords.Y);
                 }
 
-                await Task.Delay(_options.Value.SpatialDataPollingTime.ToTimeSpan(), cancellationToken);
+                await Task.Delay(_options.Value.SpatialDataPollingTime, _timeProvider, cancellationToken);
             }
         }
         catch (OperationCanceledException)

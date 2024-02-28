@@ -12,6 +12,5 @@ public sealed class LauncherHelloResponse
 
     public required Uri AriseDownloadFormat { get; init; }
 
-    [JsonConverter(typeof(NodaTimeDefaultJsonConverterFactory))]
-    public required Duration AccountDeletionTime { get; init; }
+    public required TimeSpan AccountDeletionTime { get; init; }
 }

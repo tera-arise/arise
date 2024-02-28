@@ -8,18 +8,14 @@ internal sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthen
 
     private readonly IDocumentStore _store;
 
-    private readonly IClock _clock;
-
     public ApiAuthenticationHandler(
         IOptionsMonitor<ApiAuthenticationOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
-        IDocumentStore store,
-        IClock clock)
+        IDocumentStore store)
         : base(options, logger, encoder)
     {
         _store = store;
-        _clock = clock;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -72,7 +68,7 @@ internal sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthen
         if (MatchPassword(account.Password))
             principal = new(account, recovered: false);
         else if (account.Recovery is AccountRecovery recovery &&
-            _clock.GetCurrentInstant() < recovery.Expiry &&
+            TimeProvider.GetUtcNow() < recovery.Expiry &&
             MatchPassword(recovery.Password))
             principal = new(account, recovered: true);
 

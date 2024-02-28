@@ -12,7 +12,7 @@ internal sealed class AccountsController : ApiController
 
     [BindProperty]
     [FromServices]
-    public required IClock Clock { get; init; }
+    public required TimeProvider TimeProvider { get; init; }
 
     [BindProperty]
     [FromServices]
@@ -36,7 +36,7 @@ internal sealed class AccountsController : ApiController
         var normalized = body.Email.Normalize().ToUpperInvariant();
 
         var token = TokenGenerator.GenerateToken();
-        var expiry = Clock.GetCurrentInstant() + Options.Value.AccountVerificationTime;
+        var expiry = TimeProvider.GetUtcNow().DateTime + Options.Value.AccountVerificationTime;
 
         var strategy = PasswordStrategyProvider.GetLatestStrategy();
         var salt = strategy.GenerateSalt();
@@ -84,7 +84,7 @@ internal sealed class AccountsController : ApiController
 
             To verify your email address, use this token in the launcher: {token}
 
-            The token will expire on: {InstantToString(expiry)}
+            The token will expire on: {expiry:O}
             """);
 
         return NoContent();
@@ -101,7 +101,7 @@ internal sealed class AccountsController : ApiController
             return BadRequest();
 
         var token = TokenGenerator.GenerateToken();
-        var expiry = Clock.GetCurrentInstant() + Options.Value.AccountVerificationTime;
+        var expiry = TimeProvider.GetUtcNow().DateTime + Options.Value.AccountVerificationTime;
 
         email.Verification = new()
         {
@@ -120,7 +120,7 @@ internal sealed class AccountsController : ApiController
 
             To verify your email address, use this token in the launcher: {token}
 
-            The token will expire on: {InstantToString(expiry)}
+            The token will expire on: {expiry:O}
             """);
 
         return NoContent();
@@ -133,7 +133,7 @@ internal sealed class AccountsController : ApiController
         var email = account.Email;
 
         if (email.Verification is not { } verification ||
-            Clock.GetCurrentInstant() >= verification.Expiry ||
+            TimeProvider.GetUtcNow() >= verification.Expiry ||
             body.Token != verification.Value)
             return BadRequest();
 
@@ -147,7 +147,7 @@ internal sealed class AccountsController : ApiController
         AccountDocument account, AccountsVerifyEmailChangeRequest body, CancellationToken cancellationToken)
     {
         if (account.ChangingEmail is not { Verification: { } verification } change ||
-            Clock.GetCurrentInstant() >= verification.Expiry ||
+            TimeProvider.GetUtcNow() >= verification.Expiry ||
             body.Token != verification.Value)
             return BadRequest();
 
@@ -184,7 +184,7 @@ internal sealed class AccountsController : ApiController
         AccountDocument account, AccountsVerifyDeletionRequest body, CancellationToken cancellationToken)
     {
         if (account.Deletion is not { Verification: { } verification } deletion ||
-            Clock.GetCurrentInstant() >= verification.Expiry ||
+            TimeProvider.GetUtcNow() >= verification.Expiry ||
             body.Token != verification.Value)
             return BadRequest();
 
@@ -199,7 +199,7 @@ internal sealed class AccountsController : ApiController
             $"""
             Deletion of your {ThisAssembly.GameTitle} account is now in progress.
 
-            Your account will be deleted on: {InstantToString(deletion.Due)}
+            Your account will be deleted on: {deletion.Due:O}
 
             If you change your mind, please cancel the deletion in the launcher.
             """);
@@ -219,7 +219,7 @@ internal sealed class AccountsController : ApiController
 
         var address = body.Email;
         var token = TokenGenerator.GenerateToken();
-        var expiry = Clock.GetCurrentInstant() + Options.Value.AccountVerificationTime;
+        var expiry = TimeProvider.GetUtcNow().DateTime + Options.Value.AccountVerificationTime;
 
         account.ChangingEmail = new()
         {
@@ -244,7 +244,7 @@ internal sealed class AccountsController : ApiController
 
             To confirm the change, use this token in the launcher: {token}
 
-            The token will expire on: {InstantToString(expiry)}
+            The token will expire on: {expiry:O}
 
             If you did not initiate this request, please change your password in the launcher immediately.
             """);
@@ -302,7 +302,7 @@ internal sealed class AccountsController : ApiController
             var strategy = PasswordStrategyProvider.GetLatestStrategy();
             var salt = strategy.GenerateSalt();
             var password = PasswordStrategy.GeneratePassword();
-            var expiry = Clock.GetCurrentInstant() + Options.Value.AccountRecoveryTime;
+            var expiry = TimeProvider.GetUtcNow().DateTime + Options.Value.AccountRecoveryTime;
 
             account.Recovery = new()
             {
@@ -326,7 +326,7 @@ internal sealed class AccountsController : ApiController
 
                 A temporary password has been generated for you: {password}
 
-                The temporary password will expire on: {InstantToString(expiry)}
+                The temporary password will expire on: {expiry:O}
 
                 If you log in with the above password, it will replace your current password.
 
@@ -350,7 +350,7 @@ internal sealed class AccountsController : ApiController
         var options = Options.Value;
 
         var token = TokenGenerator.GenerateToken();
-        var now = Clock.GetCurrentInstant();
+        var now = TimeProvider.GetUtcNow().DateTime;
         var expiry = now + options.AccountVerificationTime;
 
         account.Deletion = new()
@@ -374,7 +374,7 @@ internal sealed class AccountsController : ApiController
 
             To confirm account deletion, use this token in the launcher: {token}
 
-            The token will expire on: {InstantToString(expiry)}
+            The token will expire on: {expiry:O}
 
             If you did not initiate this request, please change your password in the launcher immediately.
             """);
@@ -401,7 +401,7 @@ internal sealed class AccountsController : ApiController
         AccountClaimsPrincipal principal, CancellationToken cancellationToken)
     {
         var account = principal.Document;
-        var now = Clock.GetCurrentInstant();
+        var now = TimeProvider.GetUtcNow().DateTime;
 
         // Do some housekeeping of account state while we are here...
 
@@ -422,7 +422,7 @@ internal sealed class AccountsController : ApiController
 
         account.Recovery = null; // Clear used/expired recovery password.
 
-        var deletionDue = default(Instant?);
+        var deletionDue = default(DateTime?);
 
         if (account.Deletion is { } deletion)
         {
@@ -491,10 +491,5 @@ internal sealed class AccountsController : ApiController
         }
 
         return true;
-    }
-
-    private static string InstantToString(Instant instant)
-    {
-        return instant.InUtc().Date.ToString(patternText: null, CultureInfo.InvariantCulture);
     }
 }

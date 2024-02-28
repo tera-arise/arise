@@ -48,7 +48,7 @@ internal sealed class BridgeModulePatchingPass : BridgeModulePass
 
                 case ("GameProtection", "GetValidDuration"):
                 {
-                    PatchStringMarker(options.ModuleValidityTime.ToTimeSpan().ToString());
+                    PatchStringMarker(options.ModuleValidityTime.ToString());
 
                     break;
                 }

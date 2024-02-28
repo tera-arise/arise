@@ -8,7 +8,7 @@ internal sealed class GatewayOptions : IOptions<GatewayOptions>
 
     public int RateLimit { get; set; } = 10;
 
-    public Duration RateLimitPeriod { get; set; } = Duration.FromHours(1);
+    public TimeSpan RateLimitPeriod { get; set; } = TimeSpan.FromHours(1);
 
     public int TeraRevision { get; set; } = 387486;
 
@@ -24,13 +24,13 @@ internal sealed class GatewayOptions : IOptions<GatewayOptions>
 
     public string EmailAddress { get; set; } = "arise@localhost";
 
-    public Duration AccountVerificationTime { get; set; } = Duration.FromDays(7);
+    public TimeSpan AccountVerificationTime { get; set; } = TimeSpan.FromDays(7);
 
-    public Duration AccountRecoveryTime { get; set; } = Duration.FromDays(1);
+    public TimeSpan AccountRecoveryTime { get; set; } = TimeSpan.FromDays(1);
 
-    public Duration AccountDeletionTime { get; set; } = Duration.FromDays(31);
+    public TimeSpan AccountDeletionTime { get; set; } = TimeSpan.FromDays(31);
 
-    public Duration AccountAuthenticationTime { get; set; } = Duration.FromHours(12);
+    public TimeSpan AccountAuthenticationTime { get; set; } = TimeSpan.FromHours(12);
 
     public string? NewsUri { get; set; }
 

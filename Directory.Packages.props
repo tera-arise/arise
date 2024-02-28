@@ -41,9 +41,7 @@
                         Version="1.21.0" />
         <PackageVersion Include="Injectio"
                         Version="3.1.0" />
-        <PackageVersion Include="Marten.AspNetCore"
-                        Version="6.4.1" />
-        <PackageVersion Include="Marten.NodaTime"
+        <PackageVersion Include="Marten"
                         Version="6.4.1" />
         <PackageVersion Include="Material.Icons.Avalonia"
                         Version="2.1.0" />
@@ -75,10 +73,6 @@
                         Version="2.2.1" />
         <PackageVersion Include="NAudio.Vorbis"
                         Version="1.5.0" />
-        <PackageVersion Include="NodaTime"
-                        Version="3.1.11" />
-        <PackageVersion Include="NodaTime.Serialization.SystemTextJson"
-                        Version="1.1.2" />
         <PackageVersion Include="Octokit"
                         Version="10.0.0" />
         <PackageVersion Include="PeNet"

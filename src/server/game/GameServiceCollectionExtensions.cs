@@ -10,6 +10,7 @@ public static class GameServiceCollectionExtensions
     public static IServiceCollection AddGameServices(this IServiceCollection services)
     {
         services.TryAddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
+        services.TryAddSingleton(TimeProvider.System);
 
         return services
             .AddHostedService(static provider => provider.GetRequiredService<DataGraph>())
