@@ -50,7 +50,7 @@ internal sealed class ApiAuthenticationHandler : AuthenticationHandler<ApiAuthen
         await using (var session = _store.QuerySession())
             account = await session
                 .Query<AccountDocument>()
-                .SingleOrDefaultAsync(account => account.Email.Address == normalizedEmail);
+                .SingleOrDefaultAsync(account => account.Email.NormalizedAddress == normalizedEmail);
 
         // https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#login
         if (account == null)

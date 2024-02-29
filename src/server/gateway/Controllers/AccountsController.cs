@@ -45,7 +45,8 @@ internal sealed class AccountsController : ApiController
         {
             Email = new()
             {
-                Address = normalized,
+                OriginalAddress = body.Email,
+                NormalizedAddress = normalized,
                 Verification = new()
                 {
                     Value = token,
@@ -113,7 +114,7 @@ internal sealed class AccountsController : ApiController
             return Conflict();
 
         EmailSender.EnqueueEmail(
-            email.Address,
+            email.OriginalAddress,
             "Email Address Verification",
             $"""
             Welcome to {ThisAssembly.GameTitle}.
@@ -151,9 +152,12 @@ internal sealed class AccountsController : ApiController
             body.Token != verification.Value)
             return BadRequest();
 
+        var original = change.OriginalAddress;
+
         account.Email = new()
         {
-            Address = change.Address,
+            OriginalAddress = original,
+            NormalizedAddress = original.Normalize().ToUpperInvariant(),
             Verification = null,
         };
         account.ChangingEmail = null;
@@ -174,7 +178,7 @@ internal sealed class AccountsController : ApiController
         return saved
             ? Ok(new AccountsVerifyEmailChangeResponse
             {
-                Email = change.Address,
+                Email = original,
             })
             : Conflict();
     }
@@ -194,7 +198,7 @@ internal sealed class AccountsController : ApiController
             return Conflict();
 
         EmailSender.EnqueueEmail(
-            account.Email.Address,
+            account.Email.OriginalAddress,
             "Account Deletion",
             $"""
             Deletion of your {ThisAssembly.GameTitle} account is now in progress.
@@ -217,13 +221,12 @@ internal sealed class AccountsController : ApiController
         if (!HostEnvironment.IsDevelopment() && email.Verification != null)
             return BadRequest();
 
-        var address = body.Email;
         var token = TokenGenerator.GenerateToken();
         var expiry = TimeProvider.GetUtcNow().DateTime + Options.Value.AccountVerificationTime;
 
         account.ChangingEmail = new()
         {
-            Address = address.Normalize().ToUpperInvariant(),
+            OriginalAddress = body.Email,
             Verification = new()
             {
                 Value = token,
@@ -235,12 +238,12 @@ internal sealed class AccountsController : ApiController
             return Conflict();
 
         EmailSender.EnqueueEmail(
-            email.Address,
+            email.OriginalAddress,
             "Email Address Change Verification",
             $"""
             An email address change was recently requested for your {ThisAssembly.GameTitle} account.
 
-            The new email address is: {address}
+            The new email address is: {body.Email}
 
             To confirm the change, use this token in the launcher: {token}
 
@@ -270,7 +273,7 @@ internal sealed class AccountsController : ApiController
             return Conflict();
 
         EmailSender.EnqueueEmail(
-            account.Email.Address,
+            account.Email.OriginalAddress,
             "Password Change",
             $"""
             A password change was recently performed for your {ThisAssembly.GameTitle} account.
@@ -295,7 +298,7 @@ internal sealed class AccountsController : ApiController
         await using (var session = DocumentStore.QuerySession())
             account = await session
                 .Query<AccountDocument>()
-                .SingleOrDefaultAsync(account => account.Email.Address == normalized, cancellationToken);
+                .SingleOrDefaultAsync(account => account.Email.NormalizedAddress == normalized, cancellationToken);
 
         if (account != null)
         {
@@ -367,7 +370,7 @@ internal sealed class AccountsController : ApiController
             return Conflict();
 
         EmailSender.EnqueueEmail(
-            account.Email.Address,
+            account.Email.OriginalAddress,
             "Account Deletion Verification",
             $"""
             Deletion of your {ThisAssembly.GameTitle} account was recently requested.

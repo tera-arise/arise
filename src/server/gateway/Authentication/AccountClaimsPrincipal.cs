@@ -20,7 +20,7 @@ internal sealed class AccountClaimsPrincipal : ClaimsPrincipal
 
         var id = new ClaimsIdentity(ThisAssembly.GameTitle, ClaimTypes.Email, ClaimTypes.Role);
 
-        id.AddClaim(new(ClaimTypes.Email, account.Email.Address));
+        id.AddClaim(new(ClaimTypes.Email, account.Email.NormalizedAddress));
 
         foreach (var (access, claim) in _claims.Span)
             if (account.Access >= access)
