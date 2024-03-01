@@ -22,6 +22,9 @@ internal sealed partial class EmailChangeModalController : ModalController
     [ObservableProperty]
     private bool _isPasswordRequired = true;
 
+    [ObservableProperty]
+    private ActionStatus _sendEmailActionStatus;
+
     private bool CanRequest => !string.IsNullOrEmpty(Password)
                             && !string.IsNullOrEmpty(NewEmail)
                             && _session.AccountName != NewEmail
@@ -54,24 +57,49 @@ internal sealed partial class EmailChangeModalController : ModalController
         {
             ActionStatus = ActionStatus.Pending;
 
-            await MainController.Gateway.Rest.Accounts
-                .ChangeEmailAsync(
-                    _session.AccountName!,
-                    Password,
-                    new AccountsChangeEmailRequest
-                    {
-                        Email = NewEmail,
-                    })
+            await SendChangeRequestAsync()
                 .ConfigureAwait(true);
 
             IsChangeInProgress = true;
             ActionStatus = ActionStatus.None;
+
             _session.BeginEmailChange();
         }
         catch (GatewayHttpException)
         {
             ActionStatus = ActionStatus.Failed;
         }
+    }
+
+    [RelayCommand]
+    private async Task ResendEmailAsync()
+    {
+        try
+        {
+            SendEmailActionStatus = ActionStatus.Pending;
+
+            await SendChangeRequestAsync()
+                .ConfigureAwait(true);
+
+            SendEmailActionStatus = ActionStatus.None;
+        }
+        catch (GatewayHttpException)
+        {
+            SendEmailActionStatus = ActionStatus.Failed;
+        }
+    }
+
+    private async Task SendChangeRequestAsync()
+    {
+        await MainController.Gateway.Rest.Accounts
+            .ChangeEmailAsync(
+                _session.AccountName!,
+                Password,
+                new AccountsChangeEmailRequest
+                {
+                    Email = NewEmail,
+                })
+            .ConfigureAwait(false);
     }
 
     [RelayCommand(CanExecute = nameof(CanVerify))]
