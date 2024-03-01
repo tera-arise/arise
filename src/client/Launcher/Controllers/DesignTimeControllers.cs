@@ -39,12 +39,12 @@ internal static class DesignTimeControllers
             "test",
             new AccountsAuthenticateResponse
             {
-                BanReason = null,
+                Ban = null,
                 IsChangingEmail = false,
-                IsDeleting = false,
                 IsRecovered = false,
                 IsVerifying = false,
                 SessionTicket = null,
+                DeletionDue = null,
             },
             "123");
 

@@ -81,7 +81,7 @@ internal sealed partial class EmailChangeModalController : ModalController
         {
             ActionStatus = ActionStatus.Pending;
 
-            await MainController.Gateway.Rest.Accounts
+            var resp = await MainController.Gateway.Rest.Accounts
                 .VerifyEmailChangeAsync(
                     _session.AccountName!,
                     Password,
@@ -95,8 +95,7 @@ internal sealed partial class EmailChangeModalController : ModalController
 
             await Task.Delay(1000).ConfigureAwait(true);
 
-            // todo: pass in the new email address (needs to be returned from server)
-            _session.VerifyEmailChange();
+            _session.VerifyEmailChange(resp.Email.ToLower(CultureInfo.InvariantCulture)); // todo: store it from the first time instead of doing this
 
             CloseModal();
         }
