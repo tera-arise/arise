@@ -95,7 +95,7 @@ internal sealed partial class EmailChangeModalController : ModalController
 
             await Task.Delay(1000).ConfigureAwait(true);
 
-            _session.VerifyEmailChange(resp.Email.ToLower(CultureInfo.InvariantCulture)); // todo: store it from the first time instead of doing this
+            _session.VerifyEmailChange(resp.Email);
 
             CloseModal();
         }
