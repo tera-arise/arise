@@ -107,9 +107,10 @@ internal sealed partial class MainController : LauncherController
         IsVerified = _session.IsVerified && _session.IsLoggedIn;
         IsChangingEmail = _session.IsChangingEmail;
 
-        if (IsLoggedIn && !Controllers.OfType<AccountManagementController>().Any())
+        if (IsLoggedIn)
         {
-            Controllers.Add(new AccountManagementController(Services, this));
+            if (!Controllers.OfType<AccountManagementController>().Any())
+                Controllers.Add(new AccountManagementController(Services, this));
         }
         else
         {
