@@ -33,7 +33,7 @@
         </TextBlock>
 
         <controls:StepControl Collapsed="{Binding IsChangeInProgress}"
-                              Header="Step 1 description"
+                              Header="Enter the new email and your current password."
                               StepId="1">
 
             <StackPanel x:Name="Step1Content"
@@ -128,7 +128,7 @@
         </controls:StepControl>
 
         <controls:StepControl Collapsed="{Binding !IsChangeInProgress}"
-                              Header="Step 2 description"
+                              Header="Enter the verification token to confirm the operation."
                               StepId="2">
 
             <StackPanel x:Name="Step2Content"
