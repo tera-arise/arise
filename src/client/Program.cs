@@ -99,6 +99,7 @@ internal static class Program
             .Configure(factory)
             .UseWin32()
             .UseSkia()
+            .With(new SkiaOptions { MaxGpuResourceSizeBytes = 512_000_000 })
             .WithInterFont();
     }
 }
