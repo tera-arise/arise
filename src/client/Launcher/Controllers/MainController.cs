@@ -67,6 +67,8 @@ internal sealed partial class MainController : LauncherController
 
         _session = services.GetService<UserSession>()!;
         _session.StatusChanged += OnSessionStatusChanged;
+        _session.LoggedIn += OnLogin;
+        _session.LoggedOut += OnLogout;
 
         Gateway = services.GetService<GatewayClient>()!;
         Gateway.BaseAddress = _launcherSettingsManager.Settings.ServerAddress;
@@ -83,56 +85,6 @@ internal sealed partial class MainController : LauncherController
         IsMusicEnabled = _launcherSettingsManager.Settings.IsMusicEnabled;
 
         WeakReferenceMessenger.Default.Register<NavigateModalMessage>(this, OnNavigateModalMessage);
-    }
-
-    [RelayCommand]
-    private void ManageAccount()
-    {
-        var acm = Controllers.FirstOrDefault(x => x is AccountManagementController)!;
-        CurrentContent = acm;
-    }
-
-    private void OnNavigateModalMessage(object recipient, NavigateModalMessage message)
-    {
-        CurrentModalController = message.ModalType is null
-            ? null
-            : (ModalController?)Activator.CreateInstance(message.ModalType, Services, this);
-    }
-
-    private void OnSessionStatusChanged()
-    {
-        CurrentAccountName = _session.IsLoggedIn ? _session.AccountName! : "LOGIN";
-
-        IsLoggedIn = _session.IsLoggedIn;
-        IsVerified = _session.IsVerified && _session.IsLoggedIn;
-        IsChangingEmail = _session.IsChangingEmail;
-
-        if (IsLoggedIn)
-        {
-            if (!Controllers.OfType<AccountManagementController>().Any())
-                Controllers.Add(new AccountManagementController(Services, this));
-        }
-        else
-        {
-            var acm = Controllers.FirstOrDefault(x => x is AccountManagementController)!;
-            _ = Controllers.Remove(acm);
-        }
-    }
-
-    partial void OnIsMusicEnabledChanged(bool value)
-    {
-        if (value)
-            _musicPlayer.Play();
-        else
-            _musicPlayer.Stop();
-
-        _launcherSettingsManager.Settings.IsMusicEnabled = value;
-        _launcherSettingsManager.Save();
-    }
-
-    public void StopMusic()
-    {
-        _musicPlayer.Stop();
     }
 
     [SuppressMessage("", "CA1822")]
@@ -187,5 +139,62 @@ internal sealed partial class MainController : LauncherController
     {
         _session.Logout();
         ModalController.CloseModal();
+    }
+
+    [RelayCommand]
+    private void ManageAccount()
+    {
+        var acm = Controllers.FirstOrDefault(x => x is AccountManagementController)!;
+        CurrentContent = acm;
+    }
+
+    private void OnLogin(string accountName)
+    {
+        _launcherSettingsManager.Settings.LastLoggedInAccount = accountName!;
+        _launcherSettingsManager.Save();
+
+        CurrentAccountName = accountName;
+        IsLoggedIn = true;
+
+        if (!Controllers.OfType<AccountManagementController>().Any())
+            Controllers.Add(new AccountManagementController(Services, this));
+    }
+
+    private void OnLogout()
+    {
+        IsLoggedIn = false;
+        CurrentAccountName = string.Empty;
+
+        var acm = Controllers.FirstOrDefault(x => x is AccountManagementController)!;
+        _ = Controllers.Remove(acm);
+    }
+
+    private void OnSessionStatusChanged()
+    {
+        IsVerified = _session.IsVerified && _session.IsLoggedIn;
+        IsChangingEmail = _session.IsChangingEmail;
+    }
+
+    partial void OnIsMusicEnabledChanged(bool value)
+    {
+        if (value)
+            _musicPlayer.Play();
+        else
+            _musicPlayer.Stop();
+
+        _launcherSettingsManager.Settings.IsMusicEnabled = value;
+        _launcherSettingsManager.Save();
+    }
+
+    private void OnNavigateModalMessage(object recipient, NavigateModalMessage message)
+    {
+        CurrentModalController = message.ModalType is null
+            ? null
+            : (ModalController?)Activator.CreateInstance(message.ModalType, Services, this);
+    }
+
+    public void StopMusic()
+    {
+        _musicPlayer.Stop();
     }
 }
