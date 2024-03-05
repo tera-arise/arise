@@ -39,7 +39,6 @@ public static class StorageServiceCollectionExtensions
                 var options = provider.GetRequiredService<IOptions<StorageOptions>>().Value;
 
                 store.Connection(options.ConnectionString);
-                store.RetryPolicy(DefaultRetryPolicy.Times(options.MaxRetryCount));
 
                 return store;
             })
