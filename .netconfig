@@ -5,8 +5,8 @@
 	weak
 [file ".gitattributes"]
 	url = https://github.com/tera-arise/.github/blob/master/syn/.gitattributes
-	sha = a52fdae06d1a2fb13ec9d091eb9767373add18cb
-	etag = 7605f9ae4a51eb262a13224cdbf7c7586a5276aa51d024922abb4a9cc42d5848
+	sha = dab9ef63cd301bf579877c95cea5fbb3be71f6bd
+	etag = 0aeee0cb31bd3ed581760b2bbf8ae470ac97e8025eeffcaca499cdb0c5a0f077
 	weak
 [file ".markdownlint.json"]
 	url = https://github.com/tera-arise/.github/blob/master/syn/.markdownlint.json
