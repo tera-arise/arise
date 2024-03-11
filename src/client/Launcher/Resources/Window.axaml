@@ -12,5 +12,6 @@
         <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+        <Setter Property="FontFamily" Value="{DynamicResource Quicksand}" />
     </Style>
 </Styles>
