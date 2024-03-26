@@ -4,6 +4,10 @@
         <RootNamespace>Arise.Daemon.Union</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <AriseIncludeGeometryContent>true</AriseIncludeGeometryContent>
+    </PropertyGroup>
+
     <ItemGroup>
         <Using Include="Arise.Server" />
         <Using Include="Arise.Server.Gateway" />

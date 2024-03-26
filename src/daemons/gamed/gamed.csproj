@@ -4,6 +4,10 @@
         <RootNamespace>Arise.Daemon.Game</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <AriseIncludeGeometryContent>true</AriseIncludeGeometryContent>
+    </PropertyGroup>
+
     <ItemGroup>
         <Using Include="Arise.Server" />
     </ItemGroup>

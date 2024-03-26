@@ -34,17 +34,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="../../../geo/apd/*.apd"
-                 Link="apd/%(Filename)%(Extension)"
-                 CopyToOutputDirectory="PreserveNewest"
-                 Condition="'$(ArisePartialBuild)' != 'true'" />
-        <Content Include="../../../geo/zgd/*.zgd"
-                 Link="apd/%(Filename)%(Extension)"
-                 CopyToOutputDirectory="PreserveNewest"
-                 Condition="'$(ArisePartialBuild)' != 'true'" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="../../shared/data/data.csproj" />
         <ProjectReference Include="../../shared/module/module.csproj" />
         <ProjectReference Include="../storage/storage.csproj" />

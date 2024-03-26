@@ -8,5 +8,16 @@
         <SelfContained>true</SelfContained>
     </PropertyGroup>
 
+    <ItemGroup Condition="'$(AriseIncludeGeometryContent)' == 'true'">
+        <Content Include="../../../geo/apd/*.apd"
+                 Link="apd/%(Filename)%(Extension)"
+                 CopyToOutputDirectory="PreserveNewest"
+                 Condition="'$(ArisePartialBuild)' != 'true'" />
+        <Content Include="../../../geo/zgd/*.zgd"
+                 Link="zgd/%(Filename)%(Extension)"
+                 CopyToOutputDirectory="PreserveNewest"
+                 Condition="'$(ArisePartialBuild)' != 'true'" />
+    </ItemGroup>
+
     <Import Project="$([MSBuild]::GetPathOfFileAbove('$(MSBuildThisFile)', '$(MSBuildThisFileDirectory)..'))" />
 </Project>
