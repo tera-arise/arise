@@ -35,13 +35,15 @@ public sealed class GatewayHttpClientAccountsController : GatewayHttpClientContr
             credentials: (email, password));
     }
 
-    public ValueTask VerifyDeletionAsync(string email, string password, AccountsVerifyDeletionRequest request)
+    public ValueTask<AccountsVerifyDeletionResponse> VerifyDeletionAsync(
+        string email, string password, AccountsVerifyDeletionRequest request)
     {
         return SendAsync(
             HttpMethod.Patch,
             "VerifyDeletion",
             request,
             Context.AccountsVerifyDeletionRequest,
+            Context.AccountsVerifyDeletionResponse,
             credentials: (email, password));
     }
 

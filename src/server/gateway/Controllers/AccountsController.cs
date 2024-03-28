@@ -208,7 +208,10 @@ internal sealed class AccountsController : ApiController
             If you change your mind, please cancel the deletion in the launcher.
             """);
 
-        return NoContent();
+        return Ok(new AccountsVerifyDeletionResponse
+        {
+            Due = deletion.Due,
+        });
     }
 
     [HttpPatch]
