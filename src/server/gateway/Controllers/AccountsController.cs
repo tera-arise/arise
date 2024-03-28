@@ -385,7 +385,7 @@ internal sealed class AccountsController : ApiController
             If you did not initiate this request, please change your password in the launcher immediately.
             """);
 
-        return NoContent();
+        return Accepted();
     }
 
     [HttpPatch]
