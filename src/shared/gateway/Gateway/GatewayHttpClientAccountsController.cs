@@ -75,7 +75,7 @@ public sealed class GatewayHttpClientAccountsController : GatewayHttpClientContr
 
     public ValueTask DeleteAsync(string email, string password)
     {
-        return SendAsync(HttpMethod.Patch, "Delete", credentials: (email, password));
+        return SendAsync(HttpMethod.Delete, "Delete", credentials: (email, password));
     }
 
     public ValueTask CancelDeletionAsync(string email, string password)
