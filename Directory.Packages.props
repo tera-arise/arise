@@ -46,9 +46,9 @@
         <PackageVersion Include="Material.Icons.Avalonia"
                         Version="2.1.0" />
         <PackageVersion Include="Microsoft.ClearScript.V8"
-                        Version="7.4.4" />
+                        Version="7.4.5" />
         <PackageVersion Include="Microsoft.ClearScript.V8.Native.win-x64"
-                        Version="7.4.4" />
+                        Version="7.4.5" />
         <PackageVersion Include="Microsoft.Extensions.Hosting"
                         Version="8.0.0" />
         <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions"
