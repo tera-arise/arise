@@ -150,7 +150,7 @@ If you intend to run the separate gateway and game daemons rather than the union
 daemon, you can also include the service name in the file name:
 `arise-gatewayd.json`, `arise-gamed.staging.json`, etc.
 
-## Licensing
+## License
 
 Server emulation for online games has traditionally suffered from bad actors
 taking and modifying the open source code, running for-profit servers, and then
