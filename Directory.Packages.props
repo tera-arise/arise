@@ -74,7 +74,7 @@
         <PackageVersion Include="NAudio.Vorbis"
                         Version="1.5.0" />
         <PackageVersion Include="Octokit"
-                        Version="11.0.0" />
+                        Version="11.0.1" />
         <PackageVersion Include="PeNet"
                         Version="4.0.4" />
         <PackageVersion Include="SendGrid"
