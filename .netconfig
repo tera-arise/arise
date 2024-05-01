@@ -1,7 +1,7 @@
 [file ".editorconfig"]
 	url = https://github.com/tera-arise/.github/blob/master/syn/.editorconfig
-	sha = 89736108f3419387c6c776180483a00866bd9592
-	etag = 8fa5a445045c6e24f51af44560a6449adf8d297f9e0d7412b39e5e39062cde54
+	sha = 4f18199f1fe9822c76505c7c5a36bc7f7f9cad60
+	etag = d2999dec73cc8e988b2ee9a08278773f17c35bd2df55da151373a7457a2cf442
 	weak
 [file ".gitattributes"]
 	url = https://github.com/tera-arise/.github/blob/master/syn/.gitattributes
