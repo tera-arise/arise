@@ -94,7 +94,7 @@
         <PackageVersion Include="Vezel.Cathode"
                         Version="0.14.17" />
         <PackageVersion Include="Vezel.Cathode.Extensions"
-                        Version="0.13.25" />
+                        Version="0.14.17" />
         <PackageVersion Include="Vezel.Novadrop.Formats"
                         Version="2.2.7" />
         <PackageVersion Include="Vezel.Novadrop.Interop"
