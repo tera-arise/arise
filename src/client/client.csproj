@@ -82,10 +82,6 @@
         <PackageReference Include="Microsoft.Extensions.Http" />
         <PackageReference Include="Microsoft.Windows.CsWin32"
                           PrivateAssets="all" />
-        <PackageReference Include="Microsoft.Windows.SDK.Win32Docs"
-                          PrivateAssets="all" />
-        <PackageReference Include="Microsoft.Windows.SDK.Win32Metadata"
-                          PrivateAssets="all" />
         <PackageReference Include="NAudio.Extras" />
         <PackageReference Include="NAudio.Vorbis" />
         <PackageReference Include="Vezel.Cathode.Extensions" />
