@@ -18,10 +18,7 @@ public static class StorageServiceCollectionExtensions
                     AutoCreateSchemaObjects = AutoCreate.CreateOrUpdate,
                 };
 
-                store.UseDefaultSerialization(
-                    enumStorage: EnumStorage.AsString,
-                    casing: Casing.SnakeCase,
-                    serializerType: SerializerType.SystemTextJson);
+                store.UseSystemTextJsonForSerialization(EnumStorage.AsString, Casing.SnakeCase);
 
                 store.RegisterDocumentTypes(
                     typeof(ThisAssembly)
