@@ -40,8 +40,8 @@
     },
     "documentationRules": {
       "companyName": "TERA Arise",
-      "copyrightText": "Copyright © {companyName} Contributors. Licensed under the GNU Affero General Public License 3.0.",
-      "headerDecoration": "---------------------------------------------------------------------------",
+      "copyrightText": "SPDX-License-Identifier: AGPL-3.0-or-later",
+      "headerDecoration": "",
       "xmlHeader": false,
       "fileNamingConvention": "metadata",
       "documentationCulture": "en-US",
