@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 namespace Arise.Server.Gateway.Cryptography;
 
 public sealed class Pbkdf2PasswordStrategy : PasswordStrategy

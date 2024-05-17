@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 namespace Arise.Client.Gateway;
 
 internal sealed class GatewayClient

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 namespace Arise.Client.Launcher.Media;
 
 internal static class EmbeddedMediaAssets

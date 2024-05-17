@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Arise.Client.Game;
 using Arise.Client.Game.Data;
 using Arise.Client.Game.Launcher;

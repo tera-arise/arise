@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using Arise.Client.Game.Memory;
 
 namespace Arise.Client.Game.Launcher;

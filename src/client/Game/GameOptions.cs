@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 namespace Arise.Client.Game;
 
 internal sealed class GameOptions : IOptions<GameOptions>

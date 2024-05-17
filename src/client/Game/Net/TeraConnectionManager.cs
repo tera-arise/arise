@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 namespace Arise.Client.Game.Net;
 
 internal sealed unsafe partial class TeraConnectionManager : IHostedService

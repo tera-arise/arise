@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using static Iced.Intel.AssemblerRegisters;
 
 namespace Arise.Tools.Patcher;
