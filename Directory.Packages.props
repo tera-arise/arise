@@ -72,7 +72,7 @@
         <PackageVersion Include="Octokit"
                         Version="11.0.1" />
         <PackageVersion Include="PeNet"
-                        Version="4.0.4" />
+                        Version="4.0.5" />
         <PackageVersion Include="SendGrid"
                         Version="9.29.3" />
         <PackageVersion Include="Serilog"
