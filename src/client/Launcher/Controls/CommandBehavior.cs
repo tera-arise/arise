@@ -8,10 +8,10 @@ public sealed class CommandBehavior : AvaloniaObject
 {
     static CommandBehavior()
     {
-        _ = CommandProperty.Changed.AddClassHandler<TextBlock>(HandleCommandChanged);
+        _ = CommandProperty.Changed.AddClassHandler<Interactive>(HandleCommandChanged);
     }
 
-    private static void HandleCommandChanged(TextBlock interactive, AvaloniaPropertyChangedEventArgs args)
+    private static void HandleCommandChanged(Interactive interactive, AvaloniaPropertyChangedEventArgs args)
     {
         if (args.NewValue is ICommand commandValue)
         {
@@ -27,7 +27,7 @@ public sealed class CommandBehavior : AvaloniaObject
         // local handler fcn
         static void Handler(object? s, RoutedEventArgs e)
         {
-            if (s is TextBlock tb)
+            if (s is Interactive tb)
             {
                 // This is how we get the parameter off of the gui element.
                 var commandParameter = tb.GetValue(CommandParameterProperty);
@@ -42,10 +42,10 @@ public sealed class CommandBehavior : AvaloniaObject
     }
 
     public static readonly AttachedProperty<ICommand> CommandProperty =
-        AvaloniaProperty.RegisterAttached<CommandBehavior, TextBlock, ICommand>("Command");
+        AvaloniaProperty.RegisterAttached<CommandBehavior, Interactive, ICommand>("Command");
 
     public static readonly AttachedProperty<object> CommandParameterProperty =
-        AvaloniaProperty.RegisterAttached<CommandBehavior, TextBlock, object>("CommandParameter");
+        AvaloniaProperty.RegisterAttached<CommandBehavior, Interactive, object>("CommandParameter");
 
     public static void SetCommand(AvaloniaObject element, ICommand commandValue)
     {
