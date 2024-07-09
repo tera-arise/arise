@@ -26,6 +26,9 @@ internal sealed partial class MainController : LauncherController
     private bool _isVerified;
 
     [ObservableProperty]
+    private bool _isChangingEmail;
+
+    [ObservableProperty]
     private string _currentAccountName = string.Empty;
 
     [ObservableProperty]
@@ -71,7 +74,7 @@ internal sealed partial class MainController : LauncherController
 
         Controllers =
         [
-            new DefaultController(services, this),
+                        new DefaultController(services, this),
             new NewsController(services, this),
             new SettingsController(services, _launcherSettingsManager, this),
         ];
@@ -101,6 +104,7 @@ internal sealed partial class MainController : LauncherController
 
         IsLoggedIn = _session.IsLoggedIn;
         IsVerified = _session.IsVerified && _session.IsLoggedIn;
+        IsChangingEmail = _session.IsChangingEmail;
 
         if (IsLoggedIn && !Controllers.OfType<AccountManagementController>().Any())
         {
@@ -180,5 +184,6 @@ internal sealed partial class MainController : LauncherController
     private void Logout()
     {
         _session.Logout();
+        ModalController.CloseModal();
     }
 }

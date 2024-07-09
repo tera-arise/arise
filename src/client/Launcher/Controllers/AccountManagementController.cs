@@ -1,3 +1,4 @@
+using Arise.Client.Launcher.Controllers.Modals;
 using Material.Icons;
 
 namespace Arise.Client.Launcher.Controllers;
@@ -6,30 +7,32 @@ internal sealed partial class AccountManagementController : ViewController
 {
     public override MaterialIconKind IconKind => MaterialIconKind.Account;
 
+    private bool CanChangeEmail => MainController.IsVerified;
+
+    private bool CanChangePassword => MainController.IsLoggedIn;
+
+    private bool CanDeleteAccount => MainController.IsLoggedIn;
+
     public AccountManagementController(IServiceProvider services, MainController mainController)
         : base(services, mainController)
     {
     }
 
-    [RelayCommand]
-    [SuppressMessage("", "CA1822")]
-    private void ChangeEmail()
+    [RelayCommand(CanExecute = nameof(CanChangeEmail))]
+    private static void ChangeEmail()
     {
-        // only if logged in
-        // only if verified
+        ModalController.NavigateTo<EmailChangeModalController>();
     }
 
-    [RelayCommand]
-    [SuppressMessage("", "CA1822")]
-    private void ChangePassword()
+    [RelayCommand(CanExecute = nameof(CanChangePassword))]
+    private static void ChangePassword()
     {
-        // only if logged in
+        ModalController.NavigateTo<PasswordChangeModalController>();
     }
 
-    [RelayCommand]
-    [SuppressMessage("", "CA1822")]
-    private void DeleteAccount()
+    [RelayCommand(CanExecute = nameof(CanDeleteAccount))]
+    private static void DeleteAccount()
     {
-        // only if logged in
+        ModalController.NavigateTo<AccountDeletionModalController>();
     }
 }
