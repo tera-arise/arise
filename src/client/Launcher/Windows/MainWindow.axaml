@@ -324,7 +324,7 @@
                         </Rectangle.OpacityMask>
                     </Rectangle>
                 </Panel>
-                <Image Margin="0 -100 -50 -100"
+                <Image Margin="0 -50 -50 -150"
                        HorizontalAlignment="Right"
                        Source="/../../Hildetta1.png"
                        Stretch="Uniform">
