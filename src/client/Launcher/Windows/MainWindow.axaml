@@ -28,7 +28,7 @@
             <Setter Property="Opacity"
                     Value="0" />
             <Setter Property="RenderTransform"
-                    Value="translateY(20px)" />
+                    Value="translateY(10px)" />
         </Style>
         <Style Selector="Panel#ModalDarkening.visible">
             <Setter Property="Opacity"
@@ -45,7 +45,6 @@
         <Style Selector="TabControl.blurred">
             <Setter Property="Effect"
                     Value="blur(48)" />
-            <!-- <Setter Property="Margin" Value="-40" /> -->
         </Style>
         <Style Selector="controls|AcrylicBorder:pointerover">
             <Setter Property="CornerRadius"
@@ -211,19 +210,28 @@
                 </TabControl.Transitions> -->
             </TabControl>
             <!-- Modal -->
+
             <Panel x:Name="ModalDarkening"
-                   Grid.RowSpan="2"
-                   Grid.ColumnSpan="2"
                    IsHitTestVisible="{Binding IsModalVisible}"
                    Classes.visible="{Binding IsModalVisible}"
-                   Background="Transparent">
+                   Grid.RowSpan="2"
+                   Grid.ColumnSpan="2">
+                <Panel.Background>
+                    <LinearGradientBrush StartPoint="0% 0%"
+                                         EndPoint="100% 100%"
+                                         Opacity=".75">
+                        <GradientStop Color="{DynamicResource BackgroundDarkColor}"/>
+                        <GradientStop Color="{DynamicResource BackgroundColor}"
+                                      Offset="1"/>
+                    </LinearGradientBrush>
+                </Panel.Background>
                 <Panel.Transitions>
                     <Transitions>
                         <DoubleTransition Property="Opacity"
-                                          Duration="0:0:0.15"
+                                          Duration="0:0:0.25"
                                           Delay="0:0:0.075" />
                         <TransformOperationsTransition Property="RenderTransform"
-                                                       Duration="0:0:0.15"
+                                                       Duration="0:0:0.25"
                                                        Delay="0:0:0.075">
                             <TransformOperationsTransition.Easing>
                                 <QuadraticEaseOut />
@@ -231,19 +239,37 @@
                         </TransformOperationsTransition>
                     </Transitions>
                 </Panel.Transitions>
+                <Image Source="/../../sorc_elf.png"
+                       Stretch="Uniform"
+                       HorizontalAlignment="Right"
+                       Margin="-100 100 180 -300"/>
+                <Button CornerRadius="50"
+                        Background="Transparent"
+                        Cursor="Hand"
+                        VerticalAlignment="Top"
+                        Margin="50"
+                        Command="{Binding CurrentModalController.CloseModalCommand}">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="10"
+                                >
+                        <icons:MaterialIcon Kind="ArrowBack"/>
+                        <TextBlock Text="Back"/>
+                    </StackPanel>
+                </Button>
                 <Border x:Name="FormContainer"
                         Background="{DynamicResource WindowBackground}"
-                        CornerRadius="10"
-                        BoxShadow="0 10 20 0 #5000"
-                        Padding="24"
-                        HorizontalAlignment="Center"
+                        CornerRadius="16"
+                        HorizontalAlignment="Left"
                         VerticalAlignment="Center"
+                        BoxShadow="0 00 30 5 #6000"
+                        Padding="24"
+                        Margin="160 0"
                         Width="300">
                     <TransitioningContentControl Content="{Binding CurrentModalController}">
                         <TransitioningContentControl.PageTransition>
                             <CompositePageTransition>
-                                <CrossFade Duration="0:0:0.25" />
-                                <PageSlide Duration="0:0:0.25"
+                                <CrossFade Duration="0:0:0.35" />
+                                <!--<PageSlide Duration="0:0:0.25"
                                            Orientation="Horizontal">
                                     <PageSlide.SlideInEasing>
                                         <QuadraticEaseInOut />
@@ -251,7 +277,7 @@
                                     <PageSlide.SlideOutEasing>
                                         <QuadraticEaseInOut />
                                     </PageSlide.SlideOutEasing>
-                                </PageSlide>
+                                </PageSlide>-->
                             </CompositePageTransition>
                         </TransitioningContentControl.PageTransition>
                         <TransitioningContentControl.DataTemplates>
@@ -267,6 +293,13 @@
                         </TransitioningContentControl.DataTemplates>
                     </TransitioningContentControl>
                 </Border>
+                <!--<StackPanel Margin="160 40"
+                            Spacing="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                            >
+                    <Image Source="/../../image_logo_small.webp" Width="300"/>
+                </StackPanel>-->
             </Panel>
         </Grid>
     </Panel>

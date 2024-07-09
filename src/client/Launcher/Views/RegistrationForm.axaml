@@ -21,27 +21,18 @@
                         Value="{DynamicResource ThemeTextMidBrush}" />
             </Style>
         </StackPanel.Styles>
-        <Panel>
-            <TextBlock TextWrapping="Wrap">
-                <Run Text="Create an account"
-                     FontSize="22"
-                     FontWeight="DemiBold" />
-                <LineBreak />
-                <LineBreak />
-                <Run Text="Insert a valid email and password to create a new account"
-                     Foreground="{DynamicResource ThemeTextMidBrush}" />
-            </TextBlock>
-            <Button HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Height="28"
-                    Width="28"
-                    CornerRadius="8"
-                    Margin="0"
-                    Background="Transparent"
-                    Command="{Binding CloseModalCommand}">
-                <avalonia:MaterialIcon Kind="Close" />
-            </Button>
-        </Panel>
+        <Image Source="/../../image_logo_small.webp" />
+
+        <TextBlock TextWrapping="Wrap">
+            <!--<Run Text="Create an account"
+                 FontSize="22"
+                 FontWeight="DemiBold" />
+            <LineBreak />
+            <LineBreak />-->
+            <Run Text="Insert a valid email and password to create a new account"
+                 Foreground="{DynamicResource ThemeTextMidBrush}" />
+        </TextBlock>
+
         <TextBox VerticalAlignment="Center"
                  Watermark="Email"
                  x:Name="EmailTextBox"

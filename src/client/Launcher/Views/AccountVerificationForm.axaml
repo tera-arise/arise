@@ -21,27 +21,17 @@
                         Value="{DynamicResource ThemeTextMidBrush}" />
             </Style>
         </StackPanel.Styles>
-        <Panel Margin="0 0 0 10">
-            <TextBlock TextWrapping="WrapWithOverflow">
-                <Run Text="TERA Arise"
+        <Image Source="/../../image_logo_small.webp" />
+
+        <TextBlock TextWrapping="WrapWithOverflow">
+                <!--<Run Text="TERA Arise"
                      FontSize="22"
                      FontWeight="DemiBold" />
                 <LineBreak />
-                <LineBreak />
+                <LineBreak />-->
                 <Run Text="Enter the verification token you received by email to verify your account."
                      Foreground="{DynamicResource ThemeTextMidBrush}" />
             </TextBlock>
-            <Button HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Height="28"
-                    Width="28"
-                    CornerRadius="8"
-                    Margin="0"
-                    Background="Transparent"
-                    Command="{Binding CloseModalCommand}">
-                <avalonia:MaterialIcon Kind="Close" />
-            </Button>
-        </Panel>
         <TextBox VerticalAlignment="Center"
          Watermark="Verification token"
          x:Name="TokenTextBox"
