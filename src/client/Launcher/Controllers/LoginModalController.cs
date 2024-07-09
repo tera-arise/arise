@@ -62,7 +62,8 @@ internal sealed partial class LoginModalController : ModalController
                 // clear the password as soon as it's been sent
                 Password = string.Empty;
 
-                // IsModalVisible = false; // todo
+                // close the modal
+                MainController.CurrentModalController = null;
             }
         }
         else
