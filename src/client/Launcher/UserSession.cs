@@ -2,7 +2,20 @@ namespace Arise.Client.Launcher;
 
 internal sealed class UserSession
 {
+    /// <summary>
+    /// Fired when any property changes and contextually with login and logout events.
+    /// </summary>
     public event Action? StatusChanged;
+
+    /// <summary>
+    /// Fired when user is successfully logged in.
+    /// </summary>
+    public event Action<string>? LoggedIn;
+
+    /// <summary>
+    /// Fired when user is logged out.
+    /// </summary>
+    public event Action? LoggedOut;
 
     public string? AccountName { get; private set; }
 
@@ -29,6 +42,7 @@ internal sealed class UserSession
             Password = password;
         }
 
+        LoggedIn?.Invoke(AccountName);
         StatusChanged?.Invoke();
     }
 
@@ -40,6 +54,7 @@ internal sealed class UserSession
         Password = null;
         IsChangingEmail = false;
 
+        LoggedOut?.Invoke();
         StatusChanged?.Invoke();
     }
 

@@ -21,7 +21,7 @@ internal sealed partial class MainWindow : LauncherWindow<MainController>
     {
         if (!Design.IsDesignMode)
         {
-            Closed += (_, _) => DataContext.StopMusic();
+            Closed += (_, _) => DataContext.StopMusic(); // todo: this might be replaced by a message, if more thing will have to be handled when window is closed
         }
 
         base.OnInitialized();
