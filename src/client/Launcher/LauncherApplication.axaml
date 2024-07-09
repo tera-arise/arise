@@ -33,7 +33,11 @@
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="WindowBackground"
-                                     Color="#1e263b" />
+                                     Color="#111e33" />
+                    <SolidColorBrush x:Key="WindowBackgroundDark"
+                                     Color="#141926" />
+                    <SolidColorBrush x:Key="WindowBackgroundLight"
+                                     Color="#1d3459" />
                     <SolidColorBrush x:Key="CloseButtonPointerOverBackground"
                                      Color="DarkRed" />
                     <SolidColorBrush x:Key="CloseButtonPressedBackground"
@@ -49,6 +53,9 @@
         </ResourceDictionary>
         <!-- 9A2B70,76024F,6E014B,D764A1,412831 palette from arise logo -->
         <Color x:Key="MainColor">#CC3391</Color>
+        <Color x:Key="BackgroundColor">#111e33</Color>
+        <Color x:Key="BackgroundDarkColor">#080f1a</Color>
+        <Color x:Key="BackgroundLightColor">#1d3459</Color>
         <SolidColorBrush x:Key="MainBrush"
                          Color="{StaticResource MainColor}" />
         <SolidColorBrush x:Key="MainBrushHilight"
