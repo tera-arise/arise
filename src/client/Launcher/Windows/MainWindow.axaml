@@ -119,7 +119,6 @@
                             Spacing="6"
                             Margin="8">
                     <Button x:Name="AccountButton"
-                            Command="{Binding ShowAccountPopupCommand}"
                             FontSize="10"
                             Padding="6 0"
                             Width="NaN"
@@ -333,6 +332,9 @@
                                 </DataTemplate>
                                 <DataTemplate DataType="controllers:AccountVerificationModalController">
                                     <views:AccountVerificationForm />
+                                </DataTemplate>
+                                <DataTemplate DataType="controllers:RecoverPasswordModalController">
+                                    <views:RecoverPasswordForm />
                                 </DataTemplate>
                             </TransitioningContentControl.DataTemplates>
                         </TransitioningContentControl>
