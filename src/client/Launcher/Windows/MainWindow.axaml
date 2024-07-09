@@ -94,7 +94,9 @@
             <Grid VerticalAlignment="Stretch"
                   ZIndex="99"
                   Grid.Column="1"
-                  ColumnDefinitions="Auto,*">
+                  ColumnDefinitions="Auto,*"
+                  Background="Transparent"
+                  PointerPressed="OnTitleBarPointerPressed">
                 <Grid.Styles>
                     <Style Selector="Button">
                         <Setter Property="Background"
