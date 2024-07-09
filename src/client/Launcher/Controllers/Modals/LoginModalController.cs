@@ -1,3 +1,5 @@
+using Arise.Client.Launcher.Settings;
+
 namespace Arise.Client.Launcher.Controllers.Modals;
 
 internal sealed partial class LoginModalController : ModalController
@@ -23,6 +25,10 @@ internal sealed partial class LoginModalController : ModalController
         : base(services, mainController)
     {
         _session = services.GetService<UserSession>()!;
+
+        // set email from latest login
+        var lastLogin = services.GetService<LauncherSettingsManager>()!.Settings.LastLoggedInAccount;
+        Email = lastLogin;
     }
 
     [RelayCommand(CanExecute = nameof(CanExecuteLogin))]

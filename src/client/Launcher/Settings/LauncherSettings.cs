@@ -8,4 +8,6 @@ internal sealed class LauncherSettings
     public Uri? ServerAddress { get; set; }
 
     public bool IsMusicEnabled { get; set; } = true;
+
+    public string LastLoggedInAccount { get; set; } = string.Empty;
 }
