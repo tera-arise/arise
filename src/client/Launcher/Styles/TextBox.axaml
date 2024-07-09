@@ -1,8 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        >
-
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
-        <Setter Property="BorderBrush" Value="{DynamicResource MainBrush}"/>
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource MainBrush}" />
     </Style>
 </Styles>

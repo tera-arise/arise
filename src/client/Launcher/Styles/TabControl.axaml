@@ -1,15 +1,14 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
     <Style Selector="TabControl">
-        <Setter Property="Template" >
+        <Setter Property="Template">
             <ControlTemplate>
                 <Border BorderBrush="{TemplateBinding BorderBrush}"
-                         BorderThickness="{TemplateBinding BorderThickness}"
-                         CornerRadius="{TemplateBinding CornerRadius}"
-                         Background="{TemplateBinding Background}"
-                         HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                         VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Background="{TemplateBinding Background}"
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalAlignment}">
                     <DockPanel>
                         <Border x:Name="HeaderBorder">
                             <ItemsPresenter Name="PART_ItemsPresenter"

@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="using:Arise.Client.Launcher.Controls"
              xmlns:controllers="using:Arise.Client.Launcher.Controllers"
-             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+             mc:Ignorable="d"
+             d:DesignWidth="1280"
+             d:DesignHeight="720"
              x:Class="Arise.Client.Launcher.Views.DefaultView"
              ClipToBounds="False"
              x:DataType="controllers:DefaultController">
@@ -16,42 +18,37 @@
                Margin="40 -32"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
-               RenderOptions.BitmapInterpolationMode="HighQuality"
-               />
-
-        <Border
-            Width="600"
-            Height="400"
-            CornerRadius="10"
-            VerticalAlignment="Top"
-            Margin="40"
-            HorizontalAlignment="Right"
-            BorderThickness="2"
-            BorderBrush="Red">
-             <TextBlock Text="news here"
-                       Width="100" TextWrapping="Wrap"
+               RenderOptions.BitmapInterpolationMode="HighQuality" />
+        <Border Width="600"
+                Height="400"
+                CornerRadius="10"
+                VerticalAlignment="Top"
+                Margin="40"
+                HorizontalAlignment="Right"
+                BorderThickness="2"
+                BorderBrush="Red">
+            <TextBlock Text="news here"
+                       Width="100"
+                       TextWrapping="Wrap"
                        TextAlignment="Center"
                        VerticalAlignment="Center"
-                       HorizontalAlignment="Center"/>
+                       HorizontalAlignment="Center" />
         </Border>
-
-        <Border
-          Width="400"
-          Height="400"
-          CornerRadius="10"
-          VerticalAlignment="Bottom"
-          Margin="40"
-          HorizontalAlignment="Left"
-          BorderThickness="2"
-          BorderBrush="Red">
-
+        <Border Width="400"
+                Height="400"
+                CornerRadius="10"
+                VerticalAlignment="Bottom"
+                Margin="40"
+                HorizontalAlignment="Left"
+                BorderThickness="2"
+                BorderBrush="Red">
             <TextBlock Text="something else goes here, like server status and more"
-                       Width="100" TextWrapping="Wrap"
+                       Width="100"
+                       TextWrapping="Wrap"
                        TextAlignment="Center"
                        VerticalAlignment="Center"
-                       HorizontalAlignment="Center"/>
+                       HorizontalAlignment="Center" />
         </Border>
-
         <Button Content="Play"
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Right"
@@ -64,7 +61,6 @@
                 CornerRadius="40"
                 Foreground="White"
                 FontWeight="DemiBold"
-                Command="{Binding PlayCommand}"
-                />
+                Command="{Binding PlayCommand}" />
     </Grid>
 </UserControl>
