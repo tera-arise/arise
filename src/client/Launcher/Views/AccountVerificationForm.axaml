@@ -30,7 +30,8 @@
         <TextBox VerticalAlignment="Center"
                  Watermark="Verification token"
                  x:Name="TokenTextBox"
-                 Text="{Binding Token, Mode=TwoWay}" />
+                 Text="{Binding Token, Mode=TwoWay}" 
+				 Loaded="TokenTextBox_OnLoaded"/>
         <Button CornerRadius="8"
                 Classes="main"
                 HorizontalAlignment="Stretch"
