@@ -8,9 +8,10 @@
              x:Class="Arise.Client.Launcher.Views.SettingsView"
              xmlns:controllers="using:Arise.Client.Launcher.Controllers"
              x:DataType="controllers:SettingsController">
-    <!-- this should only be visible in dev builds -->
-    <TextBox Text="{Binding ServerAddress, Mode=TwoWay}"
-             Grid.Row="1"
-             VerticalAlignment="Top"
-             Watermark="Server address" />
+    <StackPanel>
+        <TextBox Text="{Binding ServerAddress, Mode=TwoWay}"
+                 IsVisible="{Binding ShowServerUriSetting}"
+                 VerticalAlignment="Top"
+                 Watermark="Server address" />
+    </StackPanel>
 </UserControl>
