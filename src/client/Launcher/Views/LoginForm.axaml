@@ -26,13 +26,9 @@
             </Style>
         </StackPanel.Styles>
         <Image Source="/../../image_logo_small.webp" />
-        <TextBlock TextWrapping="WrapWithOverflow">
-            <!-- <Run Text="TERA Arise"
-                     FontSize="22"
-                     FontWeight="DemiBold" />
-                <LineBreak />
-                <LineBreak /> -->
-            <Run Text="Use your email and password to login"
+        <TextBlock TextWrapping="WrapWithOverflow"
+                   TextAlignment="Center">
+            <Run Text="Welcome back! Sign in with your email and password to continue."
                  Foreground="{DynamicResource ThemeTextMidBrush}" />
         </TextBlock>
         <TextBox VerticalAlignment="Center"
@@ -119,38 +115,43 @@
                 </Arc>
             </Panel>
         </Button>
-        <Panel>
-            <CheckBox Content="Remember me"
-                      FontSize="10"
-                      Padding="4 0 4 0"
-                      Classes="small"
-                      IsEnabled="False"
-                      HorizontalAlignment="Left"
-                      VerticalAlignment="Center"
-                      IsChecked="{Binding RememberMe}" />
-            <TextBlock HorizontalAlignment="Right"
-                       VerticalAlignment="Center"
-                       Text="Recover password"
-                       Padding="0 1 0 0"
+        <StackPanel VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Margin="0 10 0 0">
+            <TextBlock Text="No account yet?"
                        FontSize="10"
-                       Foreground="{DynamicResource MainBrush}"
-                       Cursor="Hand"
-                       controls:CommandBehavior.Command="{Binding RecoverPasswordCommand}" />
-            <!-- looks like we have no inline hyperlinks in avalonia
-                    https://github.com/AvaloniaUI/Avalonia/discussions/8818 -->
-        </Panel>
-        <WrapPanel Orientation="Horizontal"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center">
-            <TextBlock Text="You don't have an account? "
-                       FontSize="10" />
-            <TextBlock Text="Create one"
+                       HorizontalAlignment="Center" />
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <TextBlock Text="Create one "
+                           FontSize="10"
+                           Foreground="{DynamicResource MainBrush}"
+                           Cursor="Hand"
+                           controls:CommandBehavior.Command="{Binding RegisterCommand}" />
+                <TextBlock Text="now and start your own adventure!"
+                           FontSize="10"
+                           Foreground="{DynamicResource ThemeTextMidBrush}" />
+            </StackPanel>
+        </StackPanel>
+        <StackPanel VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <TextBlock Text="Can't remember your login?"
                        FontSize="10"
-                       Foreground="{DynamicResource MainBrush}"
-                       Cursor="Hand"
-                       controls:CommandBehavior.Command="{Binding RegisterCommand}" />
-            <TextBlock Text=" now."
-                       FontSize="10" />
-        </WrapPanel>
+                       HorizontalAlignment="Center" />
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <TextBlock Text="No time to waste, "
+                           FontSize="10"
+                           Foreground="{DynamicResource ThemeTextMidBrush}" />
+                <TextBlock Text="recover it"
+                           FontSize="10"
+                           Foreground="{DynamicResource MainBrush}"
+                           Cursor="Hand"
+                           controls:CommandBehavior.Command="{Binding RecoverPasswordCommand}" />
+                <TextBlock Text=" and rejoin the fun!"
+                           FontSize="10"
+                           Foreground="{DynamicResource ThemeTextMidBrush}" />
+            </StackPanel>
+        </StackPanel>
     </StackPanel>
 </UserControl>
