@@ -142,10 +142,6 @@
                                                 IsVisible="{Binding IsMusicEnabled}" />
                         </Panel>
                     </ToggleButton>
-                    <Button x:Name="SettingsButton"
-                            Command="{Binding OpenSettingsCommand}">
-                        <icons:MaterialIcon Kind="Settings" />
-                    </Button>
                     <Button x:Name="MinimizeButton"
                             Click="OnMinimizeClick">
                         <icons:MaterialIcon Kind="WindowMinimize" />
@@ -211,8 +207,6 @@
                     </Transitions>
                 </Panel.Transitions>
                 <Border x:Name="FormContainer"
-                        Grid.RowSpan="2"
-                        Grid.ColumnSpan="2"
                         Background="{DynamicResource WindowBackground}"
                         CornerRadius="10"
                         BoxShadow="0 10 20 0 #5000"
