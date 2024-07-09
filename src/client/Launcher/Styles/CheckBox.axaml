@@ -52,4 +52,8 @@
             </ControlTemplate>
         </Setter>
     </Style>
+    <Style Selector="CheckBox:checked /template/ Border#NormalRectangle">
+        <Setter Property="Background" Value="{DynamicResource MainBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource MainBrush}"/>
+    </Style>
 </Styles>
