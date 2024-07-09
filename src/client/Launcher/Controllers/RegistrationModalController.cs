@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.Messaging;
+
 namespace Arise.Client.Launcher.Controllers;
 
 internal sealed partial class RegistrationModalController : ModalController
@@ -34,7 +36,6 @@ internal sealed partial class RegistrationModalController : ModalController
         }
         catch (GatewayHttpException)
         {
-            // todo
             Password = string.Empty;
             ActionStatus = ActionStatus.Failed;
             return;
@@ -54,7 +55,7 @@ internal sealed partial class RegistrationModalController : ModalController
 
                 await Task.Delay(1000).ConfigureAwait(true); // wait a bit to show feedback before closing modal
 
-                MainController.CurrentModalController = null;
+                CloseModal();
             }
             else
             {
@@ -63,7 +64,6 @@ internal sealed partial class RegistrationModalController : ModalController
         }
         catch (GatewayHttpException)
         {
-            // todo
             ActionStatus = ActionStatus.Failed;
         }
         finally
@@ -73,8 +73,8 @@ internal sealed partial class RegistrationModalController : ModalController
     }
 
     [RelayCommand]
-    private void GoBack()
+    private static void GoBack()
     {
-        MainController.CurrentModalController = new LoginModalController(Services, MainController);
+        NavigateTo<LoginModalController>();
     }
 }

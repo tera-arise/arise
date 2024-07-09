@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.Messaging;
+
 namespace Arise.Client.Launcher.Controllers;
 
 internal sealed partial class LoginModalController : ModalController
@@ -11,9 +13,6 @@ internal sealed partial class LoginModalController : ModalController
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
     private string _password = string.Empty;
-
-    [ObservableProperty]
-    private bool _rememberMe;
 
     [ObservableProperty]
     private ActionStatus _actionStatus;
@@ -31,58 +30,52 @@ internal sealed partial class LoginModalController : ModalController
     [RelayCommand(CanExecute = nameof(CanExecuteLogin))]
     private async Task LoginAsync()
     {
-        // todo: use RememberMe setting (save it locally?)
-
-        if (!_session.IsLoggedIn)
+        if (_session.IsLoggedIn)
         {
-            try
+            return;
+        }
+
+        try
+        {
+            ActionStatus = ActionStatus.Pending;
+
+            var resp = await MainController.Gateway.Rest.Accounts
+                .AuthenticateAsync(Email, Password).ConfigureAwait(true);
+
+            if (resp.SessionTicket != null)
             {
-                ActionStatus = ActionStatus.Pending;
+                _session.Login(Email, resp, resp.IsVerifying ? Password : null);
 
-                var resp = await MainController.Gateway.Rest.Accounts
-                    .AuthenticateAsync(Email, Password).ConfigureAwait(true);
+                ActionStatus = ActionStatus.Successful;
 
-                if (resp.SessionTicket != null)
-                {
-                    _session.Login(Email, resp, resp.IsVerifying ? Password : null);
+                await Task.Delay(1000).ConfigureAwait(true);
 
-                    ActionStatus = ActionStatus.Successful;
-
-                    await Task.Delay(1000).ConfigureAwait(true);
-
-                    MainController.CurrentModalController = null;
-                }
-                else
-                {
-                    ActionStatus = ActionStatus.Failed;
-                }
+                CloseModal();
             }
-            catch (GatewayHttpException)
+            else
             {
-                // todo
                 ActionStatus = ActionStatus.Failed;
             }
-            finally
-            {
-                Password = string.Empty;
-            }
         }
-        else
+        catch (GatewayHttpException)
         {
-            // todo: warn?
+            ActionStatus = ActionStatus.Failed;
+        }
+        finally
+        {
+            Password = string.Empty;
         }
     }
 
     [RelayCommand]
-    [SuppressMessage("", "CA1822")]
-    private void RecoverPassword()
+    private static void RecoverPassword()
     {
-        // todo
+        NavigateTo<RecoverPasswordModalController>();
     }
 
     [RelayCommand]
-    private void Register()
+    private static void Register()
     {
-        MainController.CurrentModalController = new RegistrationModalController(Services, MainController);
+        NavigateTo<RegistrationModalController>();
     }
 }
