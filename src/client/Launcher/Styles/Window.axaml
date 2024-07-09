@@ -1,7 +1,8 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controllers="using:Arise.Client.Launcher.Controllers"
-        x:DataType="controllers:LauncherController">
+        x:DataType="controllers:LauncherController"
+        >
     <Style Selector="Window">
         <Setter Property="WindowStartupLocation" Value="CenterScreen" />
         <Setter Property="Title" Value="{Binding Title}" />
