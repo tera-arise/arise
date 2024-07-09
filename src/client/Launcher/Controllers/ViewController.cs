@@ -2,7 +2,7 @@ using Material.Icons;
 
 namespace Arise.Client.Launcher.Controllers;
 
-public abstract partial class ViewController : ObservableValidator
+internal abstract partial class ViewController : ObservableValidator
 {
     protected MainController MainController { get; }
 

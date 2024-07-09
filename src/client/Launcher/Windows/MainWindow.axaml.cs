@@ -8,7 +8,7 @@ using Avalonia.Media.Imaging;
 
 namespace Arise.Client.Launcher.Windows;
 
-public sealed partial class MainWindow : LauncherWindow<MainController>
+internal sealed partial class MainWindow : LauncherWindow<MainController>
 {
     public MainWindow()
     {

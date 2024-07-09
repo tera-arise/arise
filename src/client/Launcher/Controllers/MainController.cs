@@ -3,7 +3,7 @@ using Arise.Client.Launcher.Settings;
 
 namespace Arise.Client.Launcher.Controllers;
 
-public sealed partial class MainController : LauncherController
+internal sealed partial class MainController : LauncherController
 {
     private readonly LauncherSettingsManager _launcherSettingsManager;
     private readonly MusicPlayer _musicPlayer;
