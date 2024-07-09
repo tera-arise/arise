@@ -29,4 +29,11 @@ internal sealed class UserSession
 
         StatusChanged?.Invoke();
     }
+
+    public void Verify()
+    {
+        IsVerified = true;
+
+        StatusChanged?.Invoke();
+    }
 }
