@@ -10,13 +10,20 @@ internal sealed class UserSession
 
     public bool IsVerified { get; private set; }
 
+    public string? Password { get; private set; }
+
     public bool IsLoggedIn => AccountName is not null;
 
-    public void Login(string accountName, AccountsAuthenticateResponse response)
+    public void Login(string accountName, AccountsAuthenticateResponse response, string? password = null)
     {
         AccountName = accountName;
         SessionTicket = response.SessionTicket;
         IsVerified = !response.IsVerifying;
+
+        if (!string.IsNullOrEmpty(password) && !IsVerified)
+        {
+            Password = password;
+        }
 
         StatusChanged?.Invoke();
     }
@@ -26,6 +33,7 @@ internal sealed class UserSession
         AccountName = null;
         SessionTicket = null;
         IsVerified = false;
+        Password = null;
 
         StatusChanged?.Invoke();
     }
@@ -33,6 +41,7 @@ internal sealed class UserSession
     public void Verify()
     {
         IsVerified = true;
+        Password = null;
 
         StatusChanged?.Invoke();
     }

@@ -9,14 +9,9 @@ internal sealed partial class AccountVerificationModalController : ModalControll
     private string _token = string.Empty;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(ConfirmCommand))]
-    private string _password = string.Empty;
-
-    [ObservableProperty]
     private ActionStatus _actionStatus;
 
     public bool CanConfirm => !string.IsNullOrEmpty(Token)
-                           && !string.IsNullOrEmpty(Password)
                            && ActionStatus is not ActionStatus.Pending;
 
     public AccountVerificationModalController(IServiceProvider services, MainController mainController)
@@ -31,7 +26,7 @@ internal sealed partial class AccountVerificationModalController : ModalControll
         try
         {
             ActionStatus = ActionStatus.Pending;
-            await MainController.Gateway.Rest.VerifyAccountTokenAsync(_session.AccountName!, Password, new AccountsVerifyRequest
+            await MainController.Gateway.Rest.VerifyAccountTokenAsync(_session.AccountName!, _session.Password!, new AccountsVerifyRequest
             {
                 Token = Token,
             }).ConfigureAwait(true);
@@ -62,7 +57,7 @@ internal sealed partial class AccountVerificationModalController : ModalControll
         try
         {
             ActionStatus = ActionStatus.Pending;
-            await MainController.Gateway.Rest.SendAccountEmailAsync(_session.AccountName!, Password)
+            await MainController.Gateway.Rest.SendAccountEmailAsync(_session.AccountName!, _session.Password!)
                 .ConfigureAwait(true);
 
             ActionStatus = ActionStatus.Successful;
