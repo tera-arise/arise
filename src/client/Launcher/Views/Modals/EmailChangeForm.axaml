@@ -29,7 +29,7 @@
                  Text="Change email address" />
             <LineBreak />
             <Run Foreground="{DynamicResource ThemeTextMidBrush}"
-                 Text="-TODO or not-" />
+                 Text="Follow these steps in order to change your email address" />
         </TextBlock>
 
         <controls:StepControl Collapsed="{Binding IsChangeInProgress}"
