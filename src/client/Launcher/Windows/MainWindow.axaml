@@ -16,71 +16,17 @@
     x:DataType="controllers:MainController"
     mc:Ignorable="d">
     <Window.Styles>
-        <Style Selector="#CloseButton:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="{DynamicResource ErrorDarkBrush}" />
-        </Style>
-        <Style Selector="#CloseButton:pressed /template/ ContentPresenter">
-            <Setter Property="Background" Value="{DynamicResource ErrorLightBrush}" />
-        </Style>
+
         <!--
             todo: this is slow on first display (even without transition)
             need to figure out a way to fix it; maybe render
             the form outside of the window (or under the background image)
             as soon as the window is loaded, then hide it and bring it
             in position for any following show requests
+            related: https://github.com/AvaloniaUI/Avalonia/issues/1529
         -->
-        <!--  https://github.com/AvaloniaUI/Avalonia/issues/1529  -->
-        <Style Selector="Panel#ModalDarkening">
-            <Setter Property="Opacity" Value="0" />
-            <Setter Property="RenderTransform" Value="translateY(10px)" />
-            <Setter Property="Background">
-                <LinearGradientBrush Opacity=".85" StartPoint="0% 0%" EndPoint="100% 100%">
-                    <GradientStop Color="{DynamicResource BackgroundColorDark}" />
-                    <GradientStop Offset="1" Color="{DynamicResource BackgroundColorLight}" />
-                </LinearGradientBrush>
-            </Setter>
-            <Setter Property="Transitions">
-                <Transitions>
-                    <DoubleTransition
-                        Delay="0:0:0.030"
-                        Property="Opacity"
-                        Duration="0:0:0.15" />
-                    <TransformOperationsTransition
-                        Delay="0:0:0.030"
-                        Property="RenderTransform"
-                        Duration="0:0:0.15">
-                        <TransformOperationsTransition.Easing>
-                            <QuadraticEaseOut />
-                        </TransformOperationsTransition.Easing>
-                    </TransformOperationsTransition>
-                </Transitions>
-            </Setter>
-        </Style>
-        <Style Selector="Panel#ModalDarkening.visible">
-            <Setter Property="Opacity" Value="1" />
-            <Setter Property="RenderTransform" Value="translateY(0px)" />
-        </Style>
         <Style Selector="Grid.blurred">
             <Setter Property="Effect" Value="blur(48)" />
-        </Style>
-        <Style Selector="controls|AcrylicBorder:pointerover">
-            <Setter Property="CornerRadius" Value="50" />
-        </Style>
-        <Style Selector="Button#ModalBackButton">
-            <Setter Property="VerticalAlignment" Value="Top" />
-            <Setter Property="CornerRadius" Value="50" />
-            <Setter Property="Margin" Value="50" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Command" Value="{Binding CurrentModalController.CloseModalCommand}" />
-            <Setter Property="Content">
-                <Template>
-                    <StackPanel Orientation="Horizontal" Spacing="10">
-                        <icons:MaterialIcon Kind="ArrowBack" />
-                        <TextBlock Text="Back" />
-                    </StackPanel>
-                </Template>
-            </Setter>
         </Style>
         <Style Selector="Image#BackgroundImage">
             <Setter Property="Grid.RowSpan" Value="100" />
@@ -98,10 +44,9 @@
             </Setter>
             <Setter Property="Transitions">
                 <Transitions>
-                    <EffectTransition
-                        Delay="0:0:0.20"
-                        Property="Effect"
-                        Duration="0:0:0.15" />
+                    <EffectTransition Delay="0:0:0.20"
+                                      Property="Effect"
+                                      Duration="0:0:0.15" />
                     <ThicknessTransition Property="Margin" Duration="0:0:0.15">
                         <ThicknessTransition.Easing>
                             <QuadraticEaseInOut />
@@ -115,6 +60,37 @@
             </Style>
         </Style>
 
+        <!--  Title bar styles  -->
+        <Style Selector="StackPanel#TitleBarButtonsContainer">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Spacing" Value="6" />
+            <Setter Property="Orientation" Value="Horizontal" />
+        </Style>
+        <Style Selector="Grid#TitleBar">
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="ZIndex" Value="99" />
+        </Style>
+        <Style Selector="icons|MaterialIcon#AccountIcon">
+            <Setter Property="Margin" Value="0 0 4 0" />
+            <Setter Property="Kind" Value="Account" />
+            <Style Selector="^.unverified">
+                <Setter Property="Kind" Value="AccountPending" />
+            </Style>
+            <Style Selector="^.notloggedin">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+            <Style Selector="^.emailchanging">
+                <Setter Property="Kind" Value="EmailAlertOutline" />
+            </Style>
+        </Style>
+        <Style Selector="icons|MaterialIcon#MusicToggleIcon">
+            <Setter Property="Kind" Value="MusicNoteOff" />
+            <Style Selector="^.enabled">
+                <Setter Property="Kind" Value="MusicNote" />
+            </Style>
+        </Style>
         <Style Selector="Button.toolbarButton">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="CornerRadius" Value="8" />
@@ -124,213 +100,182 @@
                 <Setter Property="Background" Value="Transparent" />
             </Style>
         </Style>
-    </Window.Styles>
-    <Panel>
-        <Grid
-            x:Name="Root"
-            ColumnDefinitions="48,*"
-            RowDefinitions="Auto,*">
-            <Image x:Name="BackgroundImage" Classes.blurred="{Binding IsModalVisible}" />
-            <!--  Title bar  -->
-            <Grid
-                Grid.Column="1"
-                VerticalAlignment="Stretch"
-                Background="Transparent"
-                ColumnDefinitions="Auto,*"
-                PointerPressed="OnTitleBarPointerPressed"
-                ZIndex="99">
-                <!--  Buttons  -->
-                <StackPanel
-                    Grid.Column="1"
-                    Margin="8"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal"
-                    Spacing="6">
-                    <Button
-                        x:Name="AccountButton"
-                        Width="NaN"
-                        Padding="6,0"
-                        Classes="toolbarButton"
-                        FontSize="10"
-                        IsVisible="{Binding IsLoggedIn}">
-                        <!--  todo: style this thing  -->
-                        <Button.Flyout>
-                            <MenuFlyout>
-                                <MenuItem Command="{Binding ManageAccountCommand}" Header="Manage" />
-                                <MenuItem Command="{Binding LogoutCommand}" Header="Logout" />
-                            </MenuFlyout>
-                        </Button.Flyout>
-                        <StackPanel Orientation="Horizontal">
-                            <icons:MaterialIcon
-                                Margin="0,0,4,0"
-                                Classes.emailchanging="{Binding IsChangingEmail}"
-                                Classes.notloggedin="{Binding !IsLoggedIn}"
-                                Classes.unverified="{Binding !IsVerified}">
-                                <icons:MaterialIcon.Styles>
-                                    <Style Selector="icons|MaterialIcon">
-                                        <Setter Property="Kind" Value="Account" />
-                                    </Style>
-                                    <Style Selector="icons|MaterialIcon.unverified">
-                                        <Setter Property="Kind" Value="AccountPending" />
-                                    </Style>
-                                    <Style Selector="icons|MaterialIcon.notloggedin">
-                                        <Setter Property="IsVisible" Value="False" />
-                                    </Style>
-                                    <Style Selector="icons|MaterialIcon.emailchanging">
-                                        <Setter Property="Kind" Value="EmailAlertOutline" />
-                                    </Style>
-                                </icons:MaterialIcon.Styles>
-                            </icons:MaterialIcon>
-                            <TextBlock VerticalAlignment="Center" Text="{Binding CurrentAccountName}" />
-                        </StackPanel>
-                    </Button>
-                    <ToggleButton
-                        x:Name="MusicToggleButton"
-                        Width="28"
-                        Height="28"
-                        CornerRadius="8"
-                        IsChecked="{Binding IsMusicEnabled, Mode=TwoWay}">
-                        <Panel>
-                            <icons:MaterialIcon IsVisible="{Binding !IsMusicEnabled}" Kind="MusicNoteOff" />
-                            <icons:MaterialIcon IsVisible="{Binding IsMusicEnabled}" Kind="MusicNote" />
-                        </Panel>
-                    </ToggleButton>
-                    <Button
-                        x:Name="MinimizeButton"
-                        Classes="toolbarButton"
-                        Click="OnMinimizeClick">
-                        <icons:MaterialIcon Kind="WindowMinimize" />
-                    </Button>
-                    <Button
-                        x:Name="CloseButton"
-                        Classes="toolbarButton"
-                        Click="OnCloseClick">
-                        <icons:MaterialIcon Kind="Close" />
-                    </Button>
-                </StackPanel>
-            </Grid>
-            <!--  Main content  -->
-            <Grid
-                Grid.RowSpan="2"
-                Grid.ColumnSpan="2"
-                Classes.blurred="{Binding IsModalVisible}"
-                ClipToBounds="False"
-                ColumnDefinitions="Auto,*">
+        <Style Selector="Button#ModalBackButton">
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="CornerRadius" Value="50" />
+            <Setter Property="Margin" Value="50" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Command" Value="{Binding CurrentModalController.CloseModalCommand}" />
+            <Setter Property="Content">
+                <Template>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <icons:MaterialIcon Kind="ArrowBack" />
+                        <TextBlock Text="Back" />
+                    </StackPanel>
+                </Template>
+            </Setter>
+        </Style>
+        <Style Selector="Button#CloseButton">
+            <Setter Property="Content">
+                <Template>
+                    <icons:MaterialIcon Kind="Close" />
+                </Template>
+            </Setter>
+            <Style Selector="^:pointerover /template/ ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource ErrorDarkBrush}" />
+            </Style>
+            <Style Selector="^:pressed /template/ ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource ErrorLightBrush}" />
+            </Style>
+        </Style>
+        <Style Selector="Button#AccountButton">
+            <Setter Property="Padding" Value="6 0" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="IsVisible" Value="{Binding IsLoggedIn}" />
+            <Setter Property="Flyout">
+                <!--  todo: style using https://docs.avaloniaui.net/docs/guides/custom-controls/how-to-create-a-custom-flyout  -->
+                <MenuFlyout>
+                    <MenuItem Command="{Binding ManageAccountCommand}" Header="Manage" />
+                    <MenuItem Command="{Binding LogoutCommand}" Header="Logout" />
+                </MenuFlyout>
+            </Setter>
+            <Setter Property="Content">
+                <Template>
+                    <StackPanel Orientation="Horizontal">
+                        <icons:MaterialIcon x:Name="AccountIcon"
+                                            Classes.emailchanging="{Binding IsChangingEmail}"
+                                            Classes.notloggedin="{Binding !IsLoggedIn}"
+                                            Classes.unverified="{Binding !IsVerified}" />
+                        <TextBlock VerticalAlignment="Center" Text="{Binding CurrentAccountName}" />
+                    </StackPanel>
+                </Template>
+            </Setter>
+        </Style>
+        <Style Selector="Button#MinimizeButton">
+            <Setter Property="Content">
+                <Template>
+                    <icons:MaterialIcon Kind="WindowMinimize" />
+                </Template>
+            </Setter>
+        </Style>
+        <Style Selector="ToggleButton#MusicToggleButton">
+            <Setter Property="Width" Value="28" />
+            <Setter Property="Height" Value="28" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="IsChecked" Value="{Binding IsMusicEnabled, Mode=TwoWay}" />
+            <Setter Property="Content">
+                <Template>
+                    <icons:MaterialIcon x:Name="MusicToggleIcon" Classes.enabled="{Binding IsMusicEnabled}" />
+                </Template>
+            </Setter>
+        </Style>
 
-                <ItemsControl
-                    x:Name="ButtonStrip"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Stretch"
-                    Background="{DynamicResource BackgroundBrush}"
-                    ItemsSource="{Binding Controllers}">
-                    <ItemsControl.Styles>
-                        <Style Selector="Rectangle.selector">
-                            <Setter Property="Width" Value="2" />
-                            <Setter Property="Height" Value="0" />
-                            <Setter Property="Margin" Value="-5 0" />
-                            <Setter Property="HorizontalAlignment" Value="Left" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                            <Setter Property="Fill" Value="{DynamicResource MainBrush}" />
-                            <Setter Property="RadiusX" Value="0" />
-                            <Setter Property="RadiusY" Value="{Binding $self.RadiusX}" />
-                            <Setter Property="Transitions">
-                                <Transitions>
-                                    <DoubleTransition Property="Height" Duration="0:0:0.2">
-                                        <DoubleTransition.Easing>
-                                            <BackEaseOut />
-                                        </DoubleTransition.Easing>
-                                    </DoubleTransition>
-                                    <DoubleTransition Property="RadiusX" Duration="0:0:0.15" />
-                                </Transitions>
-                            </Setter>
-                            <Style Selector="^.active">
-                                <Setter Property="Height" Value="18" />
-                                <Setter Property="RadiusX" Value="1" />
-                            </Style>
-                        </Style>
-                    </ItemsControl.Styles>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel
-                                Margin="6"
+        <!--  Main content styles  -->
+        <Style Selector="Rectangle.selector">
+            <Setter Property="Width" Value="2" />
+            <Setter Property="Height" Value="0" />
+            <Setter Property="Margin" Value="-5 0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Fill" Value="{DynamicResource MainBrush}" />
+            <Setter Property="RadiusX" Value="0" />
+            <Setter Property="RadiusY" Value="{Binding $self.RadiusX}" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition Property="Height" Duration="0:0:0.2">
+                        <DoubleTransition.Easing>
+                            <BackEaseOut />
+                        </DoubleTransition.Easing>
+                    </DoubleTransition>
+                    <DoubleTransition Property="RadiusX" Duration="0:0:0.15" />
+                </Transitions>
+            </Setter>
+            <Style Selector="^.active">
+                <Setter Property="Height" Value="18" />
+                <Setter Property="RadiusX" Value="1" />
+            </Style>
+        </Style>
+        <Style Selector="ItemsControl#ButtonStrip">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+            <Setter Property="ItemsSource" Value="{Binding Controllers}" />
+            <Setter Property="ItemsPanel">
+                <ItemsPanelTemplate>
+                    <StackPanel Margin="6"
                                 VerticalAlignment="Center"
                                 Spacing="0" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="controllers:ViewController">
-                            <Button
-                                Height="{Binding $self.Bounds.Width}"
-                                Padding="10"
-                                Background="Transparent"
-                                Command="{Binding ActivateCommand}"
-                                CornerRadius="10">
-                                <Panel>
-                                    <Rectangle Classes="selector" Classes.active="{Binding IsActive}" />
-                                    <icons:MaterialIcon Kind="{Binding IconKind}" />
-                                </Panel>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-                <!--<Rectangle Width="32"
-                           Height="32"
-                           Margin="0 10"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Top"
-                           RadiusX="10"
-                           RadiusY="10"
-                           RenderOptions.BitmapInterpolationMode="HighQuality"
-                           Stretch="Uniform">
-                    <Rectangle.Fill>
-                        <ImageBrush Source="../../arise.png"
-                                    Stretch="Uniform" />
-                    </Rectangle.Fill>
-                </Rectangle>-->
-                <TransitioningContentControl Grid.Column="1" Content="{Binding CurrentContent}">
-                    <TransitioningContentControl.PageTransition>
-                        <CompositePageTransition>
-                            <CrossFade Duration="0:0:0.20" />
-                            <controls:SizeTransition SizeFactor="0.97" Duration="0:0:0.20">
-                                <controls:SizeTransition.SlideInEasing>
-                                    <QuadraticEaseOut />
-                                </controls:SizeTransition.SlideInEasing>
-                                <controls:SizeTransition.SlideOutEasing>
-                                    <QuadraticEaseOut />
-                                </controls:SizeTransition.SlideOutEasing>
-                            </controls:SizeTransition>
-                        </CompositePageTransition>
-                    </TransitioningContentControl.PageTransition>
-                    <TransitioningContentControl.DataTemplates>
-                        <DataTemplate DataType="controllers:DefaultController">
-                            <views:DefaultView Margin="0,48,0,0" />
-                        </DataTemplate>
-                        <DataTemplate DataType="controllers:NewsController">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Text="News here" />
-                        </DataTemplate>
-                        <DataTemplate DataType="controllers:AccountManagementController">
-                            <views:AccountManagementView />
-                        </DataTemplate>
-                        <DataTemplate DataType="controllers:SettingsController">
-                            <views:SettingsView Margin="0,48" />
-                        </DataTemplate>
-                    </TransitioningContentControl.DataTemplates>
-                </TransitioningContentControl>
-            </Grid>
-            <!--  Modal  -->
-            <Panel
-                x:Name="ModalDarkening"
-                Grid.RowSpan="2"
-                Grid.ColumnSpan="2"
-                Classes.visible="{Binding IsModalVisible}"
-                IsHitTestVisible="{Binding IsModalVisible}">
-                <Panel>
-                    <Panel.OpacityMask>
-                        <ImageBrush Source="/../../cross_pattern1.png" />
-                    </Panel.OpacityMask>
+                </ItemsPanelTemplate>
+            </Setter>
+            <Setter Property="ItemTemplate">
+                <DataTemplate DataType="controllers:ViewController">
+                    <Button Height="{Binding $self.Bounds.Width}"
+                            Padding="10"
+                            Background="Transparent"
+                            Command="{Binding ActivateCommand}"
+                            CornerRadius="10">
+                        <Panel>
+                            <Rectangle Classes="selector" Classes.active="{Binding IsActive}" />
+                            <icons:MaterialIcon Kind="{Binding IconKind}" />
+                        </Panel>
+                    </Button>
+                </DataTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="TransitioningContentControl#MainView">
+            <Setter Property="Content" Value="{Binding CurrentContent}" />
+            <Setter Property="PageTransition">
+                <CompositePageTransition>
+                    <CrossFade Duration="0:0:0.20" />
+                    <controls:SizeTransition SizeFactor="0.97" Duration="0:0:0.20">
+                        <controls:SizeTransition.SlideInEasing>
+                            <QuadraticEaseOut />
+                        </controls:SizeTransition.SlideInEasing>
+                        <controls:SizeTransition.SlideOutEasing>
+                            <QuadraticEaseOut />
+                        </controls:SizeTransition.SlideOutEasing>
+                    </controls:SizeTransition>
+                </CompositePageTransition>
+            </Setter>
+        </Style>
+
+        <!--  Modal styles  -->
+        <Style Selector="Panel#ModalDarkening">
+            <Setter Property="IsHitTestVisible" Value="{Binding IsModalVisible}" />
+            <Setter Property="Opacity" Value="0" />
+            <Setter Property="RenderTransform" Value="translateY(10px)" />
+            <Setter Property="Background">
+                <LinearGradientBrush Opacity=".85" StartPoint="0% 0%" EndPoint="100% 100%">
+                    <GradientStop Color="{DynamicResource BackgroundColorDark}" />
+                    <GradientStop Offset="1" Color="{DynamicResource BackgroundColorLight}" />
+                </LinearGradientBrush>
+            </Setter>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition Delay="0:0:0.030"
+                                      Property="Opacity"
+                                      Duration="0:0:0.15" />
+                    <TransformOperationsTransition Delay="0:0:0.030"
+                                                   Property="RenderTransform"
+                                                   Duration="0:0:0.15">
+                        <TransformOperationsTransition.Easing>
+                            <QuadraticEaseOut />
+                        </TransformOperationsTransition.Easing>
+                    </TransformOperationsTransition>
+                </Transitions>
+            </Setter>
+            <Style Selector="^.visible">
+                <Setter Property="Opacity" Value="1" />
+                <Setter Property="RenderTransform" Value="translateY(0px)" />
+            </Style>
+        </Style>
+        <Style Selector="Border#ModalDeco">
+            <Setter Property="OpacityMask">
+                <ImageBrush Source="/../../cross_pattern1.png" />
+            </Setter>
+            <Setter Property="Child">
+                <Template>
                     <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <Rectangle.Fill>
                             <LinearGradientBrush>
@@ -345,42 +290,43 @@
                             </LinearGradientBrush>
                         </Rectangle.OpacityMask>
                     </Rectangle>
-                </Panel>
-                <Image
-                    Margin="0,-50,-50,-150"
-                    HorizontalAlignment="Right"
-                    Source="/../../Hildetta1.png"
-                    Stretch="Uniform">
-                    <Image.RenderTransform>
-                        <ScaleTransform ScaleX="-1" />
-                    </Image.RenderTransform>
-                </Image>
-                <Button x:Name="ModalBackButton" />
-                <Border
-                    x:Name="FormContainer"
-                    Margin="160,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Background="{DynamicResource BackgroundColor}"
-                    BoxShadow="0 00 30 5 #6000"
-                    CornerRadius="16">
-                    <Panel>
-                        <Border CornerRadius="16" Opacity="1">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0% 100%" EndPoint="0% 0%">
-                                    <GradientStop Offset="0" Color="{DynamicResource BackgroundColor}" />
-                                    <GradientStop Offset="1" Color="{DynamicResource BackgroundColorLight}" />
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <Border.OpacityMask>
-                                <ImageBrush Source="/../../noise.png" Stretch="UniformToFill" />
-                            </Border.OpacityMask>
-                        </Border>
-                        <TransitioningContentControl Margin="24" Content="{Binding CurrentModalController}">
-                            <TransitioningContentControl.PageTransition>
-                                <CompositePageTransition>
-                                    <CrossFade Duration="0:0:0.20" />
-                                    <!-- <PageSlide Duration="0:0:0.25"
+                </Template>
+            </Setter>
+        </Style>
+        <Style Selector="Image#ModalSplashArt">
+            <Setter Property="Source" Value="/../../Hildetta1.png" />
+            <Setter Property="Margin" Value="0 -50 -50 -150" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Stretch" Value="Uniform" />
+            <Setter Property="RenderTransform" Value="scaleX(-1)" />
+        </Style>
+        <Style Selector="Border#FormContainer">
+            <Setter Property="Margin" Value="160 0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+            <Setter Property="BoxShadow" Value="0 00 30 5 #6000" />
+            <Setter Property="CornerRadius" Value="16" />
+        </Style>
+        <Style Selector="Border#FormBorder">
+            <Setter Property="CornerRadius" Value="16" />
+            <Setter Property="Background">
+                <LinearGradientBrush StartPoint="0% 100%" EndPoint="0% 0%">
+                    <GradientStop Offset="0" Color="{DynamicResource BackgroundColor}" />
+                    <GradientStop Offset="1" Color="{DynamicResource BackgroundColorLight}" />
+                </LinearGradientBrush>
+            </Setter>
+            <Setter Property="OpacityMask">
+                <ImageBrush Source="/../../noise.png" Stretch="UniformToFill" />
+            </Setter>
+        </Style>
+        <Style Selector="TransitioningContentControl#ModalContent">
+            <Setter Property="Margin" Value="24" />
+            <Setter Property="Content" Value="{Binding CurrentModalController}" />
+            <Setter Property="PageTransition">
+                <CompositePageTransition>
+                    <CrossFade Duration="0:0:0.20" />
+                    <!-- <PageSlide Duration="0:0:0.25"
                                            Orientation="Horizontal">
                                     <PageSlide.SlideInEasing>
                                         <QuadraticEaseInOut />
@@ -389,35 +335,110 @@
                                         <QuadraticEaseInOut />
                                     </PageSlide.SlideOutEasing>
                                 </PageSlide>-->
-                                </CompositePageTransition>
-                            </TransitioningContentControl.PageTransition>
-                            <TransitioningContentControl.DataTemplates>
-                                <DataTemplate DataType="modals:LoginModalController">
-                                    <modalviews:LoginForm />
-                                </DataTemplate>
-                                <DataTemplate DataType="modals:RegistrationModalController">
-                                    <modalviews:RegistrationForm />
-                                </DataTemplate>
-                                <DataTemplate DataType="modals:AccountVerificationModalController">
-                                    <modalviews:AccountVerificationForm />
-                                </DataTemplate>
-                                <DataTemplate DataType="modals:RecoverPasswordModalController">
-                                    <modalviews:RecoverPasswordForm />
-                                </DataTemplate>
-                                <DataTemplate DataType="modals:EmailChangeModalController">
-                                    <modalviews:EmailChangeForm />
-                                </DataTemplate>
-                                <DataTemplate DataType="modals:PasswordChangeModalController">
-                                    <modalviews:PasswordChangeForm />
-                                </DataTemplate>
-                                <!--<DataTemplate DataType="modals:AccountDeletionModalController">-->
-                                <!--</DataTemplate>-->
-                            </TransitioningContentControl.DataTemplates>
-                        </TransitioningContentControl>
-                    </Panel>
-                </Border>
+                </CompositePageTransition>
+            </Setter>
+        </Style>
 
-            </Panel>
+    </Window.Styles>
+    <Window.DataTemplates>
+        <!--  Main content  -->
+        <DataTemplate DataType="controllers:DefaultController">
+            <views:DefaultView Margin="0 48 0 0" />
+        </DataTemplate>
+        <DataTemplate DataType="controllers:NewsController">
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="News here" />
+        </DataTemplate>
+        <DataTemplate DataType="controllers:AccountManagementController">
+            <views:AccountManagementView />
+        </DataTemplate>
+        <DataTemplate DataType="controllers:SettingsController">
+            <views:SettingsView Margin="0 48" />
+        </DataTemplate>
+
+        <!--  Modals  -->
+        <DataTemplate DataType="modals:LoginModalController">
+            <modalviews:LoginForm />
+        </DataTemplate>
+        <DataTemplate DataType="modals:RegistrationModalController">
+            <modalviews:RegistrationForm />
+        </DataTemplate>
+        <DataTemplate DataType="modals:AccountVerificationModalController">
+            <modalviews:AccountVerificationForm />
+        </DataTemplate>
+        <DataTemplate DataType="modals:RecoverPasswordModalController">
+            <modalviews:RecoverPasswordForm />
+        </DataTemplate>
+        <DataTemplate DataType="modals:EmailChangeModalController">
+            <modalviews:EmailChangeForm />
+        </DataTemplate>
+        <DataTemplate DataType="modals:PasswordChangeModalController">
+            <modalviews:PasswordChangeForm />
+        </DataTemplate>
+        <DataTemplate DataType="modals:AccountDeletionModalController">
+            <TextBlock>TODO</TextBlock>
+        </DataTemplate>
+    </Window.DataTemplates>
+    <Grid x:Name="Root"
+          ColumnDefinitions="48,*"
+          RowDefinitions="Auto,*">
+
+        <!--  Background  -->
+        <Image x:Name="BackgroundImage" Classes.blurred="{Binding IsModalVisible}" />
+
+        <!--  Title bar  -->
+        <Grid x:Name="TitleBar"
+              Grid.Column="1"
+              ColumnDefinitions="Auto,*"
+              PointerPressed="OnTitleBarPointerPressed">
+            <!--  Buttons  -->
+            <StackPanel x:Name="TitleBarButtonsContainer" Grid.Column="1">
+                <!--  Account  -->
+                <Button x:Name="AccountButton"
+                        Width="NaN"
+                        Classes="toolbarButton" />
+                <!--  Music  -->
+                <ToggleButton x:Name="MusicToggleButton" />
+                <!--  Minimize  -->
+                <Button x:Name="MinimizeButton"
+                        Classes="toolbarButton"
+                        Click="OnMinimizeClick" />
+                <!--  Close  -->
+                <Button x:Name="CloseButton"
+                        Classes="toolbarButton"
+                        Click="OnCloseClick" />
+            </StackPanel>
         </Grid>
-    </Panel>
+
+        <!--  Main content  -->
+        <Grid Grid.RowSpan="2"
+              Grid.ColumnSpan="2"
+              Classes.blurred="{Binding IsModalVisible}"
+              ClipToBounds="False"
+              ColumnDefinitions="Auto,*">
+
+            <ItemsControl x:Name="ButtonStrip" />
+            <TransitioningContentControl x:Name="MainView" Grid.Column="1" />
+
+        </Grid>
+
+        <!--  Modal  -->
+        <Panel x:Name="ModalDarkening"
+               Grid.RowSpan="2"
+               Grid.ColumnSpan="2"
+               Classes.visible="{Binding IsModalVisible}">
+
+            <Border x:Name="ModalDeco" />
+            <Image x:Name="ModalSplashArt" />
+            <Button x:Name="ModalBackButton" />
+            <Border x:Name="FormContainer">
+                <Panel>
+                    <Border x:Name="FormBorder" />
+                    <TransitioningContentControl x:Name="ModalContent" />
+                </Panel>
+            </Border>
+
+        </Panel>
+    </Grid>
 </Window>
