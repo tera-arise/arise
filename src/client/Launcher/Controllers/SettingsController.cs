@@ -33,7 +33,15 @@ internal sealed partial class SettingsController : ViewController
     [RelayCommand]
     private void Apply()
     {
-        // todo: commit changes to the manager
+        if (!ServerAddress.EndsWith('/'))
+        {
+            ServerAddress += '/';
+        }
+
+        // todo: commit changes to the manager in a better way
+        _settingsManager.Settings.ServerAddress = new Uri(ServerAddress);
+
+        // todo: apply new Uri to the gateway client
 
         _settingsManager.Save();
     }

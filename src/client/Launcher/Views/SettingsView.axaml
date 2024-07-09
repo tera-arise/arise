@@ -13,5 +13,8 @@
                  IsVisible="{Binding ShowServerUriSetting}"
                  VerticalAlignment="Top"
                  Watermark="Server address" />
+        <Button Command="{Binding ApplyCommand}"
+                Content="Apply"
+                Classes="main"/>
     </StackPanel>
 </UserControl>
