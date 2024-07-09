@@ -26,7 +26,8 @@ internal sealed partial class AccountVerificationModalController : ModalControll
         try
         {
             ActionStatus = ActionStatus.Pending;
-            await MainController.Gateway.Rest.VerifyAccountTokenAsync(_session.AccountName!, _session.Password!, new AccountsVerifyRequest
+            await MainController.Gateway.Rest.Accounts
+                .VerifyAsync(_session.AccountName!, _session.Password!, new AccountsVerifyRequest
             {
                 Token = Token,
             }).ConfigureAwait(true);
@@ -57,7 +58,8 @@ internal sealed partial class AccountVerificationModalController : ModalControll
         try
         {
             ActionStatus = ActionStatus.Pending;
-            await MainController.Gateway.Rest.SendAccountEmailAsync(_session.AccountName!, _session.Password!)
+            await MainController.Gateway.Rest.Accounts
+                .SendVerificationAsync(_session.AccountName!, _session.Password!)
                 .ConfigureAwait(true);
 
             ActionStatus = ActionStatus.Successful;

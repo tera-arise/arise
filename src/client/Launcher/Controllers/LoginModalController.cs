@@ -39,8 +39,8 @@ internal sealed partial class LoginModalController : ModalController
             {
                 ActionStatus = ActionStatus.Pending;
 
-                var resp = await MainController.Gateway.Rest
-                    .AuthenticateAccountAsync(Email, Password).ConfigureAwait(true);
+                var resp = await MainController.Gateway.Rest.Accounts
+                    .AuthenticateAsync(Email, Password).ConfigureAwait(true);
 
                 if (resp.SessionTicket != null)
                 {
