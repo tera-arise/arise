@@ -29,14 +29,22 @@
                       IsHitTestVisible="{Binding !$parent[controls:StepControl].Collapsed}"
                       RowDefinitions="Auto,Auto">
 
+                    <Rectangle RadiusX="2" RadiusY="2"
+                               Width="4"
+                               VerticalAlignment="Stretch"
+                               Grid.Row="1"
+                               Fill="{DynamicResource BackgroundBrushLight}"
+                               HorizontalAlignment="Center"
+                               Margin="0 6"/>
+                    
                     <Border Width="24"
                             Height="24"
-                            Margin="0 0 10 0"
-                            HorizontalAlignment="Left"
+                            HorizontalAlignment="Center"
                             Background="{DynamicResource BackgroundBrushLighter}"
                             CornerRadius="100">
                         <TextBlock HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
+                                   FontWeight="DemiBold"
                                    Text="{TemplateBinding StepId}" />
                     </Border>
 
@@ -44,12 +52,13 @@
                                VerticalAlignment="Center"
                                TextWrapping="Wrap"
                                Foreground="{DynamicResource ThemeTextMidHighBrush}"
-                               Text="{TemplateBinding Header}" />
+                               Text="{TemplateBinding Header}"
+                               Margin="10 0 0 0"/>
 
                     <ContentPresenter x:Name="PART_StepContent"
                                       Grid.Row="1"
                                       Grid.Column="1"
-                                      Margin="0 12"
+                                      Margin="10 12 0 12"
                                       ClipToBounds="True"
                                       Content="{TemplateBinding Content}" />
                 </Grid>
