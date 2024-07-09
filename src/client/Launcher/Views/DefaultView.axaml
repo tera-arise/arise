@@ -2,7 +2,67 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Arise.Client.Launcher.Views.DefaultView">
-  main content goes here
+             xmlns:controls="using:Arise.Client.Launcher.Controls"
+             xmlns:controllers="using:Arise.Client.Launcher.Controllers"
+             mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+             x:Class="Arise.Client.Launcher.Views.DefaultView"
+             x:DataType="controllers:DefaultController">
+    <Grid>
+        <Image Source="../../image_logo.webp"
+               IsHitTestVisible="False"
+               Stretch="Uniform"
+               Width="280"
+               Margin="40 20"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               RenderOptions.BitmapInterpolationMode="HighQuality"
+               />
+
+        <Border
+            Width="600"
+            Height="400"
+            CornerRadius="10"
+            VerticalAlignment="Top"
+            Margin="40"
+            HorizontalAlignment="Right"
+            BorderThickness="2"
+            BorderBrush="Red">
+             <TextBlock Text="news here"
+                       Width="100" TextWrapping="Wrap"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+        </Border>
+
+        <Border
+          Width="400"
+          Height="400"
+          CornerRadius="10"
+          VerticalAlignment="Bottom"
+          Margin="40"
+          HorizontalAlignment="Left"
+          BorderThickness="2"
+          BorderBrush="Red">
+
+            <TextBlock Text="something else goes here, like server status and more"
+                       Width="100" TextWrapping="Wrap"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+        </Border>
+
+        <Button Content="Play"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"
+                Margin="40"
+                FontSize="16"
+                Width="160"
+                HorizontalContentAlignment="Center"
+                Padding="16"
+                CornerRadius="40"
+                Background="{StaticResource MainBrush}"
+                Foreground="White"
+                FontWeight="DemiBold"
+                />
+    </Grid>
 </UserControl>
