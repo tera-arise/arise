@@ -5,12 +5,16 @@
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:controls="using:Arise.Client.Launcher.Controls"
              xmlns:controllers="using:Arise.Client.Launcher.Controllers"
+             xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              mc:Ignorable="d"
              d:DesignWidth="300"
              d:DesignHeight="400"
              x:DataType="controllers:LoginModalController"
              x:Class="Arise.Client.Launcher.Views.LoginForm"
              Background="Transparent">
+    <UserControl.Resources>
+        <controls:EqualityConverter x:Key="equals" />
+    </UserControl.Resources>
     <Grid RowDefinitions="*,*,*,*,*,*">
         <Grid.Styles>
             <Style Selector="TextBox">
@@ -54,20 +58,47 @@
                  VerticalAlignment="Center"
                  Grid.Row="2"
                  Text="{Binding Password, Mode=TwoWay}" />
-        <Button Content="Login"
-                Grid.Row="3"
+        <Button Grid.Row="3"
                 CornerRadius="8"
                 Classes="main"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Height="{Binding #EmailTextBox.Bounds.Height}"
-                Command="{Binding LoginCommand}" />
+                Command="{Binding LoginCommand}">
+            <Panel>
+                <TextBlock Text="Login"
+                           IsVisible="{Binding LoginState, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:LoginState.None}}" />
+                <TextBlock Text="Login failed. Click to retry."
+                           IsVisible="{Binding LoginState, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:LoginState.Failed}}" />
+                <icons:MaterialIcon Kind="Refresh"
+                                    IsVisible="{Binding LoginState, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:LoginState.Pending}}">
+                    <icons:MaterialIcon.Styles>
+                        <Style Selector="icons|MaterialIcon">
+                            <Style.Animations>
+                                <Animation Duration="0:0:2"
+                                           IterationCount="Infinite">
+                                    <KeyFrame Cue="0%">
+                                        <Setter Property="RotateTransform.Angle"
+                                                Value="0" />
+                                    </KeyFrame>
+                                    <KeyFrame Cue="100%">
+                                        <Setter Property="RotateTransform.Angle"
+                                                Value="359.9" />
+                                    </KeyFrame>
+                                </Animation>
+                            </Style.Animations>
+                        </Style>
+                    </icons:MaterialIcon.Styles>
+                </icons:MaterialIcon>
+            </Panel>
+        </Button>
         <CheckBox Grid.Row="4"
                   Content="Remember me"
                   FontSize="10"
                   Padding="4 0 4 0"
                   Classes="small"
+                  IsEnabled="False"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Center"
                   IsChecked="{Binding RememberMe}" />

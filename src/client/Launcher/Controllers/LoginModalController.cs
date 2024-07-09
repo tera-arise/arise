@@ -2,6 +2,8 @@ namespace Arise.Client.Launcher.Controllers;
 
 internal sealed partial class LoginModalController : ModalController
 {
+    private readonly UserSession _session;
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
     private string _email = string.Empty;
@@ -13,57 +15,53 @@ internal sealed partial class LoginModalController : ModalController
     [ObservableProperty]
     private bool _rememberMe;
 
+    [ObservableProperty]
+    private LoginState _loginState;
+
     private bool CanExecuteLogin => !string.IsNullOrEmpty(Email)
-                                 && !string.IsNullOrEmpty(Password);
+                                    && !string.IsNullOrEmpty(Password);
 
     public LoginModalController(IServiceProvider services, MainController mainController)
         : base(services, mainController)
     {
+        _session = services.GetService<UserSession>()!;
     }
 
     [RelayCommand(CanExecute = nameof(CanExecuteLogin))]
     private async Task LoginAsync()
     {
-        // todo: add an IsLoggingIn state to signal the user that the request is being processed
-        // maybe bind it to a spinning indicator
-
         // todo: use RememberMe setting (save it locally?)
 
-        if (!MainController.IsLoggedIn)
+        if (!_session.IsLoggedIn)
         {
-            // todo: catch something?
             try
             {
-#if FORCE_LOGIN // find a better way of doing this when you don't have a backend
-                if (await Task.FromResult(true).ConfigureAwait(true))
-#else
+                LoginState = LoginState.Pending;
+
                 var resp = await MainController.Gateway.Rest
                     .AuthenticateAccountAsync(Email, Password).ConfigureAwait(true);
 
                 if (resp.SessionTicket != null)
-#endif
                 {
-                    MainController.IsLoggedIn = true; // todo
-                    MainController.CurrentAccountName = Email; // todo
+                    _session.Login(Email, resp);
 
-                    // todo: handle all the data in the response (ban, mail verification, etc)
+                    LoginState = LoginState.Successful;
+
+                    MainController.CurrentModalController = null;
                 }
                 else
                 {
-                    // todo: handle login fail
+                    LoginState = LoginState.Failed;
                 }
             }
             catch (GatewayHttpException)
             {
                 // todo
+                LoginState = LoginState.Failed;
             }
             finally
             {
-                // clear the password as soon as it's been sent
                 Password = string.Empty;
-
-                // close the modal
-                MainController.CurrentModalController = null;
             }
         }
         else
