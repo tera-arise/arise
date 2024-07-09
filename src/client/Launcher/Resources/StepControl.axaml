@@ -42,6 +42,7 @@
 
                     <TextBlock Grid.Column="1"
                                VerticalAlignment="Center"
+                               TextWrapping="Wrap"
                                Foreground="{DynamicResource ThemeTextMidHighBrush}"
                                Text="{TemplateBinding Header}" />
 
