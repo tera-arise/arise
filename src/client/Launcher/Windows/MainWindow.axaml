@@ -23,188 +23,184 @@
             as soon as the window is loaded, then hide it and bring it
             in position for any following show requests-->
         <!--https://github.com/AvaloniaUI/Avalonia/issues/1529-->
-        <Style Selector="Border#ModalDarkening">
+        <Style Selector="Panel#ModalDarkening">
             <Setter Property="Opacity" Value="0"/>
         </Style>
-        <Style Selector="Border#ModalDarkening.visible">
+        <Style Selector="Panel#ModalDarkening.visible">
             <Setter Property="Opacity" Value="1"/>
+        </Style>
+        <Style Selector="ContentControl.blurred">
+            <Setter Property="Effect" Value="blur(24)"/>
+        </Style>
+        <Style Selector="Image.blurred">
+            <Setter Property="Effect" Value="blur(24)"/>
         </Style>
         <Style Selector="controls|AcrylicBorder:pointerover">
             <Setter Property="CornerRadius" Value="50"/>
         </Style>
     </Window.Styles>
+    <Panel>
 
-    <Grid RowDefinitions="Auto,*"
-          ColumnDefinitions="48,*">
+        <Grid RowDefinitions="Auto,*"
+              ColumnDefinitions="48,*"
+              x:Name="Root">
 
-        <Image Source="../../image_background.webp"
-               Stretch="Fill"
-               IsHitTestVisible="False"
-               Grid.RowSpan="2"
-               Grid.ColumnSpan="2">
-            <Image.OpacityMask>
-                <LinearGradientBrush StartPoint="0 0" EndPoint="0% 100%">
-                    <LinearGradientBrush.GradientStops>
-                        <GradientStop Color="Transparent" Offset="0"/>
-                        <GradientStop Color="Black" Offset="1"/>
-                    </LinearGradientBrush.GradientStops>
-                </LinearGradientBrush>
-            </Image.OpacityMask>
-        </Image>
+            <Image Source="../../image_background.webp"
+                   Stretch="Fill"
+                   Classes.blurred="{Binding IsModalVisible}"
+                   IsHitTestVisible="False"
+                   Grid.RowSpan="2"
+                   Grid.ColumnSpan="2"
+               >
+                <Image.OpacityMask>
+                    <LinearGradientBrush StartPoint="0 0" EndPoint="0% 100%">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Color="Transparent" Offset="0"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Image.OpacityMask>
+            </Image>
 
-        <!--Title bar-->
-        <Grid VerticalAlignment="Stretch"
-              ZIndex="99"
-              Grid.Column="1"
-              ColumnDefinitions="Auto,*"
-              Margin="8">
-            <Grid.Styles>
-                <Style Selector="Button">
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="CornerRadius" Value="8" />
-                    <Setter Property="Height" Value="28" />
-                    <Setter Property="Width" Value="28" />
-                </Style>
-                <Style Selector="Button:disabled /template/ ContentPresenter">
-                    <Setter Property="Background" Value="Transparent" />
-                </Style>
-            </Grid.Styles>
+            <!--Title bar-->
+            <Grid VerticalAlignment="Stretch"
+                  ZIndex="99"
+                  Grid.Column="1"
+                  ColumnDefinitions="Auto,*"
+                  Margin="8">
+                <Grid.Styles>
+                    <Style Selector="Button">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="CornerRadius" Value="8" />
+                        <Setter Property="Height" Value="28" />
+                        <Setter Property="Width" Value="28" />
+                    </Style>
+                    <Style Selector="Button:disabled /template/ ContentPresenter">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </Grid.Styles>
 
-            <!--Logo-->
-            <!--<Rectangle RadiusX="8"
-                       RadiusY="8"
-                       Height="24"
-                       Width="24"
-                       HorizontalAlignment="Left"
-                       Margin="0 0 8 0">
-                <Rectangle.Fill>
-                    <ImageBrush Source="../../arise.png"
-                                Stretch="Fill" />
-                </Rectangle.Fill>
-            </Rectangle>-->
+                <!--Buttons-->
+                <StackPanel Orientation="Horizontal"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            Spacing="6">
 
-            <!--Title-->
-            <!--<TextBlock Text="TERA Arise"
-                       Grid.ColumnSpan="2"
-                       IsHitTestVisible="False"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"/>-->
-
-            <!--Buttons-->
-            <StackPanel Orientation="Horizontal"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        Spacing="6">
-
-                <Button x:Name="AccountButton"
-                        FontSize="10"
-                        Padding="6 0"
-                        Command="{Binding ShowAccountPopupCommand}"
-                        Width="NaN"
+                    <Button x:Name="AccountButton"
+                            Command="{Binding ShowAccountPopupCommand}"
+                            FontSize="10"
+                            Padding="6 0"
+                            Width="NaN"
                         >
-                    <StackPanel Orientation="Horizontal">
-                        <avalonia:MaterialIcon Kind="Account"
-                                               IsVisible="{Binding IsLoggedIn}"
-                                               Margin="0 0 4 0"/>
-                        <TextBlock Text="{Binding CurrentAccountName}"
-                                   VerticalAlignment="Center" />
-                    </StackPanel>
-                </Button>
+                        <StackPanel Orientation="Horizontal">
+                            <avalonia:MaterialIcon Kind="Account"
+                                                   IsVisible="{Binding IsLoggedIn}"
+                                                   Margin="0 0 4 0"/>
+                            <TextBlock Text="{Binding CurrentAccountName}"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
 
-                <Button x:Name="SettingsButton" Command="{Binding OpenSettingsCommand}">
-                    <avalonia:MaterialIcon Kind="Settings" />
-                </Button>
+                    <Button x:Name="SettingsButton" Command="{Binding OpenSettingsCommand}">
+                        <avalonia:MaterialIcon Kind="Settings" />
+                    </Button>
 
-                <Button x:Name="MinimizeButton"
-                        Click="OnMinimizeClick">
-                    <avalonia:MaterialIcon Kind="WindowMinimize" />
-                </Button>
+                    <Button x:Name="MinimizeButton"
+                            Click="OnMinimizeClick">
+                        <avalonia:MaterialIcon Kind="WindowMinimize" />
+                    </Button>
 
-                <Button x:Name="CloseButton"
-                        Click="OnCloseClick">
-                    <avalonia:MaterialIcon Kind="Close" />
-                </Button>
+                    <Button x:Name="CloseButton"
+                            Click="OnCloseClick">
+                        <avalonia:MaterialIcon Kind="Close" />
+                    </Button>
 
-            </StackPanel>
-        </Grid>
+                </StackPanel>
+            </Grid>
 
-        <!--Side bar-->
-        <Border Background="{DynamicResource WindowBackground}"
-                Grid.RowSpan="2"
-                Padding="8">
-            <Border.Styles>
-                <Style Selector="Button">
-                    <Setter Property="CornerRadius" Value="8"/>
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Height" Value="{Binding $self.Bounds.Width}"/>
-                </Style>
-                <Style Selector="Button:disabled /template/ ContentPresenter">
-                    <Setter Property="Background" Value="Transparent" />
-                </Style>
-            </Border.Styles>
-            <StackPanel VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
-                        Spacing="12">
-                <!--<Button>
+            <!--Side bar-->
+            <Border Background="{DynamicResource WindowBackground}"
+                    Grid.RowSpan="2"
+                    Padding="8">
+                <Border.Styles>
+                    <Style Selector="Button">
+                        <Setter Property="CornerRadius" Value="8"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Height" Value="{Binding $self.Bounds.Width}"/>
+                    </Style>
+                    <Style Selector="Button:disabled /template/ ContentPresenter">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </Border.Styles>
+                <StackPanel VerticalAlignment="Top"
+                            HorizontalAlignment="Center"
+                            Spacing="12">
+                    <!--<Button>
                     <avalonia:MaterialIcon Kind="ArrowBack"/>
                 </Button>-->
-                <Button>
-                    <Panel>
-                        <Rectangle Fill="{StaticResource MainBrush}"
-                                   HorizontalAlignment="Left"
-                                   Width="2"
-                                   Margin="-8 2"
-                                   RadiusX="1"
-                                   RadiusY="1"/>
-                        <avalonia:MaterialIcon Kind="Home"/>
-                    </Panel>
-                </Button>
-                <Button>
-                    <avalonia:MaterialIcon Kind="Newspaper"/>
-                </Button>
-                <Button>
-                    <avalonia:MaterialIcon Kind="Account"/>
-                </Button>
-                <Button Command="{Binding OpenSettingsCommand}">
-                    <avalonia:MaterialIcon Kind="Settings"/>
-                </Button>
-            </StackPanel>
-        </Border>
-
-        <!--Main content-->
-        <ContentControl
-            Content="{Binding CurrentContent}"
-            Grid.Row="1"
-            Grid.Column="1"/>
-         <!--<views:DefaultView
-             DataContext="{Binding CurrentContent}"
-            Grid.Row="1"
-            Grid.Column="1"/>--> 
-
-        <!--Modal-->
-        <Border x:Name="ModalDarkening"
-                Background="#6000"
-                Grid.RowSpan="2"
-                Grid.ColumnSpan="2"
-                IsHitTestVisible="{Binding IsModalVisible}"
-                Classes.visible="{Binding IsModalVisible}"
-                >
-            <Border.Transitions>
-                <Transitions>
-                    <DoubleTransition Property="Opacity" Duration="0:0:0.20"/>
-                </Transitions>
-            </Border.Transitions>
-
-            <Border x:Name="FormContainer"
-                    Background="{DynamicResource WindowBackground}"
-                    CornerRadius="10"
-                    BoxShadow="0 10 20 0 #5000"
-                    Padding="24"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="300">
-                <views:LoginForm/>
+                    <Button>
+                        <Panel>
+                            <Rectangle Fill="{StaticResource MainBrush}"
+                                       HorizontalAlignment="Left"
+                                       Width="2"
+                                       Margin="-8 2"
+                                       RadiusX="1"
+                                       RadiusY="1"/>
+                            <avalonia:MaterialIcon Kind="Home"/>
+                        </Panel>
+                    </Button>
+                    <Button>
+                        <avalonia:MaterialIcon Kind="Newspaper"/>
+                    </Button>
+                    <Button>
+                        <avalonia:MaterialIcon Kind="Account"/>
+                    </Button>
+                    <Button Command="{Binding OpenSettingsCommand}">
+                        <avalonia:MaterialIcon Kind="Settings"/>
+                    </Button>
+                </StackPanel>
             </Border>
-        </Border>
-    </Grid>
+
+            <!--Main content-->
+            <ContentControl
+                Content="{Binding CurrentContent}"
+                Grid.Row="1"
+                Grid.Column="1"
+                Classes.blurred="{Binding IsModalVisible}">
+            <!--<ContentControl.Transitions>
+                    <Transitions>
+                        <EffectTransition Property="Effect" Duration="0:0:0.20"/>
+                    </Transitions>
+                </ContentControl.Transitions>-->
+            </ContentControl>
+
+            <!--Modal-->
+            <Panel x:Name="ModalDarkening"
+                   Grid.RowSpan="2"
+                   Grid.ColumnSpan="2"
+                   IsHitTestVisible="{Binding IsModalVisible}"
+                   Classes.visible="{Binding IsModalVisible}"
+                   Background="Transparent"
+                >
+                <Panel.Transitions>
+                    <Transitions>
+                        <DoubleTransition Property="Opacity" Duration="0:0:0.20"/>
+                    </Transitions>
+                </Panel.Transitions>
+
+                <Border x:Name="FormContainer"
+                        Grid.RowSpan="2"
+                        Grid.ColumnSpan="2"
+                        Background="{DynamicResource WindowBackground}"
+                        CornerRadius="10"
+                        BoxShadow="0 10 20 0 #5000"
+                        Padding="24"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Width="300">
+                    <views:LoginForm/>
+                </Border>
+            </Panel>
+        </Grid>
+    </Panel>
 </Window>

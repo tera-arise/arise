@@ -56,13 +56,13 @@
         <Button Content="Login"
                 Grid.Row="3"
                 CornerRadius="8"
+                Classes="main"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Height="{Binding #UsernameTextBox.Bounds.Height}"
                 Command="{Binding LoginCommand}"
-                Background="{DynamicResource MainBrush}"
-                        />
+                />
         <CheckBox Grid.Row="4"
                   Content="Remember me"
                   FontSize="10"
