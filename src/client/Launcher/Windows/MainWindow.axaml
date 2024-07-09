@@ -1,15 +1,91 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controllers="using:Arise.Client.Launcher.Controllers"
+        xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         x:Class="Arise.Client.Launcher.Windows.MainWindow"
         x:DataType="controllers:MainController"
         Width="1280"
-        Height="720">
-    <Window.Background>
-        <ImageBrush Source="../../image_background.webp"
-                    Stretch="Fill" />
-    </Window.Background>
+        Height="720"
+        Padding="0"
+        CanResize="False"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        Background="#222222"
+        RequestedThemeVariant="Dark">
+    <Window.Styles>
+        <Style Selector="#CloseButton:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="DarkRed" />
+        </Style>
+        <Style Selector="#CloseButton:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="Red" />
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="Background" Value="#1fff" />
+            <Setter Property="CornerRadius" Value="8" />
+        </Style>
+    </Window.Styles>
+    <Grid RowDefinitions="40,*"
+          >
 
-    <Image Source="../../image_logo.webp"
-           Stretch="Uniform" />
+        <!--Title bar-->
+        <Grid VerticalAlignment="Stretch"
+              ColumnDefinitions="Auto,*"
+              Margin="8">
+            <Rectangle RadiusX="8"
+                       RadiusY="8"
+                       Height="24"
+                       Width="24"
+                       HorizontalAlignment="Left"
+                       Margin="0 0 8 0">
+                <Rectangle.Fill>
+                    <ImageBrush Source="../../arise.png"
+                                Stretch="Fill" />
+                </Rectangle.Fill>
+            </Rectangle>
+            <TextBlock Text="TERA Arise"
+                       Grid.ColumnSpan="2"
+                       IsHitTestVisible="False"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right">
+                <Button x:Name="AccountButton"
+                        Height="24"
+                        FontSize="10"
+                        Margin="0 0 6 0"
+                        Padding="6 0">
+                    <StackPanel Orientation="Horizontal">
+                        <avalonia:MaterialIcon Kind="Account" />
+                        <TextBlock Text="Foglio"
+                                   Margin="4 0 0 0"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="MinimizeButton"
+                        Height="24"
+                        Width="24"
+                        Click="OnMinimizeClick">
+                    <avalonia:MaterialIcon Kind="WindowMinimize" />
+                </Button>
+                  <Button x:Name="CloseButton"
+                        Height="24"
+                        Width="24"
+                        Margin="6 0 0 0"
+                        Click="OnCloseClick">
+                    <avalonia:MaterialIcon Kind="Close" />
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Image Source="../../image_background.webp"
+               Stretch="Fill"
+               IsHitTestVisible="False"
+               Grid.Row="1" />
+        <Image Source="../../image_logo.webp"
+               IsHitTestVisible="False"
+               Stretch="Uniform"
+               Grid.Row="1" />
+    </Grid>
 </Window>
