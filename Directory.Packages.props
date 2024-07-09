@@ -42,7 +42,7 @@
         <PackageVersion Include="Injectio"
                         Version="3.1.0" />
         <PackageVersion Include="Marten"
-                        Version="7.23.0" />
+                        Version="7.23.1" />
         <PackageVersion Include="Material.Icons.Avalonia"
                         Version="2.1.10" />
         <PackageVersion Include="Microsoft.ClearScript.V8"
