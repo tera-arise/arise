@@ -19,7 +19,7 @@ internal static class DesignTimeControllers
             .Services
             .BuildServiceProvider();
 
-        Main = new(services, new MusicPlayer(), new LauncherSettingsManager());
+        Main = new(services);
         Main.Controllers.Insert(0, new AccountManagementController(services, Main));
 
         AccountManagement = new AccountManagementController(services, Main);
