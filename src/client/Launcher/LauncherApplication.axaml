@@ -21,8 +21,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="/Launcher/Resources/Colors.axaml" />
             </ResourceDictionary.MergedDictionaries>
-            <!--  not working; figure it out later  -->
-            <!-- <FontFamily x:Key="Quicksand">avares://Fonts#Quicksand Light</FontFamily> -->
+             <FontFamily x:Key="Quicksand">../../Fonts#Quicksand</FontFamily> 
             <controls:EqualityConverter x:Key="equals" />
         </ResourceDictionary>
     </Application.Resources>
