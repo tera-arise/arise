@@ -2,14 +2,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:controls="using:Arise.Client.Launcher.Controls"
              xmlns:controllers="using:Arise.Client.Launcher.Controllers"
+             xmlns:controls="clr-namespace:Arise.Client.Launcher.Controls"
              mc:Ignorable="d"
              d:DesignWidth="1280"
              d:DesignHeight="720"
              x:Class="Arise.Client.Launcher.Views.DefaultView"
              ClipToBounds="False"
-             x:DataType="controllers:DefaultController">
+             x:DataType="controllers:DefaultController"
+             d:DataContext="{x:Static controllers:DesignTimeControllers.Default}"
+             >
     <Grid>
         <Image Source="../../image_logo_small.webp"
                IsHitTestVisible="False"
@@ -49,18 +51,29 @@
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </Border>
-        <Button Content="Play"
-                VerticalAlignment="Bottom"
-                HorizontalAlignment="Right"
-                Margin="40"
-                FontSize="16"
-                Width="160"
-                HorizontalContentAlignment="Center"
-                Padding="16"
-                Classes="main"
-                CornerRadius="40"
-                Foreground="White"
-                FontWeight="DemiBold"
-                Command="{Binding PlayCommand}" />
+        <controls:SparkleBorder
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Right"
+            Margin="40"
+            SparklesEnabled="{Binding #PlayButton.IsEffectivelyEnabled}"
+            Color="{DynamicResource MainColorLight}"
+            >
+            <controls:SparkleBorder.Styles>
+                <Style Selector="controls|SparkleBorder">
+                    <Setter Property="Probability" Value=".1"/>
+                    <Setter Property="AnimationDuration" Value="0:0:2"/>
+                    <Style Selector="^:pointerover">
+                        <Setter Property="Probability" Value=".5"/>
+                        <Setter Property="AnimationDuration" Value="0:0:1"/>
+                    </Style>
+                </Style>
+            </controls:SparkleBorder.Styles>
+            <Button Content="Play"
+                    x:Name="PlayButton"
+                    Classes="play"
+                    Command="{Binding PlayCommand}">
+            </Button>
+        </controls:SparkleBorder>
+
     </Grid>
 </UserControl>
