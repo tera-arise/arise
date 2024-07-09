@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls.Metadata;

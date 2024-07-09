@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 using Arise.Client.Gateway;
 using Arise.Client.Launcher.Controllers.Modals;
 using Arise.Client.Launcher.Media;

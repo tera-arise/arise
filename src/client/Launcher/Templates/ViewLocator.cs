@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 using Arise.Client.Launcher.Controllers;
 
 namespace Arise.Client.Launcher.Templates;
