@@ -10,6 +10,8 @@ internal sealed class UserSession
 
     public bool IsVerified { get; private set; }
 
+    public bool IsChangingEmail { get; private set; }
+
     public string? Password { get; private set; }
 
     public bool IsLoggedIn => AccountName is not null;
@@ -19,8 +21,10 @@ internal sealed class UserSession
         AccountName = accountName;
         SessionTicket = response.SessionTicket;
         IsVerified = !response.IsVerifying;
+        IsChangingEmail = response.IsChangingEmail;
 
-        if (!string.IsNullOrEmpty(password) && !IsVerified)
+        if ((!string.IsNullOrEmpty(password) && !IsVerified)
+            || IsChangingEmail)
         {
             Password = password;
         }
@@ -33,6 +37,22 @@ internal sealed class UserSession
         AccountName = null;
         SessionTicket = null;
         IsVerified = false;
+        Password = null;
+        IsChangingEmail = false;
+
+        StatusChanged?.Invoke();
+    }
+
+    public void BeginEmailChange()
+    {
+        IsChangingEmail = true;
+
+        StatusChanged?.Invoke();
+    }
+
+    public void VerifyEmailChange()
+    {
+        IsChangingEmail = false;
         Password = null;
 
         StatusChanged?.Invoke();
