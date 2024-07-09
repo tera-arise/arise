@@ -10,6 +10,7 @@
         <StyleInclude Source="/Launcher/Styles/TextBox.axaml" />
         <StyleInclude Source="/Launcher/Styles/AcrylicBorder.axaml" />
         <StyleInclude Source="/Launcher/Styles/Button.axaml" />
+        <StyleInclude Source="/Launcher/Styles/TabControl.axaml" />
     </Application.Styles>
     <Application.Resources>
         <ResourceDictionary>
@@ -31,9 +32,12 @@
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
         <!--9A2B70,76024F,6E014B,D764A1,412831 palette from arise logo-->
-        <SolidColorBrush x:Key="MainBrush" Color="#CC3391"/>
+        <Color x:Key="MainColor">#CC3391</Color>
+        <SolidColorBrush x:Key="MainBrush" Color="{StaticResource MainColor}"/>
         <SolidColorBrush x:Key="MainBrushHilight" Color="#e858b1"/>
         <SolidColorBrush x:Key="MainBrushDark" Color="#b02a7c"/>
+        
+        <SolidColorBrush x:Key="TabItemHeaderSelectedPipeFill" Color="{StaticResource MainColor}"/>
 
         <!--not working; figure it out later-->
         <!--<FontFamily x:Key="Quicksand">avares://Fonts#Quicksand Light</FontFamily>-->

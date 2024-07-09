@@ -1,4 +1,5 @@
 using Arise.Client.Launcher.Settings;
+using Material.Icons;
 
 namespace Arise.Client.Launcher.Controllers;
 
@@ -10,8 +11,10 @@ public sealed partial class SettingsController : ViewController
     [UriValidation]
     private string _serverAddress = string.Empty;
 
-    public SettingsController(IServiceProvider services, LauncherSettingsManager launcherSettingsManager)
-        : base(services)
+    public override MaterialIconKind IconKind => MaterialIconKind.Settings;
+
+    public SettingsController(IServiceProvider services, LauncherSettingsManager launcherSettingsManager, MainController mainController)
+        : base(services, mainController)
     {
         _settingsManager = launcherSettingsManager;
         _serverAddress = _settingsManager.Settings.ServerAddress?.ToString() ?? string.Empty;

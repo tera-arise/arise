@@ -33,15 +33,26 @@ public sealed partial class MainController : LauncherController
     private bool _isModalVisible;
 
     [ObservableProperty]
-    private ObservableObject _currentContent;
+    private ViewController _currentContent;
 
     private bool CanExecuteLogin => !string.IsNullOrEmpty(Username)
                                  && !string.IsNullOrEmpty(Password);
+
+    public IReadOnlyList<ViewController> Controllers { get; }
 
     public MainController(IServiceProvider services, MusicPlayer musicPlayer, LauncherSettingsManager launcherSettingsManager)
         : base(services)
     {
         _musicPlayer = musicPlayer;
+
+        Controllers = new List<ViewController>
+        {
+            new DefaultController(services, this),
+            new NewsController(services, this),
+            new AccountManagementController(services, this),
+            new SettingsController(services, launcherSettingsManager, this),
+        }.AsReadOnly();
+
         _currentContent = new DefaultController(services, this);
         _launcherSettingsManager = launcherSettingsManager;
 
@@ -50,9 +61,10 @@ public sealed partial class MainController : LauncherController
     }
 
     [RelayCommand]
+    [SuppressMessage("", "CA1822")]
     private void OpenSettings()
     {
-        CurrentContent = new SettingsController(Services, _launcherSettingsManager);
+        // CurrentContent = new SettingsController(Services, _launcherSettingsManager);
     }
 
     [RelayCommand]
