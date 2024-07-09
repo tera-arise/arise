@@ -1,0 +1,62 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Arise.Client.Launcher.Controls">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel>
+                <controls:StepControl>
+                    <Button Content="T1"/>
+                </controls:StepControl>
+
+                <controls:StepControl
+                    StepId="2"
+                    Header="Second step"
+                    Collapsed="True">
+                    <Button Content="T2"/>
+                </controls:StepControl>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="Grid.completed">
+        <Setter Property="Opacity" Value=".3"/>
+    </Style>
+
+    <Style Selector="controls|StepControl">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid RowDefinitions="Auto,Auto"
+                      ColumnDefinitions="Auto,*"
+                      Classes.completed="{TemplateBinding Collapsed}"
+                      IsHitTestVisible="{Binding !$parent[controls:StepControl].Collapsed}">
+
+                    <Border HorizontalAlignment="Left"
+                            Background="{DynamicResource BackgroundBrushLighter}"
+                            Width="24"
+                            Height="24"
+                            CornerRadius="100"
+                            Margin="0 0 10 0">
+                        <TextBlock Text="{TemplateBinding StepId}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Border>
+
+                    <TextBlock Text="{TemplateBinding Header}"
+                               Grid.Column="1"
+                               Foreground="{DynamicResource ThemeTextMidHighBrush}"
+                               VerticalAlignment="Center" />
+                    
+                    <ContentPresenter
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="0 12"
+                        ClipToBounds="True"
+                        x:Name="PART_StepContent"
+                        Content="{TemplateBinding Content}"/>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <!-- Add Styles Here -->
+</Styles>

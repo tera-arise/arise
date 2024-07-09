@@ -9,11 +9,7 @@
              x:DataType="modals:EmailChangeModalController"
              x:Class="Arise.Client.Launcher.Views.Modals.EmailChangeForm"
              d:DataContext="{x:Static controllers:DesignTimeControllers.EmailChange}">
-    <UserControl.Styles>
-        <Style Selector="Grid.completed">
-            <Setter Property="Opacity" Value=".3"/>
-        </Style>
-    </UserControl.Styles>
+
     <StackPanel Spacing="0"
                 VerticalAlignment="Center">
         <StackPanel.Styles>
@@ -37,33 +33,13 @@
                  Foreground="{DynamicResource ThemeTextMidBrush}" />
         </TextBlock>
 
-        <Grid ColumnDefinitions="Auto,*"
-              RowDefinitions="Auto,Auto"
-              Classes.completed="{Binding IsChangeInProgress}">
+        <controls:StepControl
+            Header="Step 1 description"
+            StepId="1"
+            Collapsed="{Binding IsChangeInProgress}">
 
-            <!--todo: bind the color to the step-->
-            <Border HorizontalAlignment="Left"
-                    Background="{DynamicResource BackgroundBrushLighter}"
-                    Width="24"
-                    Height="24"
-                    CornerRadius="100"
-                    Margin="0 0 10 0">
-                <TextBlock Text="1"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center" />
-            </Border>
-
-            <TextBlock Text="TODO: Step 1 instructions"
-                       Grid.Column="1"
-                       Foreground="{DynamicResource ThemeTextMidHighBrush}"
-                       VerticalAlignment="Center" />
-
-            <StackPanel Grid.Row="1"
-                        Grid.Column="1"
-                        Spacing="12"
-                        Margin="0 12"
-                        ClipToBounds="True"
-                        x:Name="Step1Content">
+            <StackPanel Spacing="12"
+                         x:Name="Step1Content">
 
                 <TextBox VerticalAlignment="Center"
                          Watermark="New email"
@@ -158,36 +134,16 @@
                     </Panel>
                 </Button>
             </StackPanel>
-        </Grid>
 
-        <Grid ColumnDefinitions="Auto,*"
-              RowDefinitions="Auto,Auto"
-              Classes.completed="{Binding !IsChangeInProgress}">
+        </controls:StepControl>
 
-            <!--todo: bind the color to the step-->
-            <Border HorizontalAlignment="Left"
-                    Background="{DynamicResource BackgroundBrushLighter}"
-                    Width="24"
-                    Height="24"
-                    CornerRadius="100"
-                    Margin="0 0 10 0">
-                <TextBlock Text="2"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center" />
-            </Border>
+        <controls:StepControl
+              Collapsed="{Binding !IsChangeInProgress}"
+              StepId="2"
+              Header="Step 2 description">
 
-            <TextBlock Text="TODO: Step 2 instructions"
-                       Grid.Column="1"
-                       Foreground="{DynamicResource ThemeTextMidHighBrush}"
-                       VerticalAlignment="Center" />
-
-            <StackPanel Grid.Row="1"
-                        Grid.Column="1"
-                        Spacing="12"
-                        Margin="0 12"
-                        x:Name="Step2Content"
-                        ClipToBounds="True"
-            >
+            <StackPanel Spacing="12"
+                        x:Name="Step2Content">
 
                 <TextBox VerticalAlignment="Center"
                          Watermark="Verification code"
@@ -275,7 +231,7 @@
                     </Panel>
                 </Button>
             </StackPanel>
-        </Grid>
+        </controls:StepControl>
 
     </StackPanel>
 </UserControl>
