@@ -16,7 +16,7 @@ internal sealed partial class DefaultController : ViewController
     }
 
     [RelayCommand]
-    private void Play()
+    private Task PlayAsync()
     {
         if (!_session.IsLoggedIn)
         {
@@ -28,7 +28,9 @@ internal sealed partial class DefaultController : ViewController
         }
         else
         {
-            MainController.LaunchGame();
+            return MainController.LaunchGameAsync();
         }
+
+        return Task.CompletedTask;
     }
 }
