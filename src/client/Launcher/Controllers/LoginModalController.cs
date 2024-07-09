@@ -1,14 +1,7 @@
-#define FORCE_LOGIN
-
-using Arise.Client.Gateway;
-using Arise.Client.Launcher.Settings;
-
 namespace Arise.Client.Launcher.Controllers;
 
 internal sealed partial class LoginModalController : ModalController
 {
-    private readonly GatewayClient _gatewayClient;
-
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
     private string _email = string.Empty;
@@ -26,9 +19,6 @@ internal sealed partial class LoginModalController : ModalController
     public LoginModalController(IServiceProvider services, MainController mainController)
         : base(services, mainController)
     {
-        _gatewayClient = Services.GetService<GatewayClient>()!;
-        var settingsManager = Services.GetService<LauncherSettingsManager>()!;
-        _gatewayClient.BaseAddress = settingsManager.Settings.ServerAddress;
     }
 
     [RelayCommand(CanExecute = nameof(CanExecuteLogin))]
@@ -47,10 +37,10 @@ internal sealed partial class LoginModalController : ModalController
 #if FORCE_LOGIN // find a better way of doing this when you don't have a backend
                 if (await Task.FromResult(true).ConfigureAwait(true))
 #else
-                var resp = await _gatewayClient.Rest
+                var resp = await MainController.Gateway.Rest
                     .AuthenticateAccountAsync(Email, Password).ConfigureAwait(true);
 
-                if (resp.IsSuccessStatusCode)
+                if (resp.SessionTicket != null)
 #endif
                 {
                     MainController.IsLoggedIn = true; // todo
@@ -62,6 +52,10 @@ internal sealed partial class LoginModalController : ModalController
                 {
                     // todo: handle login fail
                 }
+            }
+            catch (GatewayHttpException)
+            {
+                // todo
             }
             finally
             {

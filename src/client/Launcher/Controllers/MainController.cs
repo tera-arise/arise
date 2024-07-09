@@ -1,3 +1,4 @@
+using Arise.Client.Gateway;
 using Arise.Client.Launcher.Media;
 using Arise.Client.Launcher.Settings;
 
@@ -7,6 +8,8 @@ internal sealed partial class MainController : LauncherController
 {
     private readonly LauncherSettingsManager _launcherSettingsManager;
     private readonly MusicPlayer _musicPlayer;
+
+    public GatewayClient Gateway { get; }
 
     [ObservableProperty]
     private bool _isLoggedIn;
@@ -32,6 +35,11 @@ internal sealed partial class MainController : LauncherController
         : base(services)
     {
         _musicPlayer = musicPlayer;
+        _currentContent = new DefaultController(services, this);
+        _launcherSettingsManager = launcherSettingsManager;
+
+        Gateway = services.GetService<GatewayClient>()!;
+        Gateway.BaseAddress = _launcherSettingsManager.Settings.ServerAddress;
 
         Controllers = new List<ViewController>
         {
@@ -40,9 +48,6 @@ internal sealed partial class MainController : LauncherController
             new AccountManagementController(services, this),
             new SettingsController(services, launcherSettingsManager, this),
         }.AsReadOnly();
-
-        _currentContent = new DefaultController(services, this);
-        _launcherSettingsManager = launcherSettingsManager;
 
         IsMusicEnabled = _launcherSettingsManager.Settings.IsMusicEnabled;
     }

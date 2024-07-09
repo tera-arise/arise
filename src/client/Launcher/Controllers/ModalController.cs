@@ -2,7 +2,7 @@ namespace Arise.Client.Launcher.Controllers;
 
 internal partial class ModalController : LauncherController
 {
-    protected MainController MainController { get; set; }
+    protected MainController MainController { get; }
 
     public ModalController(IServiceProvider services, MainController mainController)
         : base(services)
