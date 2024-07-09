@@ -50,10 +50,11 @@ internal sealed class UserSession
         StatusChanged?.Invoke();
     }
 
-    public void VerifyEmailChange()
+    public void VerifyEmailChange(string newEmail)
     {
         IsChangingEmail = false;
         Password = null;
+        AccountName = newEmail;
 
         StatusChanged?.Invoke();
     }
