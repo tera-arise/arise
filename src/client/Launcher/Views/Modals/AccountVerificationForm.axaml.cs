@@ -1,7 +1,7 @@
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
-namespace Arise.Client.Launcher.Views;
+namespace Arise.Client.Launcher.Views.Modals;
 
 public partial class AccountVerificationForm : UserControl
 {

@@ -2,12 +2,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:controls="clr-namespace:Arise.Client.Launcher.Controls"
-             xmlns:controllers="clr-namespace:Arise.Client.Launcher.Controllers"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:controls="using:Arise.Client.Launcher.Controls"
+             xmlns:controllers="using:Arise.Client.Launcher.Controllers"
              xmlns:modals="clr-namespace:Arise.Client.Launcher.Controllers.Modals"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:DataType="modals:RecoverPasswordModalController"
-             x:Class="Arise.Client.Launcher.Views.RecoverPasswordForm">
+             mc:Ignorable="d"
+             d:DesignWidth="300"
+             d:DesignHeight="NaN"
+             x:DataType="modals:LoginModalController"
+             x:Class="Arise.Client.Launcher.Views.Modals.LoginForm"
+             Background="Transparent">
     <UserControl.Resources>
         <controls:EqualityConverter x:Key="equals" />
     </UserControl.Resources>
@@ -23,33 +27,40 @@
             </Style>
         </StackPanel.Styles>
         <Image Source="/../../image_logo_small.webp" />
-        <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center">
-            <Run Text="Need a hand? Enter your email and we'll get you back in with a new password."
+        <TextBlock TextWrapping="WrapWithOverflow"
+                   TextAlignment="Center">
+            <Run Text="Welcome back! Sign in with your email and password to continue."
                  Foreground="{DynamicResource ThemeTextMidBrush}" />
         </TextBlock>
         <TextBox VerticalAlignment="Center"
                  Watermark="Email"
                  x:Name="EmailTextBox"
-				 controls:AttachedCommandBehavior.Command="{Binding ConfirmCommand}"
+				 controls:AttachedCommandBehavior.Command="{Binding LoginCommand}"
 				 controls:AttachedCommandBehavior.Trigger="Enter"
                  Text="{Binding Email, Mode=TwoWay}"
 				 Loaded="EmailTextBox_OnLoaded"
                  />
+        <TextBox PasswordChar="•"
+                 Watermark="Password"
+                 VerticalAlignment="Center"
+                 Text="{Binding Password, Mode=TwoWay}"
+                 controls:AttachedCommandBehavior.Command="{Binding LoginCommand}"
+                 controls:AttachedCommandBehavior.Trigger="Enter"/>
         <Button CornerRadius="8"
                 Classes="main"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Height="{Binding #EmailTextBox.Bounds.Height}"
-                Command="{Binding ConfirmCommand}">
+                Command="{Binding LoginCommand}">
             <Panel>
-                <TextBlock Text="Confirm"
+                <TextBlock Text="Login"
                            VerticalAlignment="Center"
                            IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.None}}" />
-                <TextBlock Text="Request failed. Click to retry."
+                <TextBlock Text="Login failed. Click to retry."
                            VerticalAlignment="Center"
                            IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Failed}}" />
-                <TextBlock Text="New password sent!"
+                <TextBlock Text="Login successful!"
                            VerticalAlignment="Center"
                            IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Successful}}" />
                 <Arc Stroke="{DynamicResource ThemeTextHighBrush}"
@@ -111,12 +122,43 @@
                 </Arc>
             </Panel>
         </Button>
-        <Button Content="Go back"
-                CornerRadius="8"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Height="{Binding #EmailTextBox.Bounds.Height}"
-                Command="{Binding GoBackCommand}" />
+        <StackPanel VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Margin="0 10 0 0">
+            <TextBlock Text="No account yet?"
+                       FontSize="10"
+                       HorizontalAlignment="Center" />
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <TextBlock Text="Create one "
+                           FontSize="10"
+                           Foreground="{DynamicResource MainBrush}"
+                           Cursor="Hand"
+                           controls:AttachedCommandBehavior.Command="{Binding RegisterCommand}" />
+                <TextBlock Text="now and start your own adventure!"
+                           FontSize="10"
+                           Foreground="{DynamicResource ThemeTextMidBrush}" />
+            </StackPanel>
+        </StackPanel>
+        <StackPanel VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <TextBlock Text="Can't remember your login?"
+                       FontSize="10"
+                       HorizontalAlignment="Center" />
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <TextBlock Text="No time to waste, "
+                           FontSize="10"
+                           Foreground="{DynamicResource ThemeTextMidBrush}" />
+                <TextBlock Text="recover it"
+                           FontSize="10"
+                           Foreground="{DynamicResource MainBrush}"
+                           Cursor="Hand"
+                           controls:AttachedCommandBehavior.Command="{Binding RecoverPasswordCommand}" />
+                <TextBlock Text=" and rejoin the fun!"
+                           FontSize="10"
+                           Foreground="{DynamicResource ThemeTextMidBrush}" />
+            </StackPanel>
+        </StackPanel>
     </StackPanel>
 </UserControl>

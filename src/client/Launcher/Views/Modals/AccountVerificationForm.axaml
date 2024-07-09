@@ -10,7 +10,7 @@
              xmlns:controls="using:Arise.Client.Launcher.Controls"
              xmlns:controllers="using:Arise.Client.Launcher.Controllers"
              xmlns:modals="clr-namespace:Arise.Client.Launcher.Controllers.Modals"
-             x:Class="Arise.Client.Launcher.Views.AccountVerificationForm">
+             x:Class="Arise.Client.Launcher.Views.Modals.AccountVerificationForm">
     <StackPanel Spacing="10">
         <StackPanel.Styles>
             <Style Selector="TextBox">

@@ -1,20 +1,20 @@
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
-namespace Arise.Client.Launcher.Views;
+namespace Arise.Client.Launcher.Views.Modals;
 
-public partial class LoginForm : UserControl
+public partial class RegistrationForm : UserControl
 {
-    public LoginForm()
+    public RegistrationForm()
     {
         InitializeComponent();
     }
 
     private void EmailTextBox_OnLoaded(object? sender, RoutedEventArgs e)
     {
-        if (sender is InputElement s)
+        if (sender is InputElement i)
         {
-            _ = s.Focus();
+            _ = i.Focus();
         }
     }
 }

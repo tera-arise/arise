@@ -10,7 +10,7 @@
              d:DesignWidth="300"
              d:DesignHeight="NaN"
              x:DataType="modals:RegistrationModalController"
-             x:Class="Arise.Client.Launcher.Views.RegistrationForm"
+             x:Class="Arise.Client.Launcher.Views.Modals.RegistrationForm"
              Background="Transparent">
     <StackPanel Spacing="10">
         <StackPanel.Styles>
