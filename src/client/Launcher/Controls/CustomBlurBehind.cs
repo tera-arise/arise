@@ -52,6 +52,7 @@ public sealed class CustomBlurBehind : Control
     static CustomBlurBehind()
     {
         AffectsRender<CustomBlurBehind>(MaterialProperty);
+        AffectsRender<CustomBlurBehind>(CornerRadiusProperty);
     }
 
     public override void Render(DrawingContext context)
