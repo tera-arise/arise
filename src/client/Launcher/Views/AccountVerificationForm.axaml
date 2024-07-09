@@ -152,7 +152,7 @@
                                                    Foreground="{DynamicResource MainBrush}"
                                                    Cursor="Hand"
                                                    FontSize="10"
-                                                   controls:CommandBehavior.Command="{Binding ResendEmailCommand}" />
+                                                   controls:AttachedCommandBehavior.Command="{Binding ResendEmailCommand}" />
                                         <TextBlock Text=" to resend it!"
                                                    Foreground="{DynamicResource ThemeTextMidBrush}"
                                                    FontSize="10" />
@@ -216,7 +216,7 @@
                                                    Foreground="{DynamicResource MainBrush}"
                                                    Cursor="Hand"
                                                    FontSize="10"
-                                                   controls:CommandBehavior.Command="{Binding ResendEmailCommand}" />
+                                                   controls:AttachedCommandBehavior.Command="{Binding ResendEmailCommand}" />
                                         <TextBlock Text=" to try again."
                                                    Foreground="{DynamicResource ThemeTextMidBrush}"
                                                    FontSize="10" />
