@@ -34,12 +34,14 @@
         </Style>
     </Window.Styles>
 
-    <Grid RowDefinitions="48,*">
-        
+    <Grid RowDefinitions="Auto,*"
+          ColumnDefinitions="48,*">
+
         <Image Source="../../image_background.webp"
-                       Stretch="Fill"
-                       IsHitTestVisible="False"
-                       Grid.RowSpan="2" >
+               Stretch="Fill"
+               IsHitTestVisible="False"
+               Grid.RowSpan="2"
+               Grid.ColumnSpan="2">
             <Image.OpacityMask>
                 <LinearGradientBrush StartPoint="0 0" EndPoint="0% 100%">
                     <LinearGradientBrush.GradientStops>
@@ -52,17 +54,22 @@
 
         <!--Title bar-->
         <Grid VerticalAlignment="Stretch"
+              Grid.Column="1"
               ColumnDefinitions="Auto,*"
               Margin="8">
             <Grid.Styles>
                 <Style Selector="Button">
-                    <Setter Property="Background" Value="{DynamicResource DefaultButtonBackground}" />
+                    <Setter Property="Background" Value="Transparent" />
                     <Setter Property="CornerRadius" Value="8" />
-                    <Setter Property="Height" Value="24" />
-                    <Setter Property="Width" Value="24" />
+                    <Setter Property="Height" Value="28" />
+                    <Setter Property="Width" Value="28" />
+                </Style>
+                <Style Selector="Button:disabled /template/ ContentPresenter">
+                    <Setter Property="Background" Value="Transparent" />
                 </Style>
             </Grid.Styles>
 
+            <!--Logo-->
             <Rectangle RadiusX="8"
                        RadiusY="8"
                        Height="24"
@@ -75,12 +82,14 @@
                 </Rectangle.Fill>
             </Rectangle>
 
+            <!--Title-->
             <TextBlock Text="TERA Arise"
                        Grid.ColumnSpan="2"
                        IsHitTestVisible="False"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"/>
 
+            <!--Buttons-->
             <StackPanel Orientation="Horizontal"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
@@ -94,9 +103,9 @@
                         >
                     <StackPanel Orientation="Horizontal">
                         <avalonia:MaterialIcon Kind="Account"
-                                               IsVisible="{Binding IsLoggedIn}"/>
+                                               IsVisible="{Binding IsLoggedIn}"
+                                               Margin="0 0 4 0"/>
                         <TextBlock Text="{Binding CurrentAccountName}"
-                                   Margin="4 0 0 0"
                                    VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
@@ -105,30 +114,68 @@
                     <avalonia:MaterialIcon Kind="Settings" />
                 </Button>
 
-                <Button x:Name="MinimizeButton" Click="OnMinimizeClick">
+                <Button x:Name="MinimizeButton"
+                        Click="OnMinimizeClick">
                     <avalonia:MaterialIcon Kind="WindowMinimize" />
                 </Button>
 
-                <Button x:Name="CloseButton" Click="OnCloseClick">
+                <Button x:Name="CloseButton"
+                        Click="OnCloseClick">
                     <avalonia:MaterialIcon Kind="Close" />
                 </Button>
 
             </StackPanel>
         </Grid>
-        
-        <!--<Image Source="../../image_logo.webp"
-               IsHitTestVisible="False"
-               Stretch="Uniform"
-               Width="280"
-               Grid.Row="1" />-->
 
+
+        <!--Side bar-->
+        <Border Background="{DynamicResource WindowBackground}"
+                Grid.RowSpan="2"
+                Padding="8">
+            <Border.Styles>
+                <Style Selector="Button">
+                    <Setter Property="CornerRadius" Value="8"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Height" Value="{Binding $self.Bounds.Width}"/>
+                </Style>
+                <Style Selector="Button:disabled /template/ ContentPresenter">
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+            </Border.Styles>
+            <StackPanel VerticalAlignment="Top"
+                        HorizontalAlignment="Center">
+                <!--<Button>
+                    <avalonia:MaterialIcon Kind="ArrowBack"/>
+                </Button>-->
+                <Button>
+                    <avalonia:MaterialIcon Kind="Home"/>
+                </Button>
+                <Button>
+                    <avalonia:MaterialIcon Kind="Newspaper"/>
+                </Button>
+                <Button>
+                    <avalonia:MaterialIcon Kind="Account"/>
+                </Button>
+                <Button Command="{Binding OpenSettingsCommand}">
+                    <avalonia:MaterialIcon Kind="Settings"/>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!--Main content-->
         <ContentControl
             Content="{Binding CurrentContent}"
-            Grid.Row="1"/>
+            Grid.Row="1"
+            Grid.Column="1"/>
+        <!-- <views:DefaultView
+            Grid.Row="1"
+            Grid.Column="1"/> -->
 
+        <!--Modal-->
         <Border x:Name="ModalDarkening"
                 Background="#6000"
                 Grid.RowSpan="2"
+                Grid.ColumnSpan="2"
                 IsHitTestVisible="{Binding IsModalVisible}"
                 Classes.visible="{Binding IsModalVisible}"
                 >
