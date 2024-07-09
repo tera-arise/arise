@@ -20,7 +20,8 @@ internal sealed class WindowLocatorDataTemplate : IDataTemplate
 
     public bool Match(object? data)
     {
-        return data is LauncherController;
+        return data is LauncherController 
+            && data!.GetType().FullName!.Contains("Window", StringComparison.Ordinal);
     }
 
     public Control Build(object? param)

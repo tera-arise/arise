@@ -29,7 +29,7 @@
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
         <!--9A2B70,76024F,6E014B,D764A1,412831 palette from arise logo-->
-        <SolidColorBrush x:Key="AccentBrush" Color="#9A2B70"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="#CC3391"/>
 
         <!--not working; figure it out later-->
         <!--<FontFamily x:Key="Quicksand">avares://Fonts#Quicksand Light</FontFamily>-->

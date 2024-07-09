@@ -17,7 +17,7 @@
         <Style Selector="#CloseButton:pressed /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource CloseButtonPressedBackground}" />
         </Style>
-        <!--this is slow on first display (even without transition)
+        <!--todo: this is slow on first display (even without transition)
             need to figure out a way to fix it; maybe render
             the form outside of the window (or under the background image)
             as soon as the window is loaded, then hide it and bring it
@@ -45,6 +45,7 @@
                     <Setter Property="Background" Value="{DynamicResource DefaultButtonBackground}" />
                     <Setter Property="CornerRadius" Value="8" />
                     <Setter Property="Height" Value="24" />
+                    <Setter Property="Width" Value="24" />
                 </Style>
             </Grid.Styles>
 
@@ -68,13 +69,14 @@
 
             <StackPanel Orientation="Horizontal"
                         Grid.Column="1"
-                        HorizontalAlignment="Right">
+                        HorizontalAlignment="Right"
+                        Spacing="6">
 
                 <Button x:Name="AccountButton"
                         FontSize="10"
-                        Margin="0 0 6 0"
                         Padding="6 0"
                         Command="{Binding ShowAccountPopupCommand}"
+                        Width="NaN"
                         >
                     <StackPanel Orientation="Horizontal">
                         <avalonia:MaterialIcon Kind="Account"
@@ -85,16 +87,15 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="MinimizeButton"
-                        Width="24"
-                        Click="OnMinimizeClick">
+                <Button x:Name="SettingsButton" Command="{Binding OpenSettingsCommand}">
+                    <avalonia:MaterialIcon Kind="Settings" />
+                </Button>
+                
+                 <Button x:Name="MinimizeButton" Click="OnMinimizeClick">
                     <avalonia:MaterialIcon Kind="WindowMinimize" />
                 </Button>
 
-                <Button x:Name="CloseButton"
-                      Width="24"
-                      Margin="6 0 0 0"
-                      Click="OnCloseClick">
+                <Button x:Name="CloseButton" Click="OnCloseClick">
                     <avalonia:MaterialIcon Kind="Close" />
                 </Button>
 
@@ -105,33 +106,16 @@
                IsHitTestVisible="False"
                Grid.Row="1" />
 
-        <controls:AcrylicBorder
-            Width="300"
-            Height="200"
-            Grid.Row="1"
-            BoxShadow="0 10 15 0 #6000"
-            >
-            <controls:AcrylicBorder.Transitions>
-                <Transitions>
-                    <CornerRadiusTransition Property="CornerRadius" Duration="0:0:0.50"/>
-                </Transitions>
-            </controls:AcrylicBorder.Transitions>
-        </controls:AcrylicBorder>
-        
         <!--<Image Source="../../image_logo.webp"
                IsHitTestVisible="False"
                Stretch="Uniform"
                Width="280"
                Grid.Row="1" />-->
 
-        <!--this should only be visible in dev builds
-            (also move it to settings later)-->
-        <TextBox Text="{Binding ServerAddress, Mode=TwoWay}"
-                 Grid.Row="1"
-                 VerticalAlignment="Top"
-                 Watermark="Server address"
-                 />
-
+        <ContentControl
+            Content="{Binding CurrentContent}"
+            Grid.Row="1"/>
+       
         <Border x:Name="ModalDarkening"
                 Background="#5000"
                 Grid.RowSpan="2"
