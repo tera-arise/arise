@@ -61,7 +61,7 @@
                 VerticalContentAlignment="Center"
                 Height="{Binding #UsernameTextBox.Bounds.Height}"
                 Command="{Binding LoginCommand}"
-                Background="{DynamicResource AccentBrush}"
+                Background="{DynamicResource MainBrush}"
                         />
         <CheckBox Grid.Row="4"
                   Content="Remember me"
@@ -78,7 +78,7 @@
                    Grid.Row="4"
                    Padding="0 1 0 0"
                    FontSize="10"
-                   Foreground="{DynamicResource AccentBrush}"
+                   Foreground="{DynamicResource MainBrush}"
                    Cursor="Hand"
                    controls:CommandBehavior.Command="{Binding RecoverPasswordCommand}"
                            />
@@ -92,7 +92,7 @@
             <TextBlock Text="You don't have an account? " FontSize="10"/>
             <TextBlock Text="Register"
                        FontSize="10"
-                       Foreground="{DynamicResource AccentBrush}"
+                       Foreground="{DynamicResource MainBrush}"
                        Cursor="Hand"
                        controls:CommandBehavior.Command="{Binding RegisterCommand}"
                                />
