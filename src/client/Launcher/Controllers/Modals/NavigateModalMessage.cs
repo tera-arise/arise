@@ -1,4 +1,4 @@
-namespace Arise.Client.Launcher.Controllers;
+namespace Arise.Client.Launcher.Controllers.Modals;
 
 internal sealed class NavigateModalMessage
 {

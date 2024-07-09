@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.Messaging;
 
-namespace Arise.Client.Launcher.Controllers;
+namespace Arise.Client.Launcher.Controllers.Modals;
 
 internal partial class ModalController : LauncherController
 {
@@ -16,12 +16,12 @@ internal partial class ModalController : LauncherController
     }
 
     [RelayCommand]
-    protected static void CloseModal()
+    public static void CloseModal()
     {
         _ = WeakReferenceMessenger.Default.Send(new NavigateModalMessage(null));
     }
 
-    protected static void NavigateTo<TModal>()
+    public static void NavigateTo<TModal>()
         where TModal : ModalController
     {
         _ = WeakReferenceMessenger.Default.Send(new NavigateModalMessage(typeof(TModal)));

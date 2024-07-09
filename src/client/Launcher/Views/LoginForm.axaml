@@ -5,10 +5,11 @@
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:controls="using:Arise.Client.Launcher.Controls"
              xmlns:controllers="using:Arise.Client.Launcher.Controllers"
+             xmlns:modals="clr-namespace:Arise.Client.Launcher.Controllers.Modals"
              mc:Ignorable="d"
              d:DesignWidth="300"
              d:DesignHeight="NaN"
-             x:DataType="controllers:LoginModalController"
+             x:DataType="modals:LoginModalController"
              x:Class="Arise.Client.Launcher.Views.LoginForm"
              Background="Transparent">
     <UserControl.Resources>

@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using Arise.Client.Gateway;
+using Arise.Client.Launcher.Controllers.Modals;
 using Arise.Client.Launcher.Media;
 using Arise.Client.Launcher.Settings;
 using Avalonia.Layout;
