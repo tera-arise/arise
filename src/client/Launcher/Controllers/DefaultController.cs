@@ -1,4 +1,5 @@
 using Arise.Client.Launcher.Controllers.Modals;
+using CommunityToolkit.Mvvm.Messaging;
 using Material.Icons;
 
 namespace Arise.Client.Launcher.Controllers;
@@ -9,13 +10,24 @@ internal sealed partial class DefaultController : ViewController
 
     public override MaterialIconKind IconKind => MaterialIconKind.Home;
 
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(PlayCommand))]
+    private bool _canPlay = true;
+
     public DefaultController(IServiceProvider services, MainController mainController)
         : base(services, mainController)
     {
         _session = services.GetService<UserSession>()!;
+
+        WeakReferenceMessenger.Default.Register<NavigateModalMessage>(this, OnNavigateModalMessage);
     }
 
-    [RelayCommand]
+    private void OnNavigateModalMessage(object recipient, NavigateModalMessage message)
+    {
+        CanPlay = message.ModalType is null;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanPlay))]
     private Task PlayAsync()
     {
         if (!_session.IsLoggedIn)
