@@ -7,14 +7,11 @@
              xmlns:controllers="using:Arise.Client.Launcher.Controllers"
              xmlns:modals="clr-namespace:Arise.Client.Launcher.Controllers.Modals"
              mc:Ignorable="d"
-             d:DesignWidth="300"
+             Width="280"
              d:DesignHeight="NaN"
              x:DataType="modals:LoginModalController"
              x:Class="Arise.Client.Launcher.Views.Modals.LoginForm"
              Background="Transparent">
-    <UserControl.Resources>
-        <controls:EqualityConverter x:Key="equals" />
-    </UserControl.Resources>
     <StackPanel Spacing="10">
         <StackPanel.Styles>
             <Style Selector="TextBox">
