@@ -353,10 +353,11 @@
                                 <DataTemplate DataType="modals:EmailChangeModalController">
                                     <modalviews:EmailChangeForm />
                                 </DataTemplate>
-                                <!-- <DataTemplate DataType="modals:PasswordChangeModalController">
+                                 <DataTemplate DataType="modals:PasswordChangeModalController">
+                                    <modalviews:PasswordChangeForm/>
                                 </DataTemplate>
-                                <DataTemplate DataType="modals:AccountDeletionModalController">
-                                </DataTemplate> -->
+                                <!--<DataTemplate DataType="modals:AccountDeletionModalController">-->
+                                <!--</DataTemplate>--> 
                             </TransitioningContentControl.DataTemplates>
                         </TransitioningContentControl>
                     </Panel>

@@ -83,7 +83,7 @@
 
                 <Button CornerRadius="100"
                          Classes="main"
-                         HorizontalAlignment="Right"
+                         HorizontalAlignment="Stretch"
                          HorizontalContentAlignment="Center"
                          VerticalContentAlignment="Center"
                         Command="{Binding RequestChangeCommand}"

@@ -13,6 +13,8 @@ internal static class DesignTimeControllers
 
     public static EmailChangeModalController EmailChange { get; }
 
+    public static PasswordChangeModalController PasswordChange { get; }
+
     static DesignTimeControllers()
     {
         var services = new ServiceCollection()
@@ -44,5 +46,6 @@ internal static class DesignTimeControllers
             "123");
 
         EmailChange = new EmailChangeModalController(services, Main);
+        PasswordChange = new PasswordChangeModalController(services, Main);
     }
 }

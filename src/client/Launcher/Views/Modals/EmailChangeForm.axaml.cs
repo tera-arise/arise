@@ -9,6 +9,7 @@ using Cue = Avalonia.Animation.Cue;
 
 namespace Arise.Client.Launcher.Views.Modals;
 
+// todo: refactor all this stuff in a proper control
 public partial class EmailChangeForm : UserControl
 {
     private double _step1Size;
@@ -140,13 +141,5 @@ public partial class EmailChangeForm : UserControl
         {
             _ = s.Focus();
         }
-    }
-
-    private void Step1Content_OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
-    {
-    }
-
-    private void Step2Content_OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
-    {
     }
 }
