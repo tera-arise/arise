@@ -6,21 +6,17 @@
         x:DataType="controllers:MainController"
         Width="1280"
         Height="720"
-        Padding="0"
-        CanResize="False"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="NoChrome"
-        Background="#222222"
-        RequestedThemeVariant="Dark">
+        RequestedThemeVariant="Dark"
+        >
     <Window.Styles>
         <Style Selector="#CloseButton:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="DarkRed" />
+            <Setter Property="Background" Value="{DynamicResource CloseButtonPointerOverBackground}" />
         </Style>
         <Style Selector="#CloseButton:pressed /template/ ContentPresenter">
-            <Setter Property="Background" Value="Red" />
+            <Setter Property="Background" Value="{DynamicResource CloseButtonPressedBackground}" />
         </Style>
         <Style Selector="Button">
-            <Setter Property="Background" Value="#1fff" />
+            <Setter Property="Background" Value="{DynamicResource DefaultButtonBackground}" />
             <Setter Property="CornerRadius" Value="8" />
         </Style>
     </Window.Styles>

@@ -9,6 +9,8 @@
         <Setter Property="CanResize" Value="False" />
         <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
         <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="25" />
-        <Setter Property="Padding" Value="25, 50, 25, 25" />
+        <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="{DynamicResource WindowBackground}" />
     </Style>
 </Styles>

@@ -5,7 +5,24 @@
     <Application.Styles>
         <FluentTheme />
         <icons:MaterialIconStyles />
-
         <StyleInclude Source="/Launcher/Styles/Window.axaml" />
     </Application.Styles>
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="WindowBackground" Color="#eee"/>
+                    <SolidColorBrush x:Key="CloseButtonPointerOverBackground" Color="Red"/>
+                    <SolidColorBrush x:Key="CloseButtonPressedBackground" Color="DarkRed"/>
+                    <SolidColorBrush x:Key="DefaultButtonBackground" Color="#1000"/>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="WindowBackground" Color="#222"/>
+                    <SolidColorBrush x:Key="CloseButtonPointerOverBackground" Color="DarkRed"/>
+                    <SolidColorBrush x:Key="CloseButtonPressedBackground" Color="Red"/>
+                    <SolidColorBrush x:Key="DefaultButtonBackground" Color="#1fff"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>
