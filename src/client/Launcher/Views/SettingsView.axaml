@@ -15,6 +15,6 @@
                  Watermark="Server address" />
         <Button Command="{Binding ApplyCommand}"
                 Content="Apply"
-                Classes="main"/>
+                Classes="main" />
     </StackPanel>
 </UserControl>

@@ -210,7 +210,6 @@
                 </TabControl.Transitions> -->
             </TabControl>
             <!-- Modal -->
-
             <Panel x:Name="ModalDarkening"
                    IsHitTestVisible="{Binding IsModalVisible}"
                    Classes.visible="{Binding IsModalVisible}"
@@ -220,9 +219,9 @@
                     <LinearGradientBrush StartPoint="0% 0%"
                                          EndPoint="100% 100%"
                                          Opacity=".85">
-                        <GradientStop Color="{DynamicResource BackgroundDarkColor}"/>
+                        <GradientStop Color="{DynamicResource BackgroundDarkColor}" />
                         <GradientStop Color="{DynamicResource BackgroundLightColor}"
-                                      Offset="1"/>
+                                      Offset="1" />
                     </LinearGradientBrush>
                 </Panel.Background>
                 <Panel.Transitions>
@@ -241,26 +240,25 @@
                 </Panel.Transitions>
                 <Panel>
                     <Panel.OpacityMask>
-                        <ImageBrush Source="/../../cross_pattern1.png"
-                                    />
+                        <ImageBrush Source="/../../cross_pattern1.png" />
                     </Panel.OpacityMask>
                     <Rectangle HorizontalAlignment="Stretch"
                                VerticalAlignment="Stretch">
                         <Rectangle.Fill>
                             <LinearGradientBrush>
                                 <GradientStop Offset="1"
-                                              Color="White"/>
+                                              Color="White" />
                                 <GradientStop Offset="0"
-                                              Color="{DynamicResource BackgroundLightColor}"/>
+                                              Color="{DynamicResource BackgroundLightColor}" />
                             </LinearGradientBrush>
                         </Rectangle.Fill>
                         <Rectangle.OpacityMask>
                             <LinearGradientBrush StartPoint="50% 0%"
                                                  EndPoint="120% 120%">
                                 <GradientStop Offset="0"
-                                              Color="Transparent"/>
+                                              Color="Transparent" />
                                 <GradientStop Offset="1"
-                                              Color="#2fff"/>
+                                              Color="#2fff" />
                             </LinearGradientBrush>
                         </Rectangle.OpacityMask>
                     </Rectangle>
@@ -270,7 +268,7 @@
                        HorizontalAlignment="Right"
                        Margin="0 -100 -50 -100">
                     <Image.RenderTransform>
-                        <ScaleTransform ScaleX="-1"/>
+                        <ScaleTransform ScaleX="-1" />
                     </Image.RenderTransform>
                 </Image>
                 <Button CornerRadius="50"
@@ -280,10 +278,9 @@
                         Margin="50"
                         Command="{Binding CurrentModalController.CloseModalCommand}">
                     <StackPanel Orientation="Horizontal"
-                                Spacing="10"
-                                >
-                        <icons:MaterialIcon Kind="ArrowBack"/>
-                        <TextBlock Text="Back"/>
+                                Spacing="10">
+                        <icons:MaterialIcon Kind="ArrowBack" />
+                        <TextBlock Text="Back" />
                     </StackPanel>
                 </Button>
                 <Border x:Name="FormContainer"
@@ -294,33 +291,29 @@
                         Margin="160 0"
                         Width="300"
                         Background="{DynamicResource BackgroundColor}">
-                    <Panel >
-
+                    <Panel>
                         <Border CornerRadius="16"
                                 Opacity="1">
                             <Border.Background>
-                                <LinearGradientBrush
-                                    StartPoint="0% 100%"
-                                    EndPoint="0% 0%">
+                                <LinearGradientBrush StartPoint="0% 100%"
+                                                     EndPoint="0% 0%">
                                     <GradientStop Offset="0"
-                                                  Color="{DynamicResource BackgroundColor}"/>
+                                                  Color="{DynamicResource BackgroundColor}" />
                                     <GradientStop Offset="1"
-                                                  Color="{DynamicResource BackgroundLightColor}"/>
+                                                  Color="{DynamicResource BackgroundLightColor}" />
                                 </LinearGradientBrush>
                             </Border.Background>
                             <Border.OpacityMask>
                                 <ImageBrush Source="/../../noise.png"
-                                            Stretch="UniformToFill"/>
+                                            Stretch="UniformToFill" />
                             </Border.OpacityMask>
                         </Border>
-
-                        <TransitioningContentControl
-                            Margin="24"
-                            Content="{Binding CurrentModalController}">
+                        <TransitioningContentControl Margin="24"
+                                                     Content="{Binding CurrentModalController}">
                             <TransitioningContentControl.PageTransition>
                                 <CompositePageTransition>
                                     <CrossFade Duration="0:0:0.20" />
-                                    <!--<PageSlide Duration="0:0:0.25"
+                                    <!-- <PageSlide Duration="0:0:0.25"
                                            Orientation="Horizontal">
                                     <PageSlide.SlideInEasing>
                                         <QuadraticEaseInOut />
@@ -328,7 +321,7 @@
                                     <PageSlide.SlideOutEasing>
                                         <QuadraticEaseInOut />
                                     </PageSlide.SlideOutEasing>
-                                </PageSlide>-->
+                                </PageSlide> -->
                                 </CompositePageTransition>
                             </TransitioningContentControl.PageTransition>
                             <TransitioningContentControl.DataTemplates>
@@ -344,15 +337,14 @@
                             </TransitioningContentControl.DataTemplates>
                         </TransitioningContentControl>
                     </Panel>
-
                 </Border>
-                <!--<StackPanel Margin="160 40"
+                <!-- <StackPanel Margin="160 40"
                             Spacing="20"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                             >
                     <Image Source="/../../image_logo_small.webp" Width="300"/>
-                </StackPanel>-->
+                </StackPanel> -->
             </Panel>
         </Grid>
     </Panel>

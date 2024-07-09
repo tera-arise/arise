@@ -22,22 +22,19 @@
             </Style>
         </StackPanel.Styles>
         <Image Source="/../../image_logo_small.webp" />
-
         <TextBlock TextWrapping="Wrap">
-            <!--<Run Text="Create an account"
+            <!-- <Run Text="Create an account"
                  FontSize="22"
                  FontWeight="DemiBold" />
             <LineBreak />
-            <LineBreak />-->
+            <LineBreak /> -->
             <Run Text="Insert a valid email and password to create a new account"
                  Foreground="{DynamicResource ThemeTextMidBrush}" />
         </TextBlock>
-
         <TextBox VerticalAlignment="Center"
                  Watermark="Email"
                  x:Name="EmailTextBox"
-                 Text="{Binding Email, Mode=TwoWay}"
-                  />
+                 Text="{Binding Email, Mode=TwoWay}" />
         <TextBox PasswordChar="•"
                  Watermark="Password"
                  VerticalAlignment="Center"
@@ -50,10 +47,9 @@
                 Height="{Binding #EmailTextBox.Bounds.Height}"
                 Command="{Binding ConfirmCommand}">
             <Panel>
-
                 <TextBlock Text="Create account"
-                              VerticalAlignment="Center"
-                              IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.None}}" />
+                           VerticalAlignment="Center"
+                           IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.None}}" />
                 <TextBlock Text="Account creation failed. Click to retry."
                            VerticalAlignment="Center"
                            IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Failed}}" />
@@ -62,7 +58,8 @@
                            IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Successful}}" />
                 <Arc Stroke="{DynamicResource ThemeTextHighBrush}"
                      StrokeThickness="3"
-                     StartAngle="0" SweepAngle="359"
+                     StartAngle="0"
+                     SweepAngle="359"
                      StrokeLineCap="Round"
                      Stretch="None"
                      IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Pending}}"

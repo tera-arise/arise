@@ -25,24 +25,20 @@
                         Value="{DynamicResource ThemeTextMidBrush}" />
             </Style>
         </StackPanel.Styles>
-
         <Image Source="/../../image_logo_small.webp" />
-
         <TextBlock TextWrapping="WrapWithOverflow">
-            <!--<Run Text="TERA Arise"
+            <!-- <Run Text="TERA Arise"
                      FontSize="22"
                      FontWeight="DemiBold" />
                 <LineBreak />
-                <LineBreak />-->
+                <LineBreak /> -->
             <Run Text="Use your email and password to login"
                  Foreground="{DynamicResource ThemeTextMidBrush}" />
         </TextBlock>
-
         <TextBox VerticalAlignment="Center"
                  Watermark="Email"
                  x:Name="EmailTextBox"
-                 Text="{Binding Email, Mode=TwoWay}"
-                />
+                 Text="{Binding Email, Mode=TwoWay}" />
         <TextBox PasswordChar="•"
                  Watermark="Password"
                  VerticalAlignment="Center"
@@ -66,13 +62,13 @@
                            IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Successful}}" />
                 <Arc Stroke="{DynamicResource ThemeTextHighBrush}"
                      StrokeThickness="3"
-                     StartAngle="0" SweepAngle="359"
+                     StartAngle="0"
+                     SweepAngle="359"
                      StrokeLineCap="Round"
                      Stretch="None"
                      IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Pending}}"
                      Width="{Binding $self.Bounds.Height}"
-                     Height="20"
-                     >
+                     Height="20">
                     <Arc.Styles>
                         <Style Selector="Arc">
                             <Style.Animations>
@@ -124,7 +120,6 @@
             </Panel>
         </Button>
         <Panel>
-
             <CheckBox Content="Remember me"
                       FontSize="10"
                       Padding="4 0 4 0"
@@ -157,6 +152,5 @@
             <TextBlock Text=" now."
                        FontSize="10" />
         </WrapPanel>
-
     </StackPanel>
 </UserControl>

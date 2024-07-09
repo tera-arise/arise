@@ -22,26 +22,24 @@
             </Style>
         </StackPanel.Styles>
         <Image Source="/../../image_logo_small.webp" />
-
         <TextBlock TextWrapping="WrapWithOverflow">
-                <!--<Run Text="TERA Arise"
+            <!-- <Run Text="TERA Arise"
                      FontSize="22"
                      FontWeight="DemiBold" />
                 <LineBreak />
-                <LineBreak />-->
-                <Run Text="Enter the verification token you received by email to verify your account."
-                     Foreground="{DynamicResource ThemeTextMidBrush}" />
-            </TextBlock>
+                <LineBreak /> -->
+            <Run Text="Enter the verification token you received by email to verify your account."
+                 Foreground="{DynamicResource ThemeTextMidBrush}" />
+        </TextBlock>
         <TextBox VerticalAlignment="Center"
-         Watermark="Verification token"
-         x:Name="TokenTextBox"
-         Text="{Binding Token, Mode=TwoWay}"
-         />
-        <!--<TextBox VerticalAlignment="Center"
+                 Watermark="Verification token"
+                 x:Name="TokenTextBox"
+                 Text="{Binding Token, Mode=TwoWay}" />
+        <!-- <TextBox VerticalAlignment="Center"
                  Watermark="Password"
                  PasswordChar="•"
                  Text="{Binding Password, Mode=TwoWay}"
-                 />-->
+                 /> -->
         <Button CornerRadius="8"
                 Classes="main"
                 HorizontalAlignment="Stretch"
@@ -51,8 +49,8 @@
                 Command="{Binding ConfirmCommand}">
             <Panel>
                 <TextBlock Text="Verify account"
-                              VerticalAlignment="Center"
-                              IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.None}}" />
+                           VerticalAlignment="Center"
+                           IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.None}}" />
                 <TextBlock Text="Account verification failed. Click to retry."
                            VerticalAlignment="Center"
                            IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Failed}}" />
@@ -61,7 +59,8 @@
                            IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Successful}}" />
                 <Arc Stroke="{DynamicResource ThemeTextHighBrush}"
                      StrokeThickness="3"
-                     StartAngle="0" SweepAngle="359"
+                     StartAngle="0"
+                     SweepAngle="359"
                      StrokeLineCap="Round"
                      Stretch="None"
                      IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Pending}}"
