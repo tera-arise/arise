@@ -8,6 +8,9 @@ internal sealed partial class AccountVerificationModalController : ModalControll
     [NotifyCanExecuteChangedFor(nameof(ConfirmCommand))]
     private string _token = string.Empty;
 
+    [ObservableProperty]
+    private ActionStatus _sendEmailActionStatus;
+
     public bool CanConfirm => !string.IsNullOrEmpty(Token)
                            && ActionStatus is not ActionStatus.Pending;
 
@@ -53,12 +56,23 @@ internal sealed partial class AccountVerificationModalController : ModalControll
     {
         try
         {
+            SendEmailActionStatus = ActionStatus.Pending;
+
             await MainController.Gateway.Rest.Accounts
                 .SendVerificationAsync(_session.AccountName!, _session.Password!)
                 .ConfigureAwait(true);
+
+            await Task.Delay(2000).ConfigureAwait(true);
+
+            SendEmailActionStatus = ActionStatus.Successful;
+
+            await Task.Delay(3000).ConfigureAwait(true);
+
+            SendEmailActionStatus = ActionStatus.None;
         }
         catch (GatewayHttpException)
         {
+            SendEmailActionStatus = ActionStatus.Failed;
         }
     }
 }

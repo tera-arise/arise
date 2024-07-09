@@ -114,24 +114,118 @@
                 VerticalContentAlignment="Center"
                 Height="{Binding #TokenTextBox.Bounds.Height}"
                 Command="{Binding CancelCommand}" />
-        <StackPanel Margin="0 10 0 0">
-            <TextBlock Text="Didn't see the email yet?"
-                       FontSize="10"
-                       HorizontalAlignment="Center" />
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Center">
-                <TextBlock Text="No problem, click "
-                           Foreground="{DynamicResource ThemeTextMidBrush}"
-                           FontSize="10" />
-                <TextBlock Text="here"
-                           Foreground="{DynamicResource MainBrush}"
-                           Cursor="Hand"
-                           FontSize="10"
-                           controls:CommandBehavior.Command="{Binding ResendEmailCommand}" />
-                <TextBlock Text=" to resend it!"
-                           Foreground="{DynamicResource ThemeTextMidBrush}"
-                           FontSize="10" />
-            </StackPanel>
-        </StackPanel>
+        <TransitioningContentControl
+            Classes.none="{Binding SendEmailActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.None}}"
+            Classes.pending="{Binding SendEmailActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Pending}}"
+            Classes.successful="{Binding SendEmailActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Successful}}"
+            Classes.failed="{Binding SendEmailActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Failed}}">
+            <TransitioningContentControl.PageTransition>
+                <CompositePageTransition>
+                    <CrossFade Duration="0:0:0.25" />
+                    <PageSlide Orientation="Vertical" Duration="0:0:0.25">
+                        <PageSlide.SlideInEasing>
+                            <QuadraticEaseInOut />
+                        </PageSlide.SlideInEasing>
+                        <PageSlide.SlideOutEasing>
+                            <QuadraticEaseInOut />
+                        </PageSlide.SlideOutEasing>
+                    </PageSlide>
+                </CompositePageTransition>
+            </TransitioningContentControl.PageTransition>
+            <TransitioningContentControl.Styles>
+                <Style Selector="TransitioningContentControl.none">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Template>
+                                <!--None-->
+                                <StackPanel Margin="0 10 0 0">
+                                    <TextBlock Text="Didn't see the email yet?"
+                                               FontSize="10"
+                                               HorizontalAlignment="Center" />
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center">
+                                        <TextBlock Text="No problem, click "
+                                                   Foreground="{DynamicResource ThemeTextMidBrush}"
+                                                   FontSize="10" />
+                                        <TextBlock Text="here"
+                                                   Foreground="{DynamicResource MainBrush}"
+                                                   Cursor="Hand"
+                                                   FontSize="10"
+                                                   controls:CommandBehavior.Command="{Binding ResendEmailCommand}" />
+                                        <TextBlock Text=" to resend it!"
+                                                   Foreground="{DynamicResource ThemeTextMidBrush}"
+                                                   FontSize="10" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Template>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style Selector="TransitioningContentControl.pending">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Template>
+                                <!--Pending-->
+                                <StackPanel Margin="0 10 0 0">
+                                    <TextBlock Text="Hang tight!"
+                                               FontSize="10"
+                                               HorizontalAlignment="Center" />
+                                    <TextBlock Text="Your email is being prepared."
+                                               HorizontalAlignment="Center"
+                                               Foreground="{DynamicResource ThemeTextMidBrush}"
+                                               FontSize="10" />
+                                </StackPanel>
+                            </Template>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style Selector="TransitioningContentControl.successful">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Template>
+                                <!--Success-->
+                                <StackPanel Margin="0 10 0 0">
+                                    <TextBlock Text="Email sent successfully!"
+                                               FontSize="10"
+                                               HorizontalAlignment="Center" />
+                                    <TextBlock Text="It's waiting for you in your inbox."
+                                               HorizontalAlignment="Center"
+                                               Foreground="{DynamicResource ThemeTextMidBrush}"
+                                               FontSize="10" />
+                                </StackPanel>
+                            </Template>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style Selector="TransitioningContentControl.failed">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Template>
+                                <!--Failed-->
+                                <StackPanel Margin="0 10 0 0">
+                                    <TextBlock Text="Uh oh, looks like we couldn't send the email."
+                                               FontSize="10"
+                                               HorizontalAlignment="Center" />
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center">
+                                        <TextBlock Text="Click "
+                                                   Foreground="{DynamicResource ThemeTextMidBrush}"
+                                                   FontSize="10" />
+                                        <TextBlock Text="here"
+                                                   Foreground="{DynamicResource MainBrush}"
+                                                   Cursor="Hand"
+                                                   FontSize="10"
+                                                   controls:CommandBehavior.Command="{Binding ResendEmailCommand}" />
+                                        <TextBlock Text=" to try again."
+                                                   Foreground="{DynamicResource ThemeTextMidBrush}"
+                                                   FontSize="10" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Template>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TransitioningContentControl.Styles>
+        </TransitioningContentControl>
     </StackPanel>
 </UserControl>
