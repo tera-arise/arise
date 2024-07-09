@@ -63,7 +63,6 @@ internal sealed partial class MainController : LauncherController
         : base(services)
     {
         _musicPlayer = services.GetService<MusicPlayer>()!;
-        _currentContent = new DefaultController(services, this);
         _launcherSettingsManager = services.GetService<LauncherSettingsManager>()!;
 
         _session = services.GetService<UserSession>()!;
@@ -74,10 +73,12 @@ internal sealed partial class MainController : LauncherController
 
         Controllers =
         [
-                        new DefaultController(services, this),
+            new DefaultController(services, this),
             new NewsController(services, this),
             new SettingsController(services, _launcherSettingsManager, this),
         ];
+
+        CurrentContent = Controllers[0];
 
         IsMusicEnabled = _launcherSettingsManager.Settings.IsMusicEnabled;
 

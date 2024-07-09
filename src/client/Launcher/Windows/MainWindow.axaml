@@ -188,41 +188,75 @@
                     </Button>
                 </StackPanel>
             </Grid>
-            <TabControl ItemsSource="{Binding Controllers}"
-                        TabStripPlacement="Left"
-                        Grid.RowSpan="2"
-                        Grid.ColumnSpan="2"
-                        ClipToBounds="False"
-                        Padding="0"
-                        Classes.blurred="{Binding IsModalVisible}"
-                        SelectedValue="{Binding CurrentContent}">
-                <TabControl.DataTemplates>
-                    <DataTemplate DataType="controllers:DefaultController">
-                        <views:DefaultView Margin="0 48 0 0" />
-                    </DataTemplate>
-                    <DataTemplate DataType="controllers:NewsController">
-                        <TextBlock Text="News here" />
-                    </DataTemplate>
-                    <DataTemplate DataType="controllers:AccountManagementController">
-                        <views:AccountManagementView/>
-                    </DataTemplate>
-                    <DataTemplate DataType="controllers:SettingsController">
-                        <views:SettingsView Margin="0 48" />
-                    </DataTemplate>
-                </TabControl.DataTemplates>
-                <TabControl.ItemTemplate>
-                    <DataTemplate DataType="controllers:ViewController">
-                        <icons:MaterialIcon Kind="{Binding IconKind}"
-                                            Margin="0 0 6 0"/>
-                    </DataTemplate>
-                </TabControl.ItemTemplate>
-                <!-- <TabControl.Transitions>
-                    <Transitions>
-                        <EffectTransition Property="Effect" Duration="0:0:0.20" />
-                        <ThicknessTransition Property="Margin" Duration="0:0:0.20" />
-                    </Transitions>
-                </TabControl.Transitions> -->
-            </TabControl>
+
+            <Grid Grid.RowSpan="2"
+                  Grid.ColumnSpan="2"
+                  ClipToBounds="False"
+                  Classes.blurred="{Binding IsModalVisible}"
+                  ColumnDefinitions="Auto,*">
+
+                <ItemsControl ItemsSource="{Binding Controllers}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="controllers:ViewController">
+                            <Button Command="{Binding ActivateCommand}"
+                                    Background="Transparent"
+                                    Margin="2"
+                                    Height="{Binding $self.Bounds.Width}">
+                                <Panel>
+
+                                    <Rectangle Fill="{DynamicResource MainBrush}"
+                                               Width="3"
+                                               Height="12"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left"
+                                               Margin="-5 0"
+                                               RadiusX="1.5"
+                                               RadiusY="1.5"
+                                               IsVisible="{Binding IsActive}"/>
+                                    <icons:MaterialIcon Kind="{Binding IconKind}"/>
+                                </Panel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                
+                <TransitioningContentControl Content="{Binding CurrentContent}"
+                                             Grid.Column="1">
+                    <TransitioningContentControl.PageTransition>
+                        <CompositePageTransition>
+                            <CrossFade Duration="0:0:0.20" />
+                            <controls:SizeTransition
+                                Duration="0:0:0.20"
+                                SizeFactor="0.97"
+                                >
+                                <controls:SizeTransition.SlideInEasing>
+                                    <QuadraticEaseOut />
+                                </controls:SizeTransition.SlideInEasing>
+                                <controls:SizeTransition.SlideOutEasing>
+                                    <QuadraticEaseOut />
+                                </controls:SizeTransition.SlideOutEasing>
+                            </controls:SizeTransition>
+                        </CompositePageTransition>
+                    </TransitioningContentControl.PageTransition>
+                    <TransitioningContentControl.DataTemplates>
+                        <DataTemplate DataType="controllers:DefaultController">
+                            <views:DefaultView Margin="0 48 0 0" />
+                        </DataTemplate>
+                        <DataTemplate DataType="controllers:NewsController">
+                            <TextBlock Text="News here"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </DataTemplate>
+                        <DataTemplate DataType="controllers:AccountManagementController">
+                            <views:AccountManagementView/>
+                        </DataTemplate>
+                        <DataTemplate DataType="controllers:SettingsController">
+                            <views:SettingsView Margin="0 48" />
+                        </DataTemplate>
+                    </TransitioningContentControl.DataTemplates>
+                </TransitioningContentControl>
+            </Grid>
             <!-- Modal -->
             <Panel x:Name="ModalDarkening"
                    IsHitTestVisible="{Binding IsModalVisible}"
@@ -353,11 +387,11 @@
                                 <DataTemplate DataType="modals:EmailChangeModalController">
                                     <modalviews:EmailChangeForm />
                                 </DataTemplate>
-                                 <DataTemplate DataType="modals:PasswordChangeModalController">
+                                <DataTemplate DataType="modals:PasswordChangeModalController">
                                     <modalviews:PasswordChangeForm/>
                                 </DataTemplate>
                                 <!--<DataTemplate DataType="modals:AccountDeletionModalController">-->
-                                <!--</DataTemplate>--> 
+                                <!--</DataTemplate>-->
                             </TransitioningContentControl.DataTemplates>
                         </TransitioningContentControl>
                     </Panel>
