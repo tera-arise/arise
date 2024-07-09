@@ -42,7 +42,7 @@
                 <TextBlock Text="Verify account"
                            VerticalAlignment="Center"
                            IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.None}}" />
-                <TextBlock Text="Account verification failed. Click to retry."
+                <TextBlock Text="Verification failed. Click to retry."
                            VerticalAlignment="Center"
                            IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Failed}}" />
                 <TextBlock Text="Account successfully verified!"

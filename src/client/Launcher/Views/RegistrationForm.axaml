@@ -46,7 +46,7 @@
                 <TextBlock Text="Create account"
                            VerticalAlignment="Center"
                            IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.None}}" />
-                <TextBlock Text="Account creation failed. Click to retry."
+                <TextBlock Text="Account creation failed. Try again."
                            VerticalAlignment="Center"
                            IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Failed}}" />
                 <TextBlock Text="Account successfully created!"
