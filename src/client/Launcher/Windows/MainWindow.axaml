@@ -126,6 +126,18 @@
                                        VerticalAlignment="Center" />
                         </StackPanel>
                     </Button>
+                    <ToggleButton x:Name="MusicToggleButton"
+                                  IsChecked="{Binding IsMusicEnabled, Mode=TwoWay}"
+                                  CornerRadius="8"
+                                  Height="28"
+                                  Width="28">
+                        <Panel>
+                            <icons:MaterialIcon Kind="MusicNoteOff"
+                                                IsVisible="{Binding !IsMusicEnabled}" />
+                            <icons:MaterialIcon Kind="MusicNote"
+                                                IsVisible="{Binding IsMusicEnabled}" />
+                        </Panel>
+                    </ToggleButton>
                     <Button x:Name="SettingsButton"
                             Command="{Binding OpenSettingsCommand}">
                         <icons:MaterialIcon Kind="Settings" />

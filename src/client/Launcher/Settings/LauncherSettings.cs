@@ -6,4 +6,6 @@ namespace Arise.Client.Launcher.Settings;
 internal sealed class LauncherSettings
 {
     public Uri? ServerAddress { get; set; }
+
+    public bool IsMusicEnabled { get; set; } = true;
 }
