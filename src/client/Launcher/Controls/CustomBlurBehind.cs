@@ -59,18 +59,23 @@ public sealed class CustomBlurBehind : Control
         var mat = Material != null
             ? (ImmutableExperimentalAcrylicMaterial)Material.ToImmutable()
             : DefaultAcrylicMaterial;
-#pragma warning disable CA2000 // todo: handle this
-        context.Custom(new BlurBehindRenderOperation(
-            mat,
-            new RoundedRect(
-                new Rect(default, Bounds.Size),
-                CornerRadius.TopLeft,
-                CornerRadius.TopRight,
-                CornerRadius.BottomRight,
-                CornerRadius.BottomLeft),
-            BlurRadius));
-#pragma warning restore CA2000
+
+        var op = new BlurBehindRenderOperation(
+                    mat,
+                    new RoundedRect(
+                        new Rect(default, Bounds.Size),
+                        CornerRadius.TopLeft,
+                        CornerRadius.TopRight,
+                        CornerRadius.BottomRight,
+                        CornerRadius.BottomLeft),
+                    BlurRadius);
+
+        context.Custom(op);
+
+        op.Dispose();
     }
+
+    // Render operation implementation
 
     private sealed class BlurBehindRenderOperation : ICustomDrawOperation
     {
@@ -85,26 +90,6 @@ public sealed class CustomBlurBehind : Control
             _material = material;
             _bounds = bounds;
             _blurRadius = blurRadius;
-        }
-
-        public bool HitTest(Point p)
-        {
-            return _bounds.ContainsExclusive(p);
-        }
-
-        private static SKColorFilter CreateAlphaColorFilter(double opacity)
-        {
-            if (opacity > 1)
-                opacity = 1;
-            var c = new byte[256];
-            var a = new byte[256];
-            for (var i = 0; i < 256; i++)
-            {
-                c[i] = (byte)i;
-                a[i] = (byte)(i * opacity);
-            }
-
-            return SKColorFilter.CreateTable(a, c, c, c);
         }
 
         public void Render(ImmediateDrawingContext context)
@@ -128,10 +113,9 @@ public sealed class CustomBlurBehind : Control
                 SKShaderTileMode.Clamp,
                 currentInvertedTransform);
 
-            using var skrrect = new SKRoundRect(new SKRect(0, 0, (float)_bounds.Rect.Width, (float)_bounds.Rect.Height));
-            skrrect.SetRectRadii(skrrect.Rect, [new SKPoint((float)_bounds.RadiiTopLeft.X, (float)_bounds.RadiiTopLeft.Y), new SKPoint((float)_bounds.RadiiTopRight.X, (float)_bounds.RadiiTopRight.Y), new SKPoint((float)_bounds.RadiiBottomRight.X, (float)_bounds.RadiiBottomRight.Y), new SKPoint((float)_bounds.RadiiBottomLeft.X, (float)_bounds.RadiiBottomLeft.Y)]);
+            using var skrrect = CreateSKRoundRect(_bounds);
 
-            // todo: fix this (it's for designer only)
+            // todo: fix this (it's for the designer only)
             if (skia.GrContext == null)
             {
                 using var designerFilter = SKImageFilter.CreateBlur(_blurRadius, _blurRadius, SKShaderTileMode.Clamp);
@@ -172,23 +156,10 @@ public sealed class CustomBlurBehind : Control
             using var acrylliPaint = new SKPaint();
             acrylliPaint.IsAntialias = true;
 
-            const double noiseOpacity = 0.0225;
-
             var tintColor = _material.TintColor;
             var tint = new SKColor(tintColor.R, tintColor.G, tintColor.B, tintColor.A);
 
-            if (_acrylicNoiseShader == null)
-            {
-                using var stream = typeof(SkiaPlatform).Assembly.GetManifestResourceStream("Avalonia.Skia.Assets.NoiseAsset_256X256_PNG.png");
-                using var bitmap = SKBitmap.Decode(stream);
-#pragma warning disable CA2000 // Elimina gli oggetti prima che siano esterni all'ambito
-                _acrylicNoiseShader = SKShader.CreateBitmap(
-                    bitmap,
-                    SKShaderTileMode.Repeat,
-                    SKShaderTileMode.Repeat)
-                    .WithColorFilter(CreateAlphaColorFilter(noiseOpacity));
-#pragma warning restore CA2000 // Elimina gli oggetti prima che siano esterni all'ambito
-            }
+            EnsureAcrylicNoiseShader();
 
             using var backdrop = SKShader.CreateColor(new SKColor(_material.MaterialColor.R, _material.MaterialColor.G, _material.MaterialColor.B, _material.MaterialColor.A));
             using var tintShader = SKShader.CreateColor(tint);
@@ -197,6 +168,56 @@ public sealed class CustomBlurBehind : Control
             acrylliPaint.Shader = compose;
             acrylliPaint.IsAntialias = true;
             skia.SkCanvas.DrawRoundRect(skrrect, acrylliPaint);
+        }
+
+        [SuppressMessage("", "CA2000")]
+        private static void EnsureAcrylicNoiseShader()
+        {
+            if (_acrylicNoiseShader != null)
+                return;
+
+            const double noiseOpacity = 0.0225;
+
+            using var stream = typeof(SkiaPlatform).Assembly.GetManifestResourceStream("Avalonia.Skia.Assets.NoiseAsset_256X256_PNG.png");
+            using var bitmap = SKBitmap.Decode(stream);
+
+            _acrylicNoiseShader = SKShader.CreateBitmap(
+                bitmap,
+                SKShaderTileMode.Repeat,
+                SKShaderTileMode.Repeat)
+                .WithColorFilter(CreateAlphaColorFilter(noiseOpacity));
+        }
+
+        private static SKRoundRect CreateSKRoundRect(RoundedRect bounds)
+        {
+            var skrrect = new SKRoundRect(new SKRect(0, 0, (float)bounds.Rect.Width, (float)bounds.Rect.Height));
+            skrrect.SetRectRadii(skrrect.Rect, [
+                new SKPoint((float)bounds.RadiiTopLeft.X, (float)bounds.RadiiTopLeft.Y),
+                new SKPoint((float)bounds.RadiiTopRight.X, (float)bounds.RadiiTopRight.Y),
+                new SKPoint((float)bounds.RadiiBottomRight.X, (float)bounds.RadiiBottomRight.Y),
+                new SKPoint((float)bounds.RadiiBottomLeft.X, (float)bounds.RadiiBottomLeft.Y)]);
+
+            return skrrect;
+        }
+
+        private static SKColorFilter CreateAlphaColorFilter(double opacity)
+        {
+            if (opacity > 1)
+                opacity = 1;
+            var c = new byte[256];
+            var a = new byte[256];
+            for (var i = 0; i < 256; i++)
+            {
+                c[i] = (byte)i;
+                a[i] = (byte)(i * opacity);
+            }
+
+            return SKColorFilter.CreateTable(a, c, c, c);
+        }
+
+        public bool HitTest(Point p)
+        {
+            return _bounds.ContainsExclusive(p);
         }
 
         public bool Equals(ICustomDrawOperation? other)
