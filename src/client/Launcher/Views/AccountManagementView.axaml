@@ -1,0 +1,202 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controllers="using:Arise.Client.Launcher.Controllers"
+             xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="700"
+             x:Class="Arise.Client.Launcher.Views.AccountManagementView"
+			 x:DataType="controllers:AccountManagementController"
+             d:DataContext="{x:Static controllers:DesignTimeControllers.AccountManagement}"
+			 Margin="0"
+             >
+    <UserControl.Background>
+        <LinearGradientBrush StartPoint="0% 0%"
+                             EndPoint="100% 100%"
+                             Opacity=".95">
+            <GradientStop Color="{DynamicResource BackgroundColorLight}" />
+            <GradientStop Color="{DynamicResource BackgroundColor}"
+                          Offset="1" />
+        </LinearGradientBrush>
+    </UserControl.Background>
+    <UserControl.Styles>
+
+        <Style Selector="StackPanel.button">
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Spacing" Value="6"/>
+        </Style>
+
+        <Style Selector="Button">
+            <Setter Property="CornerRadius" Value="100" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="16 6" />
+            <Setter Property="Margin" Value="0 6 0 0" />
+            <Setter Property="Background" Value="{DynamicResource BackgroundColorLight}" />
+            <Setter Property="BorderThickness" Value="1 1 1 1" />
+
+            <!-- 3D effect test -->
+            <!--<Setter Property="BorderBrush" >
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0% 0%" EndPoint="0% 100%">
+                        <GradientStop Offset="0" Color="{DynamicResource BackgroundColorLighter}"/>
+                        <GradientStop Offset="1" Color="{DynamicResource BackgroundColor}"/>
+
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>-->
+			<Setter Property="Effect">
+				<Setter.Value>
+					<DropShadowEffect BlurRadius="10"
+									  Color="{DynamicResource BackgroundColorDark}"
+									  Opacity=".5"
+									  OffsetX="0"
+									  OffsetY="0"
+									  />
+				</Setter.Value>
+			</Setter>
+            <Style Selector="^:pointerover /template/ ContentPresenter">
+                <Setter Property="Background"
+                        Value="{DynamicResource BackgroundBrushLighter}" />
+            </Style>
+        </Style>
+        <Style Selector="#DeleteAccountButton:pressed /template/ ContentPresenter">
+            <Setter Property="Background"
+                    Value="{DynamicResource ErrorDarkBrush}" />
+        </Style>
+        <Style Selector="#DeleteAccountButton:pointerover /template/ ContentPresenter">
+            <Setter Property="Background"
+                    Value="{DynamicResource ErrorLightBrush}" />
+        </Style>
+
+        <Style Selector="Grid.container">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+
+        <Style Selector="TextBlock.header">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+        </Style>
+        <Style Selector="TextBlock.para">
+            <Setter Property="Margin" Value="0 4" />
+            <Setter Property="Width" Value="500" />
+            <Setter Property="Grid.Row" Value="1" />
+            <Setter Property="TextWrapping" Value="WrapWithOverflow" />
+            <Setter Property="TextAlignment" Value="Left" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextMidHighBrush}" />
+        </Style>
+        <Style Selector="Separator">
+            <Setter Property="Opacity" Value=".5"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeTextDisabledBrush}"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto,*"
+		  ColumnDefinitions="2*,*">
+        <Panel Grid.RowSpan="2"
+               Grid.ColumnSpan="2">
+            <Panel.OpacityMask>
+                <ImageBrush Source="/../../cross_pattern1.png"
+							Stretch="UniformToFill" />
+            </Panel.OpacityMask>
+            <Rectangle HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch">
+                <Rectangle.Fill>
+                    <LinearGradientBrush>
+                        <GradientStop Offset="1"
+                                      Color="White" />
+                        <GradientStop Offset="0"
+                                      Color="{DynamicResource BackgroundColorLight}" />
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.OpacityMask>
+                    <LinearGradientBrush StartPoint="0% 0%"
+                                         EndPoint="120% 120%">
+                        <GradientStop Offset="0"
+                                      Color="Transparent" />
+                        <GradientStop Offset="1"
+                                      Color="#1fff" />
+                    </LinearGradientBrush>
+                </Rectangle.OpacityMask>
+            </Rectangle>
+        </Panel>
+        <Image Source="/../../sorc_elf.png"
+               Stretch="Uniform"
+               HorizontalAlignment="Right"
+               Margin="0 100 -50 -500"
+			   Opacity="1"
+			   Grid.RowSpan="2"
+			   Grid.ColumnSpan="2">
+            <Image.RenderTransform>
+                <ScaleTransform ScaleX="-1" />
+            </Image.RenderTransform>
+        </Image>
+        <TextBlock Text="Account management"
+                   FontSize="24"
+                   FontWeight="Bold"
+				   Margin="50 50 0 0" />
+        <Border Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+				Background="Transparent"
+				CornerRadius="10"
+				Padding="24"
+				BoxShadow="0 0 35 0 #0000">
+            <StackPanel Spacing="24"
+						>
+                <Grid RowDefinitions="Auto,Auto,Auto"
+					  ColumnDefinitions="Auto,Auto"
+					  Classes="container">
+                    <TextBlock Classes="header"
+							   Text="Email change" />
+                    <TextBlock Classes="para"
+							   Text="Update your email address for your account easily! You'll be asked enter your new email and confirm. We'll send a verification code via email to ensure everything's correct. You can't change the email of an unverified account." />
+                    <Button Command="{Binding ChangeEmailCommand}"
+							Grid.Row="2" >
+                        <StackPanel Classes="button">
+                            <icons:MaterialIcon Kind="EmailEditOutline"/>
+                            <TextBlock Text="Change email"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+                <Grid RowDefinitions="Auto,Auto,Auto"
+					  ColumnDefinitions="Auto,Auto"
+					  HorizontalAlignment="Stretch">
+                    <TextBlock Classes="header"
+							   Text="Password change" />
+                    <TextBlock Classes="para"
+							   Text="Feeling your password needs a boost? Swap it out for a strong one right here. Just enter your current one to confirm, then create a new fortress using uppercase, lowercase, numbers, and symbols. We'll send a verification code via email to ensure everything's correct." />
+                    <Button Command="{Binding ChangePasswordCommand}"
+							Grid.Row="2" >
+                        <StackPanel Classes="button">
+                            <icons:MaterialIcon Kind="FormTextboxPassword"/>
+                            <TextBlock Text="Change password"/>
+                        </StackPanel>
+
+                    </Button>
+                </Grid>
+                <Grid RowDefinitions="Auto,Auto,Auto"
+					  ColumnDefinitions="Auto,Auto"
+					  HorizontalAlignment="Stretch">
+                    <TextBlock Classes="header"
+							   Text="Account deletion" />
+                    <TextBlock Classes="para"
+							   Text="Waving farewell to your TERA Arise account? Remember, this is permanent. All your characters, achievements, progress, and items will be erased forever. You have 30 days after confirmation to change your mind. We'll send a verification code via email: you'll have to enter the code in the launcher in order to start the countdown. " />
+                    <Button Command="{Binding DeleteAccountCommand}"
+							Grid.Row="2"
+							x:Name="DeleteAccountButton"
+							Background="{DynamicResource ErrorDarkBrush}">
+                        <StackPanel Classes="button">
+                            <icons:MaterialIcon Kind="WarningOutline"/>
+                            <TextBlock Text="Delete account"/>
+                        </StackPanel>
+
+                    </Button>
+                </Grid>
+                <!--add conditional deletion timer and abort button-->
+            </StackPanel>
+
+        </Border>
+    </Grid>
+</UserControl>
