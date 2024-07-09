@@ -28,6 +28,8 @@ internal sealed class UserSession
 
     public string? Password { get; private set; }
 
+    public DateTime? DeletionDue { get; private set; }
+
     public bool IsLoggedIn => AccountName is not null;
 
     public void Login(string accountName, AccountsAuthenticateResponse response, string? password = null)
@@ -36,6 +38,7 @@ internal sealed class UserSession
         SessionTicket = response.SessionTicket;
         IsVerified = !response.IsVerifying;
         IsChangingEmail = response.IsChangingEmail;
+        DeletionDue = response.DeletionDue;
 
         if ((!string.IsNullOrEmpty(password) && !IsVerified)
             || IsChangingEmail)
@@ -79,6 +82,20 @@ internal sealed class UserSession
     {
         IsVerified = true;
         Password = null;
+
+        StatusChanged?.Invoke();
+    }
+
+    public void VerifyDeletion(DateTime deletionDue)
+    {
+        DeletionDue = deletionDue;
+
+        StatusChanged?.Invoke();
+    }
+
+    public void CancelDeletion()
+    {
+        DeletionDue = null;
 
         StatusChanged?.Invoke();
     }

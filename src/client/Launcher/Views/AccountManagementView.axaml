@@ -56,10 +56,10 @@
                 <Setter Property="Background" Value="{DynamicResource BackgroundBrushLighter}" />
             </Style>
         </Style>
-        <Style Selector="#DeleteAccountButton:pressed /template/ ContentPresenter">
+        <Style Selector="Button.deleteButton:pressed /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource ErrorDarkBrush}" />
         </Style>
-        <Style Selector="#DeleteAccountButton:pointerover /template/ ContentPresenter">
+        <Style Selector="Button.deleteButton:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource ErrorLightBrush}" />
         </Style>
 
@@ -84,6 +84,76 @@
             <Setter Property="Margin" Value="0" />
             <Setter Property="Background" Value="{DynamicResource ThemeTextDisabledBrush}" />
         </Style>
+
+        <Style Selector="ContentControl#Deletion.deleting">
+            <Setter Property="ContentTemplate">
+                <DataTemplate DataType="controllers:AccountManagementController">
+                    <Grid ColumnDefinitions="Auto,Auto"
+                          RowDefinitions="Auto,Auto,Auto,Auto">
+                        <TextBlock Classes="header"
+                                   Text="Account deletion" />
+                        <Border Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                Margin="0 5 0 0"
+                                HorizontalAlignment="Center"
+                                Background="#3f33"
+                                BorderBrush="#f33"
+                                BorderThickness="1"
+                                CornerRadius="30">
+                            <TextBlock HorizontalAlignment="Center"
+                                       Classes="para"
+                                       FontWeight="DemiBold"
+                                       Foreground="{StaticResource ErrorBrush}"
+                                       TextAlignment="Center">
+                                <Run Text="Account is scheduled for deletion on" />
+                                <Run Text="{Binding DeletionDue}" /><Run Text="." />
+                            </TextBlock>
+                        </Border>
+                        <TextBlock Grid.Row="2"
+                                   Classes="para">
+                            <Run Text="Hold on to your gear, adventurer! Account deletion is underway and it's scheduled for" />
+                            <Run FontWeight="DemiBold"
+                                 Foreground="{StaticResource ThemeTextHighBrush}"
+                                 Text="{Binding DeletionDue}" /><Run Text=", but there's still time to continue your adventure! Click '" /><Run FontWeight="DemiBold"
+                                 Text="Cancel account deletion" /><Run Text="' to halt the process and keep your character, items, and progress safe. Are you sure you want to abandon your epic journey?" />
+                        </TextBlock>
+                        <Button Grid.Row="3"
+                                Background="{DynamicResource ErrorDarkBrush}"
+                                Classes="deleteButton"
+                                Command="{Binding CancelAccountDeletionCommand}">
+                            <StackPanel Classes="button">
+                                <icons:MaterialIcon Kind="WarningOutline" />
+                                <TextBlock Text="Cancel account deletion" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="ContentControl#Deletion">
+            <Setter Property="ContentTemplate">
+                <DataTemplate DataType="controllers:AccountManagementController">
+                    <Grid ColumnDefinitions="Auto,Auto"
+                          RowDefinitions="Auto,Auto,Auto">
+                        <TextBlock Classes="header"
+                                   Text="Account deletion" />
+                        <TextBlock Classes="para"
+                                   Text="Waving farewell to your TERA Arise account? Remember, this is permanent. All your characters, achievements, progress, and items will be erased forever. You have 30 days after confirmation to change your mind. We'll send a verification code via email: you'll have to enter the code in the launcher in order to start the countdown." />
+                        <Button Grid.Row="2"
+                                Background="{DynamicResource ErrorDarkBrush}"
+                                Classes="deleteButton"
+                                Command="{Binding DeleteAccountCommand}"
+                                IsVisible="{Binding !CanCancelAccountDeletion}">
+                            <StackPanel Classes="button">
+                                <icons:MaterialIcon Kind="WarningOutline" />
+                                <TextBlock Text="Delete account" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </Setter>
+        </Style>
+
     </UserControl.Styles>
 
     <Grid ColumnDefinitions="2*,*"
@@ -164,24 +234,11 @@
 
                     </Button>
                 </Grid>
-                <Grid HorizontalAlignment="Stretch"
-                      ColumnDefinitions="Auto,Auto"
-                      RowDefinitions="Auto,Auto,Auto">
-                    <TextBlock Classes="header"
-                               Text="Account deletion" />
-                    <TextBlock Classes="para"
-                               Text="Waving farewell to your TERA Arise account? Remember, this is permanent. All your characters, achievements, progress, and items will be erased forever. You have 30 days after confirmation to change your mind. We'll send a verification code via email: you'll have to enter the code in the launcher in order to start the countdown. " />
-                    <Button x:Name="DeleteAccountButton"
-                            Grid.Row="2"
-                            Background="{DynamicResource ErrorDarkBrush}"
-                            Command="{Binding DeleteAccountCommand}">
-                        <StackPanel Classes="button">
-                            <icons:MaterialIcon Kind="WarningOutline" />
-                            <TextBlock Text="Delete account" />
-                        </StackPanel>
+                <ContentControl x:Name="Deletion"
+                                HorizontalAlignment="Stretch"
+                                Classes.deleting="{Binding IsDeletionPending}"
+                                Content="{Binding}" />
 
-                    </Button>
-                </Grid>
                 <!--  add conditional deletion timer and abort button  -->
             </StackPanel>
 

@@ -1,0 +1,129 @@
+<UserControl x:Class="Arise.Client.Launcher.Views.Modals.CancelAccountDeletionForm"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controllers="clr-namespace:Arise.Client.Launcher.Controllers"
+             xmlns:controls="clr-namespace:Arise.Client.Launcher.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:modals="clr-namespace:Arise.Client.Launcher.Controllers.Modals"
+             Width="330"
+             d:DesignHeight="NaN"
+             x:DataType="modals:CancelAccountDeletionModalController"
+             mc:Ignorable="d">
+    <StackPanel VerticalAlignment="Center"
+                Spacing="0">
+        <StackPanel.Styles>
+            <Style Selector="TextBox">
+                <Setter Property="Padding" Value="12" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ThemeTextMidBrush}" />
+            </Style>
+        </StackPanel.Styles>
+        <TextBlock Margin="0 0 0 20"
+                   TextAlignment="Left"
+                   TextWrapping="WrapWithOverflow">
+            <Run FontSize="24"
+                 FontWeight="DemiBold"
+                 Text="Cancel account deletion" />
+            <LineBreak />
+            <LineBreak />
+            <Run Foreground="{DynamicResource ThemeTextMidBrush}"
+                 Text="Enter your credentials to confirm that you want to cancel account deletion." />
+        </TextBlock>
+
+        <Grid ColumnDefinitions="Auto,*"
+              RowDefinitions="Auto,Auto">
+
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="0 12"
+                        ClipToBounds="True"
+                        Spacing="12">
+
+                <TextBox x:Name="EmailTextBox"
+                         VerticalAlignment="Center"
+                         controls:AttachedCommandBehavior.Command="{Binding RequestCancellationCommand}"
+                         controls:AttachedCommandBehavior.Trigger="Enter"
+                         Text="{Binding Email, Mode=TwoWay}"
+                         Watermark="Email" />
+
+                <TextBox VerticalAlignment="Center"
+                         controls:AttachedCommandBehavior.Command="{Binding RequestCancellationCommand}"
+                         controls:AttachedCommandBehavior.Trigger="Enter"
+                         PasswordChar="•"
+                         Text="{Binding Password, Mode=TwoWay}"
+                         Watermark="Password" />
+
+                <Button Height="{Binding #EmailTextBox.Bounds.Height}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Classes="main"
+                        Command="{Binding RequestCancellationCommand}"
+                        CornerRadius="100">
+                    <Panel>
+                        <TextBlock VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.None}}"
+                                   Text="Confirm" />
+                        <TextBlock VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Failed}}"
+                                   Text="Request failed. Click to retry." />
+                        <TextBlock VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Successful}}"
+                                   Text="Account deletion canceled!" />
+                        <!--  todo: deduplicate this Arc  -->
+                        <Arc Width="{Binding $self.Bounds.Height}"
+                             Height="20"
+                             IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Pending}}"
+                             StartAngle="0"
+                             Stretch="None"
+                             Stroke="{DynamicResource ThemeTextHighBrush}"
+                             StrokeLineCap="Round"
+                             StrokeThickness="3"
+                             SweepAngle="359">
+                            <Arc.Styles>
+                                <Style Selector="Arc">
+                                    <Style.Animations>
+                                        <Animation IterationCount="Infinite"
+                                                   Duration="0:0:2">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="StartAngle" Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="70%">
+                                                <Setter Property="StartAngle" Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="StartAngle" Value="360" />
+                                            </KeyFrame>
+                                        </Animation>
+                                        <Animation IterationCount="Infinite"
+                                                   Duration="0:0:2">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="RotateTransform.Angle" Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="RotateTransform.Angle" Value="360" />
+                                            </KeyFrame>
+                                        </Animation>
+                                        <Animation IterationCount="Infinite"
+                                                   Duration="0:0:2">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="SweepAngle" Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="70%">
+                                                <Setter Property="SweepAngle" Value="345" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="SweepAngle" Value="0" />
+                                            </KeyFrame>
+                                        </Animation>
+                                    </Style.Animations>
+                                </Style>
+                            </Arc.Styles>
+                        </Arc>
+                    </Panel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

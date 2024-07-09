@@ -1,8 +1,331 @@
 <UserControl x:Class="Arise.Client.Launcher.Views.Modals.AccountDeletionForm"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controllers="clr-namespace:Arise.Client.Launcher.Controllers"
+             xmlns:controls="clr-namespace:Arise.Client.Launcher.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             d:DesignHeight="450"
-             d:DesignWidth="800"
-             mc:Ignorable="d" />
+             xmlns:modals="clr-namespace:Arise.Client.Launcher.Controllers.Modals"
+             Width="330"
+             d:DesignHeight="NaN"
+             x:DataType="modals:AccountDeletionModalController"
+             mc:Ignorable="d">
+
+    <StackPanel VerticalAlignment="Center"
+                Spacing="0">
+        <StackPanel.Styles>
+            <Style Selector="TextBox">
+                <Setter Property="Padding" Value="12" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ThemeTextMidBrush}" />
+            </Style>
+        </StackPanel.Styles>
+        <TextBlock Margin="0 0 0 20"
+                   TextAlignment="Left"
+                   TextWrapping="WrapWithOverflow">
+            <Run FontSize="24"
+                 FontWeight="DemiBold"
+                 Text="Delete account" />
+            <LineBreak />
+            <LineBreak />
+            <Run Foreground="{DynamicResource ThemeTextMidBrush}"
+                 Text="To delete your account, follow these steps. You can cancel the deletion within one month of entering the verification code." />
+        </TextBlock>
+
+        <controls:StepControl Collapsed="{Binding IsDeletionRequested}"
+                              Header="Enter your email and password."
+                              StepId="1">
+
+            <StackPanel x:Name="Step1Content"
+                        Spacing="12">
+
+                <TextBox x:Name="EmailTextBox"
+                         VerticalAlignment="Center"
+                         controls:AttachedCommandBehavior.Command="{Binding RequestDeletionCommand}"
+                         controls:AttachedCommandBehavior.Trigger="Enter"
+                         Loaded="EmailTextBox_OnLoaded"
+                         Text="{Binding Email, Mode=TwoWay}"
+                         Watermark="Email" />
+
+                <TextBox VerticalAlignment="Center"
+                         controls:AttachedCommandBehavior.Command="{Binding RequestDeletionCommand}"
+                         controls:AttachedCommandBehavior.Trigger="Enter"
+                         PasswordChar="•"
+                         Text="{Binding Password, Mode=TwoWay}"
+                         Watermark="Password" />
+
+                <Button Height="{Binding #EmailTextBox.Bounds.Height}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Classes="main"
+                        Command="{Binding RequestDeletionCommand}"
+                        CornerRadius="100">
+                    <Panel>
+                        <TextBlock VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.None}}"
+                                   Text="Continue" />
+                        <TextBlock VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Failed}}"
+                                   Text="Request failed. Click to retry." />
+                        <TextBlock VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Successful}}"
+                                   Text="Request successful!" />
+                        <Arc Width="{Binding $self.Bounds.Height}"
+                             Height="20"
+                             IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Pending}}"
+                             StartAngle="0"
+                             Stretch="None"
+                             Stroke="{DynamicResource ThemeTextHighBrush}"
+                             StrokeLineCap="Round"
+                             StrokeThickness="3"
+                             SweepAngle="359">
+                            <Arc.Styles>
+                                <Style Selector="Arc">
+                                    <Style.Animations>
+                                        <Animation IterationCount="Infinite"
+                                                   Duration="0:0:2">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="StartAngle" Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="70%">
+                                                <Setter Property="StartAngle" Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="StartAngle" Value="360" />
+                                            </KeyFrame>
+                                        </Animation>
+                                        <Animation IterationCount="Infinite"
+                                                   Duration="0:0:2">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="RotateTransform.Angle" Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="RotateTransform.Angle" Value="360" />
+                                            </KeyFrame>
+                                        </Animation>
+                                        <Animation IterationCount="Infinite"
+                                                   Duration="0:0:2">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="SweepAngle" Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="70%">
+                                                <Setter Property="SweepAngle" Value="345" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="SweepAngle" Value="0" />
+                                            </KeyFrame>
+                                        </Animation>
+                                    </Style.Animations>
+                                </Style>
+                            </Arc.Styles>
+                        </Arc>
+                    </Panel>
+                </Button>
+            </StackPanel>
+
+        </controls:StepControl>
+
+        <controls:StepControl Collapsed="{Binding !IsDeletionRequested}"
+                              Header="Enter the verification token to confirm the operation."
+                              StepId="2">
+
+            <StackPanel x:Name="Step2Content"
+                        Spacing="12">
+
+                <TextBox x:Name="TokenTextBox"
+                         VerticalAlignment="Center"
+                         controls:AttachedCommandBehavior.Command="{Binding VerifyDeletionCommand}"
+                         controls:AttachedCommandBehavior.Trigger="Enter"
+                         Text="{Binding Token, Mode=TwoWay}"
+                         Watermark="Verification code" />
+
+                <Button Height="{Binding #EmailTextBox.Bounds.Height}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Classes="main"
+                        Command="{Binding VerifyDeletionCommand}"
+                        CornerRadius="100"
+                        IsVisible="True">
+                    <Panel>
+                        <TextBlock VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.None}}"
+                                   Text="Verify account deletion" />
+                        <TextBlock VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Failed}}"
+                                   Text="Verification failed. Click to retry." />
+                        <TextBlock VerticalAlignment="Center"
+                                   IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Successful}}"
+                                   Text="Account deletion started!" />
+                        <Arc Width="{Binding $self.Bounds.Height}"
+                             Height="20"
+                             IsVisible="{Binding ActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Pending}}"
+                             StartAngle="0"
+                             Stretch="None"
+                             Stroke="{DynamicResource ThemeTextHighBrush}"
+                             StrokeLineCap="Round"
+                             StrokeThickness="3"
+                             SweepAngle="359">
+                            <Arc.Styles>
+                                <Style Selector="Arc">
+                                    <Style.Animations>
+                                        <Animation IterationCount="Infinite"
+                                                   Duration="0:0:2">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="StartAngle" Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="70%">
+                                                <Setter Property="StartAngle" Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="StartAngle" Value="360" />
+                                            </KeyFrame>
+                                        </Animation>
+                                        <Animation IterationCount="Infinite"
+                                                   Duration="0:0:2">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="RotateTransform.Angle" Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="RotateTransform.Angle" Value="360" />
+                                            </KeyFrame>
+                                        </Animation>
+                                        <Animation IterationCount="Infinite"
+                                                   Duration="0:0:2">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="SweepAngle" Value="0" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="70%">
+                                                <Setter Property="SweepAngle" Value="345" />
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="SweepAngle" Value="0" />
+                                            </KeyFrame>
+                                        </Animation>
+                                    </Style.Animations>
+                                </Style>
+                            </Arc.Styles>
+                        </Arc>
+                    </Panel>
+                </Button>
+
+                <TransitioningContentControl Classes.failed="{Binding SendEmailActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Failed}}"
+                                             Classes.none="{Binding SendEmailActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.None}}"
+                                             Classes.pending="{Binding SendEmailActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Pending}}"
+                                             Classes.successful="{Binding SendEmailActionStatus, Converter={StaticResource equals}, ConverterParameter={x:Static controllers:ActionStatus.Successful}}">
+                    <TransitioningContentControl.PageTransition>
+                        <CompositePageTransition>
+                            <CrossFade Duration="0:0:0.25" />
+                            <PageSlide Orientation="Vertical"
+                                       Duration="0:0:0.25">
+                                <PageSlide.SlideInEasing>
+                                    <QuadraticEaseInOut />
+                                </PageSlide.SlideInEasing>
+                                <PageSlide.SlideOutEasing>
+                                    <QuadraticEaseInOut />
+                                </PageSlide.SlideOutEasing>
+                            </PageSlide>
+                        </CompositePageTransition>
+                    </TransitioningContentControl.PageTransition>
+                    <TransitioningContentControl.Styles>
+                        <Style Selector="TransitioningContentControl.none">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Template>
+                                        <!--  None  -->
+                                        <StackPanel Margin="0 10 0 0">
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       FontSize="10"
+                                                       Text="Didn't see the email yet?" />
+                                            <StackPanel HorizontalAlignment="Center"
+                                                        Orientation="Horizontal">
+                                                <TextBlock FontSize="10"
+                                                           Foreground="{DynamicResource ThemeTextMidBrush}"
+                                                           Text="No problem, click " />
+                                                <TextBlock controls:AttachedCommandBehavior.Command="{Binding ResendEmailCommand}"
+                                                           Cursor="Hand"
+                                                           FontSize="10"
+                                                           Foreground="{DynamicResource MainBrush}"
+                                                           Text="here" />
+                                                <TextBlock FontSize="10"
+                                                           Foreground="{DynamicResource ThemeTextMidBrush}"
+                                                           Text=" to resend it!" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Template>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style Selector="TransitioningContentControl.pending">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Template>
+                                        <!--  Pending  -->
+                                        <StackPanel Margin="0 10 0 0">
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       FontSize="10"
+                                                       Text="Hang tight!" />
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       FontSize="10"
+                                                       Foreground="{DynamicResource ThemeTextMidBrush}"
+                                                       Text="Your email is being prepared." />
+                                        </StackPanel>
+                                    </Template>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style Selector="TransitioningContentControl.successful">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Template>
+                                        <!--  Success  -->
+                                        <StackPanel Margin="0 10 0 0">
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       FontSize="10"
+                                                       Text="Email sent successfully!" />
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       FontSize="10"
+                                                       Foreground="{DynamicResource ThemeTextMidBrush}"
+                                                       Text="It's waiting for you in your inbox." />
+                                        </StackPanel>
+                                    </Template>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style Selector="TransitioningContentControl.failed">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Template>
+                                        <!--  Failed  -->
+                                        <StackPanel Margin="0 10 0 0">
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       FontSize="10"
+                                                       Text="Uh oh, looks like we couldn't send the email." />
+                                            <StackPanel HorizontalAlignment="Center"
+                                                        Orientation="Horizontal">
+                                                <TextBlock FontSize="10"
+                                                           Foreground="{DynamicResource ThemeTextMidBrush}"
+                                                           Text="Click " />
+                                                <TextBlock controls:AttachedCommandBehavior.Command="{Binding ResendEmailCommand}"
+                                                           Cursor="Hand"
+                                                           FontSize="10"
+                                                           Foreground="{DynamicResource MainBrush}"
+                                                           Text="here" />
+                                                <TextBlock FontSize="10"
+                                                           Foreground="{DynamicResource ThemeTextMidBrush}"
+                                                           Text=" to try again." />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Template>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TransitioningContentControl.Styles>
+                </TransitioningContentControl>
+
+            </StackPanel>
+        </controls:StepControl>
+
+    </StackPanel>
+</UserControl>

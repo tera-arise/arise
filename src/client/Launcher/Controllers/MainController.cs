@@ -15,50 +15,33 @@ internal sealed partial class MainController : LauncherController
 {
     private readonly LauncherSettingsManager _launcherSettingsManager;
     private readonly MusicPlayer _musicPlayer;
-
-    public GatewayClient Gateway { get; }
-
     private readonly UserSession _session;
 
     [ObservableProperty]
     private bool _isLoggedIn;
-
     [ObservableProperty]
     private bool _isVerified;
-
     [ObservableProperty]
     private bool _isChangingEmail;
-
     [ObservableProperty]
     private string _currentAccountName = string.Empty;
-
     [ObservableProperty]
     private ViewController _currentContent;
-
     [ObservableProperty]
     private bool _isMusicEnabled;
 
+    [ObservableProperty]
+    private DateTime? _deletionDue;
+
+    [NotifyPropertyChangedFor(nameof(IsModalVisible))]
+    [ObservableProperty]
     private ModalController? _currentModalController;
 
-    public ModalController? CurrentModalController
-    {
-        get => _currentModalController;
-        private set
-        {
-            if (_currentModalController == value)
-            {
-                return;
-            }
+    public ObservableCollection<ViewController> Controllers { get; }
 
-            _currentModalController = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(IsModalVisible));
-        }
-    }
+    public GatewayClient Gateway { get; }
 
     public bool IsModalVisible => CurrentModalController is not null;
-
-    public ObservableCollection<ViewController> Controllers { get; }
 
     public MainController(IServiceProvider services)
         : base(services)
@@ -107,9 +90,9 @@ internal sealed partial class MainController : LauncherController
             Margin = new Thickness(20),
         };
 
-        var c = new HttpClient();
+        using var c = new HttpClient();
 
-        var bytes = await c.GetByteArrayAsync(new Uri("https://cdn.discordapp.com/attachments/287637525038628864/1210708326581674025/71eb7b9d4cc681cf3b04f58971813b8f4e87aa0152cb9328fe91bd4d1eb0cdd6.png?ex=65eb8afe&is=65d915fe&hm=fb782507a2e288a19c2e5899ad6cd4801ebaa9c1ca76659b636408047bfb8aec&"))
+        var bytes = await c.GetByteArrayAsync(new Uri("https://i.imgur.com/TL58G2m.png"))
             .ConfigureAwait(true);
 
         sp.Children.Add(
@@ -132,7 +115,6 @@ internal sealed partial class MainController : LauncherController
 
         var lt = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
         await w.ShowDialog(lt!.MainWindow!).ConfigureAwait(false);
-        c.Dispose();
     }
 
     [RelayCommand]
@@ -174,6 +156,7 @@ internal sealed partial class MainController : LauncherController
     {
         IsVerified = _session.IsVerified && _session.IsLoggedIn;
         IsChangingEmail = _session.IsChangingEmail;
+        DeletionDue = _session.DeletionDue;
     }
 
     partial void OnIsMusicEnabledChanged(bool value)

@@ -1,20 +1,19 @@
-<Window
-    x:Class="Arise.Client.Launcher.Windows.MainWindow"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controllers="using:Arise.Client.Launcher.Controllers"
-    xmlns:controls="using:Arise.Client.Launcher.Controls"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:modals="clr-namespace:Arise.Client.Launcher.Controllers.Modals"
-    xmlns:modalviews="clr-namespace:Arise.Client.Launcher.Views.Modals"
-    xmlns:views="using:Arise.Client.Launcher.Views"
-    Width="1280"
-    Height="720"
-    d:DataContext="{x:Static controllers:DesignTimeControllers.Main}"
-    x:DataType="controllers:MainController"
-    mc:Ignorable="d">
+<Window x:Class="Arise.Client.Launcher.Windows.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controllers="using:Arise.Client.Launcher.Controllers"
+        xmlns:controls="using:Arise.Client.Launcher.Controls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:modals="clr-namespace:Arise.Client.Launcher.Controllers.Modals"
+        xmlns:modalviews="clr-namespace:Arise.Client.Launcher.Views.Modals"
+        xmlns:views="using:Arise.Client.Launcher.Views"
+        Width="1280"
+        Height="720"
+        d:DataContext="{x:Static controllers:DesignTimeControllers.Main}"
+        x:DataType="controllers:MainController"
+        mc:Ignorable="d">
     <Window.Styles>
 
         <!--
@@ -47,7 +46,8 @@
                     <EffectTransition Delay="0:0:0.20"
                                       Property="Effect"
                                       Duration="0:0:0.15" />
-                    <ThicknessTransition Property="Margin" Duration="0:0:0.15">
+                    <ThicknessTransition Property="Margin"
+                                         Duration="0:0:0.15">
                         <ThicknessTransition.Easing>
                             <QuadraticEaseInOut />
                         </ThicknessTransition.Easing>
@@ -84,6 +84,9 @@
             <Style Selector="^.emailchanging">
                 <Setter Property="Kind" Value="EmailAlertOutline" />
             </Style>
+            <Style Selector="^.deleting">
+                <Setter Property="Kind" Value="AccountAlertOutline" />
+            </Style>
         </Style>
         <Style Selector="icons|MaterialIcon#MusicToggleIcon">
             <Setter Property="Kind" Value="MusicNoteOff" />
@@ -109,7 +112,8 @@
             <Setter Property="Command" Value="{Binding CurrentModalController.CloseModalCommand}" />
             <Setter Property="Content">
                 <Template>
-                    <StackPanel Orientation="Horizontal" Spacing="10">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="10">
                         <icons:MaterialIcon Kind="ArrowBack" />
                         <TextBlock Text="Back" />
                     </StackPanel>
@@ -136,18 +140,22 @@
             <Setter Property="Flyout">
                 <!--  todo: style using https://docs.avaloniaui.net/docs/guides/custom-controls/how-to-create-a-custom-flyout  -->
                 <MenuFlyout>
-                    <MenuItem Command="{Binding ManageAccountCommand}" Header="Manage" />
-                    <MenuItem Command="{Binding LogoutCommand}" Header="Logout" />
+                    <MenuItem Command="{Binding ManageAccountCommand}"
+                              Header="Manage" />
+                    <MenuItem Command="{Binding LogoutCommand}"
+                              Header="Logout" />
                 </MenuFlyout>
             </Setter>
             <Setter Property="Content">
                 <Template>
                     <StackPanel Orientation="Horizontal">
                         <icons:MaterialIcon x:Name="AccountIcon"
+                                            Classes.deleting="{Binding DeletionDue, Converter={x:Static ObjectConverters.IsNotNull}}"
                                             Classes.emailchanging="{Binding IsChangingEmail}"
                                             Classes.notloggedin="{Binding !IsLoggedIn}"
                                             Classes.unverified="{Binding !IsVerified}" />
-                        <TextBlock VerticalAlignment="Center" Text="{Binding CurrentAccountName}" />
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{Binding CurrentAccountName}" />
                     </StackPanel>
                 </Template>
             </Setter>
@@ -166,7 +174,8 @@
             <Setter Property="IsChecked" Value="{Binding IsMusicEnabled, Mode=TwoWay}" />
             <Setter Property="Content">
                 <Template>
-                    <icons:MaterialIcon x:Name="MusicToggleIcon" Classes.enabled="{Binding IsMusicEnabled}" />
+                    <icons:MaterialIcon x:Name="MusicToggleIcon"
+                                        Classes.enabled="{Binding IsMusicEnabled}" />
                 </Template>
             </Setter>
         </Style>
@@ -183,12 +192,14 @@
             <Setter Property="RadiusY" Value="{Binding $self.RadiusX}" />
             <Setter Property="Transitions">
                 <Transitions>
-                    <DoubleTransition Property="Height" Duration="0:0:0.2">
+                    <DoubleTransition Property="Height"
+                                      Duration="0:0:0.2">
                         <DoubleTransition.Easing>
                             <BackEaseOut />
                         </DoubleTransition.Easing>
                     </DoubleTransition>
-                    <DoubleTransition Property="RadiusX" Duration="0:0:0.15" />
+                    <DoubleTransition Property="RadiusX"
+                                      Duration="0:0:0.15" />
                 </Transitions>
             </Setter>
             <Style Selector="^.active">
@@ -216,7 +227,8 @@
                             Command="{Binding ActivateCommand}"
                             CornerRadius="10">
                         <Panel>
-                            <Rectangle Classes="selector" Classes.active="{Binding IsActive}" />
+                            <Rectangle Classes="selector"
+                                       Classes.active="{Binding IsActive}" />
                             <icons:MaterialIcon Kind="{Binding IconKind}" />
                         </Panel>
                     </Button>
@@ -228,7 +240,8 @@
             <Setter Property="PageTransition">
                 <CompositePageTransition>
                     <CrossFade Duration="0:0:0.20" />
-                    <controls:SizeTransition SizeFactor="0.97" Duration="0:0:0.20">
+                    <controls:SizeTransition SizeFactor="0.97"
+                                             Duration="0:0:0.20">
                         <controls:SizeTransition.SlideInEasing>
                             <QuadraticEaseOut />
                         </controls:SizeTransition.SlideInEasing>
@@ -276,7 +289,8 @@
             </Setter>
             <Setter Property="Child">
                 <Template>
-                    <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Rectangle HorizontalAlignment="Stretch"
+                               VerticalAlignment="Stretch">
                         <Rectangle.Fill>
                             <LinearGradientBrush>
                                 <GradientStop Offset="1" Color="White" />
@@ -317,7 +331,8 @@
                 </LinearGradientBrush>
             </Setter>
             <Setter Property="OpacityMask">
-                <ImageBrush Source="/../../noise.png" Stretch="UniformToFill" />
+                <ImageBrush Source="/../../noise.png"
+                            Stretch="UniformToFill" />
             </Setter>
         </Style>
         <Style Selector="TransitioningContentControl#ModalContent">
@@ -377,7 +392,10 @@
             <modalviews:PasswordChangeForm />
         </DataTemplate>
         <DataTemplate DataType="modals:AccountDeletionModalController">
-            <TextBlock>TODO</TextBlock>
+            <modalviews:AccountDeletionForm />
+        </DataTemplate>
+        <DataTemplate DataType="modals:CancelAccountDeletionModalController">
+            <modalviews:CancelAccountDeletionForm />
         </DataTemplate>
     </Window.DataTemplates>
     <Grid x:Name="Root"
@@ -385,7 +403,8 @@
           RowDefinitions="Auto,*">
 
         <!--  Background  -->
-        <Image x:Name="BackgroundImage" Classes.blurred="{Binding IsModalVisible}" />
+        <Image x:Name="BackgroundImage"
+               Classes.blurred="{Binding IsModalVisible}" />
 
         <!--  Title bar  -->
         <Grid x:Name="TitleBar"
@@ -393,7 +412,22 @@
               ColumnDefinitions="Auto,*"
               PointerPressed="OnTitleBarPointerPressed">
             <!--  Buttons  -->
-            <StackPanel x:Name="TitleBarButtonsContainer" Grid.Column="1">
+            <StackPanel x:Name="TitleBarButtonsContainer"
+                        Grid.Column="1">
+
+                <Border Padding="8 4"
+                        Margin="0 0 0 0"
+                        VerticalAlignment="Center"
+                        Background="{StaticResource ErrorBrush}"
+                        CornerRadius="8"
+                        IsVisible="{Binding DeletionDue, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <TextBlock FontSize="12"
+                               >
+                        <Run Text="Account is scheduled for deletion on" />
+                        <Run Text="{Binding DeletionDue}" FontWeight="Bold"/>
+                    </TextBlock>
+                </Border>
+
                 <!--  Account  -->
                 <Button x:Name="AccountButton"
                         Width="NaN"
@@ -419,7 +453,8 @@
               ColumnDefinitions="Auto,*">
 
             <ItemsControl x:Name="ButtonStrip" />
-            <TransitioningContentControl x:Name="MainView" Grid.Column="1" />
+            <TransitioningContentControl x:Name="MainView"
+                                         Grid.Column="1" />
 
         </Grid>
 
