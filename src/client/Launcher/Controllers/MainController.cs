@@ -15,48 +15,48 @@ public sealed class MainController : LauncherController
     private string _password = string.Empty;
     private bool _rememberMe;
     private bool _isModalVisible;
-    private ReactiveObject _currentContent;
+    private ObservableObject _currentContent;
 
     public bool IsLoggedIn
     {
         get => _isLoggedIn;
-        set => this.RaiseAndSetIfChanged(ref _isLoggedIn, value);
+        set => SetProperty(ref _isLoggedIn, value);
     }
 
     public string CurrentAccountName
     {
         get => _currentAccountName;
-        set => this.RaiseAndSetIfChanged(ref _currentAccountName, value);
+        set => SetProperty(ref _currentAccountName, value);
     }
 
     public string Username
     {
         get => _username;
-        set => this.RaiseAndSetIfChanged(ref _username, value);
+        set => SetProperty(ref _username, value);
     }
 
     public string Password
     {
         get => _password;
-        set => this.RaiseAndSetIfChanged(ref _password, value);
+        set => SetProperty(ref _password, value);
     }
 
     public bool RememberMe
     {
         get => _rememberMe;
-        set => this.RaiseAndSetIfChanged(ref _rememberMe, value);
+        set => SetProperty(ref _rememberMe, value);
     }
 
     public bool IsModalVisible
     {
         get => _isModalVisible;
-        set => this.RaiseAndSetIfChanged(ref _isModalVisible, value);
+        set => SetProperty(ref _isModalVisible, value);
     }
 
-    public ReactiveObject CurrentContent
+    public ObservableObject CurrentContent
     {
         get => _currentContent;
-        set => this.RaiseAndSetIfChanged(ref _currentContent, value);
+        set => SetProperty(ref _currentContent, value);
     }
 
     public ICommand LoginCommand { get; }
@@ -83,12 +83,12 @@ public sealed class MainController : LauncherController
         _gatewayClient = Services.GetService<GatewayClient>()!; // todo: inject this? it requires GatewayClient to be public tho
         _gatewayClient.BaseAddress = _launcherSettingsManager.Settings.ServerAddress;
 
-        LoginCommand = ReactiveCommand.Create(LoginAsync);
-        RecoverPasswordCommand = ReactiveCommand.Create(RecoverPassword);
-        RegisterCommand = ReactiveCommand.Create(Register);
-        ShowAccountPopupCommand = ReactiveCommand.Create(ShowAccountPopup);
-        CloseModalCommand = ReactiveCommand.Create(CloseModal);
-        OpenSettingsCommand = ReactiveCommand.Create(OpenSettings);
+        LoginCommand = new AsyncRelayCommand(LoginAsync);
+        RecoverPasswordCommand = new RelayCommand(RecoverPassword);
+        RegisterCommand = new RelayCommand(Register);
+        ShowAccountPopupCommand = new RelayCommand(ShowAccountPopup);
+        CloseModalCommand = new RelayCommand(CloseModal);
+        OpenSettingsCommand = new RelayCommand(OpenSettings);
     }
 
     private void OpenSettings()

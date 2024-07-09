@@ -4,7 +4,7 @@ using Avalonia.Data;
 
 namespace Arise.Client.Launcher.Controllers;
 
-public sealed class SettingsController : LauncherController
+public sealed class SettingsController : ViewController
 {
     private readonly LauncherSettingsManager _settingsManager;
     private string _serverAddress = string.Empty;
@@ -22,7 +22,7 @@ public sealed class SettingsController : LauncherController
             {
                 using var mockClient = new HttpClient();
                 mockClient.BaseAddress = new Uri(value);
-                _ = this.RaiseAndSetIfChanged(ref _serverAddress, value);
+                _ = SetProperty(ref _serverAddress, value);
             }
             catch (Exception ex)
             {
@@ -37,8 +37,8 @@ public sealed class SettingsController : LauncherController
         _settingsManager = launcherSettingsManager;
         _serverAddress = _settingsManager.Settings.ServerAddress?.ToString() ?? string.Empty;
 
-        ApplyCommand = ReactiveCommand.Create(Apply);
-        CancelCommand = ReactiveCommand.Create(Cancel);
+        ApplyCommand = new RelayCommand(Apply);
+        CancelCommand = new RelayCommand(Cancel);
     }
 
     private void Cancel()
