@@ -4,15 +4,15 @@ namespace Arise.Client.Launcher.Controllers;
 
 public abstract partial class ViewController : ObservableValidator
 {
-    public IServiceProvider Services { get; }
+    protected MainController MainController { get; }
 
-    private readonly MainController _mainController;
+    public IServiceProvider Services { get; }
 
     public abstract MaterialIconKind IconKind { get; }
 
     protected ViewController(IServiceProvider services, MainController mainController)
     {
+        MainController = mainController;
         Services = services;
-        _mainController = mainController;
     }
 }
