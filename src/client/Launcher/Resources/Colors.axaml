@@ -1,0 +1,33 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="MainColorDark">#801f5a</Color>
+    <Color x:Key="MainColor">#CC3391</Color>
+    <Color x:Key="MainColorLight">#e858b1</Color>
+    <Color x:Key="MainColorLighter">#ff8ad2</Color>
+    <Color x:Key="BackgroundColorDark">#080f1a</Color>
+    <Color x:Key="BackgroundColor">#111e33</Color>
+    <Color x:Key="BackgroundColorLight">#1d3459</Color>
+    <Color x:Key="BackgroundColorLighter">#2d4873</Color>
+    <Color x:Key="ErrorColorDark">#aa2222</Color>
+    <Color x:Key="ErrorColor">#ff3333</Color>
+    <Color x:Key="ErrorColorLight">#ff4444</Color>
+
+    <SolidColorBrush x:Key="MainBrush"                     Color="{StaticResource MainColor}"              />
+    <SolidColorBrush x:Key="MainBrushLight"                Color="{StaticResource MainColorLight}"         />
+    <SolidColorBrush x:Key="MainBrushDark"                 Color="{StaticResource MainColorDark}"          />
+    <SolidColorBrush x:Key="TabItemHeaderSelectedPipeFill" Color="{StaticResource MainColor}"              />
+    <SolidColorBrush x:Key="BackgroundBrush"               Color="{StaticResource BackgroundColor}"        />
+    <SolidColorBrush x:Key="BackgroundBrushDark"           Color="{StaticResource BackgroundColorDark}"    />
+    <SolidColorBrush x:Key="BackgroundBrushLight"          Color="{StaticResource BackgroundColorLight}"   />
+    <SolidColorBrush x:Key="BackgroundBrushLighter"        Color="{StaticResource BackgroundColorLighter}" />
+    <SolidColorBrush x:Key="ErrorBrush"                    Color="{StaticResource ErrorColor}"             />
+    <SolidColorBrush x:Key="ErrorDarkBrush"                Color="{StaticResource ErrorColorDark}"         />
+    <SolidColorBrush x:Key="ErrorLightBrush"               Color="{StaticResource ErrorColorLight}"        />
+    <SolidColorBrush x:Key="DefaultButtonBackground"       Color="#11ffffff"                               />
+    <SolidColorBrush x:Key="ThemeTextDisabledBrush"        Color="#333f52"                                 />
+    <SolidColorBrush x:Key="ThemeTextMidBrush"             Color="#7288ab"                                 />
+    <SolidColorBrush x:Key="ThemeTextMidHighBrush"         Color="#89a2cc"                                 />
+    <SolidColorBrush x:Key="ThemeTextHighBrush"            Color="#ffffff"                                 />
+
+</ResourceDictionary>

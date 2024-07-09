@@ -1,0 +1,16 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controllers="using:Arise.Client.Launcher.Controllers"
+        x:DataType="controllers:LauncherController">
+    <Style Selector="Window">
+        <Setter Property="WindowStartupLocation" Value="CenterScreen" />
+        <Setter Property="Title" Value="{Binding Title}" />
+        <Setter Property="Icon" Value="../../arise.png" />
+        <Setter Property="CanResize" Value="False" />
+        <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
+        <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="25" />
+        <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+    </Style>
+</Styles>

@@ -1,20 +1,20 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl x:Class="Arise.Client.Launcher.Views.SettingsView"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controllers="using:Arise.Client.Launcher.Controllers"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             d:DesignWidth="800"
              d:DesignHeight="450"
-             x:Class="Arise.Client.Launcher.Views.SettingsView"
-             xmlns:controllers="using:Arise.Client.Launcher.Controllers"
-             x:DataType="controllers:SettingsController">
+             d:DesignWidth="800"
+             x:DataType="controllers:SettingsController"
+             mc:Ignorable="d">
     <StackPanel>
-        <TextBox Text="{Binding ServerAddress, Mode=TwoWay}"
+        <TextBox VerticalAlignment="Top"
                  IsVisible="{Binding ShowServerUriSetting}"
-                 VerticalAlignment="Top"
+                 Text="{Binding ServerAddress, Mode=TwoWay}"
                  Watermark="Server address" />
-        <Button Command="{Binding ApplyCommand}"
-                Content="Apply"
-                Classes="main" />
+        <Button Classes="main"
+                Command="{Binding ApplyCommand}"
+                Content="Apply" />
     </StackPanel>
 </UserControl>
