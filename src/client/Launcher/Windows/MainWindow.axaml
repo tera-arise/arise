@@ -35,6 +35,20 @@
     </Window.Styles>
 
     <Grid RowDefinitions="48,*">
+        
+        <Image Source="../../image_background.webp"
+                       Stretch="Fill"
+                       IsHitTestVisible="False"
+                       Grid.RowSpan="2" >
+            <Image.OpacityMask>
+                <LinearGradientBrush StartPoint="0 0" EndPoint="0% 100%">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Color="Transparent" Offset="0"/>
+                        <GradientStop Color="Black" Offset="1"/>
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Image.OpacityMask>
+        </Image>
 
         <!--Title bar-->
         <Grid VerticalAlignment="Stretch"
@@ -90,8 +104,8 @@
                 <Button x:Name="SettingsButton" Command="{Binding OpenSettingsCommand}">
                     <avalonia:MaterialIcon Kind="Settings" />
                 </Button>
-                
-                 <Button x:Name="MinimizeButton" Click="OnMinimizeClick">
+
+                <Button x:Name="MinimizeButton" Click="OnMinimizeClick">
                     <avalonia:MaterialIcon Kind="WindowMinimize" />
                 </Button>
 
@@ -101,11 +115,7 @@
 
             </StackPanel>
         </Grid>
-        <Image Source="../../image_background.webp"
-               Stretch="Fill"
-               IsHitTestVisible="False"
-               Grid.Row="1" />
-
+        
         <!--<Image Source="../../image_logo.webp"
                IsHitTestVisible="False"
                Stretch="Uniform"
@@ -115,9 +125,9 @@
         <ContentControl
             Content="{Binding CurrentContent}"
             Grid.Row="1"/>
-       
+
         <Border x:Name="ModalDarkening"
-                Background="#5000"
+                Background="#6000"
                 Grid.RowSpan="2"
                 IsHitTestVisible="{Binding IsModalVisible}"
                 Classes.visible="{Binding IsModalVisible}"
