@@ -4,8 +4,6 @@ namespace Arise.Server.Gateway.Cryptography;
 
 public sealed class Pbkdf2PasswordStrategy : PasswordStrategy
 {
-    private const int Length = SHA512.HashSizeInBytes;
-
     public static Pbkdf2PasswordStrategy Instance { get; } = new();
 
     private Pbkdf2PasswordStrategy()
@@ -14,12 +12,14 @@ public sealed class Pbkdf2PasswordStrategy : PasswordStrategy
 
     public override byte[] GenerateSalt()
     {
-        return RandomNumberGenerator.GetBytes(Length);
+        // https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf
+        return RandomNumberGenerator.GetBytes(16);
     }
 
     public override byte[] CalculateHash(scoped ReadOnlySpan<char> password, scoped ReadOnlySpan<byte> salt)
     {
         // https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#pbkdf2
-        return Rfc2898DeriveBytes.Pbkdf2(password, salt, 210_000, HashAlgorithmName.SHA512, Length);
+        return Rfc2898DeriveBytes.Pbkdf2(
+            password, salt, iterations: 210_000, HashAlgorithmName.SHA512, outputLength: SHA512.HashSizeInBytes);
     }
 }
