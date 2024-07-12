@@ -33,6 +33,7 @@
         <Using Include="Microsoft.Extensions.Hosting" />
         <Using Include="Microsoft.Extensions.Logging" />
         <Using Include="Microsoft.Extensions.Options" />
+        <Using Include="NSec.Cryptography" />
         <Using Include="SendGrid" />
         <Using Include="SendGrid.Helpers.Errors.Model" />
         <Using Include="SendGrid.Helpers.Mail" />
@@ -47,6 +48,7 @@
     <ItemGroup>
         <PackageReference Include="Injectio"
                           PrivateAssets="all" />
+        <PackageReference Include="NSec.Cryptography" />
         <PackageReference Include="SendGrid" />
     </ItemGroup>
 

@@ -6,7 +6,7 @@ internal static class PasswordStrategyProvider
 {
     public static PasswordStrategy GetLatestStrategy()
     {
-        return GetStrategy(AccountPasswordKind.Pbkdf2);
+        return GetStrategy(AccountPasswordKind.Argon2id);
     }
 
     public static PasswordStrategy GetStrategy(AccountPasswordKind kind)
@@ -14,6 +14,7 @@ internal static class PasswordStrategyProvider
         return kind switch
         {
             AccountPasswordKind.Pbkdf2 => Pbkdf2PasswordStrategy.Instance,
+            AccountPasswordKind.Argon2id => Argon2idPasswordStrategy.Instance,
             _ => throw new UnreachableException(),
         };
     }
@@ -23,6 +24,7 @@ internal static class PasswordStrategyProvider
         return strategy switch
         {
             Pbkdf2PasswordStrategy => AccountPasswordKind.Pbkdf2,
+            Argon2idPasswordStrategy => AccountPasswordKind.Argon2id,
             _ => throw new UnreachableException(),
         };
     }
