@@ -78,7 +78,7 @@
         <PackageVersion Include="SendGrid"
                         Version="9.29.3" />
         <PackageVersion Include="Serilog"
-                        Version="4.0.0" />
+                        Version="4.0.1" />
         <PackageVersion Include="Serilog.AspNetCore"
                         Version="8.0.1" />
         <PackageVersion Include="Serilog.Extensions.Hosting"
