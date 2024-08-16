@@ -43,7 +43,7 @@ are observed.
 Building and running TERA Arise requires the following:
 
 * Windows 10 22H2+ or Ubuntu 22.04+
-* .NET SDK 8.0.7
+* .NET SDK 8.0.8
 * PostgreSQL 16.0+
 
 Development will typically require one of the following editors:
