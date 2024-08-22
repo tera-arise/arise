@@ -16,9 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="../gamed/arise-gamed.development.json; ../gatewayd/arise-gatewayd.development.json"
-                 Link="%(Filename)%(Extension)"
-                 CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="../gamed/arise-gamed.development.json; ../gatewayd/arise-gatewayd.development.json" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,6 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Serilog" />
         <PackageReference Include="Serilog.AspNetCore" />
     </ItemGroup>
 </Project>

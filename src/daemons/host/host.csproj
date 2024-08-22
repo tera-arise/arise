@@ -20,8 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="arised.json; arised.development.json"
-                 CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="arised.json; arised.development.json" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
     <ItemGroup>
@@ -32,6 +31,7 @@
         <PackageReference Include="CommandLineParser" />
         <PackageReference Include="Discord.Net" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" />
+        <PackageReference Include="Serilog" />
         <PackageReference Include="Serilog.Extensions.Hosting" />
         <PackageReference Include="Serilog.Settings.Configuration" />
         <PackageReference Include="Serilog.Sinks.Async" />
