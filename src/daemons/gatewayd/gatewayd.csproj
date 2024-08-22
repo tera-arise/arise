@@ -11,8 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="arise-gatewayd.development.json"
-                 CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="arise-gatewayd.development.json" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
     <ItemGroup>
@@ -21,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
         <PackageReference Include="Serilog.AspNetCore" />
     </ItemGroup>
 </Project>

@@ -21,9 +21,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Injectio"
-                          PrivateAssets="all" />
+        <PackageReference Include="Injectio" PrivateAssets="all" />
         <PackageReference Include="Marten" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
     </ItemGroup>
 </Project>
