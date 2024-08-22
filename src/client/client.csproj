@@ -63,10 +63,7 @@
         <ProjectReference Include="../shared/data/data.csproj" />
         <ProjectReference Include="../shared/game/game.csproj" />
         <ProjectReference Include="../shared/gateway/gateway.csproj" />
-        <ProjectReference Include="../tools/patcher/patcher.csproj"
-                          Private="false"
-                          ReferenceOutputAssembly="false"
-                          OutputItemType="ArisePatcher" />
+        <ProjectReference Include="../tools/patcher/patcher.csproj" Private="false" ReferenceOutputAssembly="false" OutputItemType="ArisePatcher" />
     </ItemGroup>
 
     <ItemGroup>
@@ -80,10 +77,10 @@
         <PackageReference Include="Microsoft.ClearScript.V8.Native.win-x64" />
         <PackageReference Include="Microsoft.Extensions.Hosting" />
         <PackageReference Include="Microsoft.Extensions.Http" />
-        <PackageReference Include="Microsoft.Windows.CsWin32"
-                          PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Windows.CsWin32" PrivateAssets="all" />
         <PackageReference Include="NAudio.Extras" />
         <PackageReference Include="NAudio.Vorbis" />
+        <PackageReference Include="PeNet" />
         <PackageReference Include="Vezel.Cathode.Extensions" />
         <PackageReference Include="Vezel.Novadrop.Interop" />
         <PackageReference Include="Vezel.Ruptura.Hosting" />
@@ -91,17 +88,12 @@
         <PackageReference Include="Vezel.Ruptura.Memory" />
     </ItemGroup>
 
-    <Target Name="_ApplyServerUriAttributes"
-            BeforeTargets="GetAssemblyAttributes">
-        <MSBuild Projects="$(AriseVendorProjectPath)"
-                 Targets="GetGatewayServerUri">
-            <Output TaskParameter="TargetOutputs"
-                    ItemName="AriseGatewayServerUri" />
+    <Target Name="_ApplyServerUriAttributes" BeforeTargets="GetAssemblyAttributes">
+        <MSBuild Projects="$(AriseVendorProjectPath)" Targets="GetGatewayServerUri">
+            <Output TaskParameter="TargetOutputs" ItemName="AriseGatewayServerUri" />
         </MSBuild>
-        <MSBuild Projects="$(AriseVendorProjectPath)"
-                 Targets="GetGameServerUri">
-            <Output TaskParameter="TargetOutputs"
-                    ItemName="AriseGameServerUri" />
+        <MSBuild Projects="$(AriseVendorProjectPath)" Targets="GetGameServerUri">
+            <Output TaskParameter="TargetOutputs" ItemName="AriseGameServerUri" />
         </MSBuild>
 
         <PropertyGroup>
@@ -110,31 +102,20 @@
         </PropertyGroup>
 
         <ItemGroup>
-            <AssemblyMetadata Include="Arise.GatewayServerUri"
-                              Value="$(_GatewayServerUri)"
-                              Condition="'$(_GatewayServerUri)' != ''" />
-            <AssemblyMetadata Include="Arise.GameServerUri"
-                              Value="$(_GameServerUri)"
-                              Condition="'$(_GameServerUri)' != ''" />
+            <AssemblyMetadata Include="Arise.GatewayServerUri" Value="$(_GatewayServerUri)" Condition="'$(_GatewayServerUri)' != ''" />
+            <AssemblyMetadata Include="Arise.GameServerUri" Value="$(_GameServerUri)" Condition="'$(_GameServerUri)' != ''" />
         </ItemGroup>
     </Target>
 
-    <Target Name="AddGameIcons"
-            DependsOnTargets="GetGameIcons"
-            BeforeTargets="AssignTargetPaths">
+    <Target Name="AddGameIcons" DependsOnTargets="GetGameIcons" BeforeTargets="AssignTargetPaths">
         <ItemGroup>
-            <AvaloniaResource Include="@(AriseGameIcon)"
-                              Link="arise%(Extension)"
-                              Condition="'%(Extension)' == '.png'" />
+            <AvaloniaResource Include="@(AriseGameIcon)" Link="arise%(Extension)" Condition="'%(Extension)' == '.png'" />
         </ItemGroup>
     </Target>
 
-    <Target Name="_AddMultimediaAssets"
-            BeforeTargets="AddAvaloniaResources">
-        <MSBuild Projects="$(AriseVendorProjectPath)"
-                 Targets="GetMultimediaAssetsPath">
-            <Output TaskParameter="TargetOutputs"
-                    ItemName="AriseMultimediaAssetsPath" />
+    <Target Name="_AddMultimediaAssets" BeforeTargets="AddAvaloniaResources">
+        <MSBuild Projects="$(AriseVendorProjectPath)" Targets="GetMultimediaAssetsPath">
+            <Output TaskParameter="TargetOutputs" ItemName="AriseMultimediaAssetsPath" />
         </MSBuild>
 
         <PropertyGroup>
@@ -143,8 +124,7 @@
 
         <ItemGroup>
             <_MultimediaAsset Include="$(_MultimediaAssetsPath)/**" />
-            <AvaloniaResource Include="@(_MultimediaAsset)"
-                              Link="%(RecursiveDir)%(Filename)%(Extension)" />
+            <AvaloniaResource Include="@(_MultimediaAsset)" Link="%(RecursiveDir)%(Filename)%(Extension)" />
         </ItemGroup>
     </Target>
 
@@ -158,54 +138,35 @@
         </PropertyGroup>
     </Target>
 
-    <Target Name="_RestoreClientExecutable"
-            AfterTargets="_GenerateRestoreProjectPathWalk"
-            DependsOnTargets="_SetClientExecutableInfo">
-        <DownloadFile SourceUrl="https://github.com/alexrp/tera-re/releases/download/$(_ClientExecutableRevision)/TERA.unpacked.exe"
-                      DestinationFolder="$(_ClientExecutableDownloadPath)"
-                      Condition="!Exists('$(_ClientExecutableUnpackedPath)')" />
+    <Target Name="_RestoreClientExecutable" AfterTargets="_GenerateRestoreProjectPathWalk" DependsOnTargets="_SetClientExecutableInfo">
+        <DownloadFile SourceUrl="https://github.com/alexrp/tera-re/releases/download/$(_ClientExecutableRevision)/TERA.unpacked.exe" DestinationFolder="$(_ClientExecutableDownloadPath)" Condition="!Exists('$(_ClientExecutableUnpackedPath)')" />
     </Target>
 
-    <Target Name="_WriteClientExecutableCache"
-            DependsOnTargets="_SetClientExecutableInfo">
-        <Hash ItemsToHash="$(MSBuildAllProjects); @(ArisePatcher); $(_ClientExecutableUnpackedPath)"
-              IgnoreCase="true">
-            <Output TaskParameter="HashResult"
-                    PropertyName="_ClientExecutableCacheHash" />
+    <Target Name="_WriteClientExecutableCache" DependsOnTargets="_SetClientExecutableInfo">
+        <Hash ItemsToHash="$(MSBuildAllProjects); @(ArisePatcher); $(_ClientExecutableUnpackedPath)" IgnoreCase="true">
+            <Output TaskParameter="HashResult" PropertyName="_ClientExecutableCacheHash" />
         </Hash>
 
-        <WriteLinesToFile Lines="$(_ClientExecutableCacheHash)"
-                          File="$(_ClientExecutableCachePath)"
-                          Overwrite="true"
-                          WriteOnlyWhenDifferent="true" />
+        <WriteLinesToFile Lines="$(_ClientExecutableCacheHash)" File="$(_ClientExecutableCachePath)" Overwrite="true" WriteOnlyWhenDifferent="true" />
 
         <ItemGroup>
             <FileWrites Include="$(_ClientExecutableCachePath)" />
         </ItemGroup>
     </Target>
 
-    <Target Name="_PackClientExecutable"
-            Inputs="@(ArisePatcher); $(_ClientExecutableUnpackedPath); $(_ClientExecutableCachePath)"
-            Outputs="$(_ClientExecutablePatchedPath)"
-            DependsOnTargets="_WriteClientExecutableCache"
-            BeforeTargets="AddAvaloniaResources">
-        <Exec Command="dotnet @(ArisePatcher) $(_ClientExecutableUnpackedPath) $(_ClientExecutablePatchedPath)"
-              StandardOutputImportance="low"
-              StandardErrorImportance="low" />
+    <Target Name="_PackClientExecutable" Inputs="@(ArisePatcher); $(_ClientExecutableUnpackedPath); $(_ClientExecutableCachePath)" Outputs="$(_ClientExecutablePatchedPath)" DependsOnTargets="_WriteClientExecutableCache" BeforeTargets="AddAvaloniaResources">
+        <Exec Command="dotnet @(ArisePatcher) $(_ClientExecutableUnpackedPath) $(_ClientExecutablePatchedPath)" StandardOutputImportance="low" StandardErrorImportance="low" />
 
         <ItemGroup>
             <FileWrites Include="$(_ClientExecutablePatchedPath)" />
         </ItemGroup>
 
         <ItemGroup>
-            <AvaloniaResource Include="$(_ClientExecutablePatchedPath)"
-                              Link="TERA.arise.exe" />
+            <AvaloniaResource Include="$(_ClientExecutablePatchedPath)" Link="TERA.arise.exe" />
         </ItemGroup>
     </Target>
 
-    <Target Name="_WriteDeploymentManifest"
-            DependsOnTargets="GetGameRevision"
-            AfterTargets="AfterBuild">
+    <Target Name="_WriteDeploymentManifest" DependsOnTargets="GetGameRevision" AfterTargets="AfterBuild">
         <PropertyGroup>
             <_ManifestJsonPath>$(OutputPath)manifest.json</_ManifestJsonPath>
         </PropertyGroup>
@@ -220,10 +181,7 @@
             </_ManifestJson>
         </PropertyGroup>
 
-        <WriteLinesToFile File="$(_ManifestJsonPath)"
-                          Lines="$(_ManifestJson)"
-                          Overwrite="true"
-                          WriteOnlyWhenDifferent="true" />
+        <WriteLinesToFile File="$(_ManifestJsonPath)" Lines="$(_ManifestJson)" Overwrite="true" WriteOnlyWhenDifferent="true" />
 
         <ItemGroup>
             <FileWrites Include="$(_ManifestJsonPath)" />
