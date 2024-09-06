@@ -40,7 +40,7 @@
         <PackageVersion Include="Iced"
                         Version="1.21.0" />
         <PackageVersion Include="Injectio"
-                        Version="3.1.0" />
+                        Version="3.2.0" />
         <PackageVersion Include="Marten"
                         Version="7.26.5" />
         <PackageVersion Include="Material.Icons.Avalonia"
