@@ -10,8 +10,8 @@
 	weak
 [file ".markdownlint.json"]
 	url = https://github.com/tera-arise/.github/blob/master/syn/.markdownlint.json
-	sha = a52fdae06d1a2fb13ec9d091eb9767373add18cb
-	etag = cf98ac95cf318b52e206b9003e342de9db2ecb7be062eab6edf1681b1f374b3a
+	sha = c3eaa445f078b68b9289cb512e7613c942578669
+	etag = 6d74ad50782defb281b210a627cae9d255cbb419cdc705b0571f1653dbe02300
 	weak
 [file "LICENSE-AGPL-3.0"]
 	url = https://github.com/tera-arise/.github/blob/master/syn/LICENSE-AGPL-3.0
