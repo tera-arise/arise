@@ -74,7 +74,7 @@
         <PackageVersion Include="Octokit"
                         Version="13.0.1" />
         <PackageVersion Include="PeNet"
-                        Version="4.0.5" />
+                        Version="4.1.0" />
         <PackageVersion Include="SendGrid"
                         Version="9.29.3" />
         <PackageVersion Include="Serilog"
