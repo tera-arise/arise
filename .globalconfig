@@ -879,4 +879,5 @@ dotnet_diagnostic.VSTHRD111.severity = none
 dotnet_diagnostic.VSTHRD112.severity = none
 dotnet_diagnostic.VSTHRD113.severity = none
 dotnet_diagnostic.VSTHRD114.severity = error
+dotnet_diagnostic.VSTHRD115.severity = none
 dotnet_diagnostic.VSTHRD200.severity = error
