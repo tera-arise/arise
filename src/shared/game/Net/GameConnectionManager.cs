@@ -34,7 +34,7 @@ public abstract class GameConnectionManager : IAsyncDisposable
 
     internal ObjectPool<GameConnectionBuffer> Buffers { get; }
 
-    private readonly object _lock = new();
+    private readonly Lock _lock = new();
 
     private HashSet<GameConnection>? _connections = [];
 
