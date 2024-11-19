@@ -4,14 +4,12 @@ namespace Arise.Threading;
 
 public sealed class Dispatcher
 {
-    public static Dispatcher? Current => _current;
+    [field: ThreadStatic]
+    public static Dispatcher? Current { get; private set; }
 
     public bool IsAlive => _work.Reader.Completion.IsCompleted;
 
-    public bool IsCurrent => this == _current;
-
-    [ThreadStatic]
-    private static Dispatcher? _current;
+    public bool IsCurrent => this == Current;
 
     private readonly Channel<(SendOrPostCallback, object?)> _work =
         Channel.CreateUnbounded<(SendOrPostCallback, object?)>(new()
@@ -31,7 +29,7 @@ public sealed class Dispatcher
                 // similar fashion to how await works in a UI framework.
                 SynchronizationContext.SetSynchronizationContext(syncCtx);
 
-                _current = this;
+                Current = this;
 
                 try
                 {
@@ -39,7 +37,7 @@ public sealed class Dispatcher
                 }
                 finally
                 {
-                    _current = null;
+                    Current = null;
                 }
 
                 // No need to clean up SynchronizationContext/ExecutionContext; thread pool threads reset these back to
