@@ -11,6 +11,11 @@ public sealed class GameConnectionClient : GameConnectionManager
     {
     }
 
+    private protected override ValueTask DisposeCoreAsync()
+    {
+        throw new NotImplementedException();
+    }
+
     public static GameConnectionClient Create(ObjectPoolProvider objectPoolProvider)
     {
         return new(objectPoolProvider.Create<GameConnectionBuffer>());

@@ -71,10 +71,7 @@ public abstract class GameConnectionManager : IAsyncDisposable
         GC.SuppressFinalize(this);
     }
 
-    private protected virtual ValueTask DisposeCoreAsync()
-    {
-        return ValueTask.CompletedTask;
-    }
+    private protected abstract ValueTask DisposeCoreAsync();
 
     internal void HandleDisconnect(GameConnection connection, GameConnectionException? exception)
     {
