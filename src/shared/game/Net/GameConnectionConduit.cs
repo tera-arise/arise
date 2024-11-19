@@ -56,7 +56,7 @@ public sealed class GameConnectionConduit
             // Tasks are gone; safe to dispose this now.
             _cts.Dispose();
 
-            await foreach (var (buffer, tcs) in _sendQueue.Reader.ReadAllAsync())
+            await foreach (var (buffer, tcs) in _sendQueue.Reader.ReadAllAsync().ConfigureAwait(false))
             {
                 tcs?.SetResult(false);
 
@@ -200,7 +200,7 @@ public sealed class GameConnectionConduit
 
         try
         {
-            await foreach (var (buffer, tcs) in _sendQueue.Reader.ReadAllAsync(cancellationToken))
+            await foreach (var (buffer, tcs) in _sendQueue.Reader.ReadAllAsync(cancellationToken).ConfigureAwait(false))
             {
                 try
                 {

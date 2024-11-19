@@ -25,7 +25,7 @@ public sealed class Dispatcher
         {
             var syncCtx = new DispatcherSynchronizationContext(this);
 
-            await foreach (var (callback, state) in _work.Reader.ReadAllAsync())
+            await foreach (var (callback, state) in _work.Reader.ReadAllAsync().ConfigureAwait(false))
             {
                 // This ensures that any await operation in the callback will yield back to this dispatcher, in a
                 // similar fashion to how await works in a UI framework.
