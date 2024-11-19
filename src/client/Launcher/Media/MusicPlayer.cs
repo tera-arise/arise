@@ -2,6 +2,7 @@
 
 namespace Arise.Client.Launcher.Media;
 
+[SuppressMessage("", "CA1515")]
 public sealed class MusicPlayer : IDisposable
 {
     private readonly WasapiOut _wasapi = new();

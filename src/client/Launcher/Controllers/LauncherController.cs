@@ -2,6 +2,7 @@
 
 namespace Arise.Client.Launcher.Controllers;
 
+[SuppressMessage("", "CA1515")]
 public abstract class LauncherController : ObservableObject
 {
     public IServiceProvider Services { get; }

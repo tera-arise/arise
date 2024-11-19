@@ -6,6 +6,7 @@ using Arise.Client.Launcher.Windows;
 
 namespace Arise.Client.Launcher;
 
+[SuppressMessage("", "CA1515")]
 public sealed partial class LauncherApplication : Application
 {
     private readonly IServiceProvider? _services;

@@ -4,6 +4,7 @@ using Arise.Client.Launcher.Controllers;
 
 namespace Arise.Client.Launcher.Windows;
 
+[SuppressMessage("", "CA1515")]
 public sealed partial class MainWindow : LauncherWindow<MainController>
 {
     public MainWindow()

@@ -4,6 +4,7 @@ using Arise.Client.Launcher.Media;
 
 namespace Arise.Client.Launcher.Controllers;
 
+[SuppressMessage("", "CA1515")]
 public sealed class MainController : LauncherController
 {
     private readonly MusicPlayer _musicPlayer;
