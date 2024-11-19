@@ -106,6 +106,12 @@
                         Version="2.1.7" />
     </ItemGroup>
 
+    <!-- NU1608 -->
+    <ItemGroup>
+        <PackageVersion Include="JasperFx.RuntimeCompiler"
+                        Version="3.7.1" />
+    </ItemGroup>
+
     <!-- NU1903 -->
     <ItemGroup>
         <PackageVersion Include="System.Formats.Asn1"
