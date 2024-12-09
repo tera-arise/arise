@@ -85,7 +85,7 @@
         <PackageVersion Include="Serilog.Extensions.Hosting"
                         Version="9.0.0" />
         <PackageVersion Include="Serilog.Settings.Configuration"
-                        Version="8.0.4" />
+                        Version="9.0.0" />
         <PackageVersion Include="Serilog.Sinks.Async"
                         Version="2.1.0" />
         <PackageVersion Include="Serilog.Sinks.Console"
