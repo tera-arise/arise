@@ -73,7 +73,7 @@
         <PackageVersion Include="NSec.Cryptography"
                         Version="24.4.0" />
         <PackageVersion Include="Octokit"
-                        Version="13.0.1" />
+                        Version="14.0.0" />
         <PackageVersion Include="PeNet"
                         Version="4.1.1" />
         <PackageVersion Include="SendGrid"
