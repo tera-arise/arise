@@ -51,9 +51,9 @@
         <PackageVersion Include="Microsoft.ClearScript.V8.Native.win-x64"
                         Version="7.4.5" />
         <PackageVersion Include="Microsoft.Extensions.Hosting"
-                        Version="9.0.0" />
+                        Version="9.0.1" />
         <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions"
-                        Version="9.0.0" />
+                        Version="9.0.1" />
         <PackageVersion Include="Microsoft.Extensions.Hosting.Systemd"
                         Version="9.0.0" />
         <PackageVersion Include="Microsoft.Extensions.Http"
