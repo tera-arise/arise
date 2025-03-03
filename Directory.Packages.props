@@ -45,7 +45,7 @@
         <PackageVersion Include="Marten"
                         Version="7.37.0" />
         <PackageVersion Include="Material.Icons.Avalonia"
-                        Version="2.2.0" />
+                        Version="2.3.0" />
         <PackageVersion Include="Microsoft.ClearScript.V8"
                         Version="7.4.5" />
         <PackageVersion Include="Microsoft.ClearScript.V8.Native.win-x64"
