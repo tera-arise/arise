@@ -49,7 +49,7 @@
         <PackageVersion Include="Microsoft.ClearScript.V8"
                         Version="7.4.5" />
         <PackageVersion Include="Microsoft.ClearScript.V8.Native.win-x64"
-                        Version="7.4.5" />
+                        Version="7.5.0" />
         <PackageVersion Include="Microsoft.Extensions.Hosting"
                         Version="9.0.2" />
         <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions"
