@@ -61,7 +61,7 @@
         <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions"
                         Version="9.0.3" />
         <PackageVersion Include="Microsoft.Extensions.ObjectPool"
-                        Version="9.0.2" />
+                        Version="9.0.3" />
         <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions"
                         Version="9.0.3" />
         <PackageVersion Include="Microsoft.Windows.CsWin32"
