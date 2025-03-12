@@ -57,7 +57,7 @@
         <PackageVersion Include="Microsoft.Extensions.Hosting.Systemd"
                         Version="9.0.3" />
         <PackageVersion Include="Microsoft.Extensions.Http"
-                        Version="9.0.2" />
+                        Version="9.0.3" />
         <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions"
                         Version="9.0.3" />
         <PackageVersion Include="Microsoft.Extensions.ObjectPool"
