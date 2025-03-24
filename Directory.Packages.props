@@ -103,7 +103,7 @@
         <PackageVersion Include="Vezel.Ruptura.Injection"
                         Version="2.1.7" />
         <PackageVersion Include="Vezel.Ruptura.Memory"
-                        Version="2.1.7" />
+                        Version="2.1.8" />
     </ItemGroup>
 
     <!-- NU1903 -->
