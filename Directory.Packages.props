@@ -63,7 +63,7 @@
         <PackageVersion Include="Microsoft.Extensions.ObjectPool"
                         Version="9.0.3" />
         <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions"
-                        Version="9.0.3" />
+                        Version="9.0.4" />
         <PackageVersion Include="Microsoft.Windows.CsWin32"
                         Version="0.3.183" />
         <PackageVersion Include="NAudio.Extras"
